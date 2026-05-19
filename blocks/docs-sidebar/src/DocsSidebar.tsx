@@ -169,7 +169,7 @@ function SidebarContent({
 
       {/* Navigation */}
       <nav
-        className="flex-1 overflow-y-auto px-3 py-2 space-y-5 overscroll-contain"
+        className="flex-1 overflow-y-auto px-3 py-2 space-y-5"
         style={{
           maskImage:
             "linear-gradient(to bottom, transparent, black 8px, black calc(100% - 8px), transparent)",

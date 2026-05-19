@@ -1,0 +1,18 @@
+{
+  "heading": "Kluczowe możliwości",
+  "icon": "CheckCircle2",
+  "iconColor": "violet",
+  "layout": "stacked",
+  "items": [
+    {
+      "title": "Dynamiczne generowanie komponentów UI na podstawie danych rynkowych."
+    },
+    {
+      "title": "Zintegrowany system A/B testów działający automatycznie."
+    },
+    {
+      "title": "Automatyczna optymalizacja SEO w czasie rzeczywistym.",
+      "description": "Silnik AI analizuje trendy i dostosowuje metatagi, nagłówki oraz strukturę treści."
+    }
+  ]
+}

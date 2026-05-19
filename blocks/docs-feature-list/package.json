@@ -1,0 +1,9 @@
+{
+  "name": "@cmssy-marketing/blocks.docs-feature-list",
+  "version": "1.0.3",
+  "description": "Checklist of documented features with icon + title + description",
+  "author": {
+    "name": "",
+    "email": ""
+  }
+}

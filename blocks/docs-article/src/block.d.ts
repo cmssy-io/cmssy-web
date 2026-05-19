@@ -2,6 +2,10 @@
 // DO NOT EDIT - This file is automatically regenerated
 
 export interface BlockContent {
+  breadcrumbs?: Array<{
+    label: string;
+    url?: string;
+  }>;
   title: string;
   description?: string;
   lastUpdated?: string;

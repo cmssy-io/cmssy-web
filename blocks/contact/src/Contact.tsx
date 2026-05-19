@@ -15,32 +15,17 @@ interface Props {
 
 export default function Contact({ content }: Props) {
   const {
-    badgeText = "Contact Us",
-    heading = "Let's",
-    headingHighlight = "talk",
-    description = "Have a question, feedback, or just want to say hello? We'd love to hear from you.",
-    infoCards = [
-      {
-        title: "Email Us",
-        description:
-          "Drop us a line anytime. We typically respond within 24 hours.",
-      },
-      {
-        title: "Response Time",
-        description:
-          "We aim to respond to all inquiries within 24-48 hours during business days.",
-      },
-      {
-        title: "Location",
-        description: "We're a remote-first team working across Europe.",
-      },
-    ],
-    showQuote = true,
-    quoteText = "Building the future of content management, one pixel at a time.",
-    quoteAuthor = "The Cmssy Team",
+    badgeText,
+    heading,
+    headingHighlight,
+    description,
+    infoCards,
+    showQuote,
+    quoteText,
+    quoteAuthor,
     formId,
-    submitLoadingText = "Sending...",
-    successHeading = "Message Sent!",
+    submitLoadingText,
+    successHeading,
   } = content;
 
   const {
@@ -61,11 +46,11 @@ export default function Contact({ content }: Props) {
   // form settings live in formDef.settings.* now.
   const submitButtonText = getLocalized(
     formDef?.settings?.submitButtonLabel,
-    "Send Message",
+    content.submitButtonText,
   );
   const successMessage = getLocalized(
     formDef?.settings?.successMessage,
-    "Thank you for reaching out! We'll get back to you as soon as possible.",
+    content.successMessage,
   );
 
   return (

@@ -1,4 +1,9 @@
 {
+  "breadcrumbs": [
+    { "label": "Documentation", "url": "/docs" },
+    { "label": "Getting Started", "url": "/docs/getting-started" },
+    { "label": "Introduction" }
+  ],
   "title": "Getting Started with Cmssy CLI",
   "description": "Learn how to install and use the Cmssy CLI to build and publish blocks to the marketplace.",
   "lastUpdated": "2026-01-31",

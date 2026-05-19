@@ -1,6 +1,6 @@
 {
   "name": "@cmssy-marketing/blocks.docs-terminal",
-  "version": "1.0.5",
+  "version": "1.2.3",
   "description": "Terminal/CLI visualization with commands and output",
   "author": {
     "name": "Cmssy Team",

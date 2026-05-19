@@ -20,6 +20,15 @@ export default defineBlock({
       ],
       defaultValue: "info",
     }),
+    style: field({
+      type: "select",
+      label: "Style",
+      options: [
+        { value: "card", label: "Card (full border)" },
+        { value: "accent-border", label: "Accent border (thick left bar)" },
+      ],
+      defaultValue: "card",
+    }),
     title: field({
       type: "singleLine",
       label: "Title",

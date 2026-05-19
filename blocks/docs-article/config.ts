@@ -7,6 +7,22 @@ export default defineBlock({
   tags: ["docs", "article", "content", "documentation", "richtext"],
 
   schema: {
+    breadcrumbs: field({
+      type: "repeater",
+      label: "Breadcrumbs",
+      group: "header",
+      schema: {
+        label: field({
+          type: "singleLine",
+          label: "Label",
+          required: true,
+        }),
+        url: field({
+          type: "link",
+          label: "URL",
+        }),
+      },
+    }),
     title: field({
       type: "singleLine",
       label: "Title",

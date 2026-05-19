@@ -43,6 +43,7 @@ export default defineBlock({
         { value: "dark", label: "Dark" },
         { value: "macos", label: "macOS" },
         { value: "minimal", label: "Minimal" },
+        { value: "clean", label: "Clean (dev)" },
       ],
       defaultValue: "macos",
       group: "style",
