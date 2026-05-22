@@ -24,6 +24,7 @@ npm run build
 ## Available Commands
 
 ### Development
+
 ```bash
 # Start dev server with preview UI (uses npm script)
 npm run dev
@@ -44,22 +45,24 @@ npm run build
 # Configure API credentials (run once)
 cmssy configure
 
-# MARKETPLACE PUBLISH (public, requires review)
-cmssy publish hero --marketplace                 # single block
-cmssy publish hero pricing --marketplace         # multiple blocks
-cmssy publish --all --marketplace                # all blocks/templates
-cmssy publish hero --marketplace --patch         # with version bump
+# RECOMMENDED: sandbox build pipeline (CMS-576)
+cmssy publish-block hero -w ws_abc123            # single block
+cmssy publish-block header --dry-run             # see source archive plan
 
-# WORKSPACE PUBLISH (private, no review)
-cmssy publish hero --workspace ws_abc123         # explicit workspace ID
-cmssy publish --all --workspace                  # uses CMSSY_WORKSPACE_ID from .env
-cmssy publish hero -w ws_abc123 --minor          # with version bump
-
-# Preview what would be published
-cmssy publish --all --marketplace --dry-run
+# Auto-walks shared imports (../../components/*, ../../lib/*, @/* aliases),
+# runs the build in an isolated Vercel Sandbox, writes server + client
+# bundles to Vercel Blob, and revalidates the public-site cache.
 ```
 
+> ⚠ The legacy `cmssy publish` command is deprecated (CMS-599) and
+> will be removed in a future release. It only ships the client
+> bundle and skips shared-import auto-walking, so blocks like
+> `header` (which imports `../../components/container`) won't build
+> through the sandbox pipeline without explicit migration. Use
+> `publish-block` for all new work.
+
 ### Syncing from Marketplace
+
 ```bash
 # Pull a specific block from marketplace
 cmssy sync @vendor/blocks.hero --workspace ws_abc123
@@ -90,6 +93,7 @@ cmssy-marketing/
 ## Configuration
 
 Edit `cmssy.config.js` to customize:
+
 - Framework (react)
 - Author information
 - Build settings
@@ -100,7 +104,7 @@ Edit `cmssy.config.js` to customize:
 
 ## Author
 
--  
+-
 
 ## Documentation
 
