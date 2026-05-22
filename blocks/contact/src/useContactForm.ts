@@ -1,11 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   type FormDefinition,
   type GraphQLResponse,
-  type PublicFormResponse,
-  PUBLIC_FORM_QUERY,
   SUBMIT_FORM_MUTATION,
 } from "./query";
 
@@ -18,35 +16,22 @@ function getLocalized(
   return field["en"] || Object.values(field)[0] || fallback;
 }
 
-export function useContactForm(formId: string | undefined) {
-  const [formDef, setFormDef] = useState<FormDefinition | null>(null);
-  const [loading, setLoading] = useState(false);
+/**
+ * Form interaction hook for the contact block.
+ *
+ * `formDef` is read from `context.formDefinitions[formId]` (CMS-509)
+ * and passed in by the parent block - the platform pre-fetches the
+ * form schema during SSR via the declarative data-source pipeline,
+ * so the hook never does its own CSR fetch. No loading state, no
+ * race conditions.
+ */
+export function useContactForm(
+  formId: string | undefined,
+  formDef: FormDefinition | null,
+) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Fetch form definition
-  useEffect(() => {
-    if (!formId) return;
-
-    setLoading(true);
-    fetch("/api/public-graphql", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        query: PUBLIC_FORM_QUERY,
-        variables: { formId },
-      }),
-    })
-      .then((res) => res.json())
-      .then((result: PublicFormResponse) => {
-        if (result.data?.publicForm) {
-          setFormDef(result.data.publicForm);
-        }
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, [formId]);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -64,10 +49,6 @@ export function useContactForm(formId: string | undefined) {
         return;
       }
 
-      // Hard fail when no form is configured. Previously this branch
-      // faked success after a 1s setTimeout, which masked real bugs in
-      // production: a stale closure with formId=undefined would silently
-      // claim the message was sent without ever calling the API.
       if (!formId) {
         setError("Form not configured");
         setIsSubmitting(false);
@@ -121,8 +102,6 @@ export function useContactForm(formId: string | undefined) {
   );
 
   return {
-    formDef,
-    loading,
     isSubmitting,
     isSuccess,
     error,

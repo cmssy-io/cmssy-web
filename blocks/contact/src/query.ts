@@ -7,35 +7,6 @@ export const SUBMIT_FORM_MUTATION = `
   }
 `;
 
-export const PUBLIC_FORM_QUERY = `
-  query PublicForm($formId: ID!) {
-    publicForm(formId: $formId) {
-      id
-      name
-      fields {
-        id
-        name
-        fieldType
-        label
-        placeholder
-        helpText
-        validation {
-          required
-          minLength
-          maxLength
-        }
-        width
-        order
-      }
-      settings {
-        submitButtonLabel
-        successMessage
-        errorMessage
-      }
-    }
-  }
-`;
-
 export interface FormField {
   id: string;
   name: string;
@@ -69,13 +40,6 @@ export interface GraphQLResponse {
       success: boolean;
       message: string;
     };
-  };
-  errors?: Array<{ message: string }>;
-}
-
-export interface PublicFormResponse {
-  data?: {
-    publicForm?: FormDefinition | null;
   };
   errors?: Array<{ message: string }>;
 }

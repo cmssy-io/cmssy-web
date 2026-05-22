@@ -1,10 +1,11 @@
 "use client";
 
-import type { PlatformContext } from "@cmssy/cli/config";
+import type { PlatformContext } from "@cmssy/types";
 import { Container } from "../../../components/container";
 import type { BlockContent } from "./block";
 import { ContactForm } from "./ContactForm";
 import { InfoCard } from "./InfoCard";
+import type { FormDefinition } from "./query";
 import { SuccessMessage } from "./SuccessMessage";
 import { useContactForm } from "./useContactForm";
 
@@ -13,7 +14,7 @@ interface Props {
   context?: PlatformContext;
 }
 
-export default function Contact({ content }: Props) {
+export default function Contact({ content, context }: Props) {
   const {
     badgeText,
     heading,
@@ -28,15 +29,15 @@ export default function Contact({ content }: Props) {
     successHeading,
   } = content;
 
-  const {
-    formDef,
-    loading,
-    isSubmitting,
-    isSuccess,
-    error,
-    handleSubmit,
-    getLocalized,
-  } = useContactForm(formId);
+  // Form schema is SSR-injected at context.formDefinitions[formId]
+  // by the platform pipeline (CMS-509). No CSR fetch, no loading state -
+  // schema is in the HTML by the time hydration runs.
+  const formDef = (
+    formId ? (context?.formDefinitions?.[formId] ?? null) : null
+  ) as FormDefinition | null;
+
+  const { isSubmitting, isSuccess, error, handleSubmit, getLocalized } =
+    useContactForm(formId, formDef);
 
   const hasQuote = showQuote && quoteText;
 
@@ -131,10 +132,6 @@ export default function Contact({ content }: Props) {
                   heading={successHeading ?? "Message Sent!"}
                   message={successMessage}
                 />
-              ) : loading ? (
-                <div className="flex items-center justify-center py-12">
-                  <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-                </div>
               ) : formDef?.fields?.length ? (
                 <ContactForm
                   fields={formDef.fields}
