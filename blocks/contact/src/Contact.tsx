@@ -40,17 +40,18 @@ export default function Contact({ content }: Props) {
 
   const hasQuote = showQuote && quoteText;
 
-  // Messages from form builder (with hard-coded fallbacks).
-  // Legacy content.submitButtonText / content.successMessage were removed
-  // from the schema when contact migrated to form builder (CMS-306) -
-  // form settings live in formDef.settings.* now.
+  // Messages from form builder, with hard-coded fallbacks.
+  // submitButtonText / successMessage were removed from the block
+  // schema when contact migrated to form builder (CMS-306) - form
+  // settings live in formDef.settings.* now, so there is no
+  // content.* field to fall back to.
   const submitButtonText = getLocalized(
     formDef?.settings?.submitButtonLabel,
-    content.submitButtonText,
+    "Send Message",
   );
   const successMessage = getLocalized(
     formDef?.settings?.successMessage,
-    content.successMessage,
+    "Thank you! Your message has been sent.",
   );
 
   return (
@@ -127,7 +128,7 @@ export default function Contact({ content }: Props) {
             <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-xl shadow-violet-500/5 p-6 sm:p-8">
               {isSuccess ? (
                 <SuccessMessage
-                  heading={successHeading}
+                  heading={successHeading ?? "Message Sent!"}
                   message={successMessage}
                 />
               ) : loading ? (
@@ -141,7 +142,7 @@ export default function Contact({ content }: Props) {
                   error={error}
                   isSubmitting={isSubmitting}
                   submitButtonText={submitButtonText}
-                  submitLoadingText={submitLoadingText}
+                  submitLoadingText={submitLoadingText ?? "Sending..."}
                   getLocalized={getLocalized}
                 />
               ) : (
