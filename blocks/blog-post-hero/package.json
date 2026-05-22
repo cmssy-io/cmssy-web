@@ -1,6 +1,6 @@
 {
   "name": "@cmssy-marketing/blocks.blog-post-hero",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Blog post hero block with cover image, metadata, and breadcrumb",
   "author": {
     "name": "",

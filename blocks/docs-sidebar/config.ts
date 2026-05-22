@@ -9,6 +9,7 @@ export default defineBlock({
 
   layoutPosition: "sidebar_left",
 
+  useClient: true,
   schema: {
     logo: field({
       type: "media",

@@ -6,6 +6,7 @@ export default defineBlock({
   category: "marketing",
   tags: ["profile", "account", "auth", "form", "customer"],
 
+  useClient: true,
   schema: {
     // Header section
     heading: field({

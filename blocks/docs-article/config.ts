@@ -6,7 +6,24 @@ export default defineBlock({
   category: "documentation",
   tags: ["docs", "article", "content", "documentation", "richtext"],
 
+  useClient: true,
   schema: {
+    breadcrumbs: field({
+      type: "repeater",
+      label: "Breadcrumbs",
+      group: "header",
+      schema: {
+        label: field({
+          type: "singleLine",
+          label: "Label",
+          required: true,
+        }),
+        url: field({
+          type: "link",
+          label: "URL",
+        }),
+      },
+    }),
     title: field({
       type: "singleLine",
       label: "Title",

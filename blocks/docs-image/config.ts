@@ -6,6 +6,7 @@ export default defineBlock({
   category: "documentation",
   tags: ["docs", "image", "screenshot", "figure", "caption"],
 
+  useClient: true,
   schema: {
     src: field({
       type: "media",

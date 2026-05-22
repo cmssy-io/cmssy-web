@@ -3,14 +3,21 @@
   "commands": [
     {
       "prompt": "$",
-      "command": "npx @cmssy/cli init my-docs-site",
-      "output": "Creating project in ./my-docs-site...\n\u2713 Scaffolded block project\n\u2713 Installed dependencies\n\u2713 Created cmssy.config.js"
+      "command": "npx @cmssy/cli init my-awesome-project"
     },
     {
       "prompt": "$",
-      "command": "cd my-docs-site && cmssy dev"
+      "command": "# Post\u0119puj zgodnie z instrukcjami na ekranie"
+    },
+    {
+      "prompt": "$",
+      "command": "cd my-awesome-project"
+    },
+    {
+      "prompt": "$",
+      "command": "npm run dev"
     }
   ],
-  "theme": "macos",
+  "theme": "clean",
   "showCopyAll": true
 }

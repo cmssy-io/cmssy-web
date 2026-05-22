@@ -1,5 +1,6 @@
 {
   "type": "tip",
-  "title": "Pro Tip",
-  "content": "<p>You can use <code>npx cmssy</code> instead of installing globally. This ensures you're always using the latest version.</p>"
+  "style": "accent-border",
+  "title": "Gotowy do startu?",
+  "content": "<p>Możesz uruchomić swój pierwszy projekt w mniej niż 60 sekund, korzystając z naszego predefiniowanego szablonu <code>marketing-starter-v1</code>.</p>"
 }

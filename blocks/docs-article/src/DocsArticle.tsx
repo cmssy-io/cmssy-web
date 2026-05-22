@@ -10,27 +10,43 @@ interface TocItem {
 }
 
 /**
- * Extract headings from HTML string using regex.
+ * Extract headings from HTML string and inject unique IDs into the HTML.
  * Works in both Node.js (SSR) and browser — no DOMParser needed.
+ *
+ * Returns the rewritten HTML alongside the TOC items so anchor links
+ * (`#${item.id}`) match the heading IDs even when multiple headings
+ * share the same text (e.g. "Pros" / "Cons" repeated per section).
  */
-function extractTocItems(html: string): TocItem[] {
+function extractTocItems(html: string): {
+  html: string;
+  items: TocItem[];
+} {
   const items: TocItem[] = [];
-  const regex = /<(h[23])(?:\s[^>]*id="([^"]*)"[^>]*|[^>]*)>(.*?)<\/\1>/gi;
+  const seen = new Map<string, number>();
+  const regex = /<(h[23])((?:\s[^>]*)?)>(.*?)<\/\1>/gi;
+  const idAttrRegex = /\sid="([^"]*)"/i;
 
-  let match;
-  while ((match = regex.exec(html)) !== null) {
-    const tag = match[1].toLowerCase();
-    const explicitId = match[2] || "";
-    // Strip inner HTML tags to get plain text
-    const text = match[3].replace(/<[^>]*>/g, "").trim();
-    const id = explicitId || text.toLowerCase().replace(/\s+/g, "-");
+  const rewritten = html.replace(regex, (full, tag, attrs, inner) => {
+    const explicitMatch = attrs.match(idAttrRegex);
+    const explicitId = explicitMatch ? explicitMatch[1] : "";
+    const text = inner.replace(/<[^>]*>/g, "").trim();
+    if (!text) return full;
 
-    if (text) {
-      items.push({ id, text, level: tag === "h2" ? 2 : 3 });
-    }
-  }
+    const baseId = explicitId || text.toLowerCase().replace(/\s+/g, "-");
+    const count = (seen.get(baseId) ?? 0) + 1;
+    seen.set(baseId, count);
+    const id = count === 1 ? baseId : `${baseId}-${count}`;
 
-  return items;
+    items.push({ id, text, level: tag.toLowerCase() === "h2" ? 2 : 3 });
+
+    if (explicitMatch && id === explicitId) return full;
+    const newAttrs = explicitMatch
+      ? attrs.replace(idAttrRegex, ` id="${id}"`)
+      : `${attrs} id="${id}"`;
+    return `<${tag}${newAttrs}>${inner}</${tag}>`;
+  });
+
+  return { html: rewritten, items };
 }
 
 function formatDate(dateStr: string) {
@@ -47,6 +63,7 @@ function formatDate(dateStr: string) {
 
 export default function DocsArticle({ content }: { content: BlockContent }) {
   const {
+    breadcrumbs = [],
     title,
     description,
     lastUpdated,
@@ -60,7 +77,9 @@ export default function DocsArticle({ content }: { content: BlockContent }) {
     editUrl,
   } = content;
 
-  const tocItems = showToc ? extractTocItems(articleContent) : [];
+  const toc = showToc
+    ? extractTocItems(articleContent)
+    : { html: articleContent, items: [] };
   const prev = prevPage[0];
   const next = nextPage[0];
 
@@ -68,6 +87,43 @@ export default function DocsArticle({ content }: { content: BlockContent }) {
     <Container className="py-6 flex gap-8 lg:py-12">
       {/* Main Content */}
       <article className="flex-1 min-w-0">
+        {/* Breadcrumbs */}
+        {breadcrumbs.length > 0 && (
+          <nav
+            aria-label="Breadcrumb"
+            className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground mb-6"
+          >
+            {breadcrumbs.map((crumb, index) => {
+              const isLast = index === breadcrumbs.length - 1;
+              return (
+                <span key={index} className="flex items-center gap-1.5">
+                  {crumb.url && !isLast ? (
+                    <a
+                      href={crumb.url}
+                      className="hover:text-foreground transition-colors"
+                    >
+                      {crumb.label}
+                    </a>
+                  ) : (
+                    <span
+                      className={isLast ? "text-violet-600 font-medium" : ""}
+                      aria-current={isLast ? "page" : undefined}
+                    >
+                      {crumb.label}
+                    </span>
+                  )}
+                  {!isLast && (
+                    <ChevronRight
+                      className="size-3 shrink-0 text-muted-foreground/60"
+                      aria-hidden="true"
+                    />
+                  )}
+                </span>
+              );
+            })}
+          </nav>
+        )}
+
         {/* Header */}
         <header className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold mb-4">{title}</h1>
@@ -92,7 +148,7 @@ export default function DocsArticle({ content }: { content: BlockContent }) {
             prose-a:text-violet-600 prose-a:no-underline hover:prose-a:underline
             prose-ul:text-muted-foreground prose-li:marker:text-violet-500
           "
-          dangerouslySetInnerHTML={{ __html: articleContent }}
+          dangerouslySetInnerHTML={{ __html: toc.html }}
         />
 
         {/* Edit Link */}
@@ -148,8 +204,8 @@ export default function DocsArticle({ content }: { content: BlockContent }) {
       </article>
 
       {/* Table of Contents — client component for scroll tracking */}
-      {showToc && tocItems.length > 0 && (
-        <TocSidebar items={tocItems} title={tocTitle} />
+      {showToc && toc.items.length > 0 && (
+        <TocSidebar items={toc.items} title={tocTitle} />
       )}
     </Container>
   );

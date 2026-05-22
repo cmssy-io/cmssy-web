@@ -26,6 +26,7 @@ export default defineBlock({
     },
   },
 
+  useClient: true,
   schema: {
     logo: field({
       type: "media",

@@ -6,6 +6,7 @@ export default defineBlock({
   category: "documentation",
   tags: ["docs", "code", "syntax", "highlighting", "copy"],
 
+  useClient: true,
   schema: {
     code: field({
       type: "multiLine",

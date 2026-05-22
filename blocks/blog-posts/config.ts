@@ -7,6 +7,7 @@ export default defineBlock({
   category: "blog",
   tags: ["blog", "posts", "articles", "grid", "listing", "collection"],
 
+  useClient: true,
   schema: {
     badge: field({
       type: "singleLine",

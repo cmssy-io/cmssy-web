@@ -6,6 +6,7 @@ export default defineBlock({
     "API endpoint documentation with method badge, parameters, and code examples",
   category: "documentation",
   tags: ["docs", "api", "reference", "endpoint", "graphql", "rest"],
+  useClient: true,
   schema: {
     title: field({
       type: "singleLine",

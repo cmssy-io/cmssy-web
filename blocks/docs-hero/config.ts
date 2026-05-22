@@ -6,6 +6,7 @@ export default defineBlock({
   category: "documentation",
   tags: ["docs", "hero", "landing", "documentation", "search"],
 
+  useClient: true,
   schema: {
     badge: field({
       type: "singleLine",

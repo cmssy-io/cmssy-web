@@ -1,6 +1,6 @@
 {
   "name": "@cmssy-marketing/blocks.docs-article",
-  "version": "1.2.10",
+  "version": "1.4.3",
   "description": "Documentation article with rich text content, table of contents, and navigation",
   "author": {
     "name": "Cmssy Team",

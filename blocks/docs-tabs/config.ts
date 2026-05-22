@@ -6,6 +6,7 @@ export default defineBlock({
   category: "documentation",
   tags: ["docs", "tabs", "code", "variants", "npm", "yarn"],
 
+  useClient: true,
   schema: {
     tabs: field({
       type: "repeater",

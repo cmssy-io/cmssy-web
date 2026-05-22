@@ -6,6 +6,7 @@ export default defineBlock({
   category: "marketing",
   tags: ["contact", "form"],
 
+  useClient: true,
   schema: {
     // Header section
     badgeText: field({
