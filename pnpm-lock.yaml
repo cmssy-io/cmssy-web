@@ -46,8 +46,8 @@ importers:
         version: 3.4.0
     devDependencies:
       '@cmssy/cli':
-        specifier: ^0.21.0
-        version: 0.21.0(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: ^0.22.0
+        version: 0.22.0(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@cmssy/types':
         specifier: ^0.14.0
         version: 0.14.0
@@ -158,8 +158,8 @@ packages:
     resolution: {integrity: sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A==}
     engines: {node: '>=6.9.0'}
 
-  '@cmssy/cli@0.21.0':
-    resolution: {integrity: sha512-GnGi0cte9PYkeMrUVgEpmbzJQ3brr0A2q68xLnnU7wDR/u24svn5tYbG9S25SmpgIwRd+iI2bIXCMduaCbbDLw==}
+  '@cmssy/cli@0.22.0':
+    resolution: {integrity: sha512-qaIrGzWuT2hHSFB9YESY29aEpCI0iPeCZw/0vtvaWKE1ue06g8MafQypU7xYA9/wIJPm4YLWf/Dv+DmZCgS8xw==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     peerDependencies:
@@ -2643,7 +2643,7 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@cmssy/cli@0.21.0(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@cmssy/cli@0.22.0(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@cmssy/types': 0.14.0
       '@tailwindcss/postcss': 4.1.18
