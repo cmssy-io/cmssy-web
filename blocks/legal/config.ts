@@ -7,6 +7,7 @@ export default defineBlock({
   category: "marketing",
   tags: ["legal", "privacy", "terms", "cookies", "policy", "accordion"],
 
+  useClient: true,
   schema: {
     badge: field({
       type: "singleLine",

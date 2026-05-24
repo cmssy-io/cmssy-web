@@ -6,6 +6,7 @@ export default defineBlock({
   category: "marketing",
   tags: ["marketing", "faq"],
 
+  useClient: true,
   schema: {
     heading: field({
       type: "singleLine",
