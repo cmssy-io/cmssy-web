@@ -85,11 +85,8 @@ function buildLanguageUrl(
   lang: string,
   defaultLanguage: string,
   enabledLanguages: string[],
+  currentPath: string,
 ): string {
-  // SSR-safe: window is unavailable during server-side rendering
-  const currentPath =
-    typeof window !== "undefined" ? window.location.pathname : "/";
-
   // Strip existing language prefix
   const match = currentPath.match(/^\/([a-z]{2})(?:\/|$)/);
   let basePath = currentPath;
@@ -102,6 +99,18 @@ function buildLanguageUrl(
 
   // Other languages get prefix
   return `/${lang}${basePath === "/" ? "" : basePath}`;
+}
+
+// Reads window.location.pathname after mount. Reading it during render
+// produced SSR="/" vs client=<pathname> -> different language hrefs ->
+// React #418 (hydration mismatch). Effect runs once post-hydration and
+// the hrefs resolve on the second client render.
+function useCurrentPathname(): string {
+  const [path, setPath] = useState("");
+  useEffect(() => {
+    setPath(window.location.pathname);
+  }, []);
+  return path;
 }
 
 // ─── Types ──────────────────────────────────────────────────────────────
@@ -133,6 +142,7 @@ function CompactSwitcher({
 }: LanguageSwitcherProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const currentPath = useCurrentPathname();
 
   // Close on outside click
   useEffect(() => {
@@ -218,6 +228,7 @@ function CompactSwitcher({
                     lang,
                     defaultLanguage,
                     enabledLanguages,
+                    currentPath,
                   )}
                   data-no-localize
                   onClick={handleSelect}
@@ -265,6 +276,7 @@ function FullSwitcher({
   theme = "light",
   className,
 }: LanguageSwitcherProps) {
+  const currentPath = useCurrentPathname();
   return (
     <div
       className={cn("flex flex-wrap items-center gap-1", className)}
@@ -277,7 +289,12 @@ function FullSwitcher({
         return (
           <a
             key={lang}
-            href={buildLanguageUrl(lang, defaultLanguage, enabledLanguages)}
+            href={buildLanguageUrl(
+              lang,
+              defaultLanguage,
+              enabledLanguages,
+              currentPath,
+            )}
             data-no-localize
             role="listitem"
             aria-current={isActive ? "true" : undefined}
