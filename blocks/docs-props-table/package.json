@@ -1,6 +1,6 @@
 {
   "name": "@cmssy-marketing/blocks.docs-props-table",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Properties/configuration table for documenting APIs and components",
   "author": {
     "name": "Cmssy Team",

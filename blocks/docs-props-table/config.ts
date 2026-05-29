@@ -24,6 +24,22 @@ export default defineBlock({
       type: "repeater",
       label: "Properties",
       group: "props",
+      defaultValue: [
+        {
+          name: "title",
+          type: "string",
+          required: true,
+          defaultValue: "",
+          description: "Main heading shown above the content.",
+        },
+        {
+          name: "variant",
+          type: '"primary" | "secondary"',
+          required: false,
+          defaultValue: "primary",
+          description: "Visual style applied to the component.",
+        },
+      ],
       schema: {
         name: field({
           type: "singleLine",
