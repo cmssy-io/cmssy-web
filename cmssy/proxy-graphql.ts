@@ -18,7 +18,9 @@ export async function proxyGraphql(request: NextRequest) {
     );
   }
 
-  const workspaceId = process.env.CMSSY_WORKSPACE_ID;
+  const workspaceId =
+    process.env.CMSSY_WORKSPACE_ID ??
+    process.env.NEXT_PUBLIC_CMSSY_WORKSPACE_ID;
 
   try {
     const upstream = await fetch(cmssy.apiUrl, {

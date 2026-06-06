@@ -1,12 +1,8 @@
 # cmssy-marketing
 
-This repo is two things in one:
-
-1. **Headless frontend** - a Next.js (App Router) site that fetches **published**
-   content from the cmssy public delivery API and renders it with the local block
-   components. This is the runnable website.
-2. **Block authoring** - the original `cmssy` CLI project that defines `blocks/*`
-   and `templates/*` and publishes them to the hosted workspace.
+A headless Next.js (App Router) site that fetches **published** content from the
+cmssy public delivery API and renders it with local block components - no
+`cmssy build`/publish step and no CLI.
 
 ## Headless frontend
 
@@ -23,9 +19,9 @@ Architecture:
 
 - `cmssy/config.ts` - SDK config from env (`CMSSY_API_URL` is the full GraphQL
   endpoint, `CMSSY_WORKSPACE_SLUG`, draft/editor settings) + `resolveLocale`.
-- `cmssy/blocks.ts` - **auto-generated** block registry (`scripts/gen-blocks.mts`
-  reads each `blocks/*/config.ts` and emits a `blocks/*/block.ts` wrapper).
-  Re-run after changing a block: `npx tsx scripts/gen-blocks.mts`.
+- `cmssy/blocks.ts` - block registry: imports each `blocks/*/block.ts`
+  (`defineBlock(...)` + `fields` from `@cmssy/react`) and exports them. Add a new
+  block by registering it here.
 - `app/[[...path]]/page.tsx` - single catch-all via `createCmssyPage`. A leading
   non-default locale segment (`/pl/...`) is stripped before querying cmssy; the
   active locale comes from the `x-cmssy-locale` header. `app/layout.tsx` renders
