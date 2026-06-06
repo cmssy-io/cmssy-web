@@ -1,8 +1,9 @@
-# cmssy-marketing
+# cmssy-web
 
-A headless Next.js (App Router) site that fetches **published** content from the
-cmssy public delivery API and renders it with local block components - no
-`cmssy build`/publish step and no CLI.
+cmssy's own website (cmssy.com) - a headless Next.js (App Router) site that
+fetches **published** content from the cmssy public delivery API and renders it
+with local block components. Dogfoods the cmssy SDK; no `cmssy build`/publish
+step and no CLI.
 
 ## Headless frontend
 
