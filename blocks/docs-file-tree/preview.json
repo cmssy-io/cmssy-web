@@ -1,6 +1,0 @@
-{
-  "title": "Project Structure",
-  "tree": "cmssy-marketing/\n├── blocks/\n│   ├── docs-hero/\n│   │   ├── config.ts\n│   │   ├── package.json\n│   │   └── src/\n│   │       ├── DocsHero.tsx\n│   │       ├── block.d.ts\n│   │       ├── index.css\n│   │       └── index.tsx\n│   └── docs-steps/\n│       ├── config.ts\n│       └── src/\n├── styles/\n│   └── main.css\n├── package.json\n└── cmssy.config.ts",
-  "highlights": "config.ts,DocsHero.tsx",
-  "showIcons": true
-}

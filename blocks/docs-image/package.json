@@ -1,9 +1,0 @@
-{
-  "name": "@cmssy-marketing/blocks.docs-image",
-  "version": "1.0.7",
-  "description": "Image with caption, zoom lightbox, and size options",
-  "author": {
-    "name": "Cmssy Team",
-    "email": "hello@cmssy.io"
-  }
-}

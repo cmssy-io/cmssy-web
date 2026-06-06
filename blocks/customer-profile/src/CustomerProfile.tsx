@@ -1,7 +1,7 @@
 "use client";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { BlockContent } from "./block";
-import type { PlatformContext } from "@cmssy/cli/config";
+import type { PlatformContext } from "@cmssy/types";
 
 const UPDATE_PROFILE_MUTATION = `
   mutation SiteMemberUpdateProfile($input: SiteMemberProfileInput!) {

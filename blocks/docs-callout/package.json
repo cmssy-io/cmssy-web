@@ -1,9 +1,0 @@
-{
-  "name": "@cmssy-marketing/blocks.docs-callout",
-  "version": "1.4.3",
-  "description": "Callout boxes for documentation (info, warning, tip, danger)",
-  "author": {
-    "name": "Cmssy Team",
-    "email": "hello@cmssy.io"
-  }
-}

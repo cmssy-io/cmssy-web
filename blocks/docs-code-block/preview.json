@@ -1,7 +1,0 @@
-{
-  "code": "import { defineBlock } from 'cmssy-cli/config';\n\nexport default defineBlock({\n  name: 'My Block',\n  description: 'A custom block',\n  category: 'marketing',\n\n  schema: {\n    title: {\n      type: 'singleLine',\n      label: 'Title',\n      required: true,\n    },\n  },\n});",
-  "language": "typescript",
-  "filename": "block.config.ts",
-  "showLineNumbers": true,
-  "highlightLines": "1,4-6"
-}

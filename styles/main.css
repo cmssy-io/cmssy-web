@@ -1,6 +1,6 @@
 @import "tailwindcss";
+@source "../app";
 @source "../blocks";
-@source "../templates";
 @source "../components";
 @plugin "@tailwindcss/typography";
 
