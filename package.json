@@ -10,8 +10,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@cmssy/next": "file:vendor/cmssy-next-0.0.0.tgz",
-    "@cmssy/react": "file:vendor/cmssy-react-0.0.0.tgz",
+    "@cmssy/next": "^0.1.0",
+    "@cmssy/react": "^0.1.0",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-slot": "^1.2.4",
     "@tailwindcss/typography": "^0.5.19",
