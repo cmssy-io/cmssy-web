@@ -1,9 +1,0 @@
-{
-  "name": "@cmssy-marketing/blocks.docs-tabs",
-  "version": "1.0.7",
-  "description": "Tabbed content for code variants and documentation sections",
-  "author": {
-    "name": "Cmssy Team",
-    "email": "hello@cmssy.io"
-  }
-}

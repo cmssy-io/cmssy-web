@@ -3,7 +3,7 @@
     "target": "ES2020",
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
@@ -15,12 +15,27 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
-    "plugins": [{ "name": "next" }],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "paths": {
-      "@/*": ["./*"],
-      "@cmssy/cli/config": ["./node_modules/@cmssy/cli/config"]
-    }
+      "@/*": ["./*"]
+    },
+    "allowJs": true,
+    "incremental": true
   },
-  "include": ["blocks/**/*", "templates/**/*", "components/**/*", "lib/**/*"],
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "app/**/*",
+    "cmssy/**/*",
+    "proxy.ts",
+    "blocks/**/*",
+    "components/**/*",
+    "lib/**/*",
+    ".next/dev/types/**/*.ts"
+  ],
   "exclude": ["node_modules", "dist", "public"]
 }

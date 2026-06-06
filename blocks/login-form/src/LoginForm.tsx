@@ -1,6 +1,6 @@
 import { useState, FormEvent, useCallback } from "react";
 import { BlockContent } from "./block";
-import type { PlatformContext } from "@cmssy/cli/config";
+import type { PlatformContext } from "@cmssy/types";
 
 const SITE_CUSTOMER_LOGIN_MUTATION = `
   mutation SiteCustomerLogin($workspaceId: ID!, $input: SiteMemberLoginInput!) {

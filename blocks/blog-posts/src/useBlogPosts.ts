@@ -23,6 +23,10 @@ export function useBlogPosts(content: BlockContent, context?: PlatformContext) {
   const language = context?.locale?.current ?? "en";
   const pagesCollection = context?.pages?._default;
   const isPreview = context?.isPreview ?? false;
+  // Headless: the platform context is absent, so fall back to the public
+  // workspace id baked into the client bundle.
+  const workspaceId =
+    context?.workspace?.id ?? process.env.NEXT_PUBLIC_CMSSY_WORKSPACE_ID;
 
   const [items, setItems] = useState<PageItem[]>(pagesCollection?.items ?? []);
   const [hasMore, setHasMore] = useState(pagesCollection?.hasMore ?? false);
@@ -38,7 +42,7 @@ export function useBlogPosts(content: BlockContent, context?: PlatformContext) {
 
   const fetchPages = useCallback(
     async (opts: { offset?: number; search?: string; limit?: number }) => {
-      if (!context?.workspace?.id || !parentSlug) return null;
+      if (!workspaceId || !parentSlug) return null;
       const apiUrl =
         typeof window !== "undefined" ? window.location.origin : "";
       const res = await fetch(`${apiUrl}/api/graphql`, {
@@ -47,7 +51,7 @@ export function useBlogPosts(content: BlockContent, context?: PlatformContext) {
         body: JSON.stringify({
           query: PUBLIC_PAGES_QUERY,
           variables: {
-            workspaceId: context.workspace.id,
+            workspaceId,
             parentSlug,
             search: opts.search || undefined,
             limit: opts.limit ?? limit,
@@ -58,7 +62,7 @@ export function useBlogPosts(content: BlockContent, context?: PlatformContext) {
       const json = await res.json();
       return json?.data?.publicPagesByType ?? null;
     },
-    [context, parentSlug, limit],
+    [workspaceId, parentSlug, limit],
   );
 
   // Debounce search input (300ms)
@@ -88,6 +92,37 @@ export function useBlogPosts(content: BlockContent, context?: PlatformContext) {
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [debouncedSearch, isPreview, fetchPages, pagesCollection]);
+
+  // Headless initial load: with no SSR-preloaded collection, fetch the first
+  // page client-side (and restore it when a search is cleared).
+  useEffect(() => {
+    if (isPreview || pagesCollection || debouncedSearch) return;
+    if (!workspaceId || !parentSlug) return;
+
+    let active = true;
+    setLoading(true);
+    fetchPages({ offset: 0 })
+      .then((result) => {
+        if (active && result) {
+          setItems(result.items);
+          setHasMore(result.hasMore);
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [
+    isPreview,
+    pagesCollection,
+    debouncedSearch,
+    workspaceId,
+    parentSlug,
+    fetchPages,
+  ]);
 
   // Editor preview: fetch real posts client-side (limited to 6)
   useEffect(() => {

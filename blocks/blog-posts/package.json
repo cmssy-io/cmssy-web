@@ -1,9 +1,0 @@
-{
-  "name": "@cmssy-marketing/blocks.blog-posts",
-  "version": "1.0.24",
-  "description": "Blog post grid or list with cover image, excerpt, date, and author",
-  "author": {
-    "name": "Cmssy Team",
-    "email": "hello@cmssy.io"
-  }
-}

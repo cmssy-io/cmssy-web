@@ -1,9 +1,0 @@
-{
-  "name": "@cmssy-marketing/blocks.image",
-  "version": "1.0.2",
-  "description": "Simple image block with alt text and optional caption",
-  "author": {
-    "name": "Cmssy Team",
-    "email": "hello@cmssy.io"
-  }
-}

@@ -1,110 +1,98 @@
 # cmssy-marketing
 
-Cmssy project for building reusable UI blocks and templates.
+This repo is two things in one:
+
+1. **Headless frontend** - a Next.js (App Router) site that fetches **published**
+   content from the cmssy public delivery API and renders it with the local block
+   components. This is the runnable website.
+2. **Block authoring** - the original `cmssy` CLI project that defines `blocks/*`
+   and `templates/*` and publishes them to the hosted workspace.
+
+## Headless frontend
+
+Built on the `@cmssy/next` + `@cmssy/react` SDK (vendored in `vendor/`).
+
+```bash
+pnpm install
+pnpm dev            # next dev   -> http://localhost:3000
+pnpm build          # next build
+pnpm start          # next start
+```
+
+Architecture:
+
+- `cmssy/config.ts` - SDK config from env (`CMSSY_API_URL` is the full GraphQL
+  endpoint, `CMSSY_WORKSPACE_SLUG`, draft/editor settings) + `resolveLocale`.
+- `cmssy/blocks.ts` - **auto-generated** block registry (`scripts/gen-blocks.mts`
+  reads each `blocks/*/config.ts` and emits a `blocks/*/block.ts` wrapper).
+  Re-run after changing a block: `npx tsx scripts/gen-blocks.mts`.
+- `app/[[...path]]/page.tsx` - single catch-all via `createCmssyPage`. A leading
+  non-default locale segment (`/pl/...`) is stripped before querying cmssy; the
+  active locale comes from the `x-cmssy-locale` header. `app/layout.tsx` renders
+  header/footer via `CmssyServerLayout`.
+- `cmssy/metadata.ts` - per-page SEO (`generateMetadata` queries `publicPage` for
+  `seoTitle`/`seoDescription`/`seoKeywords`, localized).
+- `proxy.ts` - sets the locale header (`/pl/*` -> pl) and edit-mode CSP.
+- `app/api/draft` - editor draft bridge; `app/api/revalidate` - on-demand ISR
+  webhook (guarded by `CMSSY_REVALIDATE_SECRET`).
+- `app/api/graphql` + `app/api/public-graphql` - proxy the public delivery API for
+  client blocks (blog-posts listing, contact form). The proxy adds the
+  `x-workspace-id` header that workspace-scoped queries (e.g. `publicForm`) need.
+- Dynamic blocks fetch client-side via these proxies using
+  `NEXT_PUBLIC_CMSSY_WORKSPACE_ID` (the SDK passes blocks only `{ content }`, no
+  platform context).
+
+Copy `.env.example` to `.env` and fill in the values.
 
 ## Getting Started
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
-# Start development server with hot reload (defaults to http://localhost:3000)
-npm run dev
-
-# Or specify a custom port
-cmssy dev -p 3002
-
-# Create a new block
-cmssy create block my-block
+# Start the dev server (defaults to http://localhost:3000)
+pnpm dev
 
 # Build for production
-npm run build
+pnpm build
 ```
 
-## Available Commands
+## Block authoring (headless SDK)
 
-### Development
+Blocks are plain React components consumed directly via the cmssy SDK
+(`@cmssy/next` + `@cmssy/react`) - there is no build/publish step and no CLI.
 
-```bash
-# Start dev server with preview UI (uses npm script)
-npm run dev
+Each block lives under `blocks/<name>/`:
 
-# Create a new block
-cmssy create block <name>
+- `src/<Name>.tsx` + `src/index.tsx` - the React component
+- `src/block.d.ts` - the `BlockContent` content type the component consumes
+- `block.ts` - the `defineBlock(...)` wrapper (`@cmssy/react` `fields`) that
+  registers the block's editor schema
 
-# Create a new page template
-cmssy create template <name>
-
-# Build all blocks and templates (uses npm script)
-npm run build
-```
-
-### Publishing
-
-```bash
-# Configure API credentials (run once)
-cmssy configure
-
-# RECOMMENDED: sandbox build pipeline (CMS-576)
-cmssy publish-block hero -w ws_abc123            # single block
-cmssy publish-block header --dry-run             # see source archive plan
-
-# Auto-walks shared imports (../../components/*, ../../lib/*, @/* aliases),
-# runs the build in an isolated Vercel Sandbox, writes server + client
-# bundles to Vercel Blob, and revalidates the public-site cache.
-```
-
-> ⚠ The legacy `cmssy publish` command is deprecated (CMS-599) and
-> will be removed in a future release. It only ships the client
-> bundle and skips shared-import auto-walking, so blocks like
-> `header` (which imports `../../components/container`) won't build
-> through the sandbox pipeline without explicit migration. Use
-> `publish-block` for all new work.
-
-### Syncing from Marketplace
-
-```bash
-# Pull a specific block from marketplace
-cmssy sync @vendor/blocks.hero --workspace ws_abc123
-
-# Pull all installed packages
-cmssy sync --workspace ws_abc123
-```
+Register the block by adding it to `cmssy/blocks.ts`. The page route
+(`app/[[...path]]/page.tsx`) renders pages with
+`createCmssyPage(cmssy, blocks, { editor: CmssyEditor })`; the SDK loads each
+block as a component at runtime - nothing is bundled into `public/`.
 
 ## Project Structure
 
 ```
 cmssy-marketing/
-├── blocks/              # Your UI blocks
+├── app/                 # Next.js App Router (page route + proxy)
+├── blocks/              # UI blocks (plain React components)
 │   └── hero/
 │       ├── src/
 │       │   ├── index.tsx
 │       │   ├── Hero.tsx
+│       │   ├── block.d.ts   # BlockContent type
 │       │   └── index.css
-│       ├── package.json
-│       └── preview.json
-├── templates/           # Your page templates
-├── public/              # Build output
-├── cmssy.config.js      # Project configuration
-├── .env                 # API credentials (created by configure)
+│       └── block.ts         # defineBlock(...) registration
+├── cmssy/               # SDK wiring (blocks registry, editor)
+├── components/          # Shared UI
+├── vendor/              # Vendored @cmssy/* SDK tarballs
+├── .env                 # API credentials
 └── .env.example         # API credentials template
 ```
-
-## Configuration
-
-Edit `cmssy.config.js` to customize:
-
-- Framework (react)
-- Author information
-- Build settings
-
-## Framework
-
-- react
-
-## Author
-
--
 
 ## Documentation
 

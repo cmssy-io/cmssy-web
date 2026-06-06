@@ -21,6 +21,14 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ["node_modules/", "dist/", "public/", ".cmssy/"],
+    ignores: [
+      "node_modules/",
+      "dist/",
+      "public/",
+      ".cmssy/",
+      ".next/",
+      "vendor/",
+      "scripts/",
+    ],
   },
 );

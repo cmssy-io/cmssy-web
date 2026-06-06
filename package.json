@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "cmssy dev",
-    "build": "cmssy build",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@cmssy/next": "file:vendor/cmssy-next-0.0.0.tgz",
+    "@cmssy/react": "file:vendor/cmssy-react-0.0.0.tgz",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-slot": "^1.2.4",
     "@tailwindcss/typography": "^0.5.19",
@@ -23,10 +26,10 @@
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
-    "@cmssy/cli": "^0.22.1",
     "@cmssy/types": "^0.14.0",
     "@eslint/js": "^9.39.3",
     "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "^25.9.1",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "eslint": "^9.39.3",

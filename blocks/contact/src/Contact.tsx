@@ -1,11 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import type { PlatformContext } from "@cmssy/types";
 import { Container } from "../../../components/container";
 import type { BlockContent } from "./block";
 import { ContactForm } from "./ContactForm";
 import { InfoCard } from "./InfoCard";
-import type { FormDefinition } from "./query";
+import { PUBLIC_FORM_QUERY, type FormDefinition } from "./query";
 import { SuccessMessage } from "./SuccessMessage";
 import { useContactForm } from "./useContactForm";
 
@@ -29,12 +30,36 @@ export default function Contact({ content, context }: Props) {
     successHeading,
   } = content;
 
-  // Form schema is SSR-injected at context.formDefinitions[formId]
-  // by the platform pipeline (CMS-509). No CSR fetch, no loading state -
-  // schema is in the HTML by the time hydration runs.
-  const formDef = (
+  // Form schema is SSR-injected at context.formDefinitions[formId] by the
+  // platform pipeline (CMS-509). Headless has no platform context, so when it's
+  // missing we fetch the schema client-side from the public delivery API.
+  const injectedFormDef = (
     formId ? (context?.formDefinitions?.[formId] ?? null) : null
   ) as FormDefinition | null;
+  const [formDef, setFormDef] = useState<FormDefinition | null>(injectedFormDef);
+
+  useEffect(() => {
+    if (formDef || !formId) return;
+    let active = true;
+    fetch("/api/public-graphql", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: PUBLIC_FORM_QUERY,
+        variables: { formId },
+      }),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (active && json?.data?.publicForm) {
+          setFormDef(json.data.publicForm as FormDefinition);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [formId, formDef]);
 
   const { isSubmitting, isSuccess, error, handleSubmit, getLocalized } =
     useContactForm(formId, formDef);
