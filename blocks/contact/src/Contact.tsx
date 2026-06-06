@@ -36,10 +36,16 @@ export default function Contact({ content, context }: Props) {
   const injectedFormDef = (
     formId ? (context?.formDefinitions?.[formId] ?? null) : null
   ) as FormDefinition | null;
-  const [formDef, setFormDef] = useState<FormDefinition | null>(injectedFormDef);
+  const [fetched, setFetched] = useState<{
+    id: string;
+    def: FormDefinition | null;
+  } | null>(null);
+
+  const formDef =
+    injectedFormDef ?? (fetched && fetched.id === formId ? fetched.def : null);
 
   useEffect(() => {
-    if (formDef || !formId) return;
+    if (!formId || injectedFormDef || fetched?.id === formId) return;
     let active = true;
     fetch("/api/public-graphql", {
       method: "POST",
@@ -51,15 +57,18 @@ export default function Contact({ content, context }: Props) {
     })
       .then((res) => res.json())
       .then((json) => {
-        if (active && json?.data?.publicForm) {
-          setFormDef(json.data.publicForm as FormDefinition);
+        if (active) {
+          setFetched({
+            id: formId,
+            def: (json?.data?.publicForm as FormDefinition) ?? null,
+          });
         }
       })
       .catch(() => {});
     return () => {
       active = false;
     };
-  }, [formId, formDef]);
+  }, [formId, injectedFormDef, fetched]);
 
   const { isSubmitting, isSuccess, error, handleSubmit, getLocalized } =
     useContactForm(formId, formDef);
