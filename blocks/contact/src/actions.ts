@@ -6,7 +6,7 @@ import {
   type CmssyFormSubmitResponse,
 } from "@cmssy/react";
 import { cmssy } from "@/cmssy/config";
-import type { ContactState } from "./query";
+import type { ContactState } from "./types";
 
 const workspaceId =
   process.env.CMSSY_WORKSPACE_ID ?? process.env.NEXT_PUBLIC_CMSSY_WORKSPACE_ID;

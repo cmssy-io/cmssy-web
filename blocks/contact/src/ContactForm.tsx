@@ -1,8 +1,9 @@
 "use client";
 
 import { useActionState } from "react";
+import type { CmssyFormDefinition } from "@cmssy/react";
 import { submitContact } from "./actions";
-import type { ContactState, FormDefinition } from "./query";
+import type { ContactState } from "./types";
 import { SuccessMessage } from "./SuccessMessage";
 
 const inputClassName =
@@ -10,17 +11,24 @@ const inputClassName =
 
 const INITIAL_STATE: ContactState = { status: "idle", message: null };
 
-function getLocalized(
-  field: Record<string, string> | string | null | undefined,
-  fallback = "",
-): string {
+interface FieldValidation {
+  required?: boolean;
+  minLength?: number | null;
+  maxLength?: number | null;
+}
+
+function getLocalized(field: unknown, fallback = ""): string {
   if (!field) return fallback;
   if (typeof field === "string") return field;
-  return field["en"] || Object.values(field)[0] || fallback;
+  if (typeof field === "object") {
+    const o = field as Record<string, string>;
+    return o["en"] || Object.values(o)[0] || fallback;
+  }
+  return fallback;
 }
 
 interface ContactFormProps {
-  formDef: FormDefinition;
+  formDef: CmssyFormDefinition;
   formId: string;
   successHeading: string;
   submitLoadingText: string;
@@ -61,7 +69,9 @@ export function ContactForm({
       "Something went wrong. Please try again.",
     );
 
-  const sortedFields = [...formDef.fields].sort((a, b) => a.order - b.order);
+  const sortedFields = [...formDef.fields].sort(
+    (a, b) => (a.order ?? 0) - (b.order ?? 0),
+  );
 
   return (
     <form action={formAction} className="space-y-6">
@@ -81,10 +91,11 @@ export function ContactForm({
       )}
 
       {sortedFields.map((field) => {
+        const validation = (field.validation as FieldValidation | null) ?? null;
         const label = getLocalized(field.label, field.name);
         const placeholder = getLocalized(field.placeholder);
         const helpText = getLocalized(field.helpText);
-        const isRequired = field.validation?.required ?? false;
+        const isRequired = validation?.required ?? false;
         const isTextarea =
           field.fieldType === "textarea" || field.fieldType === "multiLine";
         const inputType =
@@ -123,8 +134,8 @@ export function ContactForm({
                   required={isRequired}
                   placeholder={placeholder}
                   rows={5}
-                  minLength={field.validation?.minLength ?? undefined}
-                  maxLength={field.validation?.maxLength ?? undefined}
+                  minLength={validation?.minLength ?? undefined}
+                  maxLength={validation?.maxLength ?? undefined}
                   className={`${inputClassName} min-h-20`}
                 />
               ) : (
@@ -134,8 +145,8 @@ export function ContactForm({
                   type={inputType}
                   required={isRequired}
                   placeholder={placeholder}
-                  minLength={field.validation?.minLength ?? undefined}
-                  maxLength={field.validation?.maxLength ?? undefined}
+                  minLength={validation?.minLength ?? undefined}
+                  maxLength={validation?.maxLength ?? undefined}
                   className={inputClassName}
                 />
               )}
