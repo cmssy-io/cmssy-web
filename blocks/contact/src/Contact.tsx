@@ -1,17 +1,15 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import type { CmssyBlockContext } from "@cmssy/react";
 import { Container } from "../../../components/container";
 import type { BlockContent } from "./block";
 import { ContactForm } from "./ContactForm";
 import { InfoCard } from "./InfoCard";
-import type { FormDefinition } from "./query";
 
 interface Props {
   content: BlockContent;
+  context?: CmssyBlockContext;
 }
 
-export default function Contact({ content }: Props) {
+export default function Contact({ content, context }: Props) {
   const {
     badgeText,
     heading,
@@ -26,22 +24,7 @@ export default function Contact({ content }: Props) {
     successHeading,
   } = content;
 
-  const [formDef, setFormDef] = useState<FormDefinition | null>(null);
-
-  useEffect(() => {
-    setFormDef(null);
-    if (!formId) return;
-    let active = true;
-    fetch(`/api/contact?formId=${encodeURIComponent(formId)}`)
-      .then((res) => res.json())
-      .then((json) => {
-        if (active) setFormDef((json?.form as FormDefinition) ?? null);
-      })
-      .catch(() => {});
-    return () => {
-      active = false;
-    };
-  }, [formId]);
+  const formDef = formId ? (context?.forms?.[formId] ?? null) : null;
 
   const hasQuote = showQuote && quoteText;
 
