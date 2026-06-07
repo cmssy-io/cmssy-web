@@ -62,14 +62,15 @@ export default async function Page({ params, searchParams }: PageProps) {
   const slug = "/" + (strippedPath ?? []).join("/");
 
   const editMode = await isCmssyEditMode();
-  const groups = await getPageLayoutGroups(slug, editMode);
+  const [groups, content] = await Promise.all([
+    getPageLayoutGroups(slug, editMode),
+    renderPage({
+      params: Promise.resolve({ path: strippedPath }),
+      searchParams,
+    }),
+  ]);
   const sidebar = groups.find((g) => g.position === "sidebar_left");
   const hasSidebar = !!sidebar && sidebar.blocks.length > 0;
-
-  const content = await renderPage({
-    params: Promise.resolve({ path: strippedPath }),
-    searchParams,
-  });
 
   if (!hasSidebar) return content;
 
