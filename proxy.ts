@@ -7,6 +7,7 @@ import {
 import { cmssy } from "@/cmssy/config";
 
 const LOCALE_HEADER = "x-cmssy-locale";
+const PATH_HEADER = "x-cmssy-path";
 
 function localeForPath(pathname: string): "en" | "pl" {
   return pathname === "/pl" || pathname.startsWith("/pl/") ? "pl" : "en";
@@ -20,8 +21,10 @@ export function proxy(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.delete(CMSSY_EDIT_HEADER);
   requestHeaders.delete(LOCALE_HEADER);
+  requestHeaders.delete(PATH_HEADER);
 
   if (editMode) requestHeaders.set(CMSSY_EDIT_HEADER, "1");
+  requestHeaders.set(PATH_HEADER, request.nextUrl.pathname);
   // Locale is derived from the URL (`/pl/*` -> pl) and exposed via this header
   // (read by resolveLocale + the root layout). No rewrite, so ISR cache keys
   // stay distinct per path; the catch-all route strips the locale segment

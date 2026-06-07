@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import {
   fetchLayouts,
   CmssyServerLayout,
@@ -18,11 +19,24 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-async function getLayoutGroups(editMode: boolean): Promise<CmssyLayoutGroup[]> {
+function pageSlugFromPath(pathname: string): string {
+  const segments = pathname.split("/").filter(Boolean);
+  const defaultLocale = cmssy.defaultLocale ?? "en";
+  const nonDefault: readonly string[] = enabledLocales.filter(
+    (l) => l !== defaultLocale,
+  );
+  if (segments[0] && nonDefault.includes(segments[0])) segments.shift();
+  return "/" + segments.join("/");
+}
+
+async function getLayoutGroups(
+  slug: string,
+  editMode: boolean,
+): Promise<CmssyLayoutGroup[]> {
   try {
     return await fetchLayouts(
       { apiUrl: cmssy.apiUrl, workspaceSlug: cmssy.workspaceSlug },
-      "/",
+      slug,
       { previewSecret: editMode ? cmssy.draftSecret : undefined },
     );
   } catch {
@@ -36,13 +50,17 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const editMode = await isCmssyEditMode();
-  const groups = await getLayoutGroups(editMode);
+  const pathname = (await headers()).get("x-cmssy-path") ?? "/";
+  const groups = await getLayoutGroups(pageSlugFromPath(pathname), editMode);
   const locale = (await cmssy.resolveLocale?.()) ?? cmssy.defaultLocale ?? "en";
   const editorOrigin = Array.isArray(cmssy.editorOrigin)
     ? cmssy.editorOrigin[0]
     : cmssy.editorOrigin;
 
-  const slot = (position: "header" | "footer") =>
+  const sidebarGroup = groups.find((g) => g.position === "sidebar_left");
+  const hasSidebar = !!sidebarGroup && sidebarGroup.blocks.length > 0;
+
+  const slot = (position: "header" | "footer" | "sidebar_left") =>
     editMode ? (
       <EditableLayout
         groups={groups}
@@ -67,7 +85,16 @@ export default async function RootLayout({
     <html lang={locale}>
       <body>
         {slot("header")}
-        {children}
+        {hasSidebar ? (
+          <div className="flex flex-col md:flex-row">
+            <div className="md:sticky md:top-0 md:h-screen md:w-64 md:shrink-0 md:overflow-y-auto md:border-r md:border-border">
+              {slot("sidebar_left")}
+            </div>
+            <main className="min-w-0 flex-1">{children}</main>
+          </div>
+        ) : (
+          children
+        )}
         {slot("footer")}
       </body>
     </html>
