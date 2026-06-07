@@ -8,11 +8,14 @@ export function buildLanguageUrl(
   enabledLanguages: string[],
   currentPath: string,
 ): string {
+  // Normalize an empty path (e.g. before a client switcher reads the real
+  // pathname) to "/" so we never emit href="".
+  const path = currentPath || "/";
   // Strip an existing language prefix.
-  const match = currentPath.match(/^\/([a-z]{2})(?:\/|$)/);
-  let basePath = currentPath;
+  const match = path.match(/^\/([a-z]{2})(?:\/|$)/);
+  let basePath = path;
   if (match && enabledLanguages.includes(match[1]!)) {
-    basePath = currentPath.slice(match[1]!.length + 1) || "/";
+    basePath = path.slice(match[1]!.length + 1) || "/";
   }
   // Default language = clean URL (no prefix); others get the `/<lang>` prefix.
   if (lang === defaultLanguage) return basePath;
