@@ -20,11 +20,11 @@ function buildLanguageUrl(
   return `/${lang}${basePath === "/" ? "" : basePath}`;
 }
 
-// Read pathname after mount only: reading it during render makes SSR ("/")
-// disagree with the client pathname, producing different hrefs and a
-// hydration mismatch. The hrefs resolve on the second client render.
-function useCurrentPathname(): string {
-  const [path, setPath] = useState("");
+// Seed the path from the current language so SSR and the first client render
+// agree (no hydration mismatch) and hrefs are never empty. The real, full
+// pathname is read after mount, refining the hrefs to the exact sub-route.
+function useCurrentPathname(initialPath: string): string {
+  const [path, setPath] = useState(initialPath);
   useEffect(() => {
     setPath(window.location.pathname);
   }, []);
@@ -47,7 +47,9 @@ export function LanguageSwitcherMinimal({
   currentLanguage,
   className,
 }: LanguageSwitcherMinimalProps) {
-  const currentPath = useCurrentPathname();
+  const initialPath =
+    currentLanguage === defaultLanguage ? "/" : `/${currentLanguage}`;
+  const currentPath = useCurrentPathname(initialPath);
 
   if (enabledLanguages.length <= 1) return null;
 
@@ -69,23 +71,31 @@ export function LanguageSwitcherMinimal({
                 /
               </span>
             )}
-            <a
-              href={buildLanguageUrl(
-                lang,
-                defaultLanguage,
-                enabledLanguages,
-                currentPath,
-              )}
-              data-no-localize
-              aria-current={isActive ? "true" : undefined}
-              className={cn(
-                "rounded uppercase transition-opacity",
-                "focus:outline-none focus-visible:ring-2 focus-visible:ring-current/30",
-                isActive ? "opacity-100" : "opacity-45 hover:opacity-80",
-              )}
-            >
-              {lang}
-            </a>
+            {isActive ? (
+              <span
+                data-no-localize
+                aria-current="true"
+                className="rounded uppercase opacity-100"
+              >
+                {lang}
+              </span>
+            ) : (
+              <a
+                href={buildLanguageUrl(
+                  lang,
+                  defaultLanguage,
+                  enabledLanguages,
+                  currentPath,
+                )}
+                data-no-localize
+                className={cn(
+                  "rounded uppercase opacity-45 transition-opacity hover:opacity-80",
+                  "focus:outline-none focus-visible:ring-2 focus-visible:ring-current/30",
+                )}
+              >
+                {lang}
+              </a>
+            )}
           </Fragment>
         );
       })}
