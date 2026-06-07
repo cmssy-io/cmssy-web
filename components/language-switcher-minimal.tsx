@@ -2,23 +2,7 @@
 
 import { Fragment, useEffect, useState } from "react";
 import { cn } from "../lib/utils";
-
-// Build the href for a language, mirroring the proxy's `/pl/*` routing:
-// the default language uses clean URLs, others get a `/<lang>` prefix.
-function buildLanguageUrl(
-  lang: string,
-  defaultLanguage: string,
-  enabledLanguages: string[],
-  currentPath: string,
-): string {
-  const match = currentPath.match(/^\/([a-z]{2})(?:\/|$)/);
-  let basePath = currentPath;
-  if (match && enabledLanguages.includes(match[1]!)) {
-    basePath = currentPath.slice(match[1]!.length + 1) || "/";
-  }
-  if (lang === defaultLanguage) return basePath;
-  return `/${lang}${basePath === "/" ? "" : basePath}`;
-}
+import { buildLanguageUrl } from "../lib/i18n";
 
 // Seed the path from the current language so SSR and the first client render
 // agree (no hydration mismatch) and hrefs are never empty. The real, full

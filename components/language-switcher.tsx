@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Check } from "lucide-react";
 import { cn } from "../lib/utils";
+import { buildLanguageUrl } from "../lib/i18n";
 
 // ─── Flag & Language Helpers ────────────────────────────────────────────
 
@@ -79,26 +80,6 @@ function getLanguageName(code: string): string {
   } catch {
     return code;
   }
-}
-
-function buildLanguageUrl(
-  lang: string,
-  defaultLanguage: string,
-  enabledLanguages: string[],
-  currentPath: string,
-): string {
-  // Strip existing language prefix
-  const match = currentPath.match(/^\/([a-z]{2})(?:\/|$)/);
-  let basePath = currentPath;
-  if (match && enabledLanguages.includes(match[1]!)) {
-    basePath = currentPath.slice(match[1]!.length + 1) || "/";
-  }
-
-  // Default language = clean URL (no prefix)
-  if (lang === defaultLanguage) return basePath;
-
-  // Other languages get prefix
-  return `/${lang}${basePath === "/" ? "" : basePath}`;
 }
 
 // Reads window.location.pathname after mount. Reading it during render
