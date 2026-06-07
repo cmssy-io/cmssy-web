@@ -5,6 +5,7 @@ import {
   type CmssyLayoutGroup,
 } from "@cmssy/react";
 import { isCmssyEditMode } from "@cmssy/next";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import "../styles/main.css";
 import { blocks } from "@/cmssy/blocks";
 import { cmssy, enabledLocales } from "@/cmssy/config";
@@ -38,6 +39,8 @@ export default async function RootLayout({
   const editMode = await isCmssyEditMode();
   const groups = await getLayoutGroups(editMode);
   const locale = (await cmssy.resolveLocale?.()) ?? cmssy.defaultLocale ?? "en";
+  const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim();
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim();
   const editorOrigin = Array.isArray(cmssy.editorOrigin)
     ? cmssy.editorOrigin[0]
     : cmssy.editorOrigin;
@@ -66,6 +69,8 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body>
+        {!editMode && gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
+        {!editMode && gaId ? <GoogleAnalytics gaId={gaId} /> : null}
         {slot("header")}
         {children}
         {slot("footer")}
