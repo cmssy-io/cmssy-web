@@ -1,21 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { PlatformContext } from "@cmssy/types";
 import { Container } from "../../../components/container";
 import type { BlockContent } from "./block";
 import { ContactForm } from "./ContactForm";
 import { InfoCard } from "./InfoCard";
-import { PUBLIC_FORM_QUERY, type FormDefinition } from "./query";
+import type { FormDefinition } from "./query";
 import { SuccessMessage } from "./SuccessMessage";
 import { useContactForm } from "./useContactForm";
 
 interface Props {
   content: BlockContent;
-  context?: PlatformContext;
 }
 
-export default function Contact({ content, context }: Props) {
+export default function Contact({ content }: Props) {
   const {
     badgeText,
     heading,
@@ -30,56 +28,27 @@ export default function Contact({ content, context }: Props) {
     successHeading,
   } = content;
 
-  // Form schema is SSR-injected at context.formDefinitions[formId] by the
-  // platform pipeline (CMS-509). Headless has no platform context, so when it's
-  // missing we fetch the schema client-side from the public delivery API.
-  const injectedFormDef = (
-    formId ? (context?.formDefinitions?.[formId] ?? null) : null
-  ) as FormDefinition | null;
-  const [fetched, setFetched] = useState<{
-    id: string;
-    def: FormDefinition | null;
-  } | null>(null);
-
-  const formDef =
-    injectedFormDef ?? (fetched && fetched.id === formId ? fetched.def : null);
+  const [formDef, setFormDef] = useState<FormDefinition | null>(null);
 
   useEffect(() => {
-    if (!formId || injectedFormDef || fetched?.id === formId) return;
+    if (!formId) return;
     let active = true;
-    fetch("/api/public-graphql", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        query: PUBLIC_FORM_QUERY,
-        variables: { formId },
-      }),
-    })
+    fetch(`/api/contact?formId=${encodeURIComponent(formId)}`)
       .then((res) => res.json())
       .then((json) => {
-        if (active) {
-          setFetched({
-            id: formId,
-            def: (json?.data?.publicForm as FormDefinition) ?? null,
-          });
-        }
+        if (active) setFormDef((json?.form as FormDefinition) ?? null);
       })
       .catch(() => {});
     return () => {
       active = false;
     };
-  }, [formId, injectedFormDef, fetched]);
+  }, [formId]);
 
   const { isSubmitting, isSuccess, error, handleSubmit, getLocalized } =
     useContactForm(formId, formDef);
 
   const hasQuote = showQuote && quoteText;
 
-  // Messages from form builder, with hard-coded fallbacks.
-  // submitButtonText / successMessage were removed from the block
-  // schema when contact migrated to form builder (CMS-306) - form
-  // settings live in formDef.settings.* now, so there is no
-  // content.* field to fall back to.
   const submitButtonText = getLocalized(
     formDef?.settings?.submitButtonLabel,
     "Send Message",

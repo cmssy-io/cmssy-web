@@ -1,30 +1,3 @@
-export const SUBMIT_FORM_MUTATION = `
-  mutation SubmitForm($formId: ID!, $input: SubmitFormInput!) {
-    submitForm(formId: $formId, input: $input) {
-      success
-      message
-    }
-  }
-`;
-
-// Headless: when the platform doesn't SSR-inject the form schema, fetch it
-// from the public delivery API.
-export const PUBLIC_FORM_QUERY = `
-  query PublicForm($formId: ID!) {
-    publicForm(formId: $formId) {
-      id
-      name
-      fields {
-        id name fieldType label placeholder helpText width order
-        validation { required minLength maxLength }
-      }
-      settings {
-        submitButtonLabel successMessage errorMessage
-      }
-    }
-  }
-`;
-
 export interface FormField {
   id: string;
   name: string;
@@ -52,12 +25,7 @@ export interface FormDefinition {
   };
 }
 
-export interface GraphQLResponse {
-  data?: {
-    submitForm?: {
-      success: boolean;
-      message: string;
-    };
-  };
-  errors?: Array<{ message: string }>;
+export interface ContactSubmitResponse {
+  success: boolean;
+  message: string | null;
 }
