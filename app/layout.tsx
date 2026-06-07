@@ -9,10 +9,14 @@ import "../styles/main.css";
 import { blocks } from "@/cmssy/blocks";
 import { cmssy, enabledLocales } from "@/cmssy/config";
 import { EditableLayout } from "@/cmssy/editable-layout";
+import { buildSiteMetadata } from "@/cmssy/metadata";
 
-export const metadata: Metadata = {
-  title: "Cmssy",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Cmssy",
+    ...(await buildSiteMetadata()),
+  };
+}
 
 async function getLayoutGroups(editMode: boolean): Promise<CmssyLayoutGroup[]> {
   try {

@@ -12,6 +12,15 @@ const PUBLIC_PAGE_META_QUERY = `query PublicPageMeta($workspaceSlug: String!, $s
   }
 }`;
 
+const PUBLIC_SITE_BRANDING_QUERY = `query PublicSiteBranding($workspaceSlug: String!) {
+  publicSiteConfig(workspaceSlug: $workspaceSlug) {
+    branding {
+      faviconUrl
+      ogImageUrl
+    }
+  }
+}`;
+
 type Localized = Record<string, string> | string | null | undefined;
 
 interface PageMeta {
@@ -22,10 +31,17 @@ interface PageMeta {
   displayName: Localized;
 }
 
+interface SiteBranding {
+  faviconUrl: string | null;
+  ogImageUrl: string | null;
+}
+
 function pick(value: Localized, locale: string, fallbackLocale = "en"): string {
   if (!value) return "";
   if (typeof value === "string") return value;
-  return value[locale] || value[fallbackLocale] || Object.values(value)[0] || "";
+  return (
+    value[locale] || value[fallbackLocale] || Object.values(value)[0] || ""
+  );
 }
 
 /**
@@ -36,8 +52,7 @@ function pick(value: Localized, locale: string, fallbackLocale = "en"): string {
 export async function buildPageMetadata(
   path: string[] | undefined,
 ): Promise<Metadata> {
-  const locale =
-    (await cmssy.resolveLocale?.()) ?? cmssy.defaultLocale ?? "en";
+  const locale = (await cmssy.resolveLocale?.()) ?? cmssy.defaultLocale ?? "en";
   const slug = normalizeSlug(path);
 
   let page: PageMeta | null = null;
@@ -69,5 +84,38 @@ export async function buildPageMetadata(
       ...(description ? { description } : {}),
       locale,
     },
+  };
+}
+
+/**
+ * Site-wide branding metadata (favicon, default OG image) from workspace
+ * branding settings. Applied in the root layout so it covers every page;
+ * per-page metadata still overrides title/description. Degrades to {} if the
+ * config can't be fetched, so a backend without the branding field is safe.
+ */
+export async function buildSiteMetadata(): Promise<Metadata> {
+  let branding: SiteBranding | null = null;
+  try {
+    const data = await graphqlRequest<{
+      publicSiteConfig: { branding: SiteBranding | null } | null;
+    }>(
+      { apiUrl: cmssy.apiUrl, workspaceSlug: cmssy.workspaceSlug },
+      PUBLIC_SITE_BRANDING_QUERY,
+      { workspaceSlug: cmssy.workspaceSlug },
+      undefined,
+      "site branding",
+    );
+    branding = data.publicSiteConfig?.branding ?? null;
+  } catch {
+    branding = null;
+  }
+
+  if (!branding) return {};
+
+  return {
+    ...(branding.faviconUrl ? { icons: { icon: branding.faviconUrl } } : {}),
+    ...(branding.ogImageUrl
+      ? { openGraph: { images: [{ url: branding.ogImageUrl }] } }
+      : {}),
   };
 }
