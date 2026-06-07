@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Container } from "../../../components/container";
 import type { BlockContent } from "./block";
 import { ContactForm } from "./ContactForm";
+import { ContactFormSkeleton } from "./ContactFormSkeleton";
 import { InfoCard } from "./InfoCard";
 import type { FormDefinition } from "./query";
 
@@ -27,17 +28,26 @@ export default function Contact({ content }: Props) {
   } = content;
 
   const [formDef, setFormDef] = useState<FormDefinition | null>(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setFormDef(null);
-    if (!formId) return;
+    setLoaded(false);
+    if (!formId) {
+      setLoaded(true);
+      return;
+    }
     let active = true;
     fetch(`/api/contact?formId=${encodeURIComponent(formId)}`)
       .then((res) => res.json())
       .then((json) => {
-        if (active) setFormDef((json?.form as FormDefinition) ?? null);
+        if (!active) return;
+        setFormDef((json?.form as FormDefinition) ?? null);
+        setLoaded(true);
       })
-      .catch(() => {});
+      .catch(() => {
+        if (active) setLoaded(true);
+      });
     return () => {
       active = false;
     };
@@ -117,7 +127,9 @@ export default function Contact({ content }: Props) {
           {/* Form */}
           <div className="lg:col-span-3">
             <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-xl shadow-violet-500/5 p-6 sm:p-8">
-              {formDef?.fields?.length && formId ? (
+              {!loaded ? (
+                <ContactFormSkeleton />
+              ) : formDef?.fields?.length && formId ? (
                 <ContactForm
                   formDef={formDef}
                   formId={formId}
