@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Check } from "lucide-react";
 import { cn } from "../lib/utils";
+import { buildLanguageUrl } from "../lib/i18n";
 
 // ─── Flag & Language Helpers ────────────────────────────────────────────
 
@@ -81,38 +83,6 @@ function getLanguageName(code: string): string {
   }
 }
 
-function buildLanguageUrl(
-  lang: string,
-  defaultLanguage: string,
-  enabledLanguages: string[],
-  currentPath: string,
-): string {
-  // Strip existing language prefix
-  const match = currentPath.match(/^\/([a-z]{2})(?:\/|$)/);
-  let basePath = currentPath;
-  if (match && enabledLanguages.includes(match[1]!)) {
-    basePath = currentPath.slice(match[1]!.length + 1) || "/";
-  }
-
-  // Default language = clean URL (no prefix)
-  if (lang === defaultLanguage) return basePath;
-
-  // Other languages get prefix
-  return `/${lang}${basePath === "/" ? "" : basePath}`;
-}
-
-// Reads window.location.pathname after mount. Reading it during render
-// produced SSR="/" vs client=<pathname> -> different language hrefs ->
-// React #418 (hydration mismatch). Effect runs once post-hydration and
-// the hrefs resolve on the second client render.
-function useCurrentPathname(): string {
-  const [path, setPath] = useState("");
-  useEffect(() => {
-    setPath(window.location.pathname);
-  }, []);
-  return path;
-}
-
 // ─── Types ──────────────────────────────────────────────────────────────
 
 interface LanguageSwitcherProps {
@@ -142,7 +112,7 @@ function CompactSwitcher({
 }: LanguageSwitcherProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const currentPath = useCurrentPathname();
+  const currentPath = usePathname();
 
   // Close on outside click
   useEffect(() => {
@@ -276,7 +246,7 @@ function FullSwitcher({
   theme = "light",
   className,
 }: LanguageSwitcherProps) {
-  const currentPath = useCurrentPathname();
+  const currentPath = usePathname();
   return (
     <div
       className={cn("flex flex-wrap items-center gap-1", className)}

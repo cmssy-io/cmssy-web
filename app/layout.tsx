@@ -7,7 +7,7 @@ import {
 import { isCmssyEditMode } from "@cmssy/next";
 import "../styles/main.css";
 import { blocks } from "@/cmssy/blocks";
-import { cmssy } from "@/cmssy/config";
+import { cmssy, enabledLocales } from "@/cmssy/config";
 import { EditableLayout } from "@/cmssy/editable-layout";
 
 export const metadata: Metadata = {
@@ -45,6 +45,7 @@ export default async function RootLayout({
         position={position}
         locale={locale}
         defaultLocale={cmssy.defaultLocale ?? "en"}
+        enabledLocales={[...enabledLocales]}
         edit={{ editorOrigin }}
       />
     ) : (
@@ -54,6 +55,7 @@ export default async function RootLayout({
         position={position}
         locale={locale}
         defaultLocale={cmssy.defaultLocale ?? "en"}
+        enabledLocales={[...enabledLocales]}
       />
     );
 

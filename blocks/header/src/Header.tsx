@@ -45,7 +45,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Container } from "../../../components/container";
-import { LanguageSwitcher } from "../../../components/language-switcher";
+import { LanguageSwitcherMinimal } from "../../../components/language-switcher-minimal";
 import { BlockContent } from "./block";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -193,7 +193,7 @@ export default function Header({ content, context }: HeaderProps) {
     announcementTextColor = "#ffffff",
     announcementDismissible = true,
     logoutButtonText = "Log out",
-    showLanguageSwitcher = false,
+    showLanguageSwitcher = true,
   } = content;
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -213,6 +213,8 @@ export default function Header({ content, context }: HeaderProps) {
         currentLanguage: context.locale.current,
       }
     : undefined;
+  // Shown by default on multilingual sites; set `showLanguageSwitcher: false`
+  // on the block to hide it.
   const hasLanguageSwitcher =
     showLanguageSwitcher && i18n && i18n.enabledLanguages.length > 1;
   const homeHref =
@@ -486,11 +488,10 @@ export default function Header({ content, context }: HeaderProps) {
             {/* Desktop CTAs */}
             <div className="hidden lg:flex items-center gap-4">
               {hasLanguageSwitcher && (
-                <LanguageSwitcher
+                <LanguageSwitcherMinimal
                   enabledLanguages={i18n.enabledLanguages}
                   defaultLanguage={i18n.defaultLanguage}
                   currentLanguage={i18n.currentLanguage}
-                  variant="compact"
                 />
               )}
               {isAuthenticated && customer ? (
@@ -699,11 +700,11 @@ export default function Header({ content, context }: HeaderProps) {
             {/* Mobile Language Switcher */}
             {hasLanguageSwitcher && (
               <div className="border-t px-4 py-3">
-                <LanguageSwitcher
+                <LanguageSwitcherMinimal
                   enabledLanguages={i18n.enabledLanguages}
                   defaultLanguage={i18n.defaultLanguage}
                   currentLanguage={i18n.currentLanguage}
-                  variant="full"
+                  className="text-sm"
                 />
               </div>
             )}

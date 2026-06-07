@@ -12,3 +12,4 @@ package-lock.json
 
 # TS build cache
 *.tsbuildinfo
+.vercel
