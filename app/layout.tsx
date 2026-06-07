@@ -39,8 +39,8 @@ export default async function RootLayout({
   const editMode = await isCmssyEditMode();
   const groups = await getLayoutGroups(editMode);
   const locale = (await cmssy.resolveLocale?.()) ?? cmssy.defaultLocale ?? "en";
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
-  const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+  const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim();
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim();
   const editorOrigin = Array.isArray(cmssy.editorOrigin)
     ? cmssy.editorOrigin[0]
     : cmssy.editorOrigin;
@@ -69,11 +69,11 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body>
+        {!editMode && gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
+        {!editMode && gaId ? <GoogleAnalytics gaId={gaId} /> : null}
         {slot("header")}
         {children}
         {slot("footer")}
-        {!editMode && gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
-        {!editMode && gaId ? <GoogleAnalytics gaId={gaId} /> : null}
       </body>
     </html>
   );
