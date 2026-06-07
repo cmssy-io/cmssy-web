@@ -1,19 +1,9 @@
 "use client";
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
+import { usePathname } from "next/navigation";
 import { cn } from "../lib/utils";
 import { buildLanguageUrl } from "../lib/i18n";
-
-// Seed the path from the current language so SSR and the first client render
-// agree (no hydration mismatch) and hrefs are never empty. The real, full
-// pathname is read after mount, refining the hrefs to the exact sub-route.
-function useCurrentPathname(initialPath: string): string {
-  const [path, setPath] = useState(initialPath);
-  useEffect(() => {
-    setPath(window.location.pathname);
-  }, []);
-  return path;
-}
 
 interface LanguageSwitcherMinimalProps {
   enabledLanguages: string[];
@@ -31,9 +21,9 @@ export function LanguageSwitcherMinimal({
   currentLanguage,
   className,
 }: LanguageSwitcherMinimalProps) {
-  const initialPath =
-    currentLanguage === defaultLanguage ? "/" : `/${currentLanguage}`;
-  const currentPath = useCurrentPathname(initialPath);
+  // usePathname() tracks client-side navigations and is consistent across
+  // SSR/hydration, so links always reflect the current route.
+  const currentPath = usePathname();
 
   if (enabledLanguages.length <= 1) return null;
 

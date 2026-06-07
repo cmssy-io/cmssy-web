@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Check } from "lucide-react";
 import { cn } from "../lib/utils";
@@ -82,18 +83,6 @@ function getLanguageName(code: string): string {
   }
 }
 
-// Reads window.location.pathname after mount. Reading it during render
-// produced SSR="/" vs client=<pathname> -> different language hrefs ->
-// React #418 (hydration mismatch). Effect runs once post-hydration and
-// the hrefs resolve on the second client render.
-function useCurrentPathname(): string {
-  const [path, setPath] = useState("");
-  useEffect(() => {
-    setPath(window.location.pathname);
-  }, []);
-  return path;
-}
-
 // ─── Types ──────────────────────────────────────────────────────────────
 
 interface LanguageSwitcherProps {
@@ -123,7 +112,7 @@ function CompactSwitcher({
 }: LanguageSwitcherProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const currentPath = useCurrentPathname();
+  const currentPath = usePathname();
 
   // Close on outside click
   useEffect(() => {
@@ -257,7 +246,7 @@ function FullSwitcher({
   theme = "light",
   className,
 }: LanguageSwitcherProps) {
-  const currentPath = useCurrentPathname();
+  const currentPath = usePathname();
   return (
     <div
       className={cn("flex flex-wrap items-center gap-1", className)}
