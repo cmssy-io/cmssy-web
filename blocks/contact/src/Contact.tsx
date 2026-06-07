@@ -29,6 +29,7 @@ export default function Contact({ content }: Props) {
   const [formDef, setFormDef] = useState<FormDefinition | null>(null);
 
   useEffect(() => {
+    setFormDef(null);
     if (!formId) return;
     let active = true;
     fetch(`/api/contact?formId=${encodeURIComponent(formId)}`)
