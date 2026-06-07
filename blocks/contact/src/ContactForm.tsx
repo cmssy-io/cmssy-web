@@ -1,35 +1,70 @@
-import type { FormField } from "./query";
+"use client";
+
+import { useActionState } from "react";
+import { submitContact } from "./actions";
+import type { ContactState, FormDefinition } from "./query";
+import { SuccessMessage } from "./SuccessMessage";
 
 const inputClassName =
   "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
 
+const INITIAL_STATE: ContactState = { status: "idle", message: null };
+
+function getLocalized(
+  field: Record<string, string> | string | null | undefined,
+  fallback = "",
+): string {
+  if (!field) return fallback;
+  if (typeof field === "string") return field;
+  return field["en"] || Object.values(field)[0] || fallback;
+}
+
 interface ContactFormProps {
-  fields: FormField[];
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  error: string | null;
-  isSubmitting: boolean;
-  submitButtonText: string;
+  formDef: FormDefinition;
+  formId: string;
+  successHeading: string;
   submitLoadingText: string;
-  getLocalized: (
-    field: Record<string, string> | string | null | undefined,
-    fallback?: string,
-  ) => string;
 }
 
 export function ContactForm({
-  fields,
-  onSubmit,
-  error,
-  isSubmitting,
-  submitButtonText,
+  formDef,
+  formId,
+  successHeading,
   submitLoadingText,
-  getLocalized,
 }: ContactFormProps) {
-  const sortedFields = [...fields].sort((a, b) => a.order - b.order);
+  const [state, formAction, isPending] = useActionState(
+    submitContact.bind(null, formId),
+    INITIAL_STATE,
+  );
+
+  const submitButtonText = getLocalized(
+    formDef.settings?.submitButtonLabel,
+    "Send Message",
+  );
+
+  if (state.status === "success") {
+    return (
+      <SuccessMessage
+        heading={successHeading}
+        message={getLocalized(
+          formDef.settings?.successMessage,
+          "Thank you! Your message has been sent.",
+        )}
+      />
+    );
+  }
+
+  const errorMessage =
+    state.message ||
+    getLocalized(
+      formDef.settings?.errorMessage,
+      "Something went wrong. Please try again.",
+    );
+
+  const sortedFields = [...formDef.fields].sort((a, b) => a.order - b.order);
 
   return (
-    <form onSubmit={onSubmit} className="space-y-6">
-      {/* Honeypot */}
+    <form action={formAction} className="space-y-6">
       <input
         type="text"
         name="website"
@@ -39,9 +74,9 @@ export function ContactForm({
         aria-hidden="true"
       />
 
-      {error && (
+      {state.status === "error" && (
         <div className="rounded-md bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive">
-          {error}
+          {errorMessage}
         </div>
       )}
 
@@ -115,10 +150,10 @@ export function ContactForm({
 
       <button
         type="submit"
-        disabled={isSubmitting}
+        disabled={isPending}
         className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 w-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-50 transition-colors"
       >
-        {isSubmitting ? submitLoadingText : submitButtonText}
+        {isPending ? submitLoadingText : submitButtonText}
       </button>
     </form>
   );

@@ -6,8 +6,6 @@ import type { BlockContent } from "./block";
 import { ContactForm } from "./ContactForm";
 import { InfoCard } from "./InfoCard";
 import type { FormDefinition } from "./query";
-import { SuccessMessage } from "./SuccessMessage";
-import { useContactForm } from "./useContactForm";
 
 interface Props {
   content: BlockContent;
@@ -44,19 +42,7 @@ export default function Contact({ content }: Props) {
     };
   }, [formId]);
 
-  const { isSubmitting, isSuccess, error, handleSubmit, getLocalized } =
-    useContactForm(formId, formDef);
-
   const hasQuote = showQuote && quoteText;
-
-  const submitButtonText = getLocalized(
-    formDef?.settings?.submitButtonLabel,
-    "Send Message",
-  );
-  const successMessage = getLocalized(
-    formDef?.settings?.successMessage,
-    "Thank you! Your message has been sent.",
-  );
 
   return (
     <section className="relative min-h-screen py-24 lg:py-32">
@@ -130,20 +116,12 @@ export default function Contact({ content }: Props) {
           {/* Form */}
           <div className="lg:col-span-3">
             <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-xl shadow-violet-500/5 p-6 sm:p-8">
-              {isSuccess ? (
-                <SuccessMessage
-                  heading={successHeading ?? "Message Sent!"}
-                  message={successMessage}
-                />
-              ) : formDef?.fields?.length ? (
+              {formDef?.fields?.length && formId ? (
                 <ContactForm
-                  fields={formDef.fields}
-                  onSubmit={handleSubmit}
-                  error={error}
-                  isSubmitting={isSubmitting}
-                  submitButtonText={submitButtonText}
+                  formDef={formDef}
+                  formId={formId}
+                  successHeading={successHeading ?? "Message Sent!"}
                   submitLoadingText={submitLoadingText ?? "Sending..."}
-                  getLocalized={getLocalized}
                 />
               ) : (
                 <p className="text-center text-muted-foreground py-8">
