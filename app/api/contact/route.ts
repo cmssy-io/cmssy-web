@@ -6,7 +6,8 @@ import {
 } from "@cmssy/react";
 import { cmssy } from "@/cmssy/config";
 
-const workspaceId = process.env.CMSSY_WORKSPACE_ID;
+const workspaceId =
+  process.env.CMSSY_WORKSPACE_ID ?? process.env.NEXT_PUBLIC_CMSSY_WORKSPACE_ID;
 const scopeHeaders = workspaceId
   ? { "x-workspace-id": workspaceId }
   : undefined;

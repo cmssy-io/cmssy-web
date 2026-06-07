@@ -8,12 +8,18 @@ import {
 import { cmssy } from "@/cmssy/config";
 import type { ContactState } from "./query";
 
+const workspaceId =
+  process.env.CMSSY_WORKSPACE_ID ?? process.env.NEXT_PUBLIC_CMSSY_WORKSPACE_ID;
+
 export async function submitContact(
   formId: string,
   _prevState: ContactState,
   formData: FormData,
 ): Promise<ContactState> {
-  const website = (formData.get("website") as string) || undefined;
+  if (formData.get("website")) {
+    return { status: "success", message: null };
+  }
+
   const data: Record<string, string> = {};
   for (const [key, value] of formData.entries()) {
     if (key === "website") continue;
@@ -27,11 +33,7 @@ export async function submitContact(
     });
     const res = await client.queryScoped<{
       submitForm: CmssyFormSubmitResponse;
-    }>(
-      SUBMIT_FORM_MUTATION,
-      { formId, input: { data, website } },
-      { workspaceId: process.env.CMSSY_WORKSPACE_ID },
-    );
+    }>(SUBMIT_FORM_MUTATION, { formId, input: { data } }, { workspaceId });
     const result = res.submitForm;
     return {
       status: result.success ? "success" : "error",
