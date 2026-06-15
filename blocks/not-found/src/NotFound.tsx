@@ -1,4 +1,5 @@
 import { ArrowRight, Home } from "lucide-react";
+import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
 import { BlockContent } from "./block";
 
@@ -103,22 +104,22 @@ export default function NotFound({ content }: { content: BlockContent }) {
         {/* CTA buttons */}
         <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
           {primaryButtonText && (
-            <a
+            <CmssyLink
               href={primaryButtonUrl || "/"}
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-violet-600 to-purple-600 px-6 py-3 text-base font-medium text-white shadow-lg shadow-violet-500/20 transition-all hover:from-violet-700 hover:to-purple-700 hover:shadow-violet-500/30 sm:px-8 sm:py-3.5 sm:text-lg"
             >
               <Home className="h-4 w-4 sm:h-5 sm:w-5" />
               {primaryButtonText}
-            </a>
+            </CmssyLink>
           )}
           {secondaryButtonText && (
-            <a
+            <CmssyLink
               href={secondaryButtonUrl || "#"}
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-input bg-background px-6 py-3 text-base font-medium transition-colors hover:bg-accent hover:text-accent-foreground sm:px-8 sm:py-3.5 sm:text-lg"
             >
               {secondaryButtonText}
               <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
-            </a>
+            </CmssyLink>
           )}
         </div>
       </Container>

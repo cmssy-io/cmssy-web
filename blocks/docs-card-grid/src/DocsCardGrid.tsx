@@ -1,5 +1,6 @@
 import * as Icons from "lucide-react";
 import { ArrowRight, LucideIcon } from "lucide-react";
+import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
 import { BlockContent } from "./block";
 
@@ -37,7 +38,7 @@ export default function DocsCardGrid({ content }: { content: BlockContent }) {
           const Icon = getIcon(card.icon);
 
           return (
-            <a
+            <CmssyLink
               key={index}
               href={card.url}
               className="group relative flex flex-col p-6 rounded-xl border bg-card hover:border-violet-500 hover:shadow-lg hover:shadow-violet-500/5 transition-all duration-200"
@@ -62,7 +63,7 @@ export default function DocsCardGrid({ content }: { content: BlockContent }) {
                 <span>Learn more</span>
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
-            </a>
+            </CmssyLink>
           );
         })}
       </div>

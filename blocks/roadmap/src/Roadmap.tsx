@@ -6,6 +6,7 @@ import {
   Lightbulb,
   MessageSquare,
 } from "lucide-react";
+import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
 import { BlockContent } from "./block";
 
@@ -127,13 +128,13 @@ export default function Roadmap({ content }: { content: BlockContent }) {
               <MessageSquare className="size-10 mx-auto mb-4 opacity-90" />
               <h3 className="text-2xl font-bold mb-3">{ctaTitle}</h3>
               <p className="text-violet-100 mb-6">{ctaDescription}</p>
-              <a
+              <CmssyLink
                 href={ctaButtonUrl}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-white text-violet-600 font-medium rounded-lg hover:bg-violet-50 transition-colors"
               >
                 {ctaButtonText}
                 <ArrowRight className="size-4" />
-              </a>
+              </CmssyLink>
             </div>
           </div>
         )}

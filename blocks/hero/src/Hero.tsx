@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
 import { BlockContent } from "./block";
 
@@ -91,7 +92,7 @@ export default function Hero({ content }: { content: BlockContent }) {
         {/* CTA buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 sm:mb-16">
           {primaryButtonText && (
-            <a href={primaryButtonUrl || "#"}>
+            <CmssyLink href={primaryButtonUrl || "#"}>
               <button className="inline-flex items-center justify-center gap-2 rounded-md bg-linear-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 px-6 sm:px-8 h-12 sm:h-14 text-base sm:text-lg font-medium text-white shadow-lg shadow-violet-500/25 transition-colors">
                 {primaryButtonText}
                 <svg
@@ -108,10 +109,10 @@ export default function Hero({ content }: { content: BlockContent }) {
                   />
                 </svg>
               </button>
-            </a>
+            </CmssyLink>
           )}
           {secondaryButtonText && (
-            <a
+            <CmssyLink
               href={secondaryButtonUrl || "#"}
               className="inline-flex items-center justify-center gap-2 rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground px-6 sm:px-8 h-12 sm:h-14 text-base sm:text-lg font-medium transition-colors"
             >
@@ -135,7 +136,7 @@ export default function Hero({ content }: { content: BlockContent }) {
                 />
               </svg>
               {secondaryButtonText}
-            </a>
+            </CmssyLink>
           )}
         </div>
 

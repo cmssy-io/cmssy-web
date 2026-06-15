@@ -1,6 +1,7 @@
 import * as Icons from "lucide-react";
 import { ArrowRight, LucideIcon, Search } from "lucide-react";
 import { useState } from "react";
+import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
 import { BlockContent } from "./block";
 
@@ -106,7 +107,7 @@ export default function DocsHero({ content }: { content: BlockContent }) {
               const Icon = getIcon(link.icon);
 
               return (
-                <a
+                <CmssyLink
                   key={index}
                   href={link.url}
                   className="group relative flex flex-col p-5 rounded-xl border bg-card hover:border-violet-500/50 hover:shadow-lg hover:shadow-violet-500/5 transition-all duration-200"
@@ -128,7 +129,7 @@ export default function DocsHero({ content }: { content: BlockContent }) {
                     <span>Get started</span>
                     <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
                   </div>
-                </a>
+                </CmssyLink>
               );
             })}
           </div>

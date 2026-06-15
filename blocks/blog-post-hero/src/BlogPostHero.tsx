@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
 import { BlockContent } from "./block";
 
@@ -56,12 +57,12 @@ export default function BlogPostHero({ content }: { content: BlockContent }) {
         <Container className="relative z-10 pb-10 sm:pb-14 pt-32">
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm text-white/60 mb-5">
-            <a
+            <CmssyLink
               href={breadcrumbUrl}
               className="hover:text-white transition-colors no-underline text-white/60"
             >
               {breadcrumbLabel}
-            </a>
+            </CmssyLink>
             <span className="text-white/30">/</span>
             <span className="text-white/40 truncate max-w-[200px] sm:max-w-none">
               {title}

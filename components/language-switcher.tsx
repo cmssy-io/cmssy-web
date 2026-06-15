@@ -4,8 +4,9 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Check } from "lucide-react";
+import { buildLocaleSwitchHref } from "@cmssy/react";
+import { useCmssyLocale } from "@cmssy/react/client";
 import { cn } from "../lib/utils";
-import { buildLanguageUrl } from "../lib/i18n";
 
 // ─── Flag & Language Helpers ────────────────────────────────────────────
 
@@ -112,7 +113,15 @@ function CompactSwitcher({
 }: LanguageSwitcherProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const currentPath = usePathname();
+  const pathname = usePathname();
+  const ctx = useCmssyLocale();
+  const enabled = ctx?.enabled ?? enabledLanguages;
+  const defaultLang = ctx?.default ?? defaultLanguage;
+  const localeCtx = {
+    current: currentLanguage,
+    default: defaultLang,
+    enabled,
+  };
 
   // Close on outside click
   useEffect(() => {
@@ -188,18 +197,13 @@ function CompactSwitcher({
             role="listbox"
             aria-label="Available languages"
           >
-            {enabledLanguages.map((lang) => {
+            {enabled.map((lang) => {
               const langFlag = getFlagEmoji(lang);
               const isActive = lang === currentLanguage;
               return (
                 <a
                   key={lang}
-                  href={buildLanguageUrl(
-                    lang,
-                    defaultLanguage,
-                    enabledLanguages,
-                    currentPath,
-                  )}
+                  href={buildLocaleSwitchHref(lang, pathname, localeCtx)}
                   data-no-localize
                   onClick={handleSelect}
                   role="option"
@@ -246,25 +250,28 @@ function FullSwitcher({
   theme = "light",
   className,
 }: LanguageSwitcherProps) {
-  const currentPath = usePathname();
+  const pathname = usePathname();
+  const ctx = useCmssyLocale();
+  const enabled = ctx?.enabled ?? enabledLanguages;
+  const defaultLang = ctx?.default ?? defaultLanguage;
+  const localeCtx = {
+    current: currentLanguage,
+    default: defaultLang,
+    enabled,
+  };
   return (
     <div
       className={cn("flex flex-wrap items-center gap-1", className)}
       role="list"
       aria-label="Available languages"
     >
-      {enabledLanguages.map((lang) => {
+      {enabled.map((lang) => {
         const flag = getFlagEmoji(lang);
         const isActive = lang === currentLanguage;
         return (
           <a
             key={lang}
-            href={buildLanguageUrl(
-              lang,
-              defaultLanguage,
-              enabledLanguages,
-              currentPath,
-            )}
+            href={buildLocaleSwitchHref(lang, pathname, localeCtx)}
             data-no-localize
             role="listitem"
             aria-current={isActive ? "true" : undefined}

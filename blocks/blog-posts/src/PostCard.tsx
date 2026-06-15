@@ -1,4 +1,5 @@
 import type { PageItem } from "@cmssy/types";
+import { CmssyLink } from "@cmssy/next/client";
 import { formatDate, getCustomField, getLocalizedField } from "./utils";
 
 export function PlaceholderCard() {
@@ -18,25 +19,22 @@ export function PostCard({
   item,
   language,
   layout,
-  localizeHref,
 }: {
   item: PageItem;
   language: string;
   layout: string;
-  localizeHref?: (href: string) => string;
 }) {
   const title = getLocalizedField(item.displayName, language);
   const excerpt = getLocalizedField(item.seoDescription, language);
   const coverImage = getCustomField(item, "cover_image") as string | null;
   const author = getCustomField(item, "author") as string | null;
   const category = getCustomField(item, "category") as string | null;
-  const href = localizeHref ? localizeHref(item.fullSlug) : item.fullSlug;
 
   const isList = layout === "list";
 
   return (
-    <a
-      href={href}
+    <CmssyLink
+      href={item.fullSlug}
       className={`group flex ${isList ? "flex-row" : "flex-col"} rounded-2xl overflow-hidden bg-background border transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 no-underline text-inherit`}
     >
       {coverImage ? (
@@ -76,6 +74,6 @@ export function PostCard({
           {author && <span className="font-medium">{author}</span>}
         </div>
       </div>
-    </a>
+    </CmssyLink>
   );
 }

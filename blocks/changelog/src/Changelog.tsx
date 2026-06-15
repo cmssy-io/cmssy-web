@@ -1,4 +1,5 @@
 import { Bug, Rss, Sparkles, Zap } from "lucide-react";
+import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
 import { BlockContent } from "./block";
 
@@ -64,12 +65,12 @@ export default function Changelog({ content }: { content: BlockContent }) {
                 <Rss className="w-5 h-5 text-violet-600" />
                 <span className="text-sm">{subscribeText}</span>
               </div>
-              <a
+              <CmssyLink
                 href={subscribeButtonUrl}
                 className="px-4 py-2 text-sm font-medium border rounded-lg hover:bg-accent transition-colors"
               >
                 {subscribeButtonText}
-              </a>
+              </CmssyLink>
             </div>
           </div>
         )}

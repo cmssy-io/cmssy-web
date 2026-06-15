@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
 import { BlockContent } from "./block";
 
@@ -83,12 +84,12 @@ export default function Legal({ content }: { content: BlockContent }) {
                 {footerLinks.map((link, index) => (
                   <span key={index}>
                     {index > 0 && " and "}
-                    <a
+                    <CmssyLink
                       href={link.url}
                       className="text-violet-600 hover:text-violet-700 underline"
                     >
                       {link.text}
-                    </a>
+                    </CmssyLink>
                   </span>
                 ))}
                 .

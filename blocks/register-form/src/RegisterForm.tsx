@@ -1,4 +1,5 @@
 import { useState, FormEvent, useCallback } from "react";
+import { CmssyLink } from "@cmssy/next/client";
 import { BlockContent } from "./block";
 import type { PlatformContext } from "@cmssy/types";
 
@@ -218,7 +219,9 @@ export default function RegisterForm({
 
       // Validate password length
       if (password.length < minPasswordLength) {
-        setError(passwordTooShortMessage.replace("{min}", String(minPasswordLength)));
+        setError(
+          passwordTooShortMessage.replace("{min}", String(minPasswordLength)),
+        );
         setIsSubmitting(false);
         return;
       }
@@ -324,12 +327,12 @@ export default function RegisterForm({
               <h3 className="text-lg font-semibold mb-2">{successHeading}</h3>
               <p className="text-muted-foreground">{successMessage}</p>
               {showLoginLink && (
-                <a
+                <CmssyLink
                   href={loginUrl}
                   className="inline-block mt-4 text-primary hover:underline"
                 >
                   {successLoginLinkText}
-                </a>
+                </CmssyLink>
               )}
             </div>
           </div>
@@ -525,23 +528,23 @@ export default function RegisterForm({
                 />
                 <span className="text-muted-foreground">
                   {termsPrefix}{" "}
-                  <a
+                  <CmssyLink
                     href={termsUrl}
                     className="text-primary hover:underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     {termsLinkText}
-                  </a>{" "}
+                  </CmssyLink>{" "}
                   {termsConnector}{" "}
-                  <a
+                  <CmssyLink
                     href={privacyUrl}
                     className="text-primary hover:underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     {privacyLinkText}
-                  </a>
+                  </CmssyLink>
                 </span>
               </label>
             )}
@@ -559,9 +562,12 @@ export default function RegisterForm({
           {/* Login link */}
           {showLoginLink && (
             <p className="mt-6 text-center text-sm text-muted-foreground">
-              <a href={loginUrl} className="text-primary hover:underline">
+              <CmssyLink
+                href={loginUrl}
+                className="text-primary hover:underline"
+              >
                 {loginLinkText}
-              </a>
+              </CmssyLink>
             </p>
           )}
         </div>
