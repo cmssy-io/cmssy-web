@@ -42,7 +42,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import { CmssyLink } from "@cmssy/next/client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Container } from "../../../components/container";
 import { LanguageSwitcherMinimal } from "../../../components/language-switcher-minimal";
@@ -151,7 +151,7 @@ interface HeaderProps {
 
 function MegaMenuItem({ child }: { child: NavChild }) {
   return (
-    <Link
+    <CmssyLink
       href={child.url ?? "#"}
       target={child.openInNewTab ? "_blank" : undefined}
       rel={child.openInNewTab ? "noopener noreferrer" : undefined}
@@ -170,7 +170,7 @@ function MegaMenuItem({ child }: { child: NavChild }) {
           </div>
         )}
       </div>
-    </Link>
+    </CmssyLink>
   );
 }
 
@@ -357,9 +357,9 @@ export default function Header({ content, context }: HeaderProps) {
           }}
         >
           {announcementLink ? (
-            <Link href={announcementLink} className="hover:underline">
+            <CmssyLink href={announcementLink} className="hover:underline">
               {announcementText}
-            </Link>
+            </CmssyLink>
           ) : (
             <span>{announcementText}</span>
           )}
@@ -395,7 +395,7 @@ export default function Header({ content, context }: HeaderProps) {
         <Container as="nav">
           <div className="relative flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href={homeHref} className="flex items-center gap-2">
+            <CmssyLink href={homeHref} className="flex items-center gap-2">
               {logo ? (
                 <Image
                   src={logo}
@@ -416,7 +416,7 @@ export default function Header({ content, context }: HeaderProps) {
               <span className={`font-bold ${logoTextSizeClasses[logoSize]}`}>
                 {logoText}
               </span>
-            </Link>
+            </CmssyLink>
 
             {/* Desktop navigation - centered */}
             <div className="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
@@ -472,7 +472,7 @@ export default function Header({ content, context }: HeaderProps) {
                     )}
                   </div>
                 ) : (
-                  <Link
+                  <CmssyLink
                     key={index}
                     href={item.url ?? "#"}
                     target={item.openInNewTab ? "_blank" : undefined}
@@ -480,7 +480,7 @@ export default function Header({ content, context }: HeaderProps) {
                     className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md"
                   >
                     {item.label}
-                  </Link>
+                  </CmssyLink>
                 ),
               )}
             </div>
@@ -521,20 +521,20 @@ export default function Header({ content, context }: HeaderProps) {
               ) : (
                 <>
                   {showSecondaryCta && (
-                    <Link
+                    <CmssyLink
                       href={secondaryCtaUrl}
                       className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 hover:bg-accent hover:text-accent-foreground transition-colors"
                     >
                       {secondaryCtaLabel}
-                    </Link>
+                    </CmssyLink>
                   )}
                   {showCta && (
-                    <Link
+                    <CmssyLink
                       href={ctaUrl}
                       className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 bg-linear-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white transition-colors"
                     >
                       {ctaLabel}
-                    </Link>
+                    </CmssyLink>
                   )}
                 </>
               )}
@@ -587,7 +587,7 @@ export default function Header({ content, context }: HeaderProps) {
           <div className="flex h-full flex-col bg-background">
             {/* Mobile header with logo + close */}
             <div className="flex items-center justify-between h-16 px-4 border-b">
-              <Link
+              <CmssyLink
                 href={homeHref}
                 className="flex items-center gap-2"
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -612,7 +612,7 @@ export default function Header({ content, context }: HeaderProps) {
                 <span className={`font-bold ${logoTextSizeClasses[logoSize]}`}>
                   {logoText}
                 </span>
-              </Link>
+              </CmssyLink>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="p-2 -mr-2 rounded-md hover:bg-muted/50 transition-colors"
@@ -645,7 +645,7 @@ export default function Header({ content, context }: HeaderProps) {
                       </div>
                       <div className="flex flex-col gap-1">
                         {item.children?.map((child, childIndex) => (
-                          <Link
+                          <CmssyLink
                             key={childIndex}
                             href={child.url ?? "#"}
                             target={child.openInNewTab ? "_blank" : undefined}
@@ -675,12 +675,12 @@ export default function Header({ content, context }: HeaderProps) {
                                 </div>
                               )}
                             </div>
-                          </Link>
+                          </CmssyLink>
                         ))}
                       </div>
                     </div>
                   ) : (
-                    <Link
+                    <CmssyLink
                       key={index}
                       href={item.url ?? "#"}
                       target={item.openInNewTab ? "_blank" : undefined}
@@ -691,7 +691,7 @@ export default function Header({ content, context }: HeaderProps) {
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {item.label}
-                    </Link>
+                    </CmssyLink>
                   ),
                 )}
               </div>
@@ -743,22 +743,22 @@ export default function Header({ content, context }: HeaderProps) {
               ) : (
                 <div className="flex flex-col gap-3">
                   {showSecondaryCta && (
-                    <Link
+                    <CmssyLink
                       href={secondaryCtaUrl}
                       className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 w-full border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {secondaryCtaLabel}
-                    </Link>
+                    </CmssyLink>
                   )}
                   {showCta && (
-                    <Link
+                    <CmssyLink
                       href={ctaUrl}
                       className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 w-full bg-linear-to-r from-violet-600 to-purple-600 text-white transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {ctaLabel}
-                    </Link>
+                    </CmssyLink>
                   )}
                 </div>
               )}

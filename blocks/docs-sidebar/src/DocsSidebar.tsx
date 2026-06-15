@@ -8,6 +8,7 @@ import {
   X,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { CmssyLink } from "@cmssy/next/client";
 import { LanguageSwitcher } from "../../../components/language-switcher";
 import { BlockContent } from "./block";
 
@@ -120,7 +121,7 @@ function SidebarContent({
     <>
       {/* Header: Logo + Version */}
       <div className="flex items-center gap-3 px-5 h-14 shrink-0 border-b border-border">
-        <a
+        <CmssyLink
           href={logoUrl}
           onClick={onNavigate}
           className="flex items-center gap-2.5 text-foreground no-underline hover:opacity-80 transition-opacity"
@@ -131,7 +132,7 @@ function SidebarContent({
           <span className="text-[15px] font-semibold tracking-tight">
             {logoText}
           </span>
-        </a>
+        </CmssyLink>
         {showVersionSelector && (
           <span className="ml-auto text-[10px] font-medium tracking-wide uppercase bg-muted text-muted-foreground px-2 py-0.5 rounded-md">
             {currentVersion}
@@ -208,7 +209,7 @@ function SidebarContent({
                   const isActive = currentPath === slug;
                   return (
                     <li key={slug}>
-                      <a
+                      <CmssyLink
                         href={slug}
                         onClick={onNavigate}
                         className={`group relative flex items-center gap-2 pl-3 pr-2 py-1.5 text-[13px] rounded-md transition-all duration-150 no-underline ${
@@ -226,7 +227,7 @@ function SidebarContent({
                           }`}
                         />
                         <span className="truncate">{label}</span>
-                      </a>
+                      </CmssyLink>
                     </li>
                   );
                 })}

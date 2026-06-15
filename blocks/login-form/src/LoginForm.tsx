@@ -1,4 +1,5 @@
 import { useState, FormEvent, useCallback } from "react";
+import { CmssyLink } from "@cmssy/next/client";
 import { BlockContent } from "./block";
 import type { PlatformContext } from "@cmssy/types";
 
@@ -352,12 +353,12 @@ export default function LoginForm({
                   </label>
                 )}
                 {showForgotPassword && (
-                  <a
+                  <CmssyLink
                     href={forgotPasswordUrl}
                     className="text-sm text-primary hover:underline"
                   >
                     {forgotPasswordText}
-                  </a>
+                  </CmssyLink>
                 )}
               </div>
             )}
@@ -375,9 +376,12 @@ export default function LoginForm({
           {/* Register link */}
           {showRegisterLink && (
             <p className="mt-6 text-center text-sm text-muted-foreground">
-              <a href={registerUrl} className="text-primary hover:underline">
+              <CmssyLink
+                href={registerUrl}
+                className="text-primary hover:underline"
+              >
                 {registerLinkText}
-              </a>
+              </CmssyLink>
             </p>
           )}
         </div>

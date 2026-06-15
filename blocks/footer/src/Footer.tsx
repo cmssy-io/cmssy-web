@@ -1,6 +1,7 @@
 "use client";
 
 import { Github, Linkedin, Twitter } from "lucide-react";
+import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
 import { LanguageSwitcher } from "../../../components/language-switcher";
 import { BlockContent } from "./block";
@@ -52,7 +53,7 @@ export default function Footer({
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {/* Brand column */}
           <div className="col-span-2 sm:col-span-3 md:col-span-1 lg:col-span-2">
-            <a href="/" className="flex items-center gap-2 mb-4">
+            <CmssyLink href="/" className="flex items-center gap-2 mb-4">
               {logo ? (
                 <img src={logo} alt={logoText} className="h-8 w-auto" />
               ) : (
@@ -63,7 +64,7 @@ export default function Footer({
                 </div>
               )}
               <span className="font-bold text-xl">{logoText}</span>
-            </a>
+            </CmssyLink>
             <p className="text-sm text-muted-foreground mb-6 max-w-xs">
               {tagline}
             </p>
@@ -115,12 +116,12 @@ export default function Footer({
               <ul className="space-y-3">
                 {(column.links || []).map((link, linkIndex) => (
                   <li key={linkIndex}>
-                    <a
+                    <CmssyLink
                       href={link.href}
                       className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
                       {link.name}
-                    </a>
+                    </CmssyLink>
                   </li>
                 ))}
               </ul>

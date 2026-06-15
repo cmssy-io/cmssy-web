@@ -1,5 +1,6 @@
 "use client";
 import { FormEvent, useCallback, useEffect, useState } from "react";
+import { CmssyLink } from "@cmssy/next/client";
 import { BlockContent } from "./block";
 import type { PlatformContext } from "@cmssy/types";
 
@@ -278,12 +279,12 @@ export default function CustomerProfile({
               <h3 className="text-lg font-semibold mb-2">
                 {notLoggedInMessage}
               </h3>
-              <a
+              <CmssyLink
                 href={loginUrl}
                 className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-6 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
               >
                 {loginButtonText}
-              </a>
+              </CmssyLink>
             </div>
           </div>
         </div>

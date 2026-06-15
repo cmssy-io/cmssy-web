@@ -1,4 +1,5 @@
 import { Calendar, ChevronLeft, ChevronRight, PenLine } from "lucide-react";
+import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
 import { BlockContent } from "./block";
 import { TocSidebar } from "./TocSidebar";
@@ -98,12 +99,12 @@ export default function DocsArticle({ content }: { content: BlockContent }) {
               return (
                 <span key={index} className="flex items-center gap-1.5">
                   {crumb.url && !isLast ? (
-                    <a
+                    <CmssyLink
                       href={crumb.url}
                       className="hover:text-foreground transition-colors"
                     >
                       {crumb.label}
-                    </a>
+                    </CmssyLink>
                   ) : (
                     <span
                       className={isLast ? "text-violet-600 font-medium" : ""}
@@ -170,7 +171,7 @@ export default function DocsArticle({ content }: { content: BlockContent }) {
         {showPrevNext && (prev || next) && (
           <nav className="mt-8 pt-8 border-t grid grid-cols-2 gap-4">
             {prev ? (
-              <a
+              <CmssyLink
                 href={prev.url}
                 className="group flex flex-col p-4 rounded-lg border hover:border-violet-500 hover:bg-violet-50 dark:hover:bg-violet-950/20 transition-colors"
               >
@@ -181,12 +182,12 @@ export default function DocsArticle({ content }: { content: BlockContent }) {
                 <span className="font-medium group-hover:text-violet-600 transition-colors">
                   {prev.label}
                 </span>
-              </a>
+              </CmssyLink>
             ) : (
               <div />
             )}
             {next && (
-              <a
+              <CmssyLink
                 href={next.url}
                 className="group flex flex-col items-end p-4 rounded-lg border hover:border-violet-500 hover:bg-violet-50 dark:hover:bg-violet-950/20 transition-colors"
               >
@@ -197,7 +198,7 @@ export default function DocsArticle({ content }: { content: BlockContent }) {
                 <span className="font-medium group-hover:text-violet-600 transition-colors">
                   {next.label}
                 </span>
-              </a>
+              </CmssyLink>
             )}
           </nav>
         )}

@@ -46,7 +46,8 @@ export default function BlogPosts({ content, context }: Props) {
   const hasFilters = showSearch || categories.length > 0;
   const showPlaceholders = loading && items.length === 0;
   const showNoResults = filteredItems.length === 0 && !loading;
-  const showSentinel = !isPreview && hasMore && !debouncedSearch && !activeCategory;
+  const showSentinel =
+    !isPreview && hasMore && !debouncedSearch && !activeCategory;
 
   return (
     <section className="py-24">
@@ -127,9 +128,6 @@ export default function BlogPosts({ content, context }: Props) {
                   item={item}
                   language={language}
                   layout={layout}
-                  localizeHref={
-                    isPreview ? undefined : context?.locale?.localizeHref
-                  }
                 />
               ))}
         </div>

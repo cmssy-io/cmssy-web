@@ -2,8 +2,9 @@
 
 import { Fragment } from "react";
 import { usePathname } from "next/navigation";
+import { buildLocaleSwitchHref } from "@cmssy/react";
+import { useCmssyLocale } from "@cmssy/react/client";
 import { cn } from "../lib/utils";
-import { buildLanguageUrl } from "../lib/i18n";
 
 interface LanguageSwitcherMinimalProps {
   enabledLanguages: string[];
@@ -21,11 +22,18 @@ export function LanguageSwitcherMinimal({
   currentLanguage,
   className,
 }: LanguageSwitcherMinimalProps) {
-  // usePathname() tracks client-side navigations and is consistent across
-  // SSR/hydration, so links always reflect the current route.
-  const currentPath = usePathname();
+  const pathname = usePathname();
+  const ctx = useCmssyLocale();
+  const enabled = ctx?.enabled ?? enabledLanguages;
+  const defaultLang = ctx?.default ?? defaultLanguage;
 
-  if (enabledLanguages.length <= 1) return null;
+  if (enabled.length <= 1) return null;
+
+  const localeCtx = {
+    current: currentLanguage,
+    default: defaultLang,
+    enabled,
+  };
 
   return (
     <div
@@ -36,7 +44,7 @@ export function LanguageSwitcherMinimal({
       role="group"
       aria-label="Language"
     >
-      {enabledLanguages.map((lang, i) => {
+      {enabled.map((lang, i) => {
         const isActive = lang === currentLanguage;
         return (
           <Fragment key={lang}>
@@ -55,12 +63,7 @@ export function LanguageSwitcherMinimal({
               </span>
             ) : (
               <a
-                href={buildLanguageUrl(
-                  lang,
-                  defaultLanguage,
-                  enabledLanguages,
-                  currentPath,
-                )}
+                href={buildLocaleSwitchHref(lang, pathname, localeCtx)}
                 data-no-localize
                 className={cn(
                   "rounded uppercase opacity-45 transition-opacity hover:opacity-80",

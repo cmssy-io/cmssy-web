@@ -1,4 +1,5 @@
 import { useState, FormEvent, useCallback } from "react";
+import { CmssyLink } from "@cmssy/next/client";
 import { BlockContent } from "./block";
 import type { PlatformContext } from "@cmssy/types";
 
@@ -190,13 +191,13 @@ export default function ForgotPasswordForm({
                 </p>
               )}
               {showLoginLink && (
-                <a
+                <CmssyLink
                   href={loginUrl}
                   className="inline-flex items-center gap-2 mt-6 text-primary hover:underline"
                 >
                   <ArrowLeftIcon className="h-4 w-4" />
                   {loginLinkText}
-                </a>
+                </CmssyLink>
               )}
             </div>
           </div>
@@ -278,13 +279,13 @@ export default function ForgotPasswordForm({
           {/* Login link */}
           {showLoginLink && (
             <p className="mt-6 text-center">
-              <a
+              <CmssyLink
                 href={loginUrl}
                 className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ArrowLeftIcon className="h-4 w-4" />
                 {loginLinkText}
-              </a>
+              </CmssyLink>
             </p>
           )}
         </div>
