@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { graphqlRequest } from "@cmssy/react";
 import { cmssy, enabledLocales } from "@/cmssy/config";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 const PUBLIC_PAGES_QUERY = `query PublicPagesForSitemap($workspaceSlug: String!) {
   publicPages(workspaceSlug: $workspaceSlug) {
@@ -13,6 +13,8 @@ const PUBLIC_PAGES_QUERY = `query PublicPagesForSitemap($workspaceSlug: String!)
   }
 }`;
 
+const RESERVED_SLUGS = new Set(["/not-found", "/404"]);
+
 interface SitemapPage {
   slug: string;
   updatedAt: string | null;
@@ -20,8 +22,11 @@ interface SitemapPage {
 }
 
 function localizedPath(slug: string, locale: string): string {
-  const base = slug === "/" ? "" : slug;
-  return locale === cmssy.defaultLocale ? base || "/" : `/${locale}${base}`;
+  const normalized =
+    slug === "/" ? "" : slug.startsWith("/") ? slug : `/${slug}`;
+  return locale === cmssy.defaultLocale
+    ? normalized || "/"
+    : `/${locale}${normalized}`;
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -44,19 +49,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     pages = [];
   }
 
-  return pages.map((page) => {
-    const lastModified = page.updatedAt ?? page.publishedAt ?? undefined;
-    return {
-      url: `${baseUrl}${localizedPath(page.slug, cmssy.defaultLocale ?? "en")}`,
-      ...(lastModified ? { lastModified: new Date(lastModified) } : {}),
-      alternates: {
-        languages: Object.fromEntries(
-          enabledLocales.map((locale) => [
-            locale,
-            `${baseUrl}${localizedPath(page.slug, locale)}`,
-          ]),
-        ),
-      },
-    };
-  });
+  return pages
+    .filter((page) => !RESERVED_SLUGS.has(page.slug))
+    .map((page) => {
+      const lastModified = page.updatedAt ?? page.publishedAt ?? undefined;
+      return {
+        url: `${baseUrl}${localizedPath(page.slug, cmssy.defaultLocale ?? "en")}`,
+        ...(lastModified ? { lastModified: new Date(lastModified) } : {}),
+        alternates: {
+          languages: Object.fromEntries(
+            enabledLocales.map((locale) => [
+              locale,
+              `${baseUrl}${localizedPath(page.slug, locale)}`,
+            ]),
+          ),
+        },
+      };
+    });
 }
