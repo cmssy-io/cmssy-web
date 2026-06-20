@@ -4,11 +4,14 @@ import {
   CmssyServerLayout,
   type CmssyLayoutGroup,
 } from "@cmssy/react";
-import { createCmssyPage, isCmssyEditMode } from "@cmssy/next";
+import {
+  buildCmssyMetadata,
+  createCmssyPage,
+  isCmssyEditMode,
+} from "@cmssy/next";
 import { cmssy, enabledLocales } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
 import { EditableLayout } from "@/cmssy/editable-layout";
-import { buildPageMetadata } from "@/cmssy/metadata";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -38,7 +41,7 @@ type PageProps = {
 
 export async function generateMetadata({ params }: PageProps) {
   const { path } = await params;
-  return buildPageMetadata(stripLocale(path));
+  return buildCmssyMetadata(cmssy, stripLocale(path));
 }
 
 async function getPageLayoutGroups(
