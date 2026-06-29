@@ -4,7 +4,7 @@ import {
   CmssyServerLayout,
   type CmssyLayoutGroup,
 } from "@cmssy/react";
-import { isCmssyEditMode } from "@cmssy/next";
+import { isCmssyEditMode, resolveEditorOrigin } from "@cmssy/next";
 import { CmssyLocaleProvider } from "@cmssy/next/client";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import "../styles/main.css";
@@ -39,9 +39,10 @@ export default async function RootLayout({
   const locale = (await cmssy.resolveLocale?.()) ?? cmssy.defaultLocale ?? "en";
   const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim();
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim();
-  const editorOrigin = Array.isArray(cmssy.editorOrigin)
-    ? cmssy.editorOrigin[0]
-    : cmssy.editorOrigin;
+  const resolvedEditorOrigin = resolveEditorOrigin(cmssy.editorOrigin);
+  const editorOrigin = Array.isArray(resolvedEditorOrigin)
+    ? resolvedEditorOrigin[0]
+    : resolvedEditorOrigin;
 
   const slot = (position: "header" | "footer") =>
     editMode ? (
