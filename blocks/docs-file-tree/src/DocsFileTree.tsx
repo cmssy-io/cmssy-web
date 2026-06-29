@@ -133,11 +133,7 @@ export default function DocsFileTree({ content }: { content: BlockContent }) {
               );
             })}
           </pre>
-        ) : (
-          <div className="px-4 py-6 text-sm text-zinc-500 text-center">
-            Add a file tree structure in the block settings.
-          </div>
-        )}
+        ) : null}
       </div>
     </Container>
   );
