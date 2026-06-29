@@ -13,9 +13,9 @@ export default function Hero({ content }: { content: BlockContent }) {
     primaryButtonUrl = "/signup",
     secondaryButtonText = "Watch Demo",
     secondaryButtonUrl = "#demo",
-    socialProofPrefix = "Join",
-    socialProofCount = "2,000+",
-    socialProofText = "creators already building with cmssy",
+    socialProofPrefix = "",
+    socialProofCount = "",
+    socialProofText = "",
     media = "",
     mediaPlaceholderHeading = "Page Builder Preview",
     mediaPlaceholderText = "Drag & drop interface with real-time preview",
@@ -141,25 +141,22 @@ export default function Hero({ content }: { content: BlockContent }) {
         </div>
 
         {/* Social proof */}
-        <div className="flex flex-col items-center gap-4">
-          <div className="flex -space-x-3">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div
-                key={i}
-                className="w-10 h-10 rounded-full bg-linear-to-br from-violet-400 to-purple-500 border-2 border-background flex items-center justify-center text-white text-xs font-medium"
-              >
-                {String.fromCharCode(64 + i)}
-              </div>
-            ))}
+        {(socialProofPrefix || socialProofText) && (
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-sm text-muted-foreground">
+              {socialProofPrefix}
+              {socialProofCount && (
+                <>
+                  {" "}
+                  <span className="font-semibold text-foreground">
+                    {socialProofCount}
+                  </span>
+                </>
+              )}{" "}
+              {socialProofText}
+            </p>
           </div>
-          <p className="text-sm text-muted-foreground">
-            {socialProofPrefix}{" "}
-            <span className="font-semibold text-foreground">
-              {socialProofCount}
-            </span>{" "}
-            {socialProofText}
-          </p>
-        </div>
+        )}
 
         {/* Hero image/preview */}
         {media && (
