@@ -2,17 +2,17 @@
 
 import type { PageItem, PlatformContext } from "@cmssy/types";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { BlogPostsData } from "../block";
 import type { BlockContent } from "./block";
 import { PUBLIC_PAGES_QUERY } from "./query";
 import { getCustomField } from "./utils";
 
-export function useBlogPosts(content: BlockContent, context?: PlatformContext) {
-  const {
-    layout = "grid",
-    columns = "3",
-    parentPage,
-    postsPerPage,
-  } = content;
+export function useBlogPosts(
+  content: BlockContent,
+  context?: PlatformContext,
+  ssr?: BlogPostsData | null,
+) {
+  const { layout = "grid", columns = "3", parentPage, postsPerPage } = content;
 
   const parentSlug = Array.isArray(parentPage)
     ? parentPage[0]?.slug
@@ -23,13 +23,15 @@ export function useBlogPosts(content: BlockContent, context?: PlatformContext) {
   const language = context?.locale?.current ?? "en";
   const pagesCollection = context?.pages?._default;
   const isPreview = context?.isPreview ?? false;
-  // Headless: the platform context is absent, so fall back to the public
-  // workspace id baked into the client bundle.
   const workspaceId =
     context?.workspace?.id ?? process.env.NEXT_PUBLIC_CMSSY_WORKSPACE_ID;
 
-  const [items, setItems] = useState<PageItem[]>(pagesCollection?.items ?? []);
-  const [hasMore, setHasMore] = useState(pagesCollection?.hasMore ?? false);
+  const [items, setItems] = useState<PageItem[]>(
+    pagesCollection?.items ?? ssr?.items ?? [],
+  );
+  const [hasMore, setHasMore] = useState(
+    pagesCollection?.hasMore ?? ssr?.hasMore ?? false,
+  );
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -65,18 +67,21 @@ export function useBlogPosts(content: BlockContent, context?: PlatformContext) {
     [workspaceId, parentSlug, limit],
   );
 
-  // Debounce search input (300ms)
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 300);
     return () => clearTimeout(timer);
   }, [search]);
 
-  // Server-side search: fetch when debounced search changes
   useEffect(() => {
     if (isPreview || !debouncedSearch) {
-      if (!debouncedSearch && pagesCollection) {
-        setItems(pagesCollection.items ?? []);
-        setHasMore(pagesCollection.hasMore ?? false);
+      if (!debouncedSearch) {
+        if (pagesCollection) {
+          setItems(pagesCollection.items ?? []);
+          setHasMore(pagesCollection.hasMore ?? false);
+        } else if (ssr) {
+          setItems(ssr.items);
+          setHasMore(ssr.hasMore);
+        }
       }
       return;
     }
@@ -91,12 +96,10 @@ export function useBlogPosts(content: BlockContent, context?: PlatformContext) {
       })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [debouncedSearch, isPreview, fetchPages, pagesCollection]);
+  }, [debouncedSearch, isPreview, fetchPages, pagesCollection, ssr]);
 
-  // Headless initial load: with no SSR-preloaded collection, fetch the first
-  // page client-side (and restore it when a search is cleared).
   useEffect(() => {
-    if (isPreview || pagesCollection || debouncedSearch) return;
+    if (isPreview || pagesCollection || ssr || debouncedSearch) return;
     if (!workspaceId || !parentSlug) return;
 
     let active = true;
@@ -118,13 +121,13 @@ export function useBlogPosts(content: BlockContent, context?: PlatformContext) {
   }, [
     isPreview,
     pagesCollection,
+    ssr,
     debouncedSearch,
     workspaceId,
     parentSlug,
     fetchPages,
   ]);
 
-  // Editor preview: fetch real posts client-side (limited to 6)
   useEffect(() => {
     if (!isPreview || previewLoaded || !context?.workspace?.id || !parentSlug)
       return;
@@ -159,7 +162,6 @@ export function useBlogPosts(content: BlockContent, context?: PlatformContext) {
     );
   }, [items, activeCategory]);
 
-  // Infinite scroll: load more pages
   const loadMore = useCallback(async () => {
     if (loading || !hasMore || debouncedSearch) return;
     setLoading(true);
@@ -177,7 +179,6 @@ export function useBlogPosts(content: BlockContent, context?: PlatformContext) {
     }
   }, [loading, hasMore, debouncedSearch, fetchPages, items.length]);
 
-  // Infinite scroll observer
   useEffect(() => {
     if (isPreview || !hasMore) return;
 
