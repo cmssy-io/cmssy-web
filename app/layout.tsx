@@ -14,10 +14,7 @@ import { EditableLayout } from "@/cmssy/editable-layout";
 import { buildSiteMetadata } from "@/cmssy/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: "Cmssy",
-    ...(await buildSiteMetadata()),
-  };
+  return buildSiteMetadata();
 }
 
 async function getLayoutGroups(editMode: boolean): Promise<CmssyLayoutGroup[]> {

@@ -8,9 +8,9 @@ import { BlockContent } from "./block";
 
 export default function Faq({ content }: { content: BlockContent }) {
   const {
-    heading = "Heading",
-    headingHighlight = "Highlight",
-    description = "Description",
+    heading = "",
+    headingHighlight = "",
+    description = "",
     faqs = [],
   } = content;
 
@@ -25,7 +25,9 @@ export default function Faq({ content }: { content: BlockContent }) {
               {headingHighlight}
             </span>
           </h2>
-          <p className="text-lg text-muted-foreground">{description}</p>
+          {description && (
+            <p className="text-lg text-muted-foreground">{description}</p>
+          )}
         </div>
 
         {/* FAQ accordion */}

@@ -1,6 +1,5 @@
 import * as Icons from "lucide-react";
-import { ArrowRight, LucideIcon, Search } from "lucide-react";
-import { useState } from "react";
+import { ArrowRight, LucideIcon } from "lucide-react";
 import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
 import { BlockContent } from "./block";
@@ -17,12 +16,8 @@ export default function DocsHero({ content }: { content: BlockContent }) {
     heading = "Documentation",
     description,
     variant = "default",
-    showSearch = true,
-    searchPlaceholder = "Search documentation...",
     quickLinks = [],
   } = content;
-
-  const [searchQuery, setSearchQuery] = useState("");
 
   const bgClasses = {
     default: "bg-background",
@@ -70,25 +65,6 @@ export default function DocsHero({ content }: { content: BlockContent }) {
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
               {description}
             </p>
-          )}
-
-          {/* Search */}
-          {showSearch && (
-            <div className="max-w-xl mx-auto mb-12">
-              <div className="relative group">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground/50 group-focus-within:text-violet-500 transition-colors" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={searchPlaceholder}
-                  className="w-full h-12 sm:h-14 pl-12 pr-20 rounded-xl border bg-card text-base shadow-sm outline-hidden placeholder:text-muted-foreground/50 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 transition-all"
-                />
-                <kbd className="absolute right-4 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-medium text-muted-foreground/40 bg-muted rounded-md border">
-                  <span className="text-xs">⌘</span>K
-                </kbd>
-              </div>
-            </div>
           )}
         </div>
 
