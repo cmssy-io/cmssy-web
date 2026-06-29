@@ -239,7 +239,10 @@ export default function ForgotPasswordForm({
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="rounded-md bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive text-center">
+              <div
+                role="alert"
+                className="rounded-md bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive text-center"
+              >
                 {error}
               </div>
             )}

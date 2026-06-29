@@ -1,1 +1,44 @@
 @import "../../../styles/main.css";
+
+/* shiki-rendered code block (server-highlighted, github-light theme) */
+.docs-code-block-shiki {
+  overflow-x: auto;
+}
+
+.docs-code-block-shiki pre.shiki {
+  margin: 0;
+  padding: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.625;
+  /* Let shiki's inline `background-color` (github-light = #fff) show through. */
+}
+
+.docs-code-block-shiki pre.shiki code {
+  display: block;
+  width: fit-content;
+  min-width: 100%;
+  counter-reset: shiki-line;
+}
+
+/* Line numbers (toggled per-instance) */
+.docs-code-block-shiki.with-line-numbers pre.shiki .line {
+  counter-increment: shiki-line;
+}
+
+.docs-code-block-shiki.with-line-numbers pre.shiki .line::before {
+  content: counter(shiki-line);
+  display: inline-block;
+  width: 1.5rem;
+  margin-right: 1rem;
+  text-align: right;
+  color: var(--color-zinc-400, #a1a1aa);
+  user-select: none;
+}
+
+/* Highlighted lines (from the loader's "1,3-5" → .highlighted transformer) */
+.docs-code-block-shiki pre.shiki .line.highlighted {
+  display: inline-block;
+  width: 100%;
+  background-color: rgb(139 92 246 / 0.1);
+  box-shadow: inset 2px 0 0 rgb(139 92 246);
+}

@@ -269,7 +269,10 @@ export default function LoginForm({
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="rounded-md bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive text-center">
+              <div
+                role="alert"
+                className="rounded-md bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive text-center"
+              >
                 {error}
               </div>
             )}
@@ -328,6 +331,8 @@ export default function LoginForm({
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  aria-pressed={showPassword}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {showPassword ? (

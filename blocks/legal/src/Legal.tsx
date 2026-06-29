@@ -5,8 +5,48 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { CmssyLink } from "@cmssy/next/client";
+import sanitizeHtml from "sanitize-html";
 import { Container } from "../../../components/container";
 import { BlockContent } from "./block";
+
+// Server-side sanitization for CMS-authored legal HTML (stored-XSS guard).
+// sanitize-html strips <script>/event handlers and blocks javascript: hrefs by default.
+const SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
+  allowedTags: [
+    "p",
+    "strong",
+    "em",
+    "ul",
+    "ol",
+    "li",
+    "a",
+    "h2",
+    "h3",
+    "h4",
+    "br",
+    "table",
+    "thead",
+    "tbody",
+    "tr",
+    "th",
+    "td",
+    "code",
+  ],
+  allowedAttributes: {
+    a: ["href", "target", "rel"],
+  },
+  // Only allow safe URL schemes for links (no javascript:/data:).
+  allowedSchemes: ["http", "https", "mailto", "tel"],
+  // Force rel="noopener noreferrer" on links that open a new tab.
+  transformTags: {
+    a: (tagName, attribs) => {
+      if (attribs.target) {
+        attribs.rel = "noopener noreferrer";
+      }
+      return { tagName, attribs };
+    },
+  },
+};
 
 export default function Legal({ content }: { content: BlockContent }) {
   const {
@@ -74,7 +114,10 @@ export default function Legal({ content }: { content: BlockContent }) {
                     <div className="prose prose-sm max-w-none text-muted-foreground">
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: section.content || "",
+                          __html: sanitizeHtml(
+                            section.content || "",
+                            SANITIZE_OPTIONS,
+                          ),
                         }}
                       />
                     </div>

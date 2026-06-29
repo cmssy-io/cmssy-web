@@ -206,7 +206,10 @@ export default function NewsletterForm({
             />
 
             {error && (
-              <div className="rounded-md bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive text-center">
+              <div
+                role="alert"
+                className="rounded-md bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive text-center"
+              >
                 {error}
               </div>
             )}
@@ -222,6 +225,7 @@ export default function NewsletterForm({
                     type="text"
                     name="name"
                     placeholder={namePlaceholder}
+                    aria-label={namePlaceholder || "Name"}
                     autoComplete="name"
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   />
@@ -249,6 +253,7 @@ export default function NewsletterForm({
                       name="email"
                       required
                       placeholder={emailPlaceholder}
+                      aria-label={emailPlaceholder || "Email address"}
                       autoComplete="email"
                       className="flex h-10 w-full rounded-md border border-input bg-background pl-10 pr-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                     />
