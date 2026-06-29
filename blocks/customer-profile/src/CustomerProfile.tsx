@@ -242,15 +242,13 @@ export default function CustomerProfile({
   );
 
   const handleLogout = useCallback(async () => {
-    if (context?.auth?.logout) {
-      await context.auth.logout();
+    try {
+      await fetch("/api/auth/sign-out", { method: "POST" });
+    } catch {
+      // ignore - redirect regardless
     }
-    // Clear stored tokens
-    localStorage.removeItem("site_customer_token");
-    localStorage.removeItem("site_customer_token_expires");
-    sessionStorage.removeItem("site_customer_token");
     window.location.href = logoutRedirectUrl;
-  }, [context?.auth, logoutRedirectUrl]);
+  }, [logoutRedirectUrl]);
 
   const isCard = variant === "card";
 
