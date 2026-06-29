@@ -18,9 +18,9 @@ export default function BlogPosts({ content, context }: Props) {
     heading,
     description,
     showSearch = true,
-    searchPlaceholder = "Search posts...",
-    loadingText = "Loading...",
-    noResultsText = "No posts found",
+    searchPlaceholder,
+    loadingText,
+    noResultsText,
   } = content;
 
   const {
@@ -135,7 +135,9 @@ export default function BlogPosts({ content, context }: Props) {
         {showNoResults && (
           <div className="flex flex-col items-center py-16 text-center">
             <EmptyDocIcon className="h-12 w-12 text-muted-foreground/40 mb-4" />
-            <p className="text-muted-foreground">{noResultsText}</p>
+            {noResultsText && (
+              <p className="text-muted-foreground">{noResultsText}</p>
+            )}
             {isPreview && parentSlug && (
               <p className="text-xs text-muted-foreground/60 mt-2">
                 Add child pages to {parentSlug}
@@ -146,7 +148,7 @@ export default function BlogPosts({ content, context }: Props) {
 
         {showSentinel && (
           <div ref={sentinelRef} className="flex justify-center py-10">
-            {loading && (
+            {loading && loadingText && (
               <span className="text-sm text-muted-foreground animate-pulse">
                 {loadingText}
               </span>

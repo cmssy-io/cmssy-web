@@ -62,8 +62,8 @@ export default function NewsletterForm({
   context?: PlatformContext;
 }) {
   const {
-    heading = "Stay in the loop",
-    description = "Get the latest updates delivered straight to your inbox.",
+    heading,
+    description,
     showNameField = false,
     namePlaceholder = "Your name",
     emailPlaceholder = "you@example.com",
@@ -75,7 +75,7 @@ export default function NewsletterForm({
     errorMessage = "Something went wrong. Please try again.",
     variant = "inline",
     showPrivacyNote = true,
-    privacyNote = "We respect your privacy. Unsubscribe at any time.",
+    privacyNote,
   } = content;
 
   const workspaceId = context?.workspace?.id;

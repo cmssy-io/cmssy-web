@@ -85,7 +85,7 @@ export default function DocsTerminal({ content }: { content: BlockContent }) {
                 <div className="size-3 rounded-full bg-green-500/80" />
               </div>
             )}
-            {(title || isClean) && (
+            {title && (
               <span
                 className={
                   isClean
@@ -93,7 +93,7 @@ export default function DocsTerminal({ content }: { content: BlockContent }) {
                     : "text-xs text-zinc-500 font-medium"
                 }
               >
-                {title || "Terminal"}
+                {title}
               </span>
             )}
           </div>
@@ -130,10 +130,7 @@ export default function DocsTerminal({ content }: { content: BlockContent }) {
                   const trimmed = cmd.command.trimStart();
                   const isComment = trimmed.startsWith("#");
                   return (
-                    <div
-                      key={index}
-                      className={index > 0 ? "mt-2" : undefined}
-                    >
+                    <div key={index} className={index > 0 ? "mt-2" : undefined}>
                       <div
                         className={isComment ? "text-slate-500" : undefined}
                         dangerouslySetInnerHTML={{

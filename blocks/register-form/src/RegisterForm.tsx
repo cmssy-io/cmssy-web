@@ -147,42 +147,41 @@ export default function RegisterForm({
   context?: PlatformContext;
 }) {
   const {
-    heading = "Create an account",
-    description = "Sign up to get started with your account.",
-    firstNameLabel = "First name",
-    lastNameLabel = "Last name",
-    emailLabel = "Email",
-    passwordLabel = "Password",
-    confirmPasswordLabel = "Confirm password",
-    passwordHelpText = "Must be at least {min} characters",
+    heading,
+    description,
+    firstNameLabel,
+    lastNameLabel,
+    emailLabel,
+    passwordLabel,
+    confirmPasswordLabel,
+    passwordHelpText,
     showNameFields = true,
-    firstNamePlaceholder = "First name",
-    lastNamePlaceholder = "Last name",
-    emailPlaceholder = "you@example.com",
-    passwordPlaceholder = "Create a password",
-    confirmPasswordPlaceholder = "Confirm your password",
-    submitButtonText = "Create account",
-    submitLoadingText = "Creating account...",
+    firstNamePlaceholder,
+    lastNamePlaceholder,
+    emailPlaceholder,
+    passwordPlaceholder,
+    confirmPasswordPlaceholder,
+    submitButtonText,
+    submitLoadingText,
     minPasswordLength = 8,
-    termsPrefix = "I agree to the",
-    termsLinkText = "Terms of Service",
-    termsConnector = "and",
-    privacyLinkText = "Privacy Policy",
+    termsPrefix,
+    termsLinkText,
+    termsConnector,
+    privacyLinkText,
     showTerms = true,
-    termsText = "I agree to the Terms of Service and Privacy Policy",
     termsUrl = "/terms",
     privacyUrl = "/privacy",
     showLoginLink = true,
-    loginLinkText = "Already have an account? Sign in",
+    loginLinkText,
     loginUrl = "/login",
     redirectAfterRegister = "/verify-email-pending",
-    successHeading = "Check your email",
-    successLoginLinkText = "Go to login",
-    passwordTooShortMessage = "Password must be at least {min} characters.",
-    termsRequiredMessage = "Please accept the terms and conditions.",
-    successMessage = "Account created! Please check your email to verify your account.",
-    errorMessage = "Something went wrong. Please try again.",
-    passwordMismatchMessage = "Passwords do not match.",
+    successHeading,
+    successLoginLinkText,
+    passwordTooShortMessage,
+    termsRequiredMessage,
+    successMessage,
+    errorMessage,
+    passwordMismatchMessage,
     variant = "default",
   } = content;
 
@@ -212,7 +211,7 @@ export default function RegisterForm({
 
       // Validate password match
       if (password !== confirmPassword) {
-        setError(passwordMismatchMessage);
+        setError(passwordMismatchMessage || null);
         setIsSubmitting(false);
         return;
       }
@@ -220,7 +219,12 @@ export default function RegisterForm({
       // Validate password length
       if (password.length < minPasswordLength) {
         setError(
-          passwordTooShortMessage.replace("{min}", String(minPasswordLength)),
+          passwordTooShortMessage
+            ? passwordTooShortMessage.replace(
+                "{min}",
+                String(minPasswordLength),
+              )
+            : null,
         );
         setIsSubmitting(false);
         return;
@@ -228,7 +232,7 @@ export default function RegisterForm({
 
       // Validate terms acceptance
       if (showTerms && !acceptTerms) {
-        setError(termsRequiredMessage);
+        setError(termsRequiredMessage || null);
         setIsSubmitting(false);
         return;
       }
@@ -280,10 +284,12 @@ export default function RegisterForm({
             }, 2000);
           }
         } else {
-          setError(result.data?.siteMemberRegister?.message || errorMessage);
+          setError(
+            result.data?.siteMemberRegister?.message || errorMessage || null,
+          );
         }
       } catch {
-        setError(errorMessage);
+        setError(errorMessage || null);
       }
 
       setIsSubmitting(false);
@@ -324,9 +330,13 @@ export default function RegisterForm({
               <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
                 <CheckIcon className="h-6 w-6 text-green-600" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">{successHeading}</h3>
-              <p className="text-muted-foreground">{successMessage}</p>
-              {showLoginLink && (
+              {successHeading && (
+                <h3 className="text-lg font-semibold mb-2">{successHeading}</h3>
+              )}
+              {successMessage && (
+                <p className="text-muted-foreground">{successMessage}</p>
+              )}
+              {showLoginLink && successLoginLinkText && (
                 <CmssyLink
                   href={loginUrl}
                   className="inline-block mt-4 text-primary hover:underline"
@@ -379,12 +389,14 @@ export default function RegisterForm({
             {showNameFields && (
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label
-                    htmlFor="firstName"
-                    className="block text-sm font-medium mb-1.5"
-                  >
-                    {firstNameLabel}
-                  </label>
+                  {firstNameLabel && (
+                    <label
+                      htmlFor="firstName"
+                      className="block text-sm font-medium mb-1.5"
+                    >
+                      {firstNameLabel}
+                    </label>
+                  )}
                   <div className="relative">
                     <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                       <UserIcon className="h-4 w-4" />
@@ -400,12 +412,14 @@ export default function RegisterForm({
                   </div>
                 </div>
                 <div>
-                  <label
-                    htmlFor="lastName"
-                    className="block text-sm font-medium mb-1.5"
-                  >
-                    {lastNameLabel}
-                  </label>
+                  {lastNameLabel && (
+                    <label
+                      htmlFor="lastName"
+                      className="block text-sm font-medium mb-1.5"
+                    >
+                      {lastNameLabel}
+                    </label>
+                  )}
                   <input
                     type="text"
                     id="lastName"
@@ -420,12 +434,14 @@ export default function RegisterForm({
 
             {/* Email */}
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium mb-1.5"
-              >
-                {emailLabel}
-              </label>
+              {emailLabel && (
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium mb-1.5"
+                >
+                  {emailLabel}
+                </label>
+              )}
               <div className="relative">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                   <MailIcon className="h-4 w-4" />
@@ -444,12 +460,14 @@ export default function RegisterForm({
 
             {/* Password */}
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium mb-1.5"
-              >
-                {passwordLabel}
-              </label>
+              {passwordLabel && (
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium mb-1.5"
+                >
+                  {passwordLabel}
+                </label>
+              )}
               <div className="relative">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                   <LockIcon className="h-4 w-4" />
@@ -476,19 +494,23 @@ export default function RegisterForm({
                   )}
                 </button>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                {passwordHelpText.replace("{min}", String(minPasswordLength))}
-              </p>
+              {passwordHelpText && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  {passwordHelpText.replace("{min}", String(minPasswordLength))}
+                </p>
+              )}
             </div>
 
             {/* Confirm Password */}
             <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium mb-1.5"
-              >
-                {confirmPasswordLabel}
-              </label>
+              {confirmPasswordLabel && (
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium mb-1.5"
+                >
+                  {confirmPasswordLabel}
+                </label>
+              )}
               <div className="relative">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                   <LockIcon className="h-4 w-4" />
@@ -525,24 +547,28 @@ export default function RegisterForm({
                   className="h-4 w-4 mt-0.5 rounded border-input text-primary focus:ring-ring"
                 />
                 <span className="text-muted-foreground">
-                  {termsPrefix}{" "}
-                  <CmssyLink
-                    href={termsUrl}
-                    className="text-primary hover:underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {termsLinkText}
-                  </CmssyLink>{" "}
-                  {termsConnector}{" "}
-                  <CmssyLink
-                    href={privacyUrl}
-                    className="text-primary hover:underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {privacyLinkText}
-                  </CmssyLink>
+                  {termsPrefix && <>{termsPrefix} </>}
+                  {termsLinkText && (
+                    <CmssyLink
+                      href={termsUrl}
+                      className="text-primary hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {termsLinkText}
+                    </CmssyLink>
+                  )}
+                  {termsConnector && <> {termsConnector} </>}
+                  {privacyLinkText && (
+                    <CmssyLink
+                      href={privacyUrl}
+                      className="text-primary hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {privacyLinkText}
+                    </CmssyLink>
+                  )}
                 </span>
               </label>
             )}
@@ -558,7 +584,7 @@ export default function RegisterForm({
           </form>
 
           {/* Login link */}
-          {showLoginLink && (
+          {showLoginLink && loginLinkText && (
             <p className="mt-6 text-center text-sm text-muted-foreground">
               <CmssyLink
                 href={loginUrl}

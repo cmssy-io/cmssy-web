@@ -23,14 +23,14 @@ const typeConfig = {
 
 export default function Changelog({ content }: { content: BlockContent }) {
   const {
-    badge = "Changelog",
-    heading = "What's",
-    headingHighlight = "New",
-    description = "Stay up to date with the latest features, improvements, and fixes.",
+    badge,
+    heading,
+    headingHighlight,
+    description,
     entries = [],
     showSubscribe = true,
-    subscribeText = "Subscribe to get notified about new releases",
-    subscribeButtonText = "Subscribe",
+    subscribeText,
+    subscribeButtonText,
     subscribeButtonUrl = "/blog",
   } = content;
 
@@ -44,15 +44,21 @@ export default function Changelog({ content }: { content: BlockContent }) {
               {badge}
             </span>
           )}
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            {heading}{" "}
-            <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
-              {headingHighlight}
-            </span>
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {description}
-          </p>
+          {(heading || headingHighlight) && (
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              {heading}{" "}
+              {headingHighlight && (
+                <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                  {headingHighlight}
+                </span>
+              )}
+            </h2>
+          )}
+          {description && (
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              {description}
+            </p>
+          )}
         </div>
 
         {/* Subscribe CTA */}
@@ -61,14 +67,18 @@ export default function Changelog({ content }: { content: BlockContent }) {
             <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-xl shadow-violet-500/5 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <Rss className="w-5 h-5 text-violet-600" />
-                <span className="text-sm">{subscribeText}</span>
+                {subscribeText && (
+                  <span className="text-sm">{subscribeText}</span>
+                )}
               </div>
-              <CmssyLink
-                href={subscribeButtonUrl}
-                className="px-4 py-2 text-sm font-medium border rounded-lg hover:bg-accent transition-colors"
-              >
-                {subscribeButtonText}
-              </CmssyLink>
+              {subscribeButtonText && (
+                <CmssyLink
+                  href={subscribeButtonUrl}
+                  className="px-4 py-2 text-sm font-medium border rounded-lg hover:bg-accent transition-colors"
+                >
+                  {subscribeButtonText}
+                </CmssyLink>
+              )}
             </div>
           </div>
         )}

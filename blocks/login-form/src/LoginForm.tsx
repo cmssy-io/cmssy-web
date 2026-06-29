@@ -119,25 +119,25 @@ export default function LoginForm({
   context?: PlatformContext;
 }) {
   const {
-    heading = "Welcome back",
-    description = "Sign in to your account to continue.",
-    emailLabel = "Email",
-    emailPlaceholder = "you@example.com",
-    passwordLabel = "Password",
-    passwordPlaceholder = "Enter your password",
-    submitButtonText = "Sign in",
-    submitLoadingText = "Signing in...",
+    heading,
+    description,
+    emailLabel,
+    emailPlaceholder,
+    passwordLabel,
+    passwordPlaceholder,
+    submitButtonText,
+    submitLoadingText,
     showRememberMe = true,
-    rememberMeLabel = "Remember me",
+    rememberMeLabel,
     showForgotPassword = true,
-    forgotPasswordText = "Forgot your password?",
+    forgotPasswordText,
     forgotPasswordUrl = "/forgot-password",
     showRegisterLink = true,
-    registerLinkText = "Don't have an account? Sign up",
+    registerLinkText,
     registerUrl = "/register",
     redirectAfterLogin = "/",
-    successMessage = "Login successful! Redirecting...",
-    errorMessage = "Invalid email or password. Please try again.",
+    successMessage,
+    errorMessage,
     variant = "default",
   } = content;
 
@@ -218,10 +218,12 @@ export default function LoginForm({
             window.location.href = redirectAfterLogin;
           }, 1500);
         } else {
-          setError(result.data?.siteMemberLogin?.message || errorMessage);
+          setError(
+            result.data?.siteMemberLogin?.message || errorMessage || null,
+          );
         }
       } catch {
-        setError(errorMessage);
+        setError(errorMessage || null);
       }
 
       setIsSubmitting(false);
@@ -258,7 +260,7 @@ export default function LoginForm({
           </div>
 
           {/* Success message */}
-          {isSuccess && (
+          {isSuccess && successMessage && (
             <div className="rounded-md bg-green-50 border border-green-200 p-4 mb-4 text-center">
               <p className="text-green-700">{successMessage}</p>
             </div>
@@ -274,12 +276,14 @@ export default function LoginForm({
 
             {/* Email */}
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium mb-1.5"
-              >
-                {emailLabel}
-              </label>
+              {emailLabel && (
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium mb-1.5"
+                >
+                  {emailLabel}
+                </label>
+              )}
               <div className="relative">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                   <MailIcon className="h-4 w-4" />
@@ -299,12 +303,14 @@ export default function LoginForm({
 
             {/* Password */}
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium mb-1.5"
-              >
-                {passwordLabel}
-              </label>
+              {passwordLabel && (
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium mb-1.5"
+                >
+                  {passwordLabel}
+                </label>
+              )}
               <div className="relative">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                   <LockIcon className="h-4 w-4" />
@@ -343,12 +349,14 @@ export default function LoginForm({
                       name="rememberMe"
                       className="h-4 w-4 rounded border-input text-primary focus:ring-ring"
                     />
-                    <span className="text-muted-foreground">
-                      {rememberMeLabel}
-                    </span>
+                    {rememberMeLabel && (
+                      <span className="text-muted-foreground">
+                        {rememberMeLabel}
+                      </span>
+                    )}
                   </label>
                 )}
-                {showForgotPassword && (
+                {showForgotPassword && forgotPasswordText && (
                   <CmssyLink
                     href={forgotPasswordUrl}
                     className="text-sm text-primary hover:underline"
@@ -370,7 +378,7 @@ export default function LoginForm({
           </form>
 
           {/* Register link */}
-          {showRegisterLink && (
+          {showRegisterLink && registerLinkText && (
             <p className="mt-6 text-center text-sm text-muted-foreground">
               <CmssyLink
                 href={registerUrl}

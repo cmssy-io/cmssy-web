@@ -43,14 +43,16 @@ export default function Contact({ content, context }: Props) {
               {badgeText}
             </span>
           )}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-            {heading}{" "}
-            {headingHighlight && (
-              <span className="bg-linear-to-r from-violet-600 via-purple-600 to-violet-600 bg-clip-text text-transparent">
-                {headingHighlight}
-              </span>
-            )}
-          </h1>
+          {(heading || headingHighlight) && (
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+              {heading}{" "}
+              {headingHighlight && (
+                <span className="bg-linear-to-r from-violet-600 via-purple-600 to-violet-600 bg-clip-text text-transparent">
+                  {headingHighlight}
+                </span>
+              )}
+            </h1>
+          )}
           {description && (
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               {description}

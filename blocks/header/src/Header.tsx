@@ -177,22 +177,22 @@ function MegaMenuItem({ child }: { child: NavChild }) {
 export default function Header({ content, context }: HeaderProps) {
   const {
     logo,
-    logoText = "Brand",
+    logoText,
     logoSize = "md",
     navigation = [],
     showCta = true,
-    ctaLabel = "Get Started",
+    ctaLabel,
     ctaUrl = "/signup",
     showSecondaryCta = false,
-    secondaryCtaLabel = "Log in",
+    secondaryCtaLabel,
     secondaryCtaUrl = "/login",
     showAnnouncement = false,
-    announcementText = "",
+    announcementText,
     announcementLink = "",
     announcementBg = "#7c3aed",
     announcementTextColor = "#ffffff",
     announcementDismissible = true,
-    logoutButtonText = "Log out",
+    logoutButtonText,
     showLanguageSwitcher = true,
   } = content;
 
@@ -399,23 +399,27 @@ export default function Header({ content, context }: HeaderProps) {
               {logo ? (
                 <Image
                   src={logo}
-                  alt={logoText}
+                  alt={logoText || ""}
                   className={`${logoSizeClasses[logoSize]} object-contain`}
                   width={120}
                   height={40}
                 />
               ) : (
-                <div
-                  className={`${logoSizeClasses[logoSize]} rounded-lg bg-linear-to-br from-violet-500 to-purple-600 flex items-center justify-center`}
-                >
-                  <span className="text-white font-bold text-sm">
-                    {logoText.charAt(0).toUpperCase()}
-                  </span>
-                </div>
+                logoText && (
+                  <div
+                    className={`${logoSizeClasses[logoSize]} rounded-lg bg-linear-to-br from-violet-500 to-purple-600 flex items-center justify-center`}
+                  >
+                    <span className="text-white font-bold text-sm">
+                      {logoText.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                )
               )}
-              <span className={`font-bold ${logoTextSizeClasses[logoSize]}`}>
-                {logoText}
-              </span>
+              {logoText && (
+                <span className={`font-bold ${logoTextSizeClasses[logoSize]}`}>
+                  {logoText}
+                </span>
+              )}
             </CmssyLink>
 
             {/* Desktop navigation - centered */}
@@ -511,16 +515,18 @@ export default function Header({ content, context }: HeaderProps) {
                       </span>
                     )}
                   </div>
-                  <button
-                    onClick={handleLogout}
-                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {logoutButtonText}
-                  </button>
+                  {logoutButtonText && (
+                    <button
+                      onClick={handleLogout}
+                      className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {logoutButtonText}
+                    </button>
+                  )}
                 </div>
               ) : (
                 <>
-                  {showSecondaryCta && (
+                  {showSecondaryCta && secondaryCtaLabel && (
                     <CmssyLink
                       href={secondaryCtaUrl}
                       className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 hover:bg-accent hover:text-accent-foreground transition-colors"
@@ -528,7 +534,7 @@ export default function Header({ content, context }: HeaderProps) {
                       {secondaryCtaLabel}
                     </CmssyLink>
                   )}
-                  {showCta && (
+                  {showCta && ctaLabel && (
                     <CmssyLink
                       href={ctaUrl}
                       className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 bg-linear-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white transition-colors"
@@ -595,23 +601,29 @@ export default function Header({ content, context }: HeaderProps) {
                 {logo ? (
                   <Image
                     src={logo}
-                    alt={logoText}
+                    alt={logoText || ""}
                     className={`${logoSizeClasses[logoSize]} object-contain`}
                     width={120}
                     height={40}
                   />
                 ) : (
-                  <div
-                    className={`${logoSizeClasses[logoSize]} rounded-lg bg-linear-to-br from-violet-500 to-purple-600 flex items-center justify-center`}
-                  >
-                    <span className="text-white font-bold text-sm">
-                      {logoText.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
+                  logoText && (
+                    <div
+                      className={`${logoSizeClasses[logoSize]} rounded-lg bg-linear-to-br from-violet-500 to-purple-600 flex items-center justify-center`}
+                    >
+                      <span className="text-white font-bold text-sm">
+                        {logoText.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  )
                 )}
-                <span className={`font-bold ${logoTextSizeClasses[logoSize]}`}>
-                  {logoText}
-                </span>
+                {logoText && (
+                  <span
+                    className={`font-bold ${logoTextSizeClasses[logoSize]}`}
+                  >
+                    {logoText}
+                  </span>
+                )}
               </CmssyLink>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -733,16 +745,18 @@ export default function Header({ content, context }: HeaderProps) {
                       {getUserDisplayName()}
                     </span>
                   </div>
-                  <button
-                    onClick={handleLogout}
-                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {logoutButtonText}
-                  </button>
+                  {logoutButtonText && (
+                    <button
+                      onClick={handleLogout}
+                      className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {logoutButtonText}
+                    </button>
+                  )}
                 </div>
               ) : (
                 <div className="flex flex-col gap-3">
-                  {showSecondaryCta && (
+                  {showSecondaryCta && secondaryCtaLabel && (
                     <CmssyLink
                       href={secondaryCtaUrl}
                       className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 w-full border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
@@ -751,7 +765,7 @@ export default function Header({ content, context }: HeaderProps) {
                       {secondaryCtaLabel}
                     </CmssyLink>
                   )}
-                  {showCta && (
+                  {showCta && ctaLabel && (
                     <CmssyLink
                       href={ctaUrl}
                       className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 w-full bg-linear-to-r from-violet-600 to-purple-600 text-white transition-colors"

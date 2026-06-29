@@ -12,13 +12,13 @@ export default function Cta({
   context?: CmssyBlockContext;
 }) {
   const {
-    badgeText = "Start building today",
-    heading = "Ready to create something",
-    headingLine2 = "amazing?",
-    description = "Join thousands of creators who trust cmssy to build their online presence. Start free, no credit card required.",
-    primaryButtonText = "Get Started Free",
+    badgeText,
+    heading,
+    headingLine2,
+    description,
+    primaryButtonText,
     primaryButtonUrl = "/signup",
-    secondaryButtonText = "Talk to Sales",
+    secondaryButtonText,
     secondaryButtonUrl = "/contact",
   } = content;
 
@@ -47,19 +47,23 @@ export default function Cta({
               </div>
             )}
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-              {heading}
-              {headingLine2 && (
-                <>
-                  <br />
-                  {headingLine2}
-                </>
-              )}
-            </h2>
+            {(heading || headingLine2) && (
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
+                {heading}
+                {headingLine2 && (
+                  <>
+                    <br />
+                    {headingLine2}
+                  </>
+                )}
+              </h2>
+            )}
 
-            <p className="text-lg text-violet-100 max-w-2xl mx-auto mb-10">
-              {description}
-            </p>
+            {description && (
+              <p className="text-lg text-violet-100 max-w-2xl mx-auto mb-10">
+                {description}
+              </p>
+            )}
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               {primaryButtonText && (

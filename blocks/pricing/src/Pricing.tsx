@@ -12,10 +12,10 @@ export default function Pricing({
   context?: CmssyBlockContext;
 }) {
   const {
-    heading = "Simple,",
-    headingHighlight = "transparent pricing",
-    description = "Start free and upgrade as you grow. No hidden fees, no surprises.",
-    popularBadgeText = "MOST POPULAR",
+    heading,
+    headingHighlight,
+    description,
+    popularBadgeText,
     plans = [],
   } = content;
 
@@ -24,13 +24,19 @@ export default function Pricing({
       <Container>
         {/* Section header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            {heading}{" "}
-            <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
-              {headingHighlight}
-            </span>
-          </h2>
-          <p className="text-lg text-muted-foreground">{description}</p>
+          {(heading || headingHighlight) && (
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              {heading}{" "}
+              {headingHighlight && (
+                <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                  {headingHighlight}
+                </span>
+              )}
+            </h2>
+          )}
+          {description && (
+            <p className="text-lg text-muted-foreground">{description}</p>
+          )}
         </div>
 
         {/* Pricing cards */}
@@ -45,7 +51,7 @@ export default function Pricing({
               }`}
             >
               {/* Popular badge */}
-              {plan.popular && (
+              {plan.popular && popularBadgeText && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-max">
                   <span className="bg-linear-to-r from-amber-400 to-orange-400 text-black text-xs font-bold px-4 py-1 rounded-full">
                     {popularBadgeText}

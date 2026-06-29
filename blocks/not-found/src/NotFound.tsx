@@ -5,12 +5,12 @@ import { BlockContent } from "./block";
 
 export default function NotFound({ content }: { content: BlockContent }) {
   const {
-    heading = "404",
-    title = "Page not found",
-    description = "The page you're looking for doesn't exist or has been moved. Let's get you back on track.",
-    primaryButtonText = "Back to Home",
+    heading,
+    title,
+    description,
+    primaryButtonText,
     primaryButtonUrl = "/",
-    secondaryButtonText = "Contact Support",
+    secondaryButtonText,
     secondaryButtonUrl = "/contact",
   } = content;
 
@@ -70,14 +70,16 @@ export default function NotFound({ content }: { content: BlockContent }) {
       {/* ── Content ── */}
       <Container className="relative z-10 py-20 text-center sm:py-28">
         {/* Giant glitching number */}
-        <div className="mb-4 select-none sm:mb-6" aria-hidden="true">
-          <span
-            className="nf-glitch-text inline-block bg-linear-to-r from-violet-600 via-purple-500 to-violet-600 bg-clip-text text-[8rem] leading-none font-black tracking-tighter text-transparent sm:text-[12rem] lg:text-[16rem]"
-            data-text={heading}
-          >
-            {heading}
-          </span>
-        </div>
+        {heading && (
+          <div className="mb-4 select-none sm:mb-6" aria-hidden="true">
+            <span
+              className="nf-glitch-text inline-block bg-linear-to-r from-violet-600 via-purple-500 to-violet-600 bg-clip-text text-[8rem] leading-none font-black tracking-tighter text-transparent sm:text-[12rem] lg:text-[16rem]"
+              data-text={heading}
+            >
+              {heading}
+            </span>
+          </div>
+        )}
 
         {/* Decorative crosshair divider */}
         <div className="mb-8 flex items-center justify-center gap-3 sm:mb-10">
@@ -90,9 +92,11 @@ export default function NotFound({ content }: { content: BlockContent }) {
         </div>
 
         {/* Title */}
-        <h1 className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
-          {title}
-        </h1>
+        {title && (
+          <h1 className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
+            {title}
+          </h1>
+        )}
 
         {/* Description */}
         {description && (

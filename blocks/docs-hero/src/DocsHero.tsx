@@ -13,7 +13,7 @@ function getIcon(name?: string): LucideIcon {
 export default function DocsHero({ content }: { content: BlockContent }) {
   const {
     badge,
-    heading = "Documentation",
+    heading,
     description,
     variant = "default",
     quickLinks = [],
@@ -49,15 +49,17 @@ export default function DocsHero({ content }: { content: BlockContent }) {
           )}
 
           {/* Heading */}
-          <h1
-            className={`text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4 ${
-              variant === "minimal"
-                ? "text-foreground"
-                : "bg-linear-to-br from-foreground to-foreground/70 bg-clip-text text-transparent"
-            }`}
-          >
-            {heading}
-          </h1>
+          {heading && (
+            <h1
+              className={`text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4 ${
+                variant === "minimal"
+                  ? "text-foreground"
+                  : "bg-linear-to-br from-foreground to-foreground/70 bg-clip-text text-transparent"
+              }`}
+            >
+              {heading}
+            </h1>
+          )}
 
           {/* Description */}
           {description && (

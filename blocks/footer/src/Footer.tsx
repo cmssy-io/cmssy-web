@@ -24,14 +24,14 @@ export default function Footer({
 }) {
   const {
     logo,
-    logoText = "cmssy",
-    tagline = "The modern CMS that makes website creation effortless.",
+    logoText,
+    tagline,
     linkColumns = [],
     showSocial = true,
     twitterUrl,
     githubUrl,
     linkedinUrl,
-    copyrightText = "cmssy. All rights reserved.",
+    copyrightText,
     showLanguageSwitcher = false,
   } = content;
 
@@ -55,19 +55,23 @@ export default function Footer({
           <div className="col-span-2 sm:col-span-3 md:col-span-1 lg:col-span-2">
             <CmssyLink href="/" className="flex items-center gap-2 mb-4">
               {logo ? (
-                <img src={logo} alt={logoText} className="h-8 w-auto" />
-              ) : (
+                <img src={logo} alt={logoText || ""} className="h-8 w-auto" />
+              ) : logoText ? (
                 <div className="w-8 h-8 rounded-lg bg-linear-to-br from-violet-500 to-purple-600 flex items-center justify-center">
                   <span className="text-white font-bold text-sm">
                     {logoText.charAt(0).toUpperCase()}
                   </span>
                 </div>
+              ) : null}
+              {logoText && (
+                <span className="font-bold text-xl">{logoText}</span>
               )}
-              <span className="font-bold text-xl">{logoText}</span>
             </CmssyLink>
-            <p className="text-sm text-muted-foreground mb-6 max-w-xs">
-              {tagline}
-            </p>
+            {tagline && (
+              <p className="text-sm text-muted-foreground mb-6 max-w-xs">
+                {tagline}
+              </p>
+            )}
 
             {/* Social links */}
             {showSocial && (twitterUrl || githubUrl || linkedinUrl) && (
@@ -130,23 +134,27 @@ export default function Footer({
         </div>
 
         {/* Bottom bar */}
-        <div
-          className={`mt-12 pt-8 border-t ${hasLanguageSwitcher ? "flex items-center justify-between" : ""}`}
-        >
-          <p
-            className={`text-sm text-muted-foreground ${hasLanguageSwitcher ? "" : "text-center"}`}
+        {(copyrightText || hasLanguageSwitcher) && (
+          <div
+            className={`mt-12 pt-8 border-t ${hasLanguageSwitcher ? "flex items-center justify-between" : ""}`}
           >
-            © {currentYear} {copyrightText}
-          </p>
-          {hasLanguageSwitcher && (
-            <LanguageSwitcher
-              enabledLanguages={i18n.enabledLanguages}
-              defaultLanguage={i18n.defaultLanguage}
-              currentLanguage={i18n.currentLanguage}
-              variant="full"
-            />
-          )}
-        </div>
+            {copyrightText && (
+              <p
+                className={`text-sm text-muted-foreground ${hasLanguageSwitcher ? "" : "text-center"}`}
+              >
+                © {currentYear} {copyrightText}
+              </p>
+            )}
+            {hasLanguageSwitcher && (
+              <LanguageSwitcher
+                enabledLanguages={i18n.enabledLanguages}
+                defaultLanguage={i18n.defaultLanguage}
+                currentLanguage={i18n.currentLanguage}
+                variant="full"
+              />
+            )}
+          </div>
+        )}
       </Container>
     </footer>
   );

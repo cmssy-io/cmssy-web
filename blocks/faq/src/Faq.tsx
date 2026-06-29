@@ -7,24 +7,23 @@ import {
 import { BlockContent } from "./block";
 
 export default function Faq({ content }: { content: BlockContent }) {
-  const {
-    heading = "",
-    headingHighlight = "",
-    description = "",
-    faqs = [],
-  } = content;
+  const { heading, headingHighlight, description, faqs = [] } = content;
 
   return (
     <section id="faq" className="py-24 bg-slate-50/50">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            {heading}{" "}
-            <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
-              {headingHighlight}
-            </span>
-          </h2>
+          {(heading || headingHighlight) && (
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              {heading}{" "}
+              {headingHighlight && (
+                <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                  {headingHighlight}
+                </span>
+              )}
+            </h2>
+          )}
           {description && (
             <p className="text-lg text-muted-foreground">{description}</p>
           )}

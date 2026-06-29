@@ -5,20 +5,18 @@ import { BlockContent } from "./block";
 
 export default function Hero({ content }: { content: BlockContent }) {
   const {
-    badgeText = "AI-Powered Page Builder",
-    heading = "Build websites",
-    headingHighlight = "without limits",
-    subheading = "The modern CMS that makes website creation effortless. Drag, drop, and let AI do the heavy lifting. No coding required.",
-    primaryButtonText = "Start Building Free",
+    badgeText,
+    heading,
+    headingHighlight,
+    subheading,
+    primaryButtonText,
     primaryButtonUrl = "/signup",
-    secondaryButtonText = "Watch Demo",
+    secondaryButtonText,
     secondaryButtonUrl = "#demo",
-    socialProofPrefix = "",
-    socialProofCount = "",
-    socialProofText = "",
-    media = "",
-    mediaPlaceholderHeading = "Page Builder Preview",
-    mediaPlaceholderText = "Drag & drop interface with real-time preview",
+    socialProofPrefix,
+    socialProofCount,
+    socialProofText,
+    media,
   } = content;
 
   // Detect if media is a video (by file extension)
@@ -70,17 +68,19 @@ export default function Hero({ content }: { content: BlockContent }) {
         )}
 
         {/* Main heading */}
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
-          {heading}
-          {headingHighlight && (
-            <>
-              <br />
-              <span className="bg-linear-to-r from-violet-600 via-purple-600 to-violet-600 bg-clip-text text-transparent">
-                {headingHighlight}
-              </span>
-            </>
-          )}
-        </h1>
+        {(heading || headingHighlight) && (
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
+            {heading}
+            {headingHighlight && (
+              <>
+                <br />
+                <span className="bg-linear-to-r from-violet-600 via-purple-600 to-violet-600 bg-clip-text text-transparent">
+                  {headingHighlight}
+                </span>
+              </>
+            )}
+          </h1>
+        )}
 
         {/* Subheading */}
         {subheading && (

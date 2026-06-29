@@ -37,24 +37,25 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 export default function Features({ content }: { content: BlockContent }) {
-  const {
-    heading = "Everything you need to",
-    headingHighlight = "build amazing websites",
-    description = "Powerful features that make website creation a breeze.",
-    features = [],
-  } = content;
+  const { heading, headingHighlight, description, features = [] } = content;
 
   return (
     <section id="features" className="py-24 bg-slate-50/50">
       <Container>
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            {heading}{" "}
-            <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
-              {headingHighlight}
-            </span>
-          </h2>
-          <p className="text-lg text-muted-foreground">{description}</p>
+          {(heading || headingHighlight) && (
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              {heading}{" "}
+              {headingHighlight && (
+                <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                  {headingHighlight}
+                </span>
+              )}
+            </h2>
+          )}
+          {description && (
+            <p className="text-lg text-muted-foreground">{description}</p>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
