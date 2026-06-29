@@ -13,8 +13,7 @@ import { LanguageSwitcher } from "../../../components/language-switcher";
 import { BlockContent } from "./block";
 
 type PageEntry =
-  | string
-  | { slug: string; displayName?: Record<string, string> };
+  string | { slug: string; displayName?: Record<string, string> };
 
 interface PlatformContext {
   locale?: {
@@ -86,12 +85,12 @@ function SidebarContent({
 }: {
   sections: BlockContent["sections"];
   showSearch: boolean;
-  searchPlaceholder: string;
+  searchPlaceholder?: string;
   logo?: string;
-  logoText: string;
+  logoText?: string;
   logoUrl: string;
   showVersionSelector: boolean;
-  currentVersion: string;
+  currentVersion?: string;
   githubUrl?: string;
   slackUrl?: string;
   hasLanguageSwitcher: boolean;
@@ -129,11 +128,13 @@ function SidebarContent({
           {logo && (
             <img src={logo} alt="" className="size-6 rounded-xs object-cover" />
           )}
-          <span className="text-[15px] font-semibold tracking-tight">
-            {logoText}
-          </span>
+          {logoText && (
+            <span className="text-[15px] font-semibold tracking-tight">
+              {logoText}
+            </span>
+          )}
         </CmssyLink>
-        {showVersionSelector && (
+        {showVersionSelector && currentVersion && (
           <span className="ml-auto text-[10px] font-medium tracking-wide uppercase bg-muted text-muted-foreground px-2 py-0.5 rounded-md">
             {currentVersion}
           </span>
@@ -305,13 +306,13 @@ export default function DocsSidebar({
 }) {
   const {
     logo,
-    logoText = "Docs",
+    logoText,
     logoUrl = "/",
     sections = [],
     showSearch = true,
-    searchPlaceholder = "Search docs...",
+    searchPlaceholder,
     showVersionSelector = false,
-    currentVersion = "v1.0",
+    currentVersion,
     githubUrl,
     slackUrl,
     showLanguageSwitcher = false,

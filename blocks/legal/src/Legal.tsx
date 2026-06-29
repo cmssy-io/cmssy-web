@@ -10,18 +10,18 @@ import { BlockContent } from "./block";
 
 export default function Legal({ content }: { content: BlockContent }) {
   const {
-    badge = "Privacy",
-    heading = "Privacy",
-    headingHighlight = "Policy",
-    description = "Learn how we collect, use, and protect your personal information.",
+    badge,
+    heading,
+    headingHighlight,
+    description,
     showSummary = true,
-    summaryTitle = "TL;DR",
-    summaryContent = "We respect your privacy and only collect data necessary to provide our services.",
+    summaryTitle,
+    summaryContent,
     sections = [],
     showFooterLinks = true,
-    footerText = "This policy is part of our",
+    footerText,
     footerLinks = [],
-    lastUpdated = "January 2025",
+    lastUpdated,
   } = content;
 
   return (
@@ -34,22 +34,30 @@ export default function Legal({ content }: { content: BlockContent }) {
               {badge}
             </span>
           )}
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            {heading}{" "}
-            <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
-              {headingHighlight}
-            </span>
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {description}
-          </p>
+          {(heading || headingHighlight) && (
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              {heading}{" "}
+              {headingHighlight && (
+                <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                  {headingHighlight}
+                </span>
+              )}
+            </h2>
+          )}
+          {description && (
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              {description}
+            </p>
+          )}
         </div>
 
         <div className="max-w-3xl mx-auto">
           {/* Summary Box */}
           {showSummary && summaryContent && (
             <div className="bg-linear-to-br from-violet-50 to-purple-50 rounded-2xl border border-violet-200 p-6 mb-8">
-              <h3 className="font-semibold mb-2 text-lg">{summaryTitle}</h3>
+              {summaryTitle && (
+                <h3 className="font-semibold mb-2 text-lg">{summaryTitle}</h3>
+              )}
               <p className="text-muted-foreground">{summaryContent}</p>
             </div>
           )}
@@ -80,7 +88,7 @@ export default function Legal({ content }: { content: BlockContent }) {
           <div className="mt-8 text-center text-sm text-muted-foreground space-y-2">
             {showFooterLinks && footerLinks.length > 0 && (
               <p>
-                {footerText}{" "}
+                {footerText && <>{footerText} </>}
                 {footerLinks.map((link, index) => (
                   <span key={index}>
                     {index > 0 && " and "}

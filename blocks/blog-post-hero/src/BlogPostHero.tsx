@@ -19,14 +19,14 @@ function formatDate(dateStr: string | undefined, lang = "en"): string {
 export default function BlogPostHero({ content }: { content: BlockContent }) {
   const {
     coverImage,
-    title = "Untitled Post",
+    title,
     excerpt,
     category,
     author,
     authorAvatar,
     date,
     readingTime = 5,
-    breadcrumbLabel = "Blog",
+    breadcrumbLabel,
     breadcrumbUrl = "/blog",
   } = content;
 
@@ -57,16 +57,22 @@ export default function BlogPostHero({ content }: { content: BlockContent }) {
         <Container className="relative z-10 pb-10 sm:pb-14 pt-32">
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm text-white/60 mb-5">
-            <CmssyLink
-              href={breadcrumbUrl}
-              className="hover:text-white transition-colors no-underline text-white/60"
-            >
-              {breadcrumbLabel}
-            </CmssyLink>
-            <span className="text-white/30">/</span>
-            <span className="text-white/40 truncate max-w-[200px] sm:max-w-none">
-              {title}
-            </span>
+            {breadcrumbLabel && (
+              <>
+                <CmssyLink
+                  href={breadcrumbUrl}
+                  className="hover:text-white transition-colors no-underline text-white/60"
+                >
+                  {breadcrumbLabel}
+                </CmssyLink>
+                <span className="text-white/30">/</span>
+              </>
+            )}
+            {title && (
+              <span className="text-white/40 truncate max-w-[200px] sm:max-w-none">
+                {title}
+              </span>
+            )}
           </nav>
 
           {/* Category */}
@@ -77,9 +83,11 @@ export default function BlogPostHero({ content }: { content: BlockContent }) {
           )}
 
           {/* Title */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-white leading-[1.1] mb-4 max-w-4xl">
-            {title}
-          </h1>
+          {title && (
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-white leading-[1.1] mb-4 max-w-4xl">
+              {title}
+            </h1>
+          )}
 
           {/* Excerpt */}
           {excerpt && (

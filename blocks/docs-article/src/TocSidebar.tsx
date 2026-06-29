@@ -9,7 +9,7 @@ interface TocItem {
 
 interface TocSidebarProps {
   items: TocItem[];
-  title: string;
+  title?: string;
 }
 
 /**
@@ -42,7 +42,7 @@ export function TocSidebar({ items, title }: TocSidebarProps) {
   return (
     <aside className="hidden xl:block w-64 shrink-0">
       <div className="sticky top-20">
-        <h4 className="text-sm font-semibold mb-4">{title}</h4>
+        {title && <h4 className="text-sm font-semibold mb-4">{title}</h4>}
         <nav className="space-y-1">
           {items.map((item) => (
             <a

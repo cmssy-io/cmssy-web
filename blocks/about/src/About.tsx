@@ -170,15 +170,15 @@ interface TechItem {
 
 export default function About({ content }: { content: BlockContent }) {
   const {
-    badgeText = "About",
-    heading = "Building the Future of",
-    headingHighlight = "CMS",
-    subtitle = "We're on a mission to make professional website creation accessible to everyone.",
-    missionHeading = "Our Mission",
-    missionText = "We believe that creating beautiful, professional websites shouldn't require a team of developers or expensive agencies.",
-    valuesHeading = "Our Values",
+    badgeText,
+    heading,
+    headingHighlight,
+    subtitle,
+    missionHeading,
+    missionText,
+    valuesHeading,
     values = [],
-    techStackHeading = "Built With Modern Tech",
+    techStackHeading,
     showTechStack = true,
     techStack = [],
   } = content;
@@ -198,14 +198,16 @@ export default function About({ content }: { content: BlockContent }) {
               {badgeText}
             </span>
           )}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-            {heading}{" "}
-            {headingHighlight && (
-              <span className="bg-linear-to-r from-violet-600 via-purple-600 to-violet-600 bg-clip-text text-transparent">
-                {headingHighlight}
-              </span>
-            )}
-          </h1>
+          {(heading || headingHighlight) && (
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+              {heading}{" "}
+              {headingHighlight && (
+                <span className="bg-linear-to-r from-violet-600 via-purple-600 to-violet-600 bg-clip-text text-transparent">
+                  {headingHighlight}
+                </span>
+              )}
+            </h1>
+          )}
           {subtitle && (
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               {subtitle}
@@ -218,7 +220,9 @@ export default function About({ content }: { content: BlockContent }) {
           <div className="max-w-3xl mx-auto mb-20">
             <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-xl shadow-violet-500/5 p-8 sm:p-12 text-center">
               <GlobeIcon className="w-12 h-12 mx-auto mb-6 text-violet-600" />
-              <h2 className="text-2xl font-bold mb-4">{missionHeading}</h2>
+              {missionHeading && (
+                <h2 className="text-2xl font-bold mb-4">{missionHeading}</h2>
+              )}
               <p className="text-lg text-muted-foreground leading-relaxed">
                 {missionText}
               </p>
@@ -229,9 +233,11 @@ export default function About({ content }: { content: BlockContent }) {
         {/* Values Grid */}
         {(values as Value[]).length > 0 && (
           <div className="mb-20">
-            <h2 className="text-2xl font-bold text-center mb-10">
-              {valuesHeading}
-            </h2>
+            {valuesHeading && (
+              <h2 className="text-2xl font-bold text-center mb-10">
+                {valuesHeading}
+              </h2>
+            )}
             <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
               {(values as Value[]).map((value, index) => {
                 const IconComponent = iconMap[value.icon] || SparklesIcon;
@@ -263,10 +269,12 @@ export default function About({ content }: { content: BlockContent }) {
         {/* Tech Stack */}
         {showTechStack && (techStack as TechItem[]).length > 0 && (
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl font-bold text-center mb-10">
-              <CodeIcon className="inline-block w-6 h-6 mr-2 text-violet-600" />
-              {techStackHeading}
-            </h2>
+            {techStackHeading && (
+              <h2 className="text-2xl font-bold text-center mb-10">
+                <CodeIcon className="inline-block w-6 h-6 mr-2 text-violet-600" />
+                {techStackHeading}
+              </h2>
+            )}
             <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-xl shadow-violet-500/5 p-6 sm:p-8">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {(techStack as TechItem[]).map((tech, index) => (

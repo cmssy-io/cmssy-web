@@ -70,7 +70,7 @@ export default function DocsArticle({ content }: { content: BlockContent }) {
     lastUpdated,
     content: articleContent = "",
     showToc = true,
-    tocTitle = "On this page",
+    tocTitle,
     showPrevNext = true,
     prevPage = [],
     nextPage = [],

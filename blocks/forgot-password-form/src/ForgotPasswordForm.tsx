@@ -80,19 +80,19 @@ export default function ForgotPasswordForm({
   context?: PlatformContext;
 }) {
   const {
-    heading = "Forgot your password?",
-    description = "Enter your email address and we'll send you a link to reset your password.",
-    emailLabel = "Email",
-    emailPlaceholder = "you@example.com",
-    submitButtonText = "Send reset link",
-    submitLoadingText = "Sending...",
+    heading,
+    description,
+    emailLabel,
+    emailPlaceholder,
+    submitButtonText,
+    submitLoadingText,
     showLoginLink = true,
-    loginLinkText = "Back to login",
+    loginLinkText,
     loginUrl = "/login",
-    successHeading = "Check your email",
-    emailSentText = "We sent an email to",
-    successMessage = "If an account exists with this email, you will receive a password reset link shortly.",
-    errorMessage = "Something went wrong. Please try again.",
+    successHeading,
+    emailSentText,
+    successMessage,
+    errorMessage,
     variant = "default",
   } = content;
 
@@ -149,7 +149,7 @@ export default function ForgotPasswordForm({
           setIsSuccess(true);
         }
       } catch {
-        setError(errorMessage);
+        setError(errorMessage || null);
       }
 
       setIsSubmitting(false);
@@ -180,9 +180,13 @@ export default function ForgotPasswordForm({
               <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
                 <CheckIcon className="h-6 w-6 text-green-600" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">{successHeading}</h3>
-              <p className="text-muted-foreground mb-2">{successMessage}</p>
-              {submittedEmail && (
+              {successHeading && (
+                <h3 className="text-lg font-semibold mb-2">{successHeading}</h3>
+              )}
+              {successMessage && (
+                <p className="text-muted-foreground mb-2">{successMessage}</p>
+              )}
+              {submittedEmail && emailSentText && (
                 <p className="text-sm text-muted-foreground">
                   {emailSentText}{" "}
                   <span className="font-medium text-foreground">
@@ -190,7 +194,7 @@ export default function ForgotPasswordForm({
                   </span>
                 </p>
               )}
-              {showLoginLink && (
+              {showLoginLink && loginLinkText && (
                 <CmssyLink
                   href={loginUrl}
                   className="inline-flex items-center gap-2 mt-6 text-primary hover:underline"
@@ -242,12 +246,14 @@ export default function ForgotPasswordForm({
 
             {/* Email */}
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium mb-1.5"
-              >
-                {emailLabel}
-              </label>
+              {emailLabel && (
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium mb-1.5"
+                >
+                  {emailLabel}
+                </label>
+              )}
               <div className="relative">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                   <MailIcon className="h-4 w-4" />
@@ -275,7 +281,7 @@ export default function ForgotPasswordForm({
           </form>
 
           {/* Login link */}
-          {showLoginLink && (
+          {showLoginLink && loginLinkText && (
             <p className="mt-6 text-center">
               <CmssyLink
                 href={loginUrl}

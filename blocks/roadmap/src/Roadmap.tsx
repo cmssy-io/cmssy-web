@@ -39,15 +39,15 @@ const statusConfig = {
 
 export default function Roadmap({ content }: { content: BlockContent }) {
   const {
-    badge = "Roadmap",
-    heading = "Product",
-    headingHighlight = "Roadmap",
-    description = "Transparency is one of our core values.",
+    badge,
+    heading,
+    headingHighlight,
+    description,
     columns = [],
     showCta = true,
-    ctaTitle = "Shape Our Roadmap",
-    ctaDescription = "Have a feature request or idea? We'd love to hear from you.",
-    ctaButtonText = "Submit Feedback",
+    ctaTitle,
+    ctaDescription,
+    ctaButtonText,
     ctaButtonUrl = "/contact",
   } = content;
 
@@ -61,15 +61,21 @@ export default function Roadmap({ content }: { content: BlockContent }) {
               {badge}
             </span>
           )}
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            {heading}{" "}
-            <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
-              {headingHighlight}
-            </span>
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            {description}
-          </p>
+          {(heading || headingHighlight) && (
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+              {heading}{" "}
+              {headingHighlight && (
+                <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                  {headingHighlight}
+                </span>
+              )}
+            </h2>
+          )}
+          {description && (
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              {description}
+            </p>
+          )}
         </div>
 
         {/* Kanban Board */}
@@ -126,15 +132,21 @@ export default function Roadmap({ content }: { content: BlockContent }) {
           <div className="max-w-2xl mx-auto">
             <div className="bg-linear-to-br from-violet-500 to-purple-600 rounded-2xl shadow-xl shadow-violet-500/25 p-8 text-center text-white">
               <MessageSquare className="size-10 mx-auto mb-4 opacity-90" />
-              <h3 className="text-2xl font-bold mb-3">{ctaTitle}</h3>
-              <p className="text-violet-100 mb-6">{ctaDescription}</p>
-              <CmssyLink
-                href={ctaButtonUrl}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-violet-600 font-medium rounded-lg hover:bg-violet-50 transition-colors"
-              >
-                {ctaButtonText}
-                <ArrowRight className="size-4" />
-              </CmssyLink>
+              {ctaTitle && (
+                <h3 className="text-2xl font-bold mb-3">{ctaTitle}</h3>
+              )}
+              {ctaDescription && (
+                <p className="text-violet-100 mb-6">{ctaDescription}</p>
+              )}
+              {ctaButtonText && (
+                <CmssyLink
+                  href={ctaButtonUrl}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-violet-600 font-medium rounded-lg hover:bg-violet-50 transition-colors"
+                >
+                  {ctaButtonText}
+                  <ArrowRight className="size-4" />
+                </CmssyLink>
+              )}
             </div>
           </div>
         )}

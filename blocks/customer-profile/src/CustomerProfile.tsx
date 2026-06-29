@@ -121,19 +121,19 @@ export default function CustomerProfile({
   context?: PlatformContext;
 }) {
   const {
-    heading = "Your Profile",
-    description = "Manage your account information.",
-    firstNameLabel = "First name",
-    lastNameLabel = "Last name",
-    displayNameLabel = "Display name",
-    displayNameHelpText = "This is how your name will appear publicly",
-    phoneLabel = "Phone number",
+    heading,
+    description,
+    firstNameLabel,
+    lastNameLabel,
+    displayNameLabel,
+    displayNameHelpText,
+    phoneLabel,
     showAvatarUpload = true,
     showPhoneField = true,
-    firstNamePlaceholder = "First name",
-    lastNamePlaceholder = "Last name",
-    displayNamePlaceholder = "Display name (public)",
-    phonePlaceholder = "+1 (555) 123-4567",
+    firstNamePlaceholder,
+    lastNamePlaceholder,
+    displayNamePlaceholder,
+    phonePlaceholder,
     saveButtonText = "Save changes",
     submitLoadingText = "Saving...",
     showLogoutButton = true,
@@ -141,7 +141,7 @@ export default function CustomerProfile({
     logoutRedirectUrl = "/",
     successMessage = "Profile updated successfully!",
     errorMessage = "Failed to update profile. Please try again.",
-    notLoggedInMessage = "Please log in to view your profile.",
+    notLoggedInMessage,
     loginUrl = "/login",
     loginButtonText = "Sign in",
     variant = "default",
@@ -276,9 +276,11 @@ export default function CustomerProfile({
               <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
                 <UserIcon className="h-6 w-6 text-muted-foreground" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">
-                {notLoggedInMessage}
-              </h3>
+              {notLoggedInMessage && (
+                <h3 className="text-lg font-semibold mb-2">
+                  {notLoggedInMessage}
+                </h3>
+              )}
               <CmssyLink
                 href={loginUrl}
                 className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-6 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
@@ -370,12 +372,14 @@ export default function CustomerProfile({
             {/* Name fields */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label
-                  htmlFor="firstName"
-                  className="block text-sm font-medium mb-1.5"
-                >
-                  {firstNameLabel}
-                </label>
+                {firstNameLabel && (
+                  <label
+                    htmlFor="firstName"
+                    className="block text-sm font-medium mb-1.5"
+                  >
+                    {firstNameLabel}
+                  </label>
+                )}
                 <input
                   type="text"
                   id="firstName"
@@ -387,12 +391,14 @@ export default function CustomerProfile({
                 />
               </div>
               <div>
-                <label
-                  htmlFor="lastName"
-                  className="block text-sm font-medium mb-1.5"
-                >
-                  {lastNameLabel}
-                </label>
+                {lastNameLabel && (
+                  <label
+                    htmlFor="lastName"
+                    className="block text-sm font-medium mb-1.5"
+                  >
+                    {lastNameLabel}
+                  </label>
+                )}
                 <input
                   type="text"
                   id="lastName"
@@ -407,12 +413,14 @@ export default function CustomerProfile({
 
             {/* Display name */}
             <div>
-              <label
-                htmlFor="displayName"
-                className="block text-sm font-medium mb-1.5"
-              >
-                {displayNameLabel}
-              </label>
+              {displayNameLabel && (
+                <label
+                  htmlFor="displayName"
+                  className="block text-sm font-medium mb-1.5"
+                >
+                  {displayNameLabel}
+                </label>
+              )}
               <div className="relative">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                   <UserIcon className="h-4 w-4" />
@@ -427,20 +435,24 @@ export default function CustomerProfile({
                   className="flex h-10 w-full rounded-md border border-input bg-background pl-10 pr-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 />
               </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                {displayNameHelpText}
-              </p>
+              {displayNameHelpText && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  {displayNameHelpText}
+                </p>
+              )}
             </div>
 
             {/* Phone */}
             {showPhoneField && (
               <div>
-                <label
-                  htmlFor="phone"
-                  className="block text-sm font-medium mb-1.5"
-                >
-                  {phoneLabel}
-                </label>
+                {phoneLabel && (
+                  <label
+                    htmlFor="phone"
+                    className="block text-sm font-medium mb-1.5"
+                  >
+                    {phoneLabel}
+                  </label>
+                )}
                 <div className="relative">
                   <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
                     <PhoneIcon className="h-4 w-4" />
