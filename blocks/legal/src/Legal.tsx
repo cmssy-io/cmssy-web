@@ -8,7 +8,18 @@ import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
 import { BlockContent } from "./block";
 
-export default function Legal({ content }: { content: BlockContent }) {
+// `data.sections` holds the section HTML already sanitized server-side by the
+// block loader (see block.ts). This component is client-rendered (Accordion),
+// so it must NOT sanitize here - that would bundle sanitize-html into the
+// client and run it in the browser. When the loader hasn't run (editor preview,
+// `data` undefined), fall back to escaped text rather than injecting raw HTML.
+export default function Legal({
+  content,
+  data,
+}: {
+  content: BlockContent;
+  data?: { sections?: string[] };
+}) {
   const {
     badge,
     heading,
@@ -65,22 +76,27 @@ export default function Legal({ content }: { content: BlockContent }) {
           {/* Accordion Sections */}
           <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-xl shadow-violet-500/5 p-6 sm:p-8">
             <Accordion type="single" collapsible className="w-full">
-              {sections.map((section, index) => (
-                <AccordionItem key={index} value={`section-${index}`}>
-                  <AccordionTrigger className="text-left font-semibold py-3">
-                    {section.title}
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="prose prose-sm max-w-none text-muted-foreground">
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: section.content || "",
-                        }}
-                      />
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
+              {sections.map((section, index) => {
+                const safeHtml = data?.sections?.[index];
+                return (
+                  <AccordionItem key={index} value={`section-${index}`}>
+                    <AccordionTrigger className="text-left font-semibold py-3">
+                      {section.title}
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="prose prose-sm max-w-none text-muted-foreground">
+                        {safeHtml !== undefined ? (
+                          <div dangerouslySetInnerHTML={{ __html: safeHtml }} />
+                        ) : (
+                          <p className="whitespace-pre-wrap">
+                            {section.content}
+                          </p>
+                        )}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                );
+              })}
             </Accordion>
           </div>
 

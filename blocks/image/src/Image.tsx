@@ -1,3 +1,5 @@
+import NextImage from "next/image";
+
 interface ImageContent {
   src?: string;
   alt?: string;
@@ -23,9 +25,12 @@ export default function Image({ content }: { content: ImageContent }) {
   return (
     <figure className="py-4 px-4 sm:px-6 lg:px-8">
       <div className={`mx-auto ${widthClasses[width] || widthClasses.full}`}>
-        <img
+        <NextImage
           src={src}
           alt={alt}
+          width={0}
+          height={0}
+          sizes="(max-width: 768px) 100vw, 800px"
           className={`w-full h-auto ${rounded ? "rounded-lg" : ""}`}
         />
         {caption && (

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Github, Linkedin, Twitter } from "lucide-react";
 import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
@@ -55,7 +56,13 @@ export default function Footer({
           <div className="col-span-2 sm:col-span-3 md:col-span-1 lg:col-span-2">
             <CmssyLink href="/" className="flex items-center gap-2 mb-4">
               {logo ? (
-                <img src={logo} alt={logoText || ""} className="h-8 w-auto" />
+                <Image
+                  src={logo}
+                  alt={logoText || ""}
+                  width={120}
+                  height={32}
+                  className="h-8 w-auto"
+                />
               ) : logoText ? (
                 <div className="w-8 h-8 rounded-lg bg-linear-to-br from-violet-500 to-purple-600 flex items-center justify-center">
                   <span className="text-white font-bold text-sm">
