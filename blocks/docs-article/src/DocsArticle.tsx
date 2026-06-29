@@ -141,7 +141,7 @@ export default function DocsArticle({ content }: { content: BlockContent }) {
 
         {/* Content */}
         <div
-          className="prose prose-violet dark:prose-invert max-w-none
+          className="prose prose-violet max-w-none
             prose-headings:scroll-mt-20
             prose-h2:text-2xl prose-h2:font-semibold prose-h2:mt-10 prose-h2:mb-4
             prose-h3:text-xl prose-h3:font-medium prose-h3:mt-8 prose-h3:mb-3
@@ -173,7 +173,7 @@ export default function DocsArticle({ content }: { content: BlockContent }) {
             {prev ? (
               <CmssyLink
                 href={prev.url}
-                className="group flex flex-col p-4 rounded-lg border hover:border-violet-500 hover:bg-violet-50 dark:hover:bg-violet-950/20 transition-colors"
+                className="group flex flex-col p-4 rounded-lg border hover:border-violet-500 hover:bg-violet-50 transition-colors"
               >
                 <span className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
                   <ChevronLeft className="size-3" />
@@ -189,7 +189,7 @@ export default function DocsArticle({ content }: { content: BlockContent }) {
             {next && (
               <CmssyLink
                 href={next.url}
-                className="group flex flex-col items-end p-4 rounded-lg border hover:border-violet-500 hover:bg-violet-50 dark:hover:bg-violet-950/20 transition-colors"
+                className="group flex flex-col items-end p-4 rounded-lg border hover:border-violet-500 hover:bg-violet-50 transition-colors"
               >
                 <span className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
                   Next

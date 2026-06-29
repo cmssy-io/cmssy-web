@@ -154,9 +154,9 @@ export default function NewsletterForm({
     return (
       <section className="py-12 lg:py-16">
         <div className="max-w-xl mx-auto px-4 text-center">
-          <div className="rounded-2xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/30 p-8">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/50">
-              <CheckIcon className="h-6 w-6 text-green-600 dark:text-green-400" />
+          <div className="rounded-2xl bg-green-50 border border-green-200 p-8">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+              <CheckIcon className="h-6 w-6 text-green-600" />
             </div>
             <h3 className="text-lg font-semibold mb-2">{successHeading}</h3>
             <p className="text-muted-foreground">{successMessage}</p>
@@ -171,7 +171,7 @@ export default function NewsletterForm({
 
   return (
     <section
-      className={`py-12 lg:py-16 ${isCard ? "bg-linear-to-br from-violet-50 via-background to-purple-50 dark:from-violet-950/20 dark:via-background dark:to-purple-950/20" : ""}`}
+      className={`py-12 lg:py-16 ${isCard ? "bg-linear-to-br from-violet-50 via-background to-purple-50" : ""}`}
     >
       <div className="max-w-xl mx-auto px-4">
         <div

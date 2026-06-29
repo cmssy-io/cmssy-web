@@ -55,7 +55,7 @@ export default function BlogPosts({ content, context }: Props) {
         {hasHeader && (
           <div className="text-center max-w-2xl mx-auto mb-12">
             {badge && (
-              <span className="inline-block text-xs font-semibold uppercase tracking-wider text-violet-600 bg-violet-100 dark:bg-violet-900/30 dark:text-violet-400 px-3 py-1 rounded-full mb-4">
+              <span className="inline-block text-xs font-semibold uppercase tracking-wider text-violet-600 bg-violet-100 px-3 py-1 rounded-full mb-4">
                 {badge}
               </span>
             )}

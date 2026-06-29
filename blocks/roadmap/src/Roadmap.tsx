@@ -13,27 +13,27 @@ import { BlockContent } from "./block";
 const statusConfig = {
   completed: {
     icon: CircleCheck,
-    color: "text-emerald-600 dark:text-emerald-400",
-    bgColor: "bg-emerald-50 dark:bg-emerald-900/20",
-    borderColor: "border-emerald-200 dark:border-emerald-800",
+    color: "text-emerald-600",
+    bgColor: "bg-emerald-50",
+    borderColor: "border-emerald-200",
   },
   in_progress: {
     icon: Clock,
-    color: "text-violet-600 dark:text-violet-400",
-    bgColor: "bg-violet-50 dark:bg-violet-900/20",
-    borderColor: "border-violet-200 dark:border-violet-800",
+    color: "text-violet-600",
+    bgColor: "bg-violet-50",
+    borderColor: "border-violet-200",
   },
   planned: {
     icon: Lightbulb,
-    color: "text-amber-600 dark:text-amber-400",
-    bgColor: "bg-amber-50 dark:bg-amber-900/20",
-    borderColor: "border-amber-200 dark:border-amber-800",
+    color: "text-amber-600",
+    bgColor: "bg-amber-50",
+    borderColor: "border-amber-200",
   },
   considering: {
     icon: CircleHelp,
-    color: "text-slate-600 dark:text-slate-400",
-    bgColor: "bg-slate-50 dark:bg-slate-900/20",
-    borderColor: "border-slate-200 dark:border-slate-800",
+    color: "text-slate-600",
+    bgColor: "bg-slate-50",
+    borderColor: "border-slate-200",
   },
 };
 
@@ -57,7 +57,7 @@ export default function Roadmap({ content }: { content: BlockContent }) {
         {/* Header */}
         <div className="text-center mb-16">
           {badge && (
-            <span className="inline-block px-4 py-1.5 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-violet-100 text-violet-700 text-sm font-medium mb-4">
               {badge}
             </span>
           )}
@@ -103,7 +103,7 @@ export default function Roadmap({ content }: { content: BlockContent }) {
                       <div className="flex items-start justify-between gap-2 mb-2">
                         <h4 className="font-medium text-sm">{item.title}</h4>
                         {item.badge && (
-                          <span className="px-2 py-0.5 text-xs font-medium bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 rounded-full whitespace-nowrap">
+                          <span className="px-2 py-0.5 text-xs font-medium bg-violet-100 text-violet-700 rounded-full whitespace-nowrap">
                             {item.badge}
                           </span>
                         )}

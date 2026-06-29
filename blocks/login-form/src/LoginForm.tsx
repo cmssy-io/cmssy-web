@@ -234,9 +234,7 @@ export default function LoginForm({
   return (
     <section
       className={`py-12 lg:py-16 ${
-        isCard
-          ? "bg-linear-to-br from-slate-50 via-background to-blue-50 dark:from-slate-950/20 dark:via-background dark:to-blue-950/20"
-          : ""
+        isCard ? "bg-linear-to-br from-slate-50 via-background to-blue-50" : ""
       }`}
     >
       <div className="max-w-md mx-auto px-4">
@@ -261,10 +259,8 @@ export default function LoginForm({
 
           {/* Success message */}
           {isSuccess && (
-            <div className="rounded-md bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/30 p-4 mb-4 text-center">
-              <p className="text-green-700 dark:text-green-300">
-                {successMessage}
-              </p>
+            <div className="rounded-md bg-green-50 border border-green-200 p-4 mb-4 text-center">
+              <p className="text-green-700">{successMessage}</p>
             </div>
           )}
 

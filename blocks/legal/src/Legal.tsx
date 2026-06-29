@@ -30,7 +30,7 @@ export default function Legal({ content }: { content: BlockContent }) {
         {/* Header */}
         <div className="text-center mb-16">
           {badge && (
-            <span className="inline-block px-4 py-1.5 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-violet-100 text-violet-700 text-sm font-medium mb-4">
               {badge}
             </span>
           )}
@@ -48,7 +48,7 @@ export default function Legal({ content }: { content: BlockContent }) {
         <div className="max-w-3xl mx-auto">
           {/* Summary Box */}
           {showSummary && summaryContent && (
-            <div className="bg-linear-to-br from-violet-50 to-purple-50 dark:from-violet-950/20 dark:to-purple-950/20 rounded-2xl border border-violet-200 dark:border-violet-800 p-6 mb-8">
+            <div className="bg-linear-to-br from-violet-50 to-purple-50 rounded-2xl border border-violet-200 p-6 mb-8">
               <h3 className="font-semibold mb-2 text-lg">{summaryTitle}</h3>
               <p className="text-muted-foreground">{summaryContent}</p>
             </div>
@@ -63,7 +63,7 @@ export default function Legal({ content }: { content: BlockContent }) {
                     {section.title}
                   </AccordionTrigger>
                   <AccordionContent>
-                    <div className="prose prose-sm dark:prose-invert max-w-none text-muted-foreground">
+                    <div className="prose prose-sm max-w-none text-muted-foreground">
                       <div
                         dangerouslySetInnerHTML={{
                           __html: section.content || "",

@@ -93,7 +93,7 @@ export default function DocsApiReference({
   return (
     <Container as="section" className="py-6">
       {/* Header */}
-      <div className="rounded-lg border bg-zinc-950 dark:bg-zinc-950 overflow-hidden">
+      <div className="rounded-lg border bg-zinc-950 overflow-hidden">
         <div className="px-6 py-5 border-b border-zinc-800">
           <div className="flex items-center gap-3 flex-wrap">
             <span

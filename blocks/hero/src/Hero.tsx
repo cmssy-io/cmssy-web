@@ -31,7 +31,7 @@ export default function Hero({ content }: { content: BlockContent }) {
   return (
     <section className="cmssy-hero-section relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-linear-to-br from-violet-50 via-background to-purple-50 dark:from-violet-950/20 dark:via-background dark:to-purple-950/20" />
+      <div className="absolute inset-0 bg-linear-to-br from-violet-50 via-background to-purple-50" />
 
       {/* Animated gradient orbs */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-400/30 rounded-full blur-3xl animate-pulse" />
@@ -51,7 +51,7 @@ export default function Hero({ content }: { content: BlockContent }) {
       <Container className="relative py-16 sm:py-24 lg:py-32 text-center">
         {/* Badge */}
         {badgeText && (
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 text-sm font-medium mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-100 text-violet-700 text-sm font-medium mb-8">
             <svg
               className="w-4 h-4"
               fill="none"

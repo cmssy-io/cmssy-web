@@ -44,11 +44,11 @@ export default function DocsCardGrid({ content }: { content: BlockContent }) {
               className="group relative flex flex-col p-6 rounded-xl border bg-card hover:border-violet-500 hover:shadow-lg hover:shadow-violet-500/5 transition-all duration-200"
             >
               <div className="flex items-start gap-4">
-                <div className="p-2 rounded-lg bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 group-hover:bg-violet-500 group-hover:text-white transition-colors">
+                <div className="p-2 rounded-lg bg-violet-100 text-violet-600 group-hover:bg-violet-500 group-hover:text-white transition-colors">
                   <Icon className="h-5 w-5" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold mb-1 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+                  <h3 className="font-semibold mb-1 group-hover:text-violet-600 transition-colors">
                     {card.title}
                   </h3>
                   {card.description && (
@@ -59,7 +59,7 @@ export default function DocsCardGrid({ content }: { content: BlockContent }) {
                 </div>
               </div>
 
-              <div className="mt-4 flex items-center gap-1 text-sm font-medium text-violet-600 dark:text-violet-400 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="mt-4 flex items-center gap-1 text-sm font-medium text-violet-600 opacity-0 group-hover:opacity-100 transition-opacity">
                 <span>Learn more</span>
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>

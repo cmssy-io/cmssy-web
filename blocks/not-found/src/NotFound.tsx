@@ -17,7 +17,7 @@ export default function NotFound({ content }: { content: BlockContent }) {
   return (
     <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden">
       {/* ── Background: dark gradient wash ── */}
-      <div className="absolute inset-0 bg-linear-to-b from-background via-violet-950/5 to-background dark:via-violet-950/20" />
+      <div className="absolute inset-0 bg-linear-to-b from-background via-violet-950/5 to-background" />
 
       {/* ── Radar ping rings ── */}
       <div className="nf-radar-ring" />

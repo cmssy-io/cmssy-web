@@ -186,7 +186,7 @@ export default function About({ content }: { content: BlockContent }) {
   return (
     <section className="relative min-h-screen py-24 lg:py-32">
       {/* Background */}
-      <div className="absolute inset-0 bg-linear-to-br from-violet-50 via-background to-purple-50 dark:from-violet-950/20 dark:via-background dark:to-purple-950/20" />
+      <div className="absolute inset-0 bg-linear-to-br from-violet-50 via-background to-purple-50" />
       <div className="absolute top-0 right-0 w-125 h-125 bg-violet-400/20 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-100 h-100 bg-purple-400/20 rounded-full blur-3xl" />
 
@@ -194,7 +194,7 @@ export default function About({ content }: { content: BlockContent }) {
         {/* Header */}
         <div className="text-center mb-16">
           {badgeText && (
-            <span className="inline-block px-4 py-1.5 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 text-sm font-medium mb-6">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-violet-100 text-violet-700 text-sm font-medium mb-6">
               {badgeText}
             </span>
           )}
@@ -272,7 +272,7 @@ export default function About({ content }: { content: BlockContent }) {
                 {(techStack as TechItem[]).map((tech, index) => (
                   <div
                     key={index}
-                    className="text-center p-4 rounded-xl bg-violet-50 dark:bg-violet-900/20 border border-violet-100 dark:border-violet-800/30"
+                    className="text-center p-4 rounded-xl bg-violet-50 border border-violet-100"
                   >
                     <p className="font-semibold text-sm">{tech.name}</p>
                     {tech.category && (
