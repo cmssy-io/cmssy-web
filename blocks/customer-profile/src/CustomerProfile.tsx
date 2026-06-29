@@ -244,8 +244,8 @@ export default function CustomerProfile({
   const handleLogout = useCallback(async () => {
     try {
       await fetch("/api/auth/sign-out", { method: "POST" });
-    } catch {
-      // ignore - redirect regardless
+    } catch (err) {
+      console.error("[CustomerProfile] sign-out request failed:", err);
     }
     window.location.href = logoutRedirectUrl;
   }, [logoutRedirectUrl]);
