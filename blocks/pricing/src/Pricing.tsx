@@ -1,16 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
-import { localizeHref, type CmssyBlockContext } from "@cmssy/react";
+import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
 import { BlockContent } from "./block";
 
-export default function Pricing({
-  content,
-  context,
-}: {
-  content: BlockContent;
-  context?: CmssyBlockContext;
-}) {
+export default function Pricing({ content }: { content: BlockContent }) {
   const {
     heading,
     headingHighlight,
@@ -116,15 +110,7 @@ export default function Pricing({
                     : "bg-linear-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white"
                 }`}
               >
-                <a
-                  href={
-                    context?.locale
-                      ? localizeHref(plan.href, context.locale)
-                      : plan.href
-                  }
-                >
-                  {plan.cta}
-                </a>
+                <CmssyLink href={plan.href}>{plan.cta}</CmssyLink>
               </Button>
             </div>
           ))}

@@ -1,16 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { localizeHref, type CmssyBlockContext } from "@cmssy/react";
+import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
 import { BlockContent } from "./block";
 
-export default function Cta({
-  content,
-  context,
-}: {
-  content: BlockContent;
-  context?: CmssyBlockContext;
-}) {
+export default function Cta({ content }: { content: BlockContent }) {
   const {
     badgeText,
     heading,
@@ -72,17 +66,13 @@ export default function Cta({
                   asChild
                   className="bg-white text-violet-600 hover:bg-violet-50 text-lg px-8 h-14 shadow-lg"
                 >
-                  <a
-                    href={
-                      context?.locale
-                        ? localizeHref(primaryButtonUrl, context.locale)
-                        : primaryButtonUrl
-                    }
+                  <CmssyLink
+                    href={primaryButtonUrl}
                     className="flex items-center gap-2"
                   >
                     {primaryButtonText}
                     <ArrowRight className="w-5 h-5" />
-                  </a>
+                  </CmssyLink>
                 </Button>
               )}
               {secondaryButtonText && (
@@ -92,15 +82,9 @@ export default function Cta({
                   asChild
                   className="bg-white/10 border-white/30 text-white hover:bg-white/20 hover:border-white/40 text-lg px-8 h-14"
                 >
-                  <a
-                    href={
-                      context?.locale
-                        ? localizeHref(secondaryButtonUrl, context.locale)
-                        : secondaryButtonUrl
-                    }
-                  >
+                  <CmssyLink href={secondaryButtonUrl}>
                     {secondaryButtonText}
-                  </a>
+                  </CmssyLink>
                 </Button>
               )}
             </div>
