@@ -90,7 +90,7 @@ export default function DocsFileTree({ content }: { content: BlockContent }) {
         <h3 className="text-lg font-semibold font-mono mb-3">{title}</h3>
       )}
 
-      <div className="rounded-lg border bg-zinc-950 dark:bg-zinc-950 overflow-hidden">
+      <div className="rounded-lg border bg-zinc-950 overflow-hidden">
         <div className="px-4 py-3 border-b border-zinc-800 flex items-center gap-2">
           <span className="text-zinc-400 text-xs font-mono uppercase tracking-wider">
             Files

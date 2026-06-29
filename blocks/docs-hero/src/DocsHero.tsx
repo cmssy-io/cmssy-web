@@ -21,8 +21,7 @@ export default function DocsHero({ content }: { content: BlockContent }) {
 
   const bgClasses = {
     default: "bg-background",
-    gradient:
-      "bg-gradient-to-b from-violet-50 via-background to-background dark:from-violet-950/30 dark:via-background dark:to-background",
+    gradient: "bg-gradient-to-b from-violet-50 via-background to-background",
     minimal: "bg-background",
   };
 
@@ -31,7 +30,7 @@ export default function DocsHero({ content }: { content: BlockContent }) {
       {/* Subtle grid pattern for default/gradient */}
       {variant !== "minimal" && (
         <div
-          className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
+          className="absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage:
               "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
@@ -44,7 +43,7 @@ export default function DocsHero({ content }: { content: BlockContent }) {
         <div className="max-w-3xl mx-auto text-center">
           {/* Badge */}
           {badge && (
-            <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 text-xs font-medium tracking-wider uppercase rounded-full bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300">
+            <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 text-xs font-medium tracking-wider uppercase rounded-full bg-violet-100 text-violet-700">
               {badge}
             </div>
           )}
@@ -89,10 +88,10 @@ export default function DocsHero({ content }: { content: BlockContent }) {
                   className="group relative flex flex-col p-5 rounded-xl border bg-card hover:border-violet-500/50 hover:shadow-lg hover:shadow-violet-500/5 transition-all duration-200"
                 >
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2 rounded-lg bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 group-hover:bg-violet-500 group-hover:text-white transition-colors">
+                    <div className="p-2 rounded-lg bg-violet-100 text-violet-600 group-hover:bg-violet-500 group-hover:text-white transition-colors">
                       <Icon className="h-5 w-5" />
                     </div>
-                    <h3 className="font-semibold group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+                    <h3 className="font-semibold group-hover:text-violet-600 transition-colors">
                       {link.title}
                     </h3>
                   </div>
@@ -101,7 +100,7 @@ export default function DocsHero({ content }: { content: BlockContent }) {
                       {link.description}
                     </p>
                   )}
-                  <div className="mt-auto flex items-center gap-1 text-sm font-medium text-violet-600 dark:text-violet-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="mt-auto flex items-center gap-1 text-sm font-medium text-violet-600 opacity-0 group-hover:opacity-100 transition-opacity">
                     <span>Get started</span>
                     <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
                   </div>

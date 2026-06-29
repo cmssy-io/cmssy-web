@@ -36,7 +36,7 @@ export default function DocsSteps({ content }: { content: BlockContent }) {
               {/* Timeline column */}
               <div className="flex flex-col items-center shrink-0">
                 {/* Step circle */}
-                <div className="relative z-10 flex items-center justify-center size-8 rounded-full bg-violet-100 dark:bg-violet-900/40 text-violet-600 dark:text-violet-400 border-2 border-violet-200 dark:border-violet-800 font-semibold text-sm">
+                <div className="relative z-10 flex items-center justify-center size-8 rounded-full bg-violet-100 text-violet-600 border-2 border-violet-200 font-semibold text-sm">
                   {showNumbers ? (
                     index + 1
                   ) : (
@@ -58,7 +58,7 @@ export default function DocsSteps({ content }: { content: BlockContent }) {
                 </h3>
                 {step.content && (
                   <div
-                    className="prose prose-sm dark:prose-invert max-w-none text-muted-foreground
+                    className="prose prose-sm max-w-none text-muted-foreground
                       prose-p:my-2 prose-p:leading-relaxed
                       prose-pre:bg-zinc-950 prose-pre:border prose-pre:border-zinc-800
                       prose-code:text-xs

@@ -45,10 +45,7 @@ export default function Features({ content }: { content: BlockContent }) {
   } = content;
 
   return (
-    <section
-      id="features"
-      className="py-24 bg-slate-50/50 dark:bg-slate-900/50"
-    >
+    <section id="features" className="py-24 bg-slate-50/50">
       <Container>
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">

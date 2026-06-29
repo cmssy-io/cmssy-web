@@ -308,7 +308,7 @@ export default function RegisterForm({
       <section
         className={`py-12 lg:py-16 ${
           isCard
-            ? "bg-linear-to-br from-green-50 via-background to-emerald-50 dark:from-green-950/20 dark:via-background dark:to-emerald-950/20"
+            ? "bg-linear-to-br from-green-50 via-background to-emerald-50"
             : ""
         }`}
       >
@@ -321,8 +321,8 @@ export default function RegisterForm({
             }
           >
             <div className="text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/50">
-                <CheckIcon className="h-6 w-6 text-green-600 dark:text-green-400" />
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+                <CheckIcon className="h-6 w-6 text-green-600" />
               </div>
               <h3 className="text-lg font-semibold mb-2">{successHeading}</h3>
               <p className="text-muted-foreground">{successMessage}</p>
@@ -344,9 +344,7 @@ export default function RegisterForm({
   return (
     <section
       className={`py-12 lg:py-16 ${
-        isCard
-          ? "bg-linear-to-br from-slate-50 via-background to-blue-50 dark:from-slate-950/20 dark:via-background dark:to-blue-950/20"
-          : ""
+        isCard ? "bg-linear-to-br from-slate-50 via-background to-blue-50" : ""
       }`}
     >
       <div className="max-w-md mx-auto px-4">

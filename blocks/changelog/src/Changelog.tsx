@@ -6,19 +6,17 @@ import { BlockContent } from "./block";
 const typeConfig = {
   feature: {
     icon: Sparkles,
-    color:
-      "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400",
+    color: "bg-emerald-100 text-emerald-700",
     label: "New Feature",
   },
   improvement: {
     icon: Zap,
-    color: "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400",
+    color: "bg-blue-100 text-blue-700",
     label: "Improvement",
   },
   bugfix: {
     icon: Bug,
-    color:
-      "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400",
+    color: "bg-amber-100 text-amber-700",
     label: "Bug Fix",
   },
 };
@@ -42,7 +40,7 @@ export default function Changelog({ content }: { content: BlockContent }) {
         {/* Header */}
         <div className="text-center mb-16">
           {badge && (
-            <span className="inline-block px-4 py-1.5 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-violet-100 text-violet-700 text-sm font-medium mb-4">
               {badge}
             </span>
           )}
@@ -87,7 +85,7 @@ export default function Changelog({ content }: { content: BlockContent }) {
               return (
                 <div
                   key={index}
-                  className="relative pl-8 pb-8 border-l-2 border-violet-200 dark:border-violet-800 last:border-transparent last:pb-0"
+                  className="relative pl-8 pb-8 border-l-2 border-violet-200 last:border-transparent last:pb-0"
                 >
                   {/* Timeline dot */}
                   <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-linear-to-br from-violet-500 to-purple-600 border-4 border-background" />
@@ -96,7 +94,7 @@ export default function Changelog({ content }: { content: BlockContent }) {
                   <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-lg shadow-violet-500/5 p-6">
                     {/* Header */}
                     <div className="flex flex-wrap items-center gap-3 mb-4">
-                      <span className="px-3 py-1 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 text-sm font-mono font-semibold">
+                      <span className="px-3 py-1 rounded-full bg-violet-100 text-violet-700 text-sm font-mono font-semibold">
                         v{entry.version}
                       </span>
                       <span

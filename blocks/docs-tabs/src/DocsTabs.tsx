@@ -86,7 +86,7 @@ export default function DocsTabs({ content }: { content: BlockContent }) {
           className={variant === "bordered" ? "p-6" : "pt-4"}
         >
           <div
-            className="prose prose-sm dark:prose-invert max-w-none
+            className="prose prose-sm max-w-none
               prose-p:my-2 prose-p:leading-relaxed
               prose-pre:bg-zinc-950 prose-pre:border prose-pre:border-zinc-800 prose-pre:rounded-lg
               prose-code:text-xs

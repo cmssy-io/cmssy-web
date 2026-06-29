@@ -46,11 +46,11 @@ export default function DocsPropsTable({ content }: { content: BlockContent }) {
                 {/* Name */}
                 <td className="px-4 py-3 align-top">
                   <div className="flex items-center gap-2">
-                    <code className="text-[13px] font-mono font-semibold text-violet-600 dark:text-violet-400">
+                    <code className="text-[13px] font-mono font-semibold text-violet-600">
                       {prop.name}
                     </code>
                     {showRequired && prop.required && (
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-red-500 bg-red-50 dark:bg-red-950/30 px-1.5 py-0.5 rounded">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-red-500 bg-red-50 px-1.5 py-0.5 rounded">
                         required
                       </span>
                     )}
@@ -59,7 +59,7 @@ export default function DocsPropsTable({ content }: { content: BlockContent }) {
 
                 {/* Type */}
                 <td className="px-4 py-3 align-top">
-                  <code className="text-[13px] font-mono text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/20 px-1.5 py-0.5 rounded">
+                  <code className="text-[13px] font-mono text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">
                     {prop.type}
                   </code>
                 </td>
@@ -68,7 +68,7 @@ export default function DocsPropsTable({ content }: { content: BlockContent }) {
                 {showDefaults && (
                   <td className="px-4 py-3 align-top">
                     {prop.defaultValue ? (
-                      <code className="text-[13px] font-mono text-zinc-600 dark:text-zinc-400">
+                      <code className="text-[13px] font-mono text-zinc-600">
                         {prop.defaultValue}
                       </code>
                     ) : (

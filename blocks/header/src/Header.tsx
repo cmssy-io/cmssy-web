@@ -158,7 +158,7 @@ function MegaMenuItem({ child }: { child: NavChild }) {
       className="group flex items-start gap-3 rounded-lg p-3 hover:bg-accent transition-colors"
     >
       {child.icon && iconMap[child.icon] && (
-        <div className="mt-0.5 shrink-0 rounded-lg bg-violet-100 p-2 text-violet-600 transition-colors group-hover:bg-violet-500 group-hover:text-white dark:bg-violet-900/30 dark:text-violet-400">
+        <div className="mt-0.5 shrink-0 rounded-lg bg-violet-100 p-2 text-violet-600 transition-colors group-hover:bg-violet-500 group-hover:text-white">
           <IconRenderer name={child.icon} className="h-4 w-4" />
         </div>
       )}
@@ -658,7 +658,7 @@ export default function Header({ content, context }: HeaderProps) {
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
                             {child.icon && iconMap[child.icon] && (
-                              <div className="mt-0.5 shrink-0 rounded-lg bg-violet-100 p-2 text-violet-600 dark:bg-violet-900/30 dark:text-violet-400">
+                              <div className="mt-0.5 shrink-0 rounded-lg bg-violet-100 p-2 text-violet-600">
                                 <IconRenderer
                                   name={child.icon}
                                   className="h-4 w-4"
