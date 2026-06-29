@@ -1,38 +1,6 @@
 import { useState, FormEvent, useCallback } from "react";
 import { CmssyLink } from "@cmssy/next/client";
 import { BlockContent } from "./block";
-import type { PlatformContext } from "@cmssy/types";
-
-const SITE_CUSTOMER_LOGIN_MUTATION = `
-  mutation SiteCustomerLogin($workspaceId: ID!, $input: SiteMemberLoginInput!) {
-    siteMemberLogin(workspaceId: $workspaceId, input: $input) {
-      success
-      message
-      accessToken
-      accessTokenExpiresIn
-      member {
-        id
-        email
-      }
-    }
-  }
-`;
-
-interface GraphQLResponse {
-  data?: {
-    siteMemberLogin?: {
-      success: boolean;
-      message: string;
-      accessToken?: string;
-      accessTokenExpiresIn?: number;
-      member?: {
-        id: string;
-        email: string;
-      };
-    };
-  };
-  errors?: Array<{ message: string }>;
-}
 
 function MailIcon({ className }: { className?: string }) {
   return (
@@ -111,13 +79,7 @@ function EyeOffIcon({ className }: { className?: string }) {
   );
 }
 
-export default function LoginForm({
-  content,
-  context,
-}: {
-  content: BlockContent;
-  context?: PlatformContext;
-}) {
+export default function LoginForm({ content }: { content: BlockContent }) {
   const {
     heading,
     description,
@@ -141,8 +103,6 @@ export default function LoginForm({
     variant = "default",
   } = content;
 
-  const workspaceId = context?.workspace?.id;
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -154,73 +114,25 @@ export default function LoginForm({
       setIsSubmitting(true);
       setError(null);
 
-      const form = e.currentTarget;
-      const formData = new FormData(form);
-
-      const email = formData.get("email") as string;
+      const formData = new FormData(e.currentTarget);
+      const identity = formData.get("email") as string;
       const password = formData.get("password") as string;
-      const rememberMe = formData.get("rememberMe") === "on";
-
-      // Demo mode if no workspace
-      if (!workspaceId) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        setIsSuccess(true);
-        setIsSubmitting(false);
-        setTimeout(() => {
-          window.location.href = redirectAfterLogin;
-        }, 1500);
-        return;
-      }
 
       try {
-        const response = await fetch("/api/graphql", {
+        const res = await fetch("/api/auth/sign-in", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            query: SITE_CUSTOMER_LOGIN_MUTATION,
-            variables: {
-              workspaceId,
-              input: {
-                email,
-                password,
-              },
-            },
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ identity, password }),
         });
+        const result = await res.json().catch(() => null);
 
-        const result: GraphQLResponse = await response.json();
-
-        if (result.errors && result.errors.length > 0) {
-          setError(result.errors[0].message);
-        } else if (result.data?.siteMemberLogin?.success) {
-          // Store token in localStorage or cookie
-          const token = result.data.siteMemberLogin.accessToken;
-          const expiresIn = result.data.siteMemberLogin.accessTokenExpiresIn;
-
-          if (token) {
-            if (rememberMe && expiresIn) {
-              // Store in localStorage for persistent login
-              localStorage.setItem("site_customer_token", token);
-              localStorage.setItem(
-                "site_customer_token_expires",
-                String(Date.now() + expiresIn * 1000),
-              );
-            } else {
-              // Store in sessionStorage for session-only login
-              sessionStorage.setItem("site_customer_token", token);
-            }
-          }
-
+        if (res.ok && result?.ok) {
           setIsSuccess(true);
           setTimeout(() => {
             window.location.href = redirectAfterLogin;
           }, 1500);
         } else {
-          setError(
-            result.data?.siteMemberLogin?.message || errorMessage || null,
-          );
+          setError(result?.message || errorMessage || null);
         }
       } catch {
         setError(errorMessage || null);
@@ -228,7 +140,7 @@ export default function LoginForm({
 
       setIsSubmitting(false);
     },
-    [workspaceId, redirectAfterLogin, errorMessage],
+    [redirectAfterLogin, errorMessage],
   );
 
   const isCard = variant === "card";

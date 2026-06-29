@@ -1,34 +1,6 @@
 import { useState, FormEvent, useCallback } from "react";
 import { CmssyLink } from "@cmssy/next/client";
 import { BlockContent } from "./block";
-import type { PlatformContext } from "@cmssy/types";
-
-const SITE_MEMBER_REGISTER_MUTATION = `
-  mutation SiteMemberRegister($workspaceId: ID!, $input: SiteMemberRegisterInput!) {
-    siteMemberRegister(workspaceId: $workspaceId, input: $input) {
-      success
-      message
-      member {
-        id
-        email
-      }
-    }
-  }
-`;
-
-interface GraphQLResponse {
-  data?: {
-    siteMemberRegister?: {
-      success: boolean;
-      message: string;
-      member?: {
-        id: string;
-        email: string;
-      };
-    };
-  };
-  errors?: Array<{ message: string }>;
-}
 
 function MailIcon({ className }: { className?: string }) {
   return (
@@ -139,13 +111,7 @@ function CheckIcon({ className }: { className?: string }) {
   );
 }
 
-export default function RegisterForm({
-  content,
-  context,
-}: {
-  content: BlockContent;
-  context?: PlatformContext;
-}) {
+export default function RegisterForm({ content }: { content: BlockContent }) {
   const {
     heading,
     description,
@@ -184,8 +150,6 @@ export default function RegisterForm({
     passwordMismatchMessage,
     variant = "default",
   } = content;
-
-  const workspaceId = context?.workspace?.id;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -237,43 +201,24 @@ export default function RegisterForm({
         return;
       }
 
-      // Demo mode if no workspace
-      if (!workspaceId) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        setIsSuccess(true);
-        setIsSubmitting(false);
-        return;
-      }
-
       try {
-        const response = await fetch("/api/graphql", {
+        const fields: Record<string, string> = {};
+        if (showNameFields) {
+          if (firstName) fields.firstName = firstName;
+          if (lastName) fields.lastName = lastName;
+          if (firstName) {
+            fields.displayName = `${firstName}${lastName ? ` ${lastName}` : ""}`;
+          }
+        }
+
+        const res = await fetch("/api/auth/register", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            query: SITE_MEMBER_REGISTER_MUTATION,
-            variables: {
-              workspaceId,
-              input: {
-                email,
-                password,
-                firstName: showNameFields ? firstName : null,
-                lastName: showNameFields ? lastName : null,
-                displayName:
-                  showNameFields && firstName
-                    ? `${firstName}${lastName ? ` ${lastName}` : ""}`
-                    : null,
-              },
-            },
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ identity: email, password, fields }),
         });
+        const result = await res.json().catch(() => null);
 
-        const result: GraphQLResponse = await response.json();
-
-        if (result.errors && result.errors.length > 0) {
-          setError(result.errors[0].message);
-        } else if (result.data?.siteMemberRegister?.success) {
+        if (res.ok && result?.ok) {
           setIsSuccess(true);
           if (
             redirectAfterRegister &&
@@ -284,9 +229,7 @@ export default function RegisterForm({
             }, 2000);
           }
         } else {
-          setError(
-            result.data?.siteMemberRegister?.message || errorMessage || null,
-          );
+          setError(result?.message || errorMessage || null);
         }
       } catch {
         setError(errorMessage || null);
@@ -295,7 +238,6 @@ export default function RegisterForm({
       setIsSubmitting(false);
     },
     [
-      workspaceId,
       showNameFields,
       showTerms,
       minPasswordLength,

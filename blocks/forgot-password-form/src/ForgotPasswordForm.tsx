@@ -1,26 +1,6 @@
 import { useState, FormEvent, useCallback } from "react";
 import { CmssyLink } from "@cmssy/next/client";
 import { BlockContent } from "./block";
-import type { PlatformContext } from "@cmssy/types";
-
-const REQUEST_PASSWORD_RESET_MUTATION = `
-  mutation SiteMemberRequestPasswordReset($workspaceId: ID!, $email: String!) {
-    siteMemberRequestPasswordReset(workspaceId: $workspaceId, email: $email) {
-      success
-      message
-    }
-  }
-`;
-
-interface GraphQLResponse {
-  data?: {
-    siteMemberRequestPasswordReset?: {
-      success: boolean;
-      message: string;
-    };
-  };
-  errors?: Array<{ message: string }>;
-}
 
 function MailIcon({ className }: { className?: string }) {
   return (
@@ -74,10 +54,8 @@ function ArrowLeftIcon({ className }: { className?: string }) {
 
 export default function ForgotPasswordForm({
   content,
-  context,
 }: {
   content: BlockContent;
-  context?: PlatformContext;
 }) {
   const {
     heading,
@@ -96,8 +74,6 @@ export default function ForgotPasswordForm({
     variant = "default",
   } = content;
 
-  const workspaceId = context?.workspace?.id;
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -115,46 +91,21 @@ export default function ForgotPasswordForm({
       const email = formData.get("email") as string;
       setSubmittedEmail(email);
 
-      // Demo mode if no workspace
-      if (!workspaceId) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        setIsSuccess(true);
-        setIsSubmitting(false);
-        return;
-      }
-
       try {
-        const response = await fetch("/api/graphql", {
+        await fetch("/api/auth/forgot-password", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            query: REQUEST_PASSWORD_RESET_MUTATION,
-            variables: {
-              workspaceId,
-              email,
-            },
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ identity: email }),
         });
-
-        const result: GraphQLResponse = await response.json();
-
-        if (result.errors && result.errors.length > 0) {
-          setError(result.errors[0].message);
-        } else if (result.data?.siteMemberRequestPasswordReset?.success) {
-          setIsSuccess(true);
-        } else {
-          // Still show success to prevent email enumeration
-          setIsSuccess(true);
-        }
+        // Always show success to prevent email enumeration.
+        setIsSuccess(true);
       } catch {
         setError(errorMessage || null);
       }
 
       setIsSubmitting(false);
     },
-    [workspaceId, errorMessage],
+    [errorMessage],
   );
 
   const isCard = variant === "card";
