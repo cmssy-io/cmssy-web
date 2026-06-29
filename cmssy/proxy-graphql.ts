@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { resolveApiUrl } from "@cmssy/react";
 import { getCmssyAccessToken } from "@cmssy/next";
 import { cmssy } from "./config";
 
@@ -24,7 +25,7 @@ export async function proxyGraphql(request: NextRequest) {
     process.env.NEXT_PUBLIC_CMSSY_WORKSPACE_ID;
 
   try {
-    const upstream = await fetch(cmssy.apiUrl, {
+    const upstream = await fetch(resolveApiUrl(cmssy.apiUrl), {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -81,7 +82,7 @@ export async function proxyMemberGraphql(request: NextRequest) {
     process.env.NEXT_PUBLIC_CMSSY_WORKSPACE_ID;
 
   try {
-    const upstream = await fetch(cmssy.apiUrl, {
+    const upstream = await fetch(resolveApiUrl(cmssy.apiUrl), {
       method: "POST",
       headers: {
         "content-type": "application/json",

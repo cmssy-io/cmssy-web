@@ -8,6 +8,7 @@ import {
   buildCmssyMetadata,
   createCmssyPage,
   isCmssyEditMode,
+  resolveEditorOrigin,
 } from "@cmssy/next";
 import { cmssy, enabledLocales } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
@@ -78,9 +79,10 @@ export default async function Page({ params, searchParams }: PageProps) {
   if (!hasSidebar) return content;
 
   const locale = (await cmssy.resolveLocale?.()) ?? cmssy.defaultLocale ?? "en";
-  const editorOrigin = Array.isArray(cmssy.editorOrigin)
-    ? cmssy.editorOrigin[0]
-    : cmssy.editorOrigin;
+  const resolvedEditorOrigin = resolveEditorOrigin(cmssy.editorOrigin);
+  const editorOrigin = Array.isArray(resolvedEditorOrigin)
+    ? resolvedEditorOrigin[0]
+    : resolvedEditorOrigin;
 
   const sidebarSlot = editMode ? (
     <EditableLayout
