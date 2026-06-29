@@ -191,7 +191,7 @@ export default function CustomerProfile({
       }
 
       try {
-        const response = await fetch("/api/graphql", {
+        const response = await fetch("/api/member-graphql", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
