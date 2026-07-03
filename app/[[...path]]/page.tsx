@@ -1,16 +1,19 @@
 import dynamic from "next/dynamic";
 import {
   fetchLayouts,
+  resolveSiteLocales,
   CmssyServerLayout,
   type CmssyLayoutGroup,
 } from "@cmssy/react";
 import {
   buildCmssyMetadata,
   createCmssyPage,
+  getCmssyLocale,
   isCmssyEditMode,
   resolveEditorOrigin,
+  splitCmssyLocale,
 } from "@cmssy/next";
-import { cmssy, enabledLocales } from "@/cmssy/config";
+import { cmssy } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
 import { EditableLayout } from "@/cmssy/editable-layout";
 
@@ -23,18 +26,6 @@ const CmssyEditor = dynamic(() =>
 
 const renderPage = createCmssyPage(cmssy, blocks, { editor: CmssyEditor });
 
-const nonDefaultLocales: readonly string[] = enabledLocales.filter(
-  (l) => l !== cmssy.defaultLocale,
-);
-
-function stripLocale(path: string[] | undefined): string[] | undefined {
-  const first = path?.[0];
-  if (first && nonDefaultLocales.includes(first)) {
-    return path!.slice(1);
-  }
-  return path;
-}
-
 type PageProps = {
   params: Promise<{ path?: string[] }>;
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -42,7 +33,8 @@ type PageProps = {
 
 export async function generateMetadata({ params }: PageProps) {
   const { path } = await params;
-  return buildCmssyMetadata(cmssy, stripLocale(path));
+  const { path: stripped } = await splitCmssyLocale(cmssy, path);
+  return buildCmssyMetadata(cmssy, stripped);
 }
 
 async function getPageLayoutGroups(
@@ -62,7 +54,7 @@ async function getPageLayoutGroups(
 
 export default async function Page({ params, searchParams }: PageProps) {
   const { path } = await params;
-  const strippedPath = stripLocale(path);
+  const { path: strippedPath } = await splitCmssyLocale(cmssy, path);
   const slug = "/" + (strippedPath ?? []).join("/");
 
   const editMode = await isCmssyEditMode();
@@ -78,7 +70,10 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   if (!hasSidebar) return content;
 
-  const locale = (await cmssy.resolveLocale?.()) ?? cmssy.defaultLocale ?? "en";
+  const [locale, siteLocales] = await Promise.all([
+    getCmssyLocale(cmssy),
+    resolveSiteLocales(cmssy),
+  ]);
   const resolvedEditorOrigin = resolveEditorOrigin(cmssy.editorOrigin);
   const editorOrigin = Array.isArray(resolvedEditorOrigin)
     ? resolvedEditorOrigin[0]
@@ -89,8 +84,8 @@ export default async function Page({ params, searchParams }: PageProps) {
       groups={groups}
       position="sidebar_left"
       locale={locale}
-      defaultLocale={cmssy.defaultLocale ?? "en"}
-      enabledLocales={[...enabledLocales]}
+      defaultLocale={siteLocales.defaultLocale}
+      enabledLocales={siteLocales.locales}
       edit={{ editorOrigin }}
     />
   ) : (
@@ -99,8 +94,8 @@ export default async function Page({ params, searchParams }: PageProps) {
       blocks={blocks}
       position="sidebar_left"
       locale={locale}
-      defaultLocale={cmssy.defaultLocale ?? "en"}
-      enabledLocales={[...enabledLocales]}
+      defaultLocale={siteLocales.defaultLocale}
+      enabledLocales={siteLocales.locales}
     />
   );
 

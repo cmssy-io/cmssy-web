@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
 import {
   fetchLayouts,
+  resolveSiteLocales,
   CmssyServerLayout,
   type CmssyLayoutGroup,
 } from "@cmssy/react";
-import { isCmssyEditMode, resolveEditorOrigin } from "@cmssy/next";
+import {
+  getCmssyLocale,
+  isCmssyEditMode,
+  resolveEditorOrigin,
+} from "@cmssy/next";
 import { CmssyLocaleProvider } from "@cmssy/next/client";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import "../styles/main.css";
 import { blocks } from "@/cmssy/blocks";
-import { cmssy, enabledLocales } from "@/cmssy/config";
+import { cmssy } from "@/cmssy/config";
 import { EditableLayout } from "@/cmssy/editable-layout";
 import { buildSiteMetadata } from "@/cmssy/metadata";
 
@@ -35,8 +40,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const editMode = await isCmssyEditMode();
-  const groups = await getLayoutGroups(editMode);
-  const locale = (await cmssy.resolveLocale?.()) ?? cmssy.defaultLocale ?? "en";
+  const [groups, locale, siteLocales] = await Promise.all([
+    getLayoutGroups(editMode),
+    getCmssyLocale(cmssy),
+    resolveSiteLocales(cmssy),
+  ]);
   const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim();
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim();
   const resolvedEditorOrigin = resolveEditorOrigin(cmssy.editorOrigin);
@@ -50,8 +58,8 @@ export default async function RootLayout({
         groups={groups}
         position={position}
         locale={locale}
-        defaultLocale={cmssy.defaultLocale ?? "en"}
-        enabledLocales={[...enabledLocales]}
+        defaultLocale={siteLocales.defaultLocale}
+        enabledLocales={siteLocales.locales}
         edit={{ editorOrigin }}
       />
     ) : (
@@ -60,8 +68,8 @@ export default async function RootLayout({
         blocks={blocks}
         position={position}
         locale={locale}
-        defaultLocale={cmssy.defaultLocale ?? "en"}
-        enabledLocales={[...enabledLocales]}
+        defaultLocale={siteLocales.defaultLocale}
+        enabledLocales={siteLocales.locales}
       />
     );
 
@@ -71,8 +79,8 @@ export default async function RootLayout({
         <CmssyLocaleProvider
           value={{
             current: locale,
-            default: cmssy.defaultLocale ?? "en",
-            enabled: [...enabledLocales],
+            default: siteLocales.defaultLocale,
+            enabled: siteLocales.locales,
           }}
         >
           {!editMode && gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
