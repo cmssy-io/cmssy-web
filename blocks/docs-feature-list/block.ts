@@ -5,6 +5,7 @@ import Component from "./src";
 export const docsFeatureListBlock = defineBlock({
   type: "docs-feature-list",
   label: "Docs Feature List",
+  description: "List of features with icons and descriptions; within documentation or product pages.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

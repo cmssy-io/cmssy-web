@@ -5,6 +5,7 @@ import Component from "./src";
 export const legalBlock = defineBlock({
   type: "legal",
   label: "Legal",
+  description: "Long-form legal text such as terms or privacy; for a legal or policy page.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{

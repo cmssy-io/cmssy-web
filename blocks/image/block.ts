@@ -5,6 +5,7 @@ import Component from "./src";
 export const imageBlock = defineBlock({
   type: "image",
   label: "Image",
+  description: "Standalone image or figure; anywhere content needs a visual.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

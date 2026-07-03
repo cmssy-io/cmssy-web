@@ -5,6 +5,7 @@ import Component from "./src";
 export const docsTerminalBlock = defineBlock({
   type: "docs-terminal",
   label: "Docs Terminal",
+  description: "Terminal and command-line snippet display; for setup and CLI documentation.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

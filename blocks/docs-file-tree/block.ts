@@ -5,6 +5,7 @@ import Component from "./src";
 export const docsFileTreeBlock = defineBlock({
   type: "docs-file-tree",
   label: "Docs File Tree",
+  description: "File and folder tree diagram illustrating project structure; for documentation.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

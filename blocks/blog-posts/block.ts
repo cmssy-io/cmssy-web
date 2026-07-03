@@ -11,6 +11,7 @@ export interface BlogPostsData {
 export const blogPostsBlock = defineBlock({
   type: "blog-posts",
   label: "Blog Posts",
+  description: "Grid or list of blog post previews; for a blog index or a 'latest posts' section.",
   component: Component as unknown as ComponentType<{
     content: Record<string, unknown>;
     data?: BlogPostsData | null;

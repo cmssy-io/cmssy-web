@@ -5,6 +5,7 @@ import Component from "./src";
 export const customerProfileBlock = defineBlock({
   type: "customer-profile",
   label: "Customer Profile",
+  description: "Signed-in member's account and profile panel; for an authenticated account page.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

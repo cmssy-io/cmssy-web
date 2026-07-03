@@ -5,6 +5,7 @@ import Component from "./src";
 export const contactBlock = defineBlock({
   type: "contact",
   label: "Contact",
+  description: "Contact details and/or contact form; near the end of a page or on a dedicated contact page.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

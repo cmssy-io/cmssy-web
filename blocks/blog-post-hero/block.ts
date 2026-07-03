@@ -5,6 +5,7 @@ import Component from "./src";
 export const blogPostHeroBlock = defineBlock({
   type: "blog-post-hero",
   label: "Blog Post Hero",
+  description: "Title header for a single blog post (title, author, date, cover image); top of a post page.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

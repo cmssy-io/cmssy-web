@@ -5,6 +5,7 @@ import Component from "./src";
 export const forgotPasswordFormBlock = defineBlock({
   type: "forgot-password-form",
   label: "Forgot Password Form",
+  description: "Password-reset request form; for a forgot-password auth page.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

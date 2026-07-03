@@ -5,6 +5,7 @@ import Component from "./src";
 export const footerBlock = defineBlock({
   type: "footer",
   label: "Footer",
+  description: "Site footer with links and legal (layout block); bottom of every page.",
   layoutPositions: ["footer"],
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).

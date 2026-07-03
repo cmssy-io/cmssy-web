@@ -5,6 +5,7 @@ import Component from "./src";
 export const docsHeroBlock = defineBlock({
   type: "docs-hero",
   label: "Docs Hero",
+  description: "Header for a documentation page (title, description, search); top of a docs page.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

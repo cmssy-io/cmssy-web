@@ -5,6 +5,7 @@ import Component from "./src";
 export const changelogBlock = defineBlock({
   type: "changelog",
   label: "Changelog",
+  description: "Chronological list of product updates and releases; for a changelog or updates page.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

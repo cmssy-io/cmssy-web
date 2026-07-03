@@ -5,6 +5,7 @@ import Component from "./src";
 export const roadmapBlock = defineBlock({
   type: "roadmap",
   label: "Roadmap",
+  description: "Product roadmap of planned, in-progress and shipped items; for a roadmap or updates page.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

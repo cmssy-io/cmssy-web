@@ -5,6 +5,7 @@ import Component from "./src";
 export const docsPropsTableBlock = defineBlock({
   type: "docs-props-table",
   label: "Docs Props Table",
+  description: "Table of component props or parameters; for API and reference documentation.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

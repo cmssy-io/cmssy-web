@@ -5,6 +5,7 @@ import Component from "./src";
 export const docsSidebarBlock = defineBlock({
   type: "docs-sidebar",
   label: "Docs Sidebar",
+  description: "Documentation navigation sidebar (layout block); left rail across docs pages.",
   layoutPositions: ["sidebar_left"],
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).

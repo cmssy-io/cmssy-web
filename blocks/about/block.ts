@@ -5,6 +5,7 @@ import Component from "./src";
 export const aboutBlock = defineBlock({
   type: "about",
   label: "About",
+  description: "Company or team story section introducing who you are; mid-page on an about or home page.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

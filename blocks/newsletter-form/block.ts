@@ -5,6 +5,7 @@ import Component from "./src";
 export const newsletterFormBlock = defineBlock({
   type: "newsletter-form",
   label: "Newsletter Form",
+  description: "Email newsletter signup; a supporting section or footer strip to capture subscribers.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

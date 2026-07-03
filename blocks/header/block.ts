@@ -5,6 +5,7 @@ import Component from "./src";
 export const headerBlock = defineBlock({
   type: "header",
   label: "Header Navigation",
+  description: "Site header and navigation bar (layout block); top of every page.",
   layoutPositions: ["header"],
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).

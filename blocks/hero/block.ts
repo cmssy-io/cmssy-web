@@ -5,6 +5,7 @@ import Component from "./src";
 export const heroBlock = defineBlock({
   type: "hero",
   label: "Hero Section",
+  description: "Full-width top banner with headline, subheading and primary CTA; the first block on a landing or home page.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

@@ -5,6 +5,7 @@ import Component from "./src";
 export const featuresBlock = defineBlock({
   type: "features",
   label: "Features",
+  description: "Grid of product features with icons and copy; a supporting section below the hero.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

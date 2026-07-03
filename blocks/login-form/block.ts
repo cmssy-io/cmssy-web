@@ -5,6 +5,7 @@ import Component from "./src";
 export const loginFormBlock = defineBlock({
   type: "login-form",
   label: "Login Form",
+  description: "Sign-in form with email and password; for a login auth page.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,

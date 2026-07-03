@@ -5,6 +5,7 @@ import Component from "./src";
 export const pricingBlock = defineBlock({
   type: "pricing",
   label: "Pricing",
+  description: "Pricing plans and tiers comparison; a mid-to-late section on a marketing or pricing page.",
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,
