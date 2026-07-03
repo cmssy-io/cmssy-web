@@ -6,6 +6,7 @@ import { changelogBlock } from "@/blocks/changelog/block";
 import { contactBlock } from "@/blocks/contact/block";
 import { ctaBlock } from "@/blocks/cta/block";
 import { customerProfileBlock } from "@/blocks/customer-profile/block";
+import { demoVideoBlock } from "@/blocks/demo-video/block";
 import { docsApiReferenceBlock } from "@/blocks/docs-api-reference/block";
 import { docsArticleBlock } from "@/blocks/docs-article/block";
 import { docsCalloutBlock } from "@/blocks/docs-callout/block";
@@ -32,6 +33,7 @@ import { loginFormBlock } from "@/blocks/login-form/block";
 import { newsletterFormBlock } from "@/blocks/newsletter-form/block";
 import { notFoundBlock } from "@/blocks/not-found/block";
 import { pricingBlock } from "@/blocks/pricing/block";
+import { productShowcaseBlock } from "@/blocks/product-showcase/block";
 import { registerFormBlock } from "@/blocks/register-form/block";
 import { roadmapBlock } from "@/blocks/roadmap/block";
 
@@ -43,6 +45,7 @@ export const blocks = [
   contactBlock,
   ctaBlock,
   customerProfileBlock,
+  demoVideoBlock,
   docsApiReferenceBlock,
   docsArticleBlock,
   docsCalloutBlock,
@@ -69,6 +72,7 @@ export const blocks = [
   newsletterFormBlock,
   notFoundBlock,
   pricingBlock,
+  productShowcaseBlock,
   registerFormBlock,
   roadmapBlock,
 ];

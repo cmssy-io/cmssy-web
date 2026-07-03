@@ -16,5 +16,4 @@ export interface BlockContent {
   media?: string;
   mediaPlaceholderHeading?: string;
   mediaPlaceholderText?: string;
-  test?: string;
 }
