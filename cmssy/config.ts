@@ -6,5 +6,4 @@ export const cmssy = defineCmssyConfig({
   draftSecret: process.env.CMSSY_DRAFT_SECRET,
   editorOrigin: process.env.CMSSY_EDITOR_ORIGIN,
   devToken: process.env.CMSSY_API_TOKEN,
-  preview: process.env.CMSSY_PREVIEW,
 });
