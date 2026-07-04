@@ -11,11 +11,11 @@ export const docsTabsBlock = defineBlock({
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,
   props: {
     "tabs": fields.repeater({ label: "Tabs", itemSchema: {
-      "label": fields.singleLine({ label: "Tab Label", required: true }),
-      "icon": fields.singleLine({ label: "Icon Name", placeholder: "e.g., Terminal, Package" }),
+      "label": fields.text({ label: "Tab Label", required: true }),
+      "icon": fields.text({ label: "Icon Name", placeholder: "e.g., Terminal, Package" }),
       "content": fields.richText({ label: "Tab Content", required: true })
     } }),
-    "defaultTab": fields.numeric({ label: "Default Tab Index", defaultValue: 0 }),
+    "defaultTab": fields.number({ label: "Default Tab Index", defaultValue: 0 }),
     "variant": fields.select({ label: "Tab Style", defaultValue: "underline", options: ["underline","pills","bordered"] })
   },
 });

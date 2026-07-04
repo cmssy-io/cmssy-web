@@ -14,12 +14,12 @@ export const docsSidebarBlock = defineBlock({
   }>,
   props: {
     logo: fields.media({ label: "Logo" }),
-    logoText: fields.singleLine({ label: "Logo Text", defaultValue: "Docs" }),
+    logoText: fields.text({ label: "Logo Text", defaultValue: "Docs" }),
     logoUrl: fields.link({ label: "Logo Link", defaultValue: "/" }),
     sections: fields.repeater({
       label: "Navigation Sections",
       itemSchema: {
-        title: fields.singleLine({ label: "Section Title", required: true }),
+        title: fields.text({ label: "Section Title", required: true }),
         pages: fields.repeater({
           label: "Pages",
           itemSchema: {
@@ -29,7 +29,7 @@ export const docsSidebarBlock = defineBlock({
       },
     }),
     showSearch: fields.boolean({ label: "Show Search", defaultValue: true }),
-    searchPlaceholder: fields.singleLine({
+    searchPlaceholder: fields.text({
       label: "Search Placeholder",
       defaultValue: "Search docs...",
     }),
@@ -37,7 +37,7 @@ export const docsSidebarBlock = defineBlock({
       label: "Show Version Selector",
       defaultValue: false,
     }),
-    currentVersion: fields.singleLine({
+    currentVersion: fields.text({
       label: "Current Version",
       defaultValue: "v1.0",
     }),

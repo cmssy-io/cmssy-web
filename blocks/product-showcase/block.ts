@@ -11,17 +11,17 @@ export const productShowcaseBlock = defineBlock({
     content: Record<string, unknown>;
   }>,
   props: {
-    badgeText: fields.singleLine({
+    badgeText: fields.text({
       label: "Badge Text",
       placeholder: "Inside the product",
     }),
-    heading: fields.singleLine({
+    heading: fields.text({
       label: "Heading",
       defaultValue: "See what you get",
       required: true,
     }),
-    headingHighlight: fields.singleLine({ label: "Heading Highlight" }),
-    description: fields.multiLine({
+    headingHighlight: fields.text({ label: "Heading Highlight" }),
+    description: fields.textarea({
       label: "Description",
       placeholder: "Short intro above the gallery",
     }),
@@ -32,12 +32,12 @@ export const productShowcaseBlock = defineBlock({
           label: "Screenshot",
           placeholder: "Upload a screenshot",
         }),
-        title: fields.singleLine({
+        title: fields.text({
           label: "Title",
           defaultValue: "Feature",
           required: true,
         }),
-        caption: fields.multiLine({
+        caption: fields.textarea({
           label: "Caption",
           placeholder: "What this screen shows",
         }),

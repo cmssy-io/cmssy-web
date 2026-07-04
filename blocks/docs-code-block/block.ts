@@ -112,7 +112,7 @@ export const docsCodeBlockBlock = defineBlock({
     }
   },
   props: {
-    code: fields.multiLine({
+    code: fields.textarea({
       label: "Code",
       placeholder: "// Your code here",
       required: true,
@@ -139,7 +139,7 @@ export const docsCodeBlockBlock = defineBlock({
         "plaintext",
       ],
     }),
-    filename: fields.singleLine({
+    filename: fields.text({
       label: "Filename",
       placeholder: "e.g., block.config.ts",
     }),
@@ -147,7 +147,7 @@ export const docsCodeBlockBlock = defineBlock({
       label: "Show Line Numbers",
       defaultValue: false,
     }),
-    highlightLines: fields.singleLine({
+    highlightLines: fields.text({
       label: "Highlight Lines",
       placeholder: "e.g., 1,3-5,8",
     }),

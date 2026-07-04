@@ -10,14 +10,14 @@ export const docsFeatureListBlock = defineBlock({
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,
   props: {
-    "heading": fields.singleLine({ label: "Heading", placeholder: "e.g., Kluczowe możliwości" }),
-    "description": fields.multiLine({ label: "Description" }),
+    "heading": fields.text({ label: "Heading", placeholder: "e.g., Kluczowe możliwości" }),
+    "description": fields.textarea({ label: "Description" }),
     "icon": fields.select({ label: "Default Icon", defaultValue: "CheckCircle2", options: ["CheckCircle2","Check","Sparkles","Zap","Star","Circle"] }),
     "iconColor": fields.select({ label: "Icon Color", defaultValue: "violet", options: ["violet","emerald","blue","amber","foreground"] }),
     "layout": fields.select({ label: "Layout", defaultValue: "stacked", options: ["stacked","grid-2"] }),
     "items": fields.repeater({ label: "Items", itemSchema: {
-      "title": fields.singleLine({ label: "Title", required: true }),
-      "description": fields.multiLine({ label: "Description" }),
+      "title": fields.text({ label: "Title", required: true }),
+      "description": fields.textarea({ label: "Description" }),
       "icon": fields.select({ label: "Icon (override)", options: ["CheckCircle2","Check","Sparkles","Zap","Star","Circle"] })
     } })
   },

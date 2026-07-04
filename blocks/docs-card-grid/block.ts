@@ -10,13 +10,13 @@ export const docsCardGridBlock = defineBlock({
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,
   props: {
-    "heading": fields.singleLine({ label: "Section Heading" }),
-    "description": fields.multiLine({ label: "Section Description" }),
+    "heading": fields.text({ label: "Section Heading" }),
+    "description": fields.textarea({ label: "Section Description" }),
     "columns": fields.select({ label: "Columns", defaultValue: "3", options: ["2","3","4"] }),
     "cards": fields.repeater({ label: "Cards", itemSchema: {
-      "icon": fields.singleLine({ label: "Icon Name", placeholder: "e.g., Rocket, Code, Book" }),
-      "title": fields.singleLine({ label: "Title", required: true }),
-      "description": fields.multiLine({ label: "Description" }),
+      "icon": fields.text({ label: "Icon Name", placeholder: "e.g., Rocket, Code, Book" }),
+      "title": fields.text({ label: "Title", required: true }),
+      "description": fields.textarea({ label: "Description" }),
       "url": fields.link({ label: "URL", required: true })
     } })
   },

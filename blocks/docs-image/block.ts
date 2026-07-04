@@ -11,8 +11,8 @@ export const docsImageBlock = defineBlock({
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,
   props: {
     "src": fields.media({ label: "Image", required: true }),
-    "alt": fields.singleLine({ label: "Alt Text", required: true }),
-    "caption": fields.singleLine({ label: "Caption" }),
+    "alt": fields.text({ label: "Alt Text", required: true }),
+    "caption": fields.text({ label: "Caption" }),
     "width": fields.select({ label: "Width", defaultValue: "large", options: ["small","medium","large","full"] }),
     "border": fields.boolean({ label: "Show Border", defaultValue: true }),
     "rounded": fields.boolean({ label: "Rounded Corners", defaultValue: true }),

@@ -11,20 +11,20 @@ export const demoVideoBlock = defineBlock({
     content: Record<string, unknown>;
   }>,
   props: {
-    badgeText: fields.singleLine({
+    badgeText: fields.text({
       label: "Badge Text",
       placeholder: "See it in action",
     }),
-    heading: fields.singleLine({
+    heading: fields.text({
       label: "Heading",
       defaultValue: "Watch AI build a page",
       required: true,
     }),
-    headingHighlight: fields.singleLine({
+    headingHighlight: fields.text({
       label: "Heading Highlight",
       defaultValue: "in seconds",
     }),
-    subheading: fields.multiLine({
+    subheading: fields.textarea({
       label: "Subheading",
       placeholder: "Describe what the video shows",
     }),

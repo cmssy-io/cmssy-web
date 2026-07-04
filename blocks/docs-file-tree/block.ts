@@ -10,9 +10,9 @@ export const docsFileTreeBlock = defineBlock({
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,
   props: {
-    "title": fields.singleLine({ label: "Title", placeholder: "Project Structure" }),
-    "tree": fields.multiLine({ label: "Tree", placeholder: "src/\n├── index.ts\n├── components/\n│   └── App.tsx\n└── styles/\n    └── main.css", required: true }),
-    "highlights": fields.singleLine({ label: "Highlighted Files", placeholder: "src/index.ts,config.ts" }),
+    "title": fields.text({ label: "Title", placeholder: "Project Structure" }),
+    "tree": fields.textarea({ label: "Tree", placeholder: "src/\n├── index.ts\n├── components/\n│   └── App.tsx\n└── styles/\n    └── main.css", required: true }),
+    "highlights": fields.text({ label: "Highlighted Files", placeholder: "src/index.ts,config.ts" }),
     "showIcons": fields.boolean({ label: "Show File Icons", defaultValue: true })
   },
 });

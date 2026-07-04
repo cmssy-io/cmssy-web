@@ -71,13 +71,13 @@ export const legalBlock = defineBlock({
     return { sections };
   },
   props: {
-    badge: fields.singleLine({ label: "Badge Text", defaultValue: "Privacy" }),
-    heading: fields.singleLine({ label: "Heading", defaultValue: "Privacy" }),
-    headingHighlight: fields.singleLine({
+    badge: fields.text({ label: "Badge Text", defaultValue: "Privacy" }),
+    heading: fields.text({ label: "Heading", defaultValue: "Privacy" }),
+    headingHighlight: fields.text({
       label: "Heading Highlight",
       defaultValue: "Policy",
     }),
-    description: fields.multiLine({
+    description: fields.textarea({
       label: "Description",
       defaultValue:
         "Learn how we collect, use, and protect your personal information.",
@@ -86,11 +86,11 @@ export const legalBlock = defineBlock({
       label: "Show Summary Box",
       defaultValue: true,
     }),
-    summaryTitle: fields.singleLine({
+    summaryTitle: fields.text({
       label: "Summary Title",
       defaultValue: "TL;DR",
     }),
-    summaryContent: fields.multiLine({
+    summaryContent: fields.textarea({
       label: "Summary Content",
       defaultValue:
         "We respect your privacy and only collect data necessary to provide our services. We never sell your data.",
@@ -98,7 +98,7 @@ export const legalBlock = defineBlock({
     sections: fields.repeater({
       label: "Accordion Sections",
       itemSchema: {
-        title: fields.singleLine({ label: "Section Title", required: true }),
+        title: fields.text({ label: "Section Title", required: true }),
         content: fields.richText({ label: "Section Content", required: true }),
       },
     }),
@@ -106,18 +106,18 @@ export const legalBlock = defineBlock({
       label: "Show Footer Links",
       defaultValue: true,
     }),
-    footerText: fields.singleLine({
+    footerText: fields.text({
       label: "Footer Text",
       defaultValue: "This policy is part of our",
     }),
     footerLinks: fields.repeater({
       label: "Footer Links",
       itemSchema: {
-        text: fields.singleLine({ label: "Link Text", required: true }),
+        text: fields.text({ label: "Link Text", required: true }),
         url: fields.link({ label: "URL", required: true }),
       },
     }),
-    lastUpdated: fields.singleLine({
+    lastUpdated: fields.text({
       label: "Last Updated Date",
       defaultValue: "January 2025",
     }),

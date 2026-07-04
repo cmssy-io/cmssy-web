@@ -10,16 +10,16 @@ export const docsHeroBlock = defineBlock({
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,
   props: {
-    "badge": fields.singleLine({ label: "Badge Text", placeholder: "e.g., Documentation" }),
-    "heading": fields.singleLine({ label: "Heading", defaultValue: "Documentation", required: true }),
-    "description": fields.multiLine({ label: "Description" }),
+    "badge": fields.text({ label: "Badge Text", placeholder: "e.g., Documentation" }),
+    "heading": fields.text({ label: "Heading", defaultValue: "Documentation", required: true }),
+    "description": fields.textarea({ label: "Description" }),
     "variant": fields.select({ label: "Variant", defaultValue: "default", options: ["default","gradient","minimal"] }),
     "showSearch": fields.boolean({ label: "Show Search Bar", defaultValue: true }),
-    "searchPlaceholder": fields.singleLine({ label: "Search Placeholder", defaultValue: "Search documentation..." }),
+    "searchPlaceholder": fields.text({ label: "Search Placeholder", defaultValue: "Search documentation..." }),
     "quickLinks": fields.repeater({ label: "Quick Links", itemSchema: {
-      "icon": fields.singleLine({ label: "Icon Name", placeholder: "e.g., Rocket, Book, Code" }),
-      "title": fields.singleLine({ label: "Title", required: true }),
-      "description": fields.singleLine({ label: "Description" }),
+      "icon": fields.text({ label: "Icon Name", placeholder: "e.g., Rocket, Book, Code" }),
+      "title": fields.text({ label: "Title", required: true }),
+      "description": fields.text({ label: "Description" }),
       "url": fields.link({ label: "URL", required: true })
     } })
   },

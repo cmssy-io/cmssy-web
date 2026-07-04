@@ -12,12 +12,12 @@ export const footerBlock = defineBlock({
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,
   props: {
     "logo": fields.media({ label: "Logo" }),
-    "logoText": fields.singleLine({ label: "Logo Text", defaultValue: "cmssy" }),
-    "tagline": fields.multiLine({ label: "Tagline", defaultValue: "The modern CMS that makes website creation effortless. Build beautiful websites with AI-powered tools." }),
+    "logoText": fields.text({ label: "Logo Text", defaultValue: "cmssy" }),
+    "tagline": fields.textarea({ label: "Tagline", defaultValue: "The modern CMS that makes website creation effortless. Build beautiful websites with AI-powered tools." }),
     "linkColumns": fields.repeater({ label: "Link Columns", itemSchema: {
-      "title": fields.singleLine({ label: "Column Title", required: true }),
+      "title": fields.text({ label: "Column Title", required: true }),
       "links": fields.repeater({ label: "Links", itemSchema: {
-        "name": fields.singleLine({ label: "Link Text", required: true }),
+        "name": fields.text({ label: "Link Text", required: true }),
         "href": fields.link({ label: "URL", required: true })
       } })
     } }),
@@ -25,7 +25,7 @@ export const footerBlock = defineBlock({
     "twitterUrl": fields.link({ label: "Twitter/X URL" }),
     "githubUrl": fields.link({ label: "GitHub URL" }),
     "linkedinUrl": fields.link({ label: "LinkedIn URL" }),
-    "copyrightText": fields.singleLine({ label: "Copyright Text", defaultValue: "cmssy. All rights reserved." }),
+    "copyrightText": fields.text({ label: "Copyright Text", defaultValue: "cmssy. All rights reserved." }),
     "showLanguageSwitcher": fields.boolean({ label: "Show Language Switcher", defaultValue: false })
   },
 });

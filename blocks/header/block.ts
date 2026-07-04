@@ -17,7 +17,7 @@ export const headerBlock = defineBlock({
       label: "Logo",
       placeholder: "Recommended: SVG or PNG with transparent background",
     }),
-    logoText: fields.singleLine({
+    logoText: fields.text({
       label: "Logo Text",
       defaultValue: "Brand",
       placeholder: "Shown next to logo or as fallback",
@@ -30,7 +30,7 @@ export const headerBlock = defineBlock({
     navigation: fields.repeater({
       label: "Navigation Items",
       itemSchema: {
-        label: fields.singleLine({ label: "Label", required: true }),
+        label: fields.text({ label: "Label", required: true }),
         url: fields.link({ label: "URL" }),
         openInNewTab: fields.boolean({
           label: "Open in new tab",
@@ -44,10 +44,10 @@ export const headerBlock = defineBlock({
         children: fields.repeater({
           label: "Dropdown Links",
           itemSchema: {
-            label: fields.singleLine({ label: "Label", required: true }),
-            description: fields.singleLine({ label: "Description" }),
+            label: fields.text({ label: "Label", required: true }),
+            description: fields.text({ label: "Description" }),
             url: fields.link({ label: "URL", required: true }),
-            icon: fields.singleLine({
+            icon: fields.text({
               label: "Lucide Icon Name",
               placeholder: "e.g. Zap, BookOpen, Code",
             }),
@@ -60,7 +60,7 @@ export const headerBlock = defineBlock({
       },
     }),
     showCta: fields.boolean({ label: "Show CTA Button", defaultValue: true }),
-    ctaLabel: fields.singleLine({
+    ctaLabel: fields.text({
       label: "CTA Label",
       defaultValue: "Get Started",
     }),
@@ -74,7 +74,7 @@ export const headerBlock = defineBlock({
       label: "Show Secondary CTA",
       defaultValue: false,
     }),
-    secondaryCtaLabel: fields.singleLine({
+    secondaryCtaLabel: fields.text({
       label: "Secondary CTA Label",
       defaultValue: "Login",
     }),
@@ -92,7 +92,7 @@ export const headerBlock = defineBlock({
       label: "Transparent Background",
       defaultValue: false,
     }),
-    logoutButtonText: fields.singleLine({
+    logoutButtonText: fields.text({
       label: "Logout Button Text",
       defaultValue: "Log out",
     }),
@@ -104,7 +104,7 @@ export const headerBlock = defineBlock({
       label: "Show Announcement Bar",
       defaultValue: false,
     }),
-    announcementText: fields.singleLine({
+    announcementText: fields.text({
       label: "Announcement Text",
       placeholder: "New feature available!",
     }),

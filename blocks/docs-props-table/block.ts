@@ -10,14 +10,14 @@ export const docsPropsTableBlock = defineBlock({
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,
   props: {
-    "title": fields.singleLine({ label: "Title", placeholder: "e.g., PlatformContext" }),
-    "description": fields.multiLine({ label: "Description" }),
+    "title": fields.text({ label: "Title", placeholder: "e.g., PlatformContext" }),
+    "description": fields.textarea({ label: "Description" }),
     "props": fields.repeater({ label: "Properties", defaultValue: [{"name":"title","type":"string","required":true,"defaultValue":"","description":"Main heading shown above the content."},{"name":"variant","type":"\"primary\" | \"secondary\"","required":false,"defaultValue":"primary","description":"Visual style applied to the component."}], itemSchema: {
-      "name": fields.singleLine({ label: "Name", required: true }),
-      "type": fields.singleLine({ label: "Type", required: true }),
+      "name": fields.text({ label: "Name", required: true }),
+      "type": fields.text({ label: "Type", required: true }),
       "required": fields.boolean({ label: "Required", defaultValue: false }),
-      "defaultValue": fields.singleLine({ label: "Default Value" }),
-      "description": fields.singleLine({ label: "Description" })
+      "defaultValue": fields.text({ label: "Default Value" }),
+      "description": fields.text({ label: "Description" })
     } }),
     "showDefaults": fields.boolean({ label: "Show Default Values Column", defaultValue: true }),
     "showRequired": fields.boolean({ label: "Show Required Badge", defaultValue: true })

@@ -30,12 +30,12 @@ export const blogPostsBlock = defineBlock({
     return loadPosts({ parentSlug, limit, offset: 0 });
   },
   props: {
-    badge: fields.singleLine({ label: "Badge", defaultValue: "Latest Posts" }),
-    heading: fields.singleLine({
+    badge: fields.text({ label: "Badge", defaultValue: "Latest Posts" }),
+    heading: fields.text({
       label: "Heading",
       defaultValue: "From the Blog",
     }),
-    description: fields.multiLine({ label: "Description" }),
+    description: fields.textarea({ label: "Description" }),
     parentPage: fields.link({ label: "Parent Page" }),
     postsPerPage: fields.select({
       label: "Posts per page",
@@ -53,15 +53,15 @@ export const blogPostsBlock = defineBlock({
       defaultValue: "3",
       options: ["2", "3"],
     }),
-    searchPlaceholder: fields.singleLine({
+    searchPlaceholder: fields.text({
       label: "Search Placeholder",
       defaultValue: "Search posts...",
     }),
-    loadingText: fields.singleLine({
+    loadingText: fields.text({
       label: "Loading Text",
       defaultValue: "Loading...",
     }),
-    noResultsText: fields.singleLine({
+    noResultsText: fields.text({
       label: "No Results Text",
       defaultValue: "No posts found",
     }),

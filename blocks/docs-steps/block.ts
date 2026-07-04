@@ -10,10 +10,10 @@ export const docsStepsBlock = defineBlock({
   // as accepting arbitrary content (resolved from the CMS at runtime).
   component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,
   props: {
-    "heading": fields.singleLine({ label: "Heading" }),
-    "description": fields.multiLine({ label: "Description" }),
+    "heading": fields.text({ label: "Heading" }),
+    "description": fields.textarea({ label: "Description" }),
     "steps": fields.repeater({ label: "Steps", itemSchema: {
-      "title": fields.singleLine({ label: "Step Title", required: true }),
+      "title": fields.text({ label: "Step Title", required: true }),
       "content": fields.richText({ label: "Step Content" })
     } }),
     "showNumbers": fields.boolean({ label: "Show Step Numbers", defaultValue: true }),

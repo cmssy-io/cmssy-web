@@ -13,26 +13,26 @@ export const heroBlock = defineBlock({
     content: Record<string, unknown>;
   }>,
   props: {
-    badgeText: fields.singleLine({
+    badgeText: fields.text({
       label: "Badge Text",
       defaultValue: "AI-Powered Page Builder",
       placeholder: "Badge Text",
     }),
-    heading: fields.singleLine({
+    heading: fields.text({
       label: "Main Heading",
       defaultValue: "Build reusable UI blocks with any framework",
       placeholder: "Build websites",
       required: true,
     }),
-    headingHighlight: fields.singleLine({
+    headingHighlight: fields.text({
       label: "Heading Highlight",
       defaultValue: "without limits",
     }),
-    subheading: fields.multiLine({
+    subheading: fields.textarea({
       label: "Subheading",
       placeholder: "The modern CMS that makes website creation effortless...",
     }),
-    primaryButtonText: fields.singleLine({
+    primaryButtonText: fields.text({
       label: "Primary Button Text",
       defaultValue: "Start Building Free",
     }),
@@ -40,7 +40,7 @@ export const heroBlock = defineBlock({
       label: "Primary Button URL",
       defaultValue: "/signup",
     }),
-    secondaryButtonText: fields.singleLine({
+    secondaryButtonText: fields.text({
       label: "Secondary Button Text",
       defaultValue: "Watch Demo",
     }),
@@ -48,15 +48,15 @@ export const heroBlock = defineBlock({
       label: "Secondary Button URL",
       defaultValue: "#demo",
     }),
-    socialProofPrefix: fields.singleLine({
+    socialProofPrefix: fields.text({
       label: "Social Proof Prefix",
       defaultValue: "Join",
     }),
-    socialProofCount: fields.singleLine({
+    socialProofCount: fields.text({
       label: "Social Proof Count",
       defaultValue: "2,000+",
     }),
-    socialProofText: fields.singleLine({
+    socialProofText: fields.text({
       label: "Social Proof Text",
       defaultValue: "creators already building with cmssy",
     }),
@@ -64,11 +64,11 @@ export const heroBlock = defineBlock({
       label: "Media (Image or Video)",
       placeholder: "Upload an image or video for the hero section",
     }),
-    mediaPlaceholderHeading: fields.singleLine({
+    mediaPlaceholderHeading: fields.text({
       label: "Media Placeholder Heading",
       defaultValue: "Page Builder Preview",
     }),
-    mediaPlaceholderText: fields.singleLine({
+    mediaPlaceholderText: fields.text({
       label: "Media Placeholder Text",
       defaultValue: "Drag & drop interface with real-time preview",
     }),

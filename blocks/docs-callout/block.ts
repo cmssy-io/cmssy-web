@@ -12,7 +12,7 @@ export const docsCalloutBlock = defineBlock({
   props: {
     "type": fields.select({ label: "Type", defaultValue: "info", required: true, options: ["info","tip","warning","danger","note"] }),
     "style": fields.select({ label: "Style", defaultValue: "card", options: ["card","accent-border"] }),
-    "title": fields.singleLine({ label: "Title", placeholder: "Optional title" }),
+    "title": fields.text({ label: "Title", placeholder: "Optional title" }),
     "content": fields.richText({ label: "Content", required: true })
   },
 });
