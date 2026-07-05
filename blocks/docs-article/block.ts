@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const docsArticleBlock = defineBlock({
   type: "docs-article",
+  category: "Docs",
   label: "Docs Article",
   description: "Long-form documentation article body; the main content of a docs page.",
   // Block components require their own content shape; the registry stores them

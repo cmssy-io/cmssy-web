@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const footerBlock = defineBlock({
   type: "footer",
+  category: "Layout",
   label: "Footer",
   description: "Site footer with links and legal (layout block); bottom of every page.",
   layoutPositions: ["footer"],

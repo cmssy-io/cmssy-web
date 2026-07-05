@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const productShowcaseBlock = defineBlock({
   type: "product-showcase",
+  category: "Marketing",
   label: "Product Showcase",
   description:
     "Gallery of product screenshots with titles and captions; a mid-page showcase section on a marketing or home page.",

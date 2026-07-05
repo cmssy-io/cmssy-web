@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const contactBlock = defineBlock({
   type: "contact",
+  category: "Forms",
   label: "Contact",
   description:
     "Contact details and/or contact form; near the end of a page or on a dedicated contact page.",
@@ -61,7 +62,7 @@ export const contactBlock = defineBlock({
       label: "Quote Author",
       defaultValue: "The Cmssy Team",
     }),
-    formId: fields.form({ label: "Form" }),
+    formId: fields.form({ label: "Form", tab: "advanced" }),
     submitLoadingText: fields.text({
       label: "Submit Loading Text",
       defaultValue: "Sending...",

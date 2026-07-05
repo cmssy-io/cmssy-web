@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const changelogBlock = defineBlock({
   type: "changelog",
+  category: "Marketing",
   label: "Changelog",
   description: "Chronological list of product updates and releases; for a changelog or updates page.",
   // Block components require their own content shape; the registry stores them

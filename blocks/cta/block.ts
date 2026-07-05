@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const ctaBlock = defineBlock({
   type: "cta",
+  category: "Marketing",
   label: "Call to Action",
   description: "Closing call-to-action with heading and button; place near the end of a page to drive conversion.",
   // Block components require their own content shape; the registry stores them

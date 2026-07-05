@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const docsStepsBlock = defineBlock({
   type: "docs-steps",
+  category: "Docs",
   label: "Docs Steps",
   description: "Numbered step-by-step guide; for tutorials and how-to documentation.",
   // Block components require their own content shape; the registry stores them

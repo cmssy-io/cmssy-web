@@ -45,6 +45,7 @@ function parseHighlightLines(input?: string): Set<number> {
 
 export const docsCodeBlockBlock = defineBlock({
   type: "docs-code-block",
+  category: "Docs",
   label: "Docs Code Block",
   description: "Syntax-highlighted code snippet; inline within documentation content.",
   // Block components require their own content shape; the registry stores them

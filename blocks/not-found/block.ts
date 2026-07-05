@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const notFoundBlock = defineBlock({
   type: "not-found",
+  category: "Content",
   label: "404 Not Found",
   description: "404 error content; for a not-found page.",
   // Block components require their own content shape; the registry stores them
