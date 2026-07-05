@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const headerBlock = defineBlock({
   type: "header",
+  category: "Layout",
   label: "Header Navigation",
   description:
     "Site header and navigation bar (layout block); top of every page.",

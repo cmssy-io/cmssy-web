@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const docsCardGridBlock = defineBlock({
   type: "docs-card-grid",
+  category: "Docs",
   label: "Docs Card Grid",
   description:
     "Grid of navigational cards linking to docs sections; for a docs landing page.",

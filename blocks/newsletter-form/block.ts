@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const newsletterFormBlock = defineBlock({
   type: "newsletter-form",
+  category: "Forms",
   label: "Newsletter Form",
   description:
     "Email newsletter signup; a supporting section or footer strip to capture subscribers.",

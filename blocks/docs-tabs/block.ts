@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const docsTabsBlock = defineBlock({
   type: "docs-tabs",
+  category: "Docs",
   label: "Docs Tabs",
   description:
     "Tabbed content switcher (e.g. code per language); inline within documentation.",

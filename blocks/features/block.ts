@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const featuresBlock = defineBlock({
   type: "features",
+  category: "Marketing",
   label: "Features",
   description:
     "Grid of product features with icons and copy; a supporting section below the hero.",

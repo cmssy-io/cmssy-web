@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const imageBlock = defineBlock({
   type: "image",
+  category: "Media",
   label: "Image",
   description: "Standalone image or figure; anywhere content needs a visual.",
   // Block components require their own content shape; the registry stores them

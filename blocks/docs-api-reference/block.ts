@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const docsApiReferenceBlock = defineBlock({
   type: "docs-api-reference",
+  category: "Docs",
   label: "Docs API Reference",
   description:
     "API endpoint and reference documentation; for documentation pages.",

@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const docsHeroBlock = defineBlock({
   type: "docs-hero",
+  category: "Docs",
   label: "Docs Hero",
   description:
     "Header for a documentation page (title, description, search); top of a docs page.",

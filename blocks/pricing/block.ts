@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const pricingBlock = defineBlock({
   type: "pricing",
+  category: "Marketing",
   label: "Pricing",
   description: "Pricing plans and tiers comparison; a mid-to-late section on a marketing or pricing page.",
   // Block components require their own content shape; the registry stores them

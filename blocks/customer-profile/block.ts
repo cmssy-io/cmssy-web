@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const customerProfileBlock = defineBlock({
   type: "customer-profile",
+  category: "Account",
   label: "Customer Profile",
   description:
     "Signed-in member's account and profile panel; for an authenticated account page.",

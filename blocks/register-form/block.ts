@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const registerFormBlock = defineBlock({
   type: "register-form",
+  category: "Account",
   label: "Register Form",
   description:
     "Account registration and signup form; for a register auth page.",

@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const loginFormBlock = defineBlock({
   type: "login-form",
+  category: "Account",
   label: "Login Form",
   description: "Sign-in form with email and password; for a login auth page.",
   // Block components require their own content shape; the registry stores them

@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const heroBlock = defineBlock({
   type: "hero",
+  category: "Hero",
   label: "Hero Section",
   description:
     "Full-width top banner with headline, subheading and primary CTA; the first block on a landing or home page.",

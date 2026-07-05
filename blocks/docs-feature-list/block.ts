@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const docsFeatureListBlock = defineBlock({
   type: "docs-feature-list",
+  category: "Docs",
   label: "Docs Feature List",
   description:
     "List of features with icons and descriptions; within documentation or product pages.",

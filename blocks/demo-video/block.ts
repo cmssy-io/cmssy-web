@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const demoVideoBlock = defineBlock({
   type: "demo-video",
+  category: "Media",
   label: "Demo Video",
   description:
     "Embedded product demo video with heading and optional poster; a high-impact showcase section placed early on a marketing or home page.",

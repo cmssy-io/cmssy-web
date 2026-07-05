@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const docsImageBlock = defineBlock({
   type: "docs-image",
+  category: "Docs",
   label: "Docs Image",
   description: "Captioned image or figure for documentation content.",
   // Block components require their own content shape; the registry stores them

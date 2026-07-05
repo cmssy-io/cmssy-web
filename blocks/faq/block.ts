@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const faqBlock = defineBlock({
   type: "faq",
+  category: "Marketing",
   label: "Faq",
   description: "Accordion of frequently asked questions; near the end of a marketing or product page.",
   // Block components require their own content shape; the registry stores them

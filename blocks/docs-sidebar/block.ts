@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const docsSidebarBlock = defineBlock({
   type: "docs-sidebar",
+  category: "Docs",
   label: "Docs Sidebar",
   description: "Documentation navigation sidebar (layout block); left rail across docs pages.",
   layoutPositions: ["sidebar_left"],

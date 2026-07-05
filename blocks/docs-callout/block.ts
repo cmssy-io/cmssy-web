@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const docsCalloutBlock = defineBlock({
   type: "docs-callout",
+  category: "Docs",
   label: "Docs Callout",
   description:
     "Highlighted note, warning or tip callout; inline within documentation content.",

@@ -10,6 +10,7 @@ export interface BlogPostsData {
 
 export const blogPostsBlock = defineBlock({
   type: "blog-posts",
+  category: "Blog",
   label: "Blog Posts",
   description:
     "Grid or list of blog post previews; for a blog index or a 'latest posts' section.",

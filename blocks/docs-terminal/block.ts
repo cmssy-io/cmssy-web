@@ -4,6 +4,7 @@ import Component from "./src";
 
 export const docsTerminalBlock = defineBlock({
   type: "docs-terminal",
+  category: "Docs",
   label: "Docs Terminal",
   description:
     "Terminal and command-line snippet display; for setup and CLI documentation.",
