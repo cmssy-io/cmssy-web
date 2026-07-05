@@ -5,7 +5,8 @@ import Component from "./src";
 export const headerBlock = defineBlock({
   type: "header",
   label: "Header Navigation",
-  description: "Site header and navigation bar (layout block); top of every page.",
+  description:
+    "Site header and navigation bar (layout block); top of every page.",
   layoutPositions: ["header"],
   // Block components require their own content shape; the registry stores them
   // as accepting arbitrary content (resolved from the CMS at runtime).
@@ -26,6 +27,7 @@ export const headerBlock = defineBlock({
       label: "Logo Size",
       defaultValue: "md",
       options: ["sm", "md", "lg"],
+      tab: "style",
     }),
     navigation: fields.repeater({
       label: "Navigation Items",
@@ -91,6 +93,7 @@ export const headerBlock = defineBlock({
     transparent: fields.boolean({
       label: "Transparent Background",
       defaultValue: false,
+      tab: "style",
     }),
     logoutButtonText: fields.text({
       label: "Logout Button Text",
@@ -112,10 +115,12 @@ export const headerBlock = defineBlock({
     announcementBg: fields.color({
       label: "Announcement Background",
       defaultValue: "#7c3aed",
+      tab: "style",
     }),
     announcementTextColor: fields.color({
       label: "Announcement Text Color",
       defaultValue: "#ffffff",
+      tab: "style",
     }),
     announcementDismissible: fields.boolean({
       label: "Dismissible",

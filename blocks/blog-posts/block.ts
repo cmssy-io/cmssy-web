@@ -11,7 +11,8 @@ export interface BlogPostsData {
 export const blogPostsBlock = defineBlock({
   type: "blog-posts",
   label: "Blog Posts",
-  description: "Grid or list of blog post previews; for a blog index or a 'latest posts' section.",
+  description:
+    "Grid or list of blog post previews; for a blog index or a 'latest posts' section.",
   component: Component as unknown as ComponentType<{
     content: Record<string, unknown>;
     data?: BlogPostsData | null;
@@ -47,11 +48,13 @@ export const blogPostsBlock = defineBlock({
       label: "Layout",
       defaultValue: "grid",
       options: ["grid", "list"],
+      tab: "style",
     }),
     columns: fields.select({
       label: "Columns",
       defaultValue: "3",
       options: ["2", "3"],
+      tab: "style",
     }),
     searchPlaceholder: fields.text({
       label: "Search Placeholder",

@@ -61,7 +61,7 @@ export const contactBlock = defineBlock({
       label: "Quote Author",
       defaultValue: "The Cmssy Team",
     }),
-    formId: fields.form({ label: "Form" }),
+    formId: fields.form({ label: "Form", tab: "advanced" }),
     submitLoadingText: fields.text({
       label: "Submit Loading Text",
       defaultValue: "Sending...",
