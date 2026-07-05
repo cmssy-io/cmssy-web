@@ -74,6 +74,7 @@ export const loginFormBlock = defineBlock({
     redirectAfterLogin: fields.link({
       label: "Redirect After Login",
       defaultValue: "/",
+      tab: "advanced",
     }),
     successMessage: fields.textarea({
       label: "Success Message",

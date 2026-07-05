@@ -82,6 +82,7 @@ export const customerProfileBlock = defineBlock({
     logoutRedirectUrl: fields.link({
       label: "Logout Redirect URL",
       defaultValue: "/",
+      tab: "advanced",
     }),
     successMessage: fields.text({
       label: "Success Message",

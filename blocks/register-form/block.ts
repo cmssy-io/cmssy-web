@@ -78,6 +78,7 @@ export const registerFormBlock = defineBlock({
     minPasswordLength: fields.number({
       label: "Minimum Password Length",
       defaultValue: 8,
+      tab: "advanced",
     }),
     termsPrefix: fields.text({
       label: "Terms Prefix",
@@ -120,6 +121,7 @@ export const registerFormBlock = defineBlock({
     redirectAfterRegister: fields.link({
       label: "Redirect After Register",
       defaultValue: "/verify-email-pending",
+      tab: "advanced",
     }),
     successHeading: fields.text({
       label: "Success Heading",
