@@ -62,7 +62,7 @@ export function useBlogPosts(
         }),
       });
       const json = await res.json();
-      return json?.data?.publicPagesByType ?? null;
+      return json?.data?.public?.page?.byType ?? null;
     },
     [workspaceId, parentSlug, limit],
   );
