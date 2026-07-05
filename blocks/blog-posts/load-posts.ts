@@ -24,9 +24,13 @@ export async function loadPosts(
   }
   try {
     const data = await client.queryScoped<{
-      publicPagesByType?: { items?: PageItem[]; hasMore?: boolean } | null;
+      public?: {
+        page?: {
+          byType?: { items?: PageItem[]; hasMore?: boolean } | null;
+        } | null;
+      } | null;
     }>(PUBLIC_PAGES_QUERY, vars);
-    const r = data?.publicPagesByType;
+    const r = data?.public?.page?.byType;
     return r ? { items: r.items ?? [], hasMore: !!r.hasMore } : null;
   } catch {
     return null;
