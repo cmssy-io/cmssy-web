@@ -46,7 +46,7 @@ import { CmssyLink } from "@cmssy/next/client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Container } from "../../../components/container";
 import { LanguageSwitcherMinimal } from "../../../components/language-switcher-minimal";
-import { BlockContent } from "./block";
+import { BlockContent, BlockStyle } from "./block";
 
 const iconMap: Record<string, LucideIcon> = {
   ArrowRight,
@@ -147,6 +147,7 @@ interface PlatformContext {
 interface HeaderProps {
   content: BlockContent;
   context?: PlatformContext;
+  style?: BlockStyle;
 }
 
 function MegaMenuItem({ child }: { child: NavChild }) {
@@ -174,11 +175,10 @@ function MegaMenuItem({ child }: { child: NavChild }) {
   );
 }
 
-export default function Header({ content, context }: HeaderProps) {
+export default function Header({ content, context, style = {} }: HeaderProps) {
   const {
     logo,
     logoText,
-    logoSize = "md",
     navigation = [],
     showCta = true,
     ctaLabel,
@@ -189,12 +189,15 @@ export default function Header({ content, context }: HeaderProps) {
     showAnnouncement = false,
     announcementText,
     announcementLink = "",
-    announcementBg = "#7c3aed",
-    announcementTextColor = "#ffffff",
     announcementDismissible = true,
     logoutButtonText,
     showLanguageSwitcher = true,
   } = content;
+  const {
+    logoSize = "md",
+    announcementBg = "#7c3aed",
+    announcementTextColor = "#ffffff",
+  } = style;
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

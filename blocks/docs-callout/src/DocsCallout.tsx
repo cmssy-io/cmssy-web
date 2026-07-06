@@ -6,7 +6,7 @@ import {
   FileText,
 } from "lucide-react";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import { BlockContent, BlockStyle } from "./block";
 
 const calloutConfig = {
   info: {
@@ -56,20 +56,22 @@ const calloutConfig = {
   },
 };
 
-export default function DocsCallout({ content }: { content: BlockContent }) {
-  const {
-    type = "info",
-    style = "card",
-    title,
-    content: calloutContent = "",
-  } = content;
+export default function DocsCallout({
+  content,
+  style = {},
+}: {
+  content: BlockContent;
+  style?: BlockStyle;
+}) {
+  const { type = "info", title, content: calloutContent = "" } = content;
+  const { style: calloutStyle = "card" } = style;
 
   const config =
     calloutConfig[type as keyof typeof calloutConfig] || calloutConfig.info;
   const Icon = config.icon;
 
   const wrapperClasses =
-    style === "accent-border"
+    calloutStyle === "accent-border"
       ? `rounded-r-xl border-l-4 p-6 ${config.accentBg} ${config.accentBorder}`
       : `rounded-lg border p-4 ${config.bg} ${config.border}`;
 

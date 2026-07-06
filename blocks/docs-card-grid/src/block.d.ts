@@ -4,7 +4,6 @@
 export interface BlockContent {
   heading?: string;
   description?: string;
-  columns?: "2" | "3" | "4";
   cards?: Array<{
     /** Lucide icon name */
     icon?: string;
@@ -12,4 +11,8 @@ export interface BlockContent {
     description?: string;
     url: string;
   }>;
+}
+
+export interface BlockStyle {
+  columns?: "2" | "3" | "4";
 }

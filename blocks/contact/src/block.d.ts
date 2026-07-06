@@ -14,8 +14,11 @@ export interface BlockContent {
   showQuote?: boolean;
   quoteText?: string;
   quoteAuthor?: string;
-  /** Select a form from the form builder. Fields, messages, and email config come from the form definition. */
-  formId?: string;
   submitLoadingText?: string;
   successHeading?: string;
+}
+
+export interface BlockAdvanced {
+  /** Select a form from the form builder. Fields, messages, and email config come from the form definition. */
+  formId?: string;
 }

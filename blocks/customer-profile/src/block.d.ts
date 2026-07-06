@@ -19,11 +19,17 @@ export interface BlockContent {
   submitLoadingText?: string;
   showLogoutButton?: boolean;
   logoutButtonText?: string;
-  logoutRedirectUrl?: string;
   successMessage?: string;
   errorMessage?: string;
   notLoggedInMessage?: string;
   loginUrl?: string;
   loginButtonText?: string;
+}
+
+export interface BlockStyle {
   variant?: "default" | "card";
+}
+
+export interface BlockAdvanced {
+  logoutRedirectUrl?: string;
 }

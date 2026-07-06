@@ -1,6 +1,6 @@
 import { useState, FormEvent, useCallback } from "react";
 import { CmssyLink } from "@cmssy/next/client";
-import { BlockContent } from "./block";
+import { BlockAdvanced, BlockContent, BlockStyle } from "./block";
 
 function MailIcon({ className }: { className?: string }) {
   return (
@@ -79,7 +79,15 @@ function EyeOffIcon({ className }: { className?: string }) {
   );
 }
 
-export default function LoginForm({ content }: { content: BlockContent }) {
+export default function LoginForm({
+  content,
+  style = {},
+  advanced = {},
+}: {
+  content: BlockContent;
+  style?: BlockStyle;
+  advanced?: BlockAdvanced;
+}) {
   const {
     heading,
     description,
@@ -97,11 +105,11 @@ export default function LoginForm({ content }: { content: BlockContent }) {
     showRegisterLink = true,
     registerLinkText,
     registerUrl = "/register",
-    redirectAfterLogin = "/",
     successMessage,
     errorMessage,
-    variant = "default",
   } = content;
+  const { variant = "default" } = style;
+  const { redirectAfterLogin = "/" } = advanced;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);

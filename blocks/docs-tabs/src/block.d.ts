@@ -9,5 +9,8 @@ export interface BlockContent {
     content: string;
   }>;
   defaultTab?: number;
+}
+
+export interface BlockStyle {
   variant?: "underline" | "pills" | "bordered";
 }

@@ -4,7 +4,6 @@
 export interface BlockContent {
   logo?: string;
   logoText?: string;
-  logoSize?: "sm" | "md" | "lg";
   navigation?: Array<{
     label: string;
     url?: string;
@@ -27,13 +26,17 @@ export interface BlockContent {
   secondaryCtaUrl?: string;
   secondaryCtaStyle?: "ghost" | "outline" | "link";
   sticky?: boolean;
-  transparent?: boolean;
   logoutButtonText?: string;
   showLanguageSwitcher?: boolean;
   showAnnouncement?: boolean;
   announcementText?: string;
   announcementLink?: string;
+  announcementDismissible?: boolean;
+}
+
+export interface BlockStyle {
+  logoSize?: "sm" | "md" | "lg";
+  transparent?: boolean;
   announcementBg?: string;
   announcementTextColor?: string;
-  announcementDismissible?: boolean;
 }

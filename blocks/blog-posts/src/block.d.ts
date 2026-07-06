@@ -8,9 +8,12 @@ export interface BlockContent {
   parentPage?: PageRef[];
   postsPerPage?: "3" | "6" | "9" | "12";
   showSearch?: boolean;
-  layout?: "grid" | "list";
-  columns?: "2" | "3";
   searchPlaceholder?: string;
   loadingText?: string;
   noResultsText?: string;
+}
+
+export interface BlockStyle {
+  layout?: "grid" | "list";
+  columns?: "2" | "3";
 }

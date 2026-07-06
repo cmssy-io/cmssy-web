@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import { BlockContent, BlockStyle } from "./block";
 
 const CLI_KEYWORDS = [
   "npx",
@@ -44,8 +44,15 @@ function renderCleanCommand(command: string): string {
   );
 }
 
-export default function DocsTerminal({ content }: { content: BlockContent }) {
-  const { title, commands = [], theme = "macos", showCopyAll = true } = content;
+export default function DocsTerminal({
+  content,
+  style = {},
+}: {
+  content: BlockContent;
+  style?: BlockStyle;
+}) {
+  const { title, commands = [], showCopyAll = true } = content;
+  const { theme = "macos" } = style;
 
   const [copied, setCopied] = useState(false);
 

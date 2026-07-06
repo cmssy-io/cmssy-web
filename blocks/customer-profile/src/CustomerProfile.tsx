@@ -1,7 +1,7 @@
 "use client";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { CmssyLink } from "@cmssy/next/client";
-import { BlockContent } from "./block";
+import { BlockAdvanced, BlockContent, BlockStyle } from "./block";
 import type { PlatformContext } from "@cmssy/types";
 
 const UPDATE_PROFILE_MUTATION = `
@@ -116,9 +116,13 @@ function CheckIcon({ className }: { className?: string }) {
 export default function CustomerProfile({
   content,
   context,
+  style = {},
+  advanced = {},
 }: {
   content: BlockContent;
   context?: PlatformContext;
+  style?: BlockStyle;
+  advanced?: BlockAdvanced;
 }) {
   const {
     heading,
@@ -138,14 +142,14 @@ export default function CustomerProfile({
     submitLoadingText = "Saving...",
     showLogoutButton = true,
     logoutButtonText = "Sign out",
-    logoutRedirectUrl = "/",
     successMessage = "Profile updated successfully!",
     errorMessage = "Failed to update profile. Please try again.",
     notLoggedInMessage,
     loginUrl = "/login",
     loginButtonText = "Sign in",
-    variant = "default",
   } = content;
+  const { variant = "default" } = style;
+  const { logoutRedirectUrl = "/" } = advanced;
 
   const isAuthenticated = context?.auth?.isAuthenticated ?? false;
   const member = context?.auth?.member;

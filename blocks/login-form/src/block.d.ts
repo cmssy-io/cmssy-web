@@ -18,8 +18,14 @@ export interface BlockContent {
   showRegisterLink?: boolean;
   registerLinkText?: string;
   registerUrl?: string;
-  redirectAfterLogin?: string;
   successMessage?: string;
   errorMessage?: string;
+}
+
+export interface BlockStyle {
   variant?: "default" | "card";
+}
+
+export interface BlockAdvanced {
+  redirectAfterLogin?: string;
 }

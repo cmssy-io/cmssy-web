@@ -3,7 +3,7 @@
 import type { PlatformContext } from "@cmssy/types";
 import { Container } from "../../../components/container";
 import type { BlogPostsData } from "../block";
-import type { BlockContent } from "./block";
+import type { BlockContent, BlockStyle } from "./block";
 import { EmptyDocIcon, SearchIcon } from "./icons";
 import { PlaceholderCard, PostCard } from "./PostCard";
 import { useBlogPosts } from "./useBlogPosts";
@@ -12,9 +12,15 @@ interface Props {
   content: BlockContent;
   context?: PlatformContext;
   data?: BlogPostsData | null;
+  style?: BlockStyle;
 }
 
-export default function BlogPosts({ content, context, data }: Props) {
+export default function BlogPosts({
+  content,
+  context,
+  data,
+  style = {},
+}: Props) {
   const {
     badge,
     heading,
@@ -42,7 +48,7 @@ export default function BlogPosts({ content, context, data }: Props) {
     setActiveCategory,
     sentinelRef,
     items,
-  } = useBlogPosts(content, context, data);
+  } = useBlogPosts(content, context, data, style);
 
   const hasHeader = badge || heading || description;
   const hasFilters = showSearch || categories.length > 0;

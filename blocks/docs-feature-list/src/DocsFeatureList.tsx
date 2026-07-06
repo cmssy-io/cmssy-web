@@ -8,7 +8,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import { BlockContent, BlockStyle } from "./block";
 
 const iconMap: Record<string, LucideIcon> = {
   CheckCircle2,
@@ -29,17 +29,19 @@ const iconColorMap: Record<string, string> = {
 
 export default function DocsFeatureList({
   content,
+  style = {},
 }: {
   content: BlockContent;
+  style?: BlockStyle;
 }) {
   const {
     heading,
     description,
     icon: defaultIcon = "CheckCircle2",
     iconColor = "violet",
-    layout = "stacked",
     items = [],
   } = content;
+  const { layout = "stacked" } = style;
 
   const iconColorClass = iconColorMap[iconColor] || iconColorMap.violet;
   const listGridClass =

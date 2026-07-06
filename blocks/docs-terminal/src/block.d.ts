@@ -8,6 +8,9 @@ export interface BlockContent {
     command: string;
     output?: string;
   }>;
-  theme?: "dark" | "macos" | "minimal" | "clean";
   showCopyAll?: boolean;
+}
+
+export interface BlockStyle {
+  theme?: "dark" | "macos" | "minimal" | "clean";
 }
