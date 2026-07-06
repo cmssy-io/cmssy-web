@@ -8,11 +8,13 @@ const SITE_DESCRIPTION =
   "Cmssy is a headless CMS with a visual block editor, AI tools, and an MCP server. Build your content in Cmssy and render it on your own frontend via the API.";
 const TWITTER_HANDLE = "@cmssy_io";
 
-const PUBLIC_SITE_BRANDING_QUERY = `query PublicSiteBranding($workspaceSlug: String!) {
-  publicSiteConfig(workspaceSlug: $workspaceSlug) {
-    branding {
-      faviconUrl
-      ogImageUrl
+const PUBLIC_SITE_BRANDING_QUERY = `query PublicSiteBranding {
+  public {
+    siteConfig {
+      branding {
+        faviconUrl
+        ogImageUrl
+      }
     }
   }
 }`;
@@ -26,15 +28,19 @@ export async function buildSiteMetadata(): Promise<Metadata> {
   let branding: SiteBranding | null = null;
   try {
     const data = await graphqlRequest<{
-      publicSiteConfig: { branding: SiteBranding | null } | null;
+      public: { siteConfig: { branding: SiteBranding | null } | null } | null;
     }>(
-      { apiUrl: cmssy.apiUrl, workspaceSlug: cmssy.workspaceSlug },
+      {
+        apiUrl: cmssy.apiUrl,
+        org: cmssy.org,
+        workspaceSlug: cmssy.workspaceSlug,
+      },
       PUBLIC_SITE_BRANDING_QUERY,
-      { workspaceSlug: cmssy.workspaceSlug },
+      {},
       undefined,
       "site branding",
     );
-    branding = data.publicSiteConfig?.branding ?? null;
+    branding = data.public?.siteConfig?.branding ?? null;
   } catch {
     branding = null;
   }
