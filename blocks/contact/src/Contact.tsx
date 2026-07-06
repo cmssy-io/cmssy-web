@@ -1,15 +1,16 @@
 import type { CmssyBlockContext } from "@cmssy/react";
 import { Container } from "../../../components/container";
-import type { BlockContent } from "./block";
+import type { BlockAdvanced, BlockContent } from "./block";
 import { ContactForm } from "./ContactForm";
 import { InfoCard } from "./InfoCard";
 
 interface Props {
   content: BlockContent;
   context?: CmssyBlockContext;
+  advanced?: BlockAdvanced;
 }
 
-export default function Contact({ content, context }: Props) {
+export default function Contact({ content, context, advanced = {} }: Props) {
   const {
     badgeText,
     heading,
@@ -19,10 +20,10 @@ export default function Contact({ content, context }: Props) {
     showQuote,
     quoteText,
     quoteAuthor,
-    formId,
     submitLoadingText,
     successHeading,
   } = content;
+  const { formId } = advanced;
 
   const formDef = formId ? (context?.forms?.[formId] ?? null) : null;
 

@@ -1,6 +1,6 @@
 import { useState, FormEvent, useCallback } from "react";
 import { CmssyLink } from "@cmssy/next/client";
-import { BlockContent } from "./block";
+import { BlockAdvanced, BlockContent, BlockStyle } from "./block";
 
 function MailIcon({ className }: { className?: string }) {
   return (
@@ -111,7 +111,15 @@ function CheckIcon({ className }: { className?: string }) {
   );
 }
 
-export default function RegisterForm({ content }: { content: BlockContent }) {
+export default function RegisterForm({
+  content,
+  style = {},
+  advanced = {},
+}: {
+  content: BlockContent;
+  style?: BlockStyle;
+  advanced?: BlockAdvanced;
+}) {
   const {
     heading,
     description,
@@ -129,7 +137,6 @@ export default function RegisterForm({ content }: { content: BlockContent }) {
     confirmPasswordPlaceholder,
     submitButtonText,
     submitLoadingText,
-    minPasswordLength = 8,
     termsPrefix,
     termsLinkText,
     termsConnector,
@@ -140,7 +147,6 @@ export default function RegisterForm({ content }: { content: BlockContent }) {
     showLoginLink = true,
     loginLinkText,
     loginUrl = "/login",
-    redirectAfterRegister = "/verify-email-pending",
     successHeading,
     successLoginLinkText,
     passwordTooShortMessage,
@@ -148,8 +154,12 @@ export default function RegisterForm({ content }: { content: BlockContent }) {
     successMessage,
     errorMessage,
     passwordMismatchMessage,
-    variant = "default",
   } = content;
+  const { variant = "default" } = style;
+  const {
+    minPasswordLength = 8,
+    redirectAfterRegister = "/verify-email-pending",
+  } = advanced;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);

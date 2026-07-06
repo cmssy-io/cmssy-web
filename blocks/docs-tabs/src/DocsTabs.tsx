@@ -2,7 +2,7 @@ import { useState } from "react";
 import * as Icons from "lucide-react";
 import { LucideIcon } from "lucide-react";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import { BlockContent, BlockStyle } from "./block";
 
 function getIcon(name?: string): LucideIcon | null {
   if (!name) return null;
@@ -10,8 +10,15 @@ function getIcon(name?: string): LucideIcon | null {
   return Icon || null;
 }
 
-export default function DocsTabs({ content }: { content: BlockContent }) {
-  const { tabs = [], defaultTab = 0, variant = "underline" } = content;
+export default function DocsTabs({
+  content,
+  style = {},
+}: {
+  content: BlockContent;
+  style?: BlockStyle;
+}) {
+  const { tabs = [], defaultTab = 0 } = content;
+  const { variant = "underline" } = style;
 
   const [activeTab, setActiveTab] = useState(
     Math.min(defaultTab, Math.max(0, tabs.length - 1)),

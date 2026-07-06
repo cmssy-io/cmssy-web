@@ -3,7 +3,7 @@
 import type { PageItem, PlatformContext } from "@cmssy/types";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { BlogPostsData } from "../block";
-import type { BlockContent } from "./block";
+import type { BlockContent, BlockStyle } from "./block";
 import { PUBLIC_PAGES_QUERY } from "./query";
 import { getCustomField } from "./utils";
 
@@ -11,8 +11,10 @@ export function useBlogPosts(
   content: BlockContent,
   context?: PlatformContext,
   ssr?: BlogPostsData | null,
+  style: BlockStyle = {},
 ) {
-  const { layout = "grid", columns = "3", parentPage, postsPerPage } = content;
+  const { parentPage, postsPerPage } = content;
+  const { layout = "grid", columns = "3" } = style;
 
   const parentSlug = Array.isArray(parentPage)
     ? parentPage[0]?.slug

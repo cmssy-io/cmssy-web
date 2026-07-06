@@ -2,7 +2,7 @@ import * as Icons from "lucide-react";
 import { ArrowRight, LucideIcon } from "lucide-react";
 import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import { BlockContent, BlockStyle } from "./block";
 
 // Dynamic icon lookup
 function getIcon(name?: string): LucideIcon {
@@ -11,8 +11,15 @@ function getIcon(name?: string): LucideIcon {
   return IconComponent || Icons.FileText;
 }
 
-export default function DocsCardGrid({ content }: { content: BlockContent }) {
-  const { heading, description, columns = "3", cards = [] } = content;
+export default function DocsCardGrid({
+  content,
+  style = {},
+}: {
+  content: BlockContent;
+  style?: BlockStyle;
+}) {
+  const { heading, description, cards = [] } = content;
+  const { columns = "3" } = style;
 
   const gridCols = {
     "2": "md:grid-cols-2",

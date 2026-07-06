@@ -2,7 +2,7 @@ import * as Icons from "lucide-react";
 import { ArrowRight, LucideIcon } from "lucide-react";
 import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import { BlockContent, BlockStyle } from "./block";
 
 function getIcon(name?: string): LucideIcon {
   if (!name) return Icons.FileText;
@@ -10,14 +10,15 @@ function getIcon(name?: string): LucideIcon {
   return Icon || Icons.FileText;
 }
 
-export default function DocsHero({ content }: { content: BlockContent }) {
-  const {
-    badge,
-    heading,
-    description,
-    variant = "default",
-    quickLinks = [],
-  } = content;
+export default function DocsHero({
+  content,
+  style = {},
+}: {
+  content: BlockContent;
+  style?: BlockStyle;
+}) {
+  const { badge, heading, description, quickLinks = [] } = content;
+  const { variant = "default" } = style;
 
   const bgClasses = {
     default: "bg-background",

@@ -1,6 +1,6 @@
 import { useState, FormEvent, useCallback } from "react";
 import { CmssyLink } from "@cmssy/next/client";
-import { BlockContent } from "./block";
+import { BlockContent, BlockStyle } from "./block";
 
 function MailIcon({ className }: { className?: string }) {
   return (
@@ -54,8 +54,10 @@ function ArrowLeftIcon({ className }: { className?: string }) {
 
 export default function ForgotPasswordForm({
   content,
+  style = {},
 }: {
   content: BlockContent;
+  style?: BlockStyle;
 }) {
   const {
     heading,
@@ -71,8 +73,8 @@ export default function ForgotPasswordForm({
     emailSentText,
     successMessage,
     errorMessage,
-    variant = "default",
   } = content;
+  const { variant = "default" } = style;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);

@@ -5,6 +5,9 @@ export interface BlockContent {
   src: string;
   alt?: string;
   caption?: string;
+}
+
+export interface BlockStyle {
   width?: "small" | "medium" | "large" | "full";
   rounded?: boolean;
 }

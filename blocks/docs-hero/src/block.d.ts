@@ -5,7 +5,6 @@ export interface BlockContent {
   badge?: string;
   heading: string;
   description?: string;
-  variant?: "default" | "gradient" | "minimal";
   showSearch?: boolean;
   searchPlaceholder?: string;
   quickLinks?: Array<{
@@ -15,4 +14,8 @@ export interface BlockContent {
     description?: string;
     url: string;
   }>;
+}
+
+export interface BlockStyle {
+  variant?: "default" | "gradient" | "minimal";
 }

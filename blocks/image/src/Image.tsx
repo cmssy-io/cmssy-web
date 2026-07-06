@@ -4,6 +4,9 @@ interface ImageContent {
   src?: string;
   alt?: string;
   caption?: string;
+}
+
+interface ImageStyle {
   width?: "small" | "medium" | "large" | "full";
   rounded?: boolean;
 }
@@ -15,8 +18,15 @@ const widthClasses: Record<string, string> = {
   full: "max-w-none",
 };
 
-export default function Image({ content }: { content: ImageContent }) {
-  const { src, alt = "", caption, width = "full", rounded = true } = content;
+export default function Image({
+  content,
+  style = {},
+}: {
+  content: ImageContent;
+  style?: ImageStyle;
+}) {
+  const { src, alt = "", caption } = content;
+  const { width = "full", rounded = true } = style;
 
   if (!src) {
     return null;

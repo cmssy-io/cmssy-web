@@ -1,19 +1,22 @@
 import { useState, useEffect } from "react";
 import { ZoomIn, X } from "lucide-react";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import { BlockContent, BlockStyle } from "./block";
 
-export default function DocsImage({ content }: { content: BlockContent }) {
+export default function DocsImage({
+  content,
+  style = {},
+}: {
+  content: BlockContent;
+  style?: BlockStyle;
+}) {
+  const { src, alt = "", caption, zoomable = true } = content;
   const {
-    src,
-    alt = "",
-    caption,
     width = "large",
     border = true,
     rounded = true,
     shadow = true,
-    zoomable = true,
-  } = content;
+  } = style;
 
   const [isZoomed, setIsZoomed] = useState(false);
 

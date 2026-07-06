@@ -19,7 +19,6 @@ export interface BlockContent {
   confirmPasswordPlaceholder?: string;
   submitButtonText?: string;
   submitLoadingText?: string;
-  minPasswordLength?: number;
   termsPrefix?: string;
   termsLinkText?: string;
   termsConnector?: string;
@@ -31,7 +30,6 @@ export interface BlockContent {
   showLoginLink?: boolean;
   loginLinkText?: string;
   loginUrl?: string;
-  redirectAfterRegister?: string;
   successHeading?: string;
   successLoginLinkText?: string;
   /** Use {min} for minimum length */
@@ -40,5 +38,13 @@ export interface BlockContent {
   successMessage?: string;
   errorMessage?: string;
   passwordMismatchMessage?: string;
+}
+
+export interface BlockStyle {
   variant?: "default" | "card";
+}
+
+export interface BlockAdvanced {
+  minPasswordLength?: number;
+  redirectAfterRegister?: string;
 }

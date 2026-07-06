@@ -3,7 +3,10 @@
 
 export interface BlockContent {
   type: "info" | "tip" | "warning" | "danger" | "note";
-  style?: "card" | "accent-border";
   title?: string;
   content: string;
+}
+
+export interface BlockStyle {
+  style?: "card" | "accent-border";
 }

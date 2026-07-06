@@ -15,5 +15,8 @@ export interface BlockContent {
   emailSentText?: string;
   successMessage?: string;
   errorMessage?: string;
+}
+
+export interface BlockStyle {
   variant?: "default" | "card";
 }
