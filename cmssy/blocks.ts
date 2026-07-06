@@ -30,7 +30,6 @@ import { heroBlock } from "@/blocks/hero/block";
 import { imageBlock } from "@/blocks/image/block";
 import { legalBlock } from "@/blocks/legal/block";
 import { loginFormBlock } from "@/blocks/login-form/block";
-import { newsletterFormBlock } from "@/blocks/newsletter-form/block";
 import { notFoundBlock } from "@/blocks/not-found/block";
 import { pricingBlock } from "@/blocks/pricing/block";
 import { productShowcaseBlock } from "@/blocks/product-showcase/block";
@@ -69,7 +68,6 @@ export const blocks = [
   imageBlock,
   legalBlock,
   loginFormBlock,
-  newsletterFormBlock,
   notFoundBlock,
   pricingBlock,
   productShowcaseBlock,
