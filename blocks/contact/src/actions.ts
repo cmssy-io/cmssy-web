@@ -29,6 +29,7 @@ export async function submitContact(
   try {
     const client = createCmssyClient({
       apiUrl: cmssy.apiUrl,
+      org: cmssy.org,
       workspaceSlug: cmssy.workspaceSlug,
     });
     const res = await client.queryScoped<{

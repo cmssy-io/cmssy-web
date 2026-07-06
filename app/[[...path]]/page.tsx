@@ -43,7 +43,7 @@ async function getPageLayoutGroups(
 ): Promise<CmssyLayoutGroup[]> {
   try {
     return await fetchLayouts(
-      { apiUrl: cmssy.apiUrl, workspaceSlug: cmssy.workspaceSlug },
+      { apiUrl: cmssy.apiUrl, org: cmssy.org, workspaceSlug: cmssy.workspaceSlug },
       slug,
       { previewSecret: editMode ? cmssy.draftSecret : undefined },
     );
