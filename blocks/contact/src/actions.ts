@@ -33,9 +33,9 @@ export async function submitContact(
       workspaceSlug: cmssy.workspaceSlug,
     });
     const res = await client.queryScoped<{
-      submitForm: CmssyFormSubmitResponse;
+      public: { form: { submit: CmssyFormSubmitResponse } };
     }>(SUBMIT_FORM_MUTATION, { formId, input: { data } }, { workspaceId });
-    const result = res.submitForm;
+    const result = res.public.form.submit;
     return {
       status: result.success ? "success" : "error",
       message: result.message ?? null,

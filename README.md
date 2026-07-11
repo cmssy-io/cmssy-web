@@ -34,7 +34,7 @@ Architecture:
   webhook (guarded by `CMSSY_REVALIDATE_SECRET`).
 - `app/api/graphql` + `app/api/public-graphql` - proxy the public delivery API for
   client blocks (blog-posts listing, contact form). The proxy adds the
-  `x-workspace-id` header that workspace-scoped queries (e.g. `publicForm`) need.
+  `x-workspace-id` header that workspace-scoped queries (e.g. `public.form.get`) need.
 - Dynamic blocks fetch client-side via these proxies using
   `NEXT_PUBLIC_CMSSY_WORKSPACE_ID` (the SDK passes blocks only `{ content }`, no
   platform context).

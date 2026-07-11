@@ -29,7 +29,7 @@ export async function proxyGraphql(request: NextRequest) {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        // Some public queries (e.g. publicForm) are scoped by workspace id.
+        // Some public queries (e.g. public.form.get) are scoped by workspace id.
         ...(workspaceId ? { "x-workspace-id": workspaceId } : {}),
       },
       body: JSON.stringify(body),
