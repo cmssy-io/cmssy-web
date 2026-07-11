@@ -61,8 +61,8 @@ importers:
         version: 3.6.0
     devDependencies:
       '@cmssy/types':
-        specifier: ^0.16.0
-        version: 0.16.0
+        specifier: ^0.22.0
+        version: 0.22.0
       '@eslint/js':
         specifier: ^9.39.3
         version: 9.39.4
@@ -188,9 +188,6 @@ packages:
     resolution: {integrity: sha512-BH2h42py+4qKOsd8NlY/qEHmvIp/24hnxX99RymzXPGZKOEnECjSDr3VC8kg4XNKE+JPStFXt+wDNDoCFWSdaA==}
     peerDependencies:
       react: ^18.2.0 || ^19.0.0
-
-  '@cmssy/types@0.16.0':
-    resolution: {integrity: sha512-KaOuVJVuGr1Uw9/4qESjNd2TtyNOU6RqdTKpQ7T+8j89vEZJpClL4mnxqvtSVA03goJeIY3peexjjNnRnEnB0w==}
 
   '@cmssy/types@0.22.0':
     resolution: {integrity: sha512-915y7ZdfeK2wq1aqwuqw5habb9t9cXXw+DtwVDeJNb/7ssXtlgNO0Z/NrpOFZdGQFlr9tUjzkW0pBbM5bQ06kA==}
@@ -1933,8 +1930,6 @@ snapshots:
     dependencies:
       '@cmssy/types': 0.22.0
       react: 19.2.7
-
-  '@cmssy/types@0.16.0': {}
 
   '@cmssy/types@0.22.0': {}
 
