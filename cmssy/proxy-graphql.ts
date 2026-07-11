@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { resolveApiUrl } from "@cmssy/react";
-import { getCmssyAccessToken } from "@cmssy/next";
 import { cmssy } from "./config";
 
 /**
@@ -44,59 +43,3 @@ export async function proxyGraphql(request: NextRequest) {
   }
 }
 
-/**
- * Forwards a member-authenticated GraphQL request. Reads the member's access
- * token from the httpOnly session cookie (via getCmssyAccessToken) and forwards
- * it as a Bearer header, so member-scoped mutations (e.g. siteMemberUpdateProfile)
- * are authenticated without the token ever reaching client JS. Requires
- * `config.auth`; returns 401 when auth is unconfigured or no session exists.
- */
-export async function proxyMemberGraphql(request: NextRequest) {
-  if (!cmssy.auth) {
-    return NextResponse.json(
-      { errors: [{ message: "Member auth is not configured" }] },
-      { status: 401 },
-    );
-  }
-
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json(
-      { errors: [{ message: "Invalid JSON body" }] },
-      { status: 400 },
-    );
-  }
-
-  const token = await getCmssyAccessToken(cmssy);
-  if (!token) {
-    return NextResponse.json(
-      { errors: [{ message: "Not authenticated" }] },
-      { status: 401 },
-    );
-  }
-
-  const workspaceId =
-    process.env.CMSSY_WORKSPACE_ID ??
-    process.env.NEXT_PUBLIC_CMSSY_WORKSPACE_ID;
-
-  try {
-    const upstream = await fetch(resolveApiUrl(cmssy.apiUrl), {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${token}`,
-        ...(workspaceId ? { "x-workspace-id": workspaceId } : {}),
-      },
-      body: JSON.stringify(body),
-    });
-    const json = await upstream.json();
-    return NextResponse.json(json, { status: upstream.status });
-  } catch {
-    return NextResponse.json(
-      { errors: [{ message: "Upstream request failed" }] },
-      { status: 502 },
-    );
-  }
-}

@@ -5,7 +5,6 @@ import { blogPostsBlock } from "@/blocks/blog-posts/block";
 import { changelogBlock } from "@/blocks/changelog/block";
 import { contactBlock } from "@/blocks/contact/block";
 import { ctaBlock } from "@/blocks/cta/block";
-import { customerProfileBlock } from "@/blocks/customer-profile/block";
 import { demoVideoBlock } from "@/blocks/demo-video/block";
 import { docsApiReferenceBlock } from "@/blocks/docs-api-reference/block";
 import { docsArticleBlock } from "@/blocks/docs-article/block";
@@ -24,16 +23,13 @@ import { docsTerminalBlock } from "@/blocks/docs-terminal/block";
 import { faqBlock } from "@/blocks/faq/block";
 import { featuresBlock } from "@/blocks/features/block";
 import { footerBlock } from "@/blocks/footer/block";
-import { forgotPasswordFormBlock } from "@/blocks/forgot-password-form/block";
 import { headerBlock } from "@/blocks/header/block";
 import { heroBlock } from "@/blocks/hero/block";
 import { imageBlock } from "@/blocks/image/block";
 import { legalBlock } from "@/blocks/legal/block";
-import { loginFormBlock } from "@/blocks/login-form/block";
 import { notFoundBlock } from "@/blocks/not-found/block";
 import { pricingBlock } from "@/blocks/pricing/block";
 import { productShowcaseBlock } from "@/blocks/product-showcase/block";
-import { registerFormBlock } from "@/blocks/register-form/block";
 import { roadmapBlock } from "@/blocks/roadmap/block";
 
 export const blocks = [
@@ -43,7 +39,6 @@ export const blocks = [
   changelogBlock,
   contactBlock,
   ctaBlock,
-  customerProfileBlock,
   demoVideoBlock,
   docsApiReferenceBlock,
   docsArticleBlock,
@@ -62,15 +57,12 @@ export const blocks = [
   faqBlock,
   featuresBlock,
   footerBlock,
-  forgotPasswordFormBlock,
   headerBlock,
   heroBlock,
   imageBlock,
   legalBlock,
-  loginFormBlock,
   notFoundBlock,
   pricingBlock,
   productShowcaseBlock,
-  registerFormBlock,
   roadmapBlock,
 ];

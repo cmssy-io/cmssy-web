@@ -25,7 +25,7 @@ Skrypt: `list_pages` → dla każdej `get_page` → policz `type` w `blocks[]` i
 - [ ] Oznacz bloki z 0 użyć = kandydaci do usunięcia.
 - [ ] **Nie usuwaj** typu użytego na JAKIEJKOLWIEK stronie (też unpublished) - render fallback/błąd.
 
-Wstępni kandydaci do usunięcia (do potwierdzenia audytem) — bloki member-auth na stronach nieopublikowanych: `login-form`, `register-form`, `forgot-password-form`, `customer-profile`, `newsletter-form`. UWAGA: repo ma `member-graphql` API, więc mogą być celowo pod members-area. Decyzja produktowa, nie techniczna.
+Rozstrzygnięte (CMS-906): bloki member-auth (`login-form`, `register-form`, `forgot-password-form`, `customer-profile`) zostały USUNIĘTE wraz z `member-graphql`. Nigdy nie działały - `app/api/auth` nie był zamontowany (404 na sign-in/sign-out), `cmssy.auth` nie było ustawione (401 na member-graphql), a `customer-profile` wołał `siteMemberUpdateProfile`, którego backend nigdy nie miał. cmssy.com to strona marketingowa; member-auth żyje w cmssy-test-blocks i kancelarii. `newsletter-form` zostaje.
 
 ---
 
