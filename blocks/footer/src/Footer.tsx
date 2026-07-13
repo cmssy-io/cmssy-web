@@ -157,7 +157,6 @@ export default function Footer({
                 enabledLanguages={i18n.enabledLanguages}
                 defaultLanguage={i18n.defaultLanguage}
                 currentLanguage={i18n.currentLanguage}
-                variant="full"
               />
             )}
           </div>
