@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { PageItem } from "@cmssy/types";
 import { CmssyLink } from "@cmssy/next/client";
 import { formatDate, getCustomField, getLocalizedField } from "./utils";
@@ -43,13 +44,18 @@ export function PostCard({
     >
       {coverImage ? (
         <div
-          className={`overflow-hidden ${isList ? "w-64 min-h-40 shrink-0" : "aspect-video"}`}
+          className={`relative overflow-hidden ${isList ? "w-64 min-h-40 shrink-0" : "aspect-video"}`}
         >
-          <img
+          <Image
             src={coverImage}
             alt={title}
-            loading="lazy"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            fill
+            sizes={
+              isList
+                ? "256px"
+                : "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            }
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
       ) : (

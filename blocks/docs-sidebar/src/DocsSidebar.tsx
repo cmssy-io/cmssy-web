@@ -8,6 +8,7 @@ import {
   X,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { CmssyLink } from "@cmssy/next/client";
 import { LanguageSwitcher } from "../../../components/language-switcher";
 import { BlockContent } from "./block";
@@ -126,7 +127,13 @@ function SidebarContent({
           className="flex items-center gap-2.5 text-foreground no-underline hover:opacity-80 transition-opacity"
         >
           {logo && (
-            <img src={logo} alt="" className="size-6 rounded-xs object-cover" />
+            <Image
+              src={logo}
+              alt=""
+              width={24}
+              height={24}
+              className="size-6 rounded-xs object-cover"
+            />
           )}
           {logoText && (
             <span className="text-[15px] font-semibold tracking-tight">
