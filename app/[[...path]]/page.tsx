@@ -43,7 +43,11 @@ async function getPageLayoutGroups(
 ): Promise<CmssyLayoutGroup[]> {
   try {
     return await fetchLayouts(
-      { apiUrl: cmssy.apiUrl, org: cmssy.org, workspaceSlug: cmssy.workspaceSlug },
+      {
+        apiUrl: cmssy.apiUrl,
+        org: cmssy.org,
+        workspaceSlug: cmssy.workspaceSlug,
+      },
       slug,
       { previewSecret: editMode ? cmssy.draftSecret : undefined },
     );
@@ -61,7 +65,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   const [groups, content] = await Promise.all([
     getPageLayoutGroups(slug, editMode),
     renderPage({
-      params: Promise.resolve({ path: strippedPath }),
+      params: Promise.resolve({ path }),
       searchParams,
     }),
   ]);
