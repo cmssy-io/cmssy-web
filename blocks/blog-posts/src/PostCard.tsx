@@ -29,6 +29,8 @@ export function PostCard({
   const coverImage = getCustomField(item, "cover_image") as string | null;
   const author = getCustomField(item, "author") as string | null;
   const category = getCustomField(item, "category") as string | null;
+  const publishDate =
+    (getCustomField(item, "publish_date") as string | null) ?? item.publishedAt;
 
   const isList = layout === "list";
 
@@ -66,9 +68,9 @@ export function PostCard({
           </p>
         )}
         <div className="flex items-center gap-3 text-xs text-muted-foreground mt-auto pt-2">
-          {item.publishedAt && (
-            <time dateTime={item.publishedAt}>
-              {formatDate(item.publishedAt, language)}
+          {publishDate && (
+            <time dateTime={publishDate}>
+              {formatDate(publishDate, language)}
             </time>
           )}
           {author && <span className="font-medium">{author}</span>}
