@@ -45,7 +45,7 @@ import Image from "next/image";
 import { CmssyLink } from "@cmssy/next/client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Container } from "../../../components/container";
-import { LanguageSwitcherMinimal } from "../../../components/language-switcher-minimal";
+import { LanguageSwitcher } from "../../../components/language-switcher";
 import { BlockContent, BlockStyle } from "./block";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -495,7 +495,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
             {/* Desktop CTAs */}
             <div className="hidden lg:flex items-center gap-4">
               {hasLanguageSwitcher && (
-                <LanguageSwitcherMinimal
+                <LanguageSwitcher
                   enabledLanguages={i18n.enabledLanguages}
                   defaultLanguage={i18n.defaultLanguage}
                   currentLanguage={i18n.currentLanguage}
@@ -715,11 +715,10 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
             {/* Mobile Language Switcher */}
             {hasLanguageSwitcher && (
               <div className="border-t px-4 py-3">
-                <LanguageSwitcherMinimal
+                <LanguageSwitcher
                   enabledLanguages={i18n.enabledLanguages}
                   defaultLanguage={i18n.defaultLanguage}
                   currentLanguage={i18n.currentLanguage}
-                  className="text-sm"
                 />
               </div>
             )}
