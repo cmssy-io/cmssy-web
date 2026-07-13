@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import NextImage from "next/image";
 import { ZoomIn, X } from "lucide-react";
 import { Container } from "../../../components/container";
 import { BlockContent, BlockStyle } from "./block";
@@ -60,9 +61,12 @@ export default function DocsImage({
       <div className={`mx-auto ${widthClasses[width]}`}>
         {/* Image with zoom hint */}
         <div className="relative group">
-          <img
+          <NextImage
             src={src}
             alt={alt}
+            width={0}
+            height={0}
+            sizes="(max-width: 768px) 100vw, 800px"
             className={imageClasses}
             onClick={() => zoomable && setIsZoomed(true)}
           />
