@@ -1,14 +1,17 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Check } from "lucide-react";
+import { Check, Globe } from "lucide-react";
 import { buildLocaleSwitchHref } from "@cmssy/react";
 import { useCmssyLocale } from "@cmssy/react/client";
+import { Button } from "./ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 import { cn } from "../lib/utils";
-
-// ─── Flag & Language Helpers ────────────────────────────────────────────
 
 const LANG_TO_COUNTRY: Record<string, string> = {
   en: "GB",
@@ -84,8 +87,6 @@ function getLanguageName(code: string): string {
   }
 }
 
-// ─── Types ──────────────────────────────────────────────────────────────
-
 interface LanguageSwitcherProps {
   /** All enabled language codes */
   enabledLanguages: string[];
@@ -93,220 +94,70 @@ interface LanguageSwitcherProps {
   defaultLanguage: string;
   /** Currently active language */
   currentLanguage: string;
-  /** Visual variant */
-  variant?: "compact" | "full";
-  /** Dropdown / item background theme — "light" for white panels, "dark" for dark panels */
-  theme?: "light" | "dark";
   /** Additional class names for the root element */
   className?: string;
 }
 
-// ─── Compact Variant (Desktop nav) ─────────────────────────────────────
-// Trigger: 🇬🇧 EN ▾  →  Dropdown with all languages
-
-function CompactSwitcher({
-  enabledLanguages,
-  defaultLanguage,
-  currentLanguage,
-  theme = "light",
-  className,
-}: LanguageSwitcherProps) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const pathname = usePathname();
-  const ctx = useCmssyLocale();
-  const enabled = ctx?.enabled ?? enabledLanguages;
-  const defaultLang = ctx?.default ?? defaultLanguage;
-  const localeCtx = {
-    current: currentLanguage,
-    default: defaultLang,
-    enabled,
-  };
-
-  // Close on outside click
-  useEffect(() => {
-    if (!open) return;
-    function onMouseDown(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", onMouseDown);
-    return () => document.removeEventListener("mousedown", onMouseDown);
-  }, [open]);
-
-  // Close on Escape
-  useEffect(() => {
-    if (!open) return;
-    function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
-    }
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [open]);
-
-  const flag = getFlagEmoji(currentLanguage);
-
-  const handleSelect = useCallback(() => {
-    setOpen(false);
-  }, []);
-
-  return (
-    <div ref={ref} className={cn("relative", className)}>
-      {/* Trigger */}
-      <button
-        type="button"
-        onClick={() => setOpen((prev) => !prev)}
-        className={cn(
-          "inline-flex items-center gap-1.5 rounded-md px-2 py-1.5",
-          "text-current opacity-70 transition-opacity hover:opacity-100",
-          "focus:outline-none focus-visible:ring-2 focus-visible:ring-current/30",
-          open && "opacity-100",
-        )}
-        aria-expanded={open}
-        aria-haspopup="listbox"
-        aria-label="Select language"
-      >
-        {flag && <span className="text-sm leading-none">{flag}</span>}
-        <span className="text-xs font-medium uppercase tracking-wide">
-          {currentLanguage}
-        </span>
-        <ChevronDown
-          className={cn(
-            "h-3 w-3 opacity-50 transition-transform duration-200",
-            open && "rotate-180",
-          )}
-        />
-      </button>
-
-      {/* Dropdown */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: -4, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -4, scale: 0.97 }}
-            transition={{ duration: 0.15, ease: "easeOut" }}
-            className={cn(
-              "absolute right-0 top-full z-50 mt-1.5",
-              "min-w-[160px] overflow-hidden rounded-lg shadow-lg",
-              theme === "dark"
-                ? "bg-gray-900 text-gray-100 ring-1 ring-white/[0.08]"
-                : "bg-white text-gray-900 ring-1 ring-black/[0.08]",
-            )}
-            role="listbox"
-            aria-label="Available languages"
-          >
-            {enabled.map((lang) => {
-              const langFlag = getFlagEmoji(lang);
-              const isActive = lang === currentLanguage;
-              return (
-                <a
-                  key={lang}
-                  href={buildLocaleSwitchHref(lang, pathname, localeCtx)}
-                  data-no-localize
-                  onClick={handleSelect}
-                  role="option"
-                  aria-selected={isActive}
-                  className={cn(
-                    "flex items-center gap-2.5 px-3 py-2 text-sm",
-                    "transition-colors duration-100",
-                    theme === "dark"
-                      ? "hover:bg-white/10"
-                      : "hover:bg-gray-100",
-                    isActive && "font-medium",
-                  )}
-                >
-                  <Check
-                    className={cn(
-                      "h-3.5 w-3.5 shrink-0",
-                      isActive ? "opacity-100" : "opacity-0",
-                    )}
-                  />
-                  {langFlag && (
-                    <span className="text-sm leading-none">{langFlag}</span>
-                  )}
-                  <span className="capitalize">{getLanguageName(lang)}</span>
-                  <span className="ml-auto text-[10px] uppercase tracking-wider opacity-40">
-                    {lang}
-                  </span>
-                </a>
-              );
-            })}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-// ─── Full Variant (Mobile menu / Footer) ────────────────────────────────
-// Flat inline list of all languages — no dropdown needed
-
-function FullSwitcher({
-  enabledLanguages,
-  defaultLanguage,
-  currentLanguage,
-  theme = "light",
-  className,
-}: LanguageSwitcherProps) {
-  const pathname = usePathname();
-  const ctx = useCmssyLocale();
-  const enabled = ctx?.enabled ?? enabledLanguages;
-  const defaultLang = ctx?.default ?? defaultLanguage;
-  const localeCtx = {
-    current: currentLanguage,
-    default: defaultLang,
-    enabled,
-  };
-  return (
-    <div
-      className={cn("flex flex-wrap items-center gap-1", className)}
-      role="list"
-      aria-label="Available languages"
-    >
-      {enabled.map((lang) => {
-        const flag = getFlagEmoji(lang);
-        const isActive = lang === currentLanguage;
-        return (
-          <a
-            key={lang}
-            href={buildLocaleSwitchHref(lang, pathname, localeCtx)}
-            data-no-localize
-            role="listitem"
-            aria-current={isActive ? "true" : undefined}
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5",
-              "text-sm transition-all duration-150",
-              isActive
-                ? cn(
-                    "text-current font-medium opacity-100",
-                    theme === "dark" ? "bg-white/10" : "bg-black/5",
-                  )
-                : "text-current opacity-50 hover:opacity-80",
-            )}
-          >
-            {flag && <span className="text-sm leading-none">{flag}</span>}
-            <span className="uppercase tracking-wide text-xs">{lang}</span>
-          </a>
-        );
-      })}
-    </div>
-  );
-}
-
-// ─── Main Export ─────────────────────────────────────────────────────────
-
 export function LanguageSwitcher({
-  variant = "compact",
-  ...props
+  enabledLanguages,
+  defaultLanguage,
+  currentLanguage,
+  className,
 }: LanguageSwitcherProps) {
-  // Don't render if only one language
-  if (props.enabledLanguages.length <= 1) return null;
+  const pathname = usePathname();
+  const ctx = useCmssyLocale();
+  const enabled = ctx?.enabled ?? enabledLanguages;
+  const defaultLang = ctx?.default ?? defaultLanguage;
 
-  return variant === "full" ? (
-    <FullSwitcher {...props} />
-  ) : (
-    <CompactSwitcher {...props} />
+  if (enabled.length <= 1) return null;
+
+  const localeCtx = {
+    current: currentLanguage,
+    default: defaultLang,
+    enabled,
+  };
+  const activeFlag = getFlagEmoji(currentLanguage);
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          size="sm"
+          data-slot="language-switcher"
+          className={cn("gap-1.5 font-medium", className)}
+          aria-label="Select language"
+        >
+          {activeFlag ? (
+            <span className="text-sm">{activeFlag}</span>
+          ) : (
+            <Globe className="size-3.5" />
+          )}
+          {currentLanguage.toUpperCase()}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {enabled.map((lang) => {
+          const flag = getFlagEmoji(lang);
+          const isActive = lang === currentLanguage;
+          return (
+            <DropdownMenuItem key={lang} asChild>
+              <a
+                href={buildLocaleSwitchHref(lang, pathname, localeCtx)}
+                data-no-localize
+                className={cn("gap-2", isActive && "font-semibold")}
+              >
+                <Check className={cn("size-3.5", !isActive && "invisible")} />
+                {flag && <span className="text-sm">{flag}</span>}
+                <span className="capitalize">{getLanguageName(lang)}</span>
+                <span className="ml-auto text-xs text-muted-foreground">
+                  {lang.toUpperCase()}
+                </span>
+              </a>
+            </DropdownMenuItem>
+          );
+        })}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

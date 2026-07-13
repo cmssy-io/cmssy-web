@@ -287,7 +287,6 @@ function SidebarContent({
               enabledLanguages={i18n.enabledLanguages}
               defaultLanguage={i18n.defaultLanguage}
               currentLanguage={i18n.currentLanguage}
-              variant="compact"
               className="ml-auto"
             />
           )}
