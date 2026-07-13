@@ -27,7 +27,9 @@ export function PostCard({
   const title = getLocalizedField(item.displayName, language);
   const excerpt = getLocalizedField(item.seoDescription, language);
   const coverImage = getCustomField(item, "cover_image") as string | null;
-  const author = getCustomField(item, "author") as string | null;
+  const rawAuthor = getCustomField(item, "author") as string | null;
+  const author =
+    rawAuthor && !/^[0-9a-f]{24}$/.test(rawAuthor) ? rawAuthor : null;
   const category = getCustomField(item, "category") as string | null;
   const publishDate =
     (getCustomField(item, "publish_date") as string | null) ?? item.publishedAt;
