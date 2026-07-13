@@ -38,7 +38,7 @@ export const blogPostsBlock = defineBlock({
       defaultValue: "From the Blog",
     }),
     description: fields.textarea({ label: "Description" }),
-    parentPage: fields.link({ label: "Parent Page" }),
+    parentPage: fields.pageSelector({ label: "Parent Page", multiple: false }),
     postsPerPage: fields.select({
       label: "Posts per page",
       defaultValue: "9",
