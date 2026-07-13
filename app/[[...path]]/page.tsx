@@ -16,6 +16,13 @@ import { blocks } from "@/cmssy/blocks";
 export const revalidate = 3600;
 export const dynamicParams = true;
 
+// Without generateStaticParams a catch-all renders dynamically on EVERY
+// request - the empty list is what turns it into on-demand ISR (pages are
+// generated on first hit, then served from cache for `revalidate`).
+export async function generateStaticParams(): Promise<{ path?: string[] }[]> {
+  return [];
+}
+
 const renderPage = createCmssyPage(cmssy, blocks);
 
 type PageProps = {
