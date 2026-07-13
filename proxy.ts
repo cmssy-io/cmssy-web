@@ -9,7 +9,7 @@ import {
 import { cmssy } from "@/cmssy/config";
 
 export async function proxy(request: NextRequest) {
-  const editMode = isCmssyEditRequest(request);
+  const editMode = await isCmssyEditRequest(request, cmssy);
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.delete(CMSSY_EDIT_HEADER);
