@@ -5,7 +5,7 @@ for (const line of readFileSync(".env.local", "utf8").split("\n")) {
   if (k && !k.startsWith("#")) process.env[k.trim()] = v.join("=").trim().replace(/^"|"$/g, "");
 }
 const result = await checkCmssyEditMode({
-  baseUrl: "http://localhost:3313",
+  baseUrl: "http://localhost:3000",
   secret: process.env.CMSSY_DRAFT_SECRET,
   localizedPath: "/pl",
   localizedMarker: "Rozpocznij",
