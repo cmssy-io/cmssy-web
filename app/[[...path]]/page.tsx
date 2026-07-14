@@ -24,8 +24,10 @@ type PageProps = {
 
 export async function generateMetadata({ params }: PageProps) {
   const { path } = await params;
-  const { path: stripped } = await splitCmssyLocale(cmssy, path);
-  return buildCmssyMetadata(cmssy, stripped);
+  // The prefix is the language: pass the path as routed. Stripping it first
+  // served every translated page the English title - and a canonical pointing
+  // at the English URL, which reads as "this translation is a duplicate".
+  return buildCmssyMetadata(cmssy, path);
 }
 
 async function getPageLayoutGroups(

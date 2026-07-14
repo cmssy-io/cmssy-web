@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@cmssy/next':
-        specifier: ^4.0.1
-        version: 4.0.1(@cmssy/react@4.0.1(react@19.2.7))(next@16.2.7(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        specifier: ^4.1.0
+        version: 4.1.0(@cmssy/react@4.1.0(react@19.2.7))(next@16.2.7(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@cmssy/react':
-        specifier: ^4.0.1
-        version: 4.0.1(react@19.2.7)
+        specifier: ^4.1.0
+        version: 4.1.0(react@19.2.7)
       '@next/third-parties':
         specifier: ^16.2.7
         version: 16.2.7(next@16.2.7(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)
@@ -179,16 +179,16 @@ packages:
     resolution: {integrity: sha512-4zBIxpPzowiZpusoFkyGVwakdRJUyuH5PxQ/PrqghfdFWWasvnCdPfQXHrenDai+gyLARulZjZowCOj6fjT4pA==}
     engines: {node: '>=6.9.0'}
 
-  '@cmssy/next@4.0.1':
-    resolution: {integrity: sha512-YO4oR1Muop8mxoM76Mp/qqMyqQccpUFJVPgGKAe/EfMlBGFm8fegSHf9O5JFBMClWAigEhBxkyHIhaXtpRpDCA==}
+  '@cmssy/next@4.1.0':
+    resolution: {integrity: sha512-WebJPyBw76Q0XuDNYaorPJ1sEiZTZ85bS69zX+seyblCRyLTxgpv2aAmXiFZoxACvoRJ1yZP/17LP1hJ4Tx9zA==}
     peerDependencies:
-      '@cmssy/react': ^4.0.1
+      '@cmssy/react': ^4.1.0
       next: '>=15'
       react: ^18.2.0 || ^19.0.0
       react-dom: ^18.2.0 || ^19.0.0
 
-  '@cmssy/react@4.0.1':
-    resolution: {integrity: sha512-Gl/y+hwAqWnvLWMZ/YarHiF6R7nTTna6mQb1au1L1BEXE3cZSxmWNoVdYLUWcmUVWYEeJKS7yddS7R5WhLISZg==}
+  '@cmssy/react@4.1.0':
+    resolution: {integrity: sha512-J3BcdhIHIHg1nsW0GfVT9WxVeLEWbR+dukan3MKuEmjklvAv5ti/joOQBn3Luwd4rAGtotB/B8IdmKeiNVE/sQ==}
     peerDependencies:
       react: ^18.2.0 || ^19.0.0
 
@@ -2212,16 +2212,16 @@ snapshots:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
 
-  '@cmssy/next@4.0.1(@cmssy/react@4.0.1(react@19.2.7))(next@16.2.7(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+  '@cmssy/next@4.1.0(@cmssy/react@4.1.0(react@19.2.7))(next@16.2.7(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
-      '@cmssy/react': 4.0.1(react@19.2.7)
+      '@cmssy/react': 4.1.0(react@19.2.7)
       '@cmssy/types': 0.27.0
       jose: 6.2.3
       next: 16.2.7(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
 
-  '@cmssy/react@4.0.1(react@19.2.7)':
+  '@cmssy/react@4.1.0(react@19.2.7)':
     dependencies:
       '@cmssy/types': 0.27.0
       react: 19.2.7
