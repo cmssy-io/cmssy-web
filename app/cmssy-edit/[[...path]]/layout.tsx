@@ -1,3 +1,4 @@
+import "@/styles/main.css";
 import {
   fetchLayouts,
   resolveSiteLocales,
@@ -57,17 +58,23 @@ export default async function EditLayout({
     />
   );
 
+  // Root layout for the editor route - same reason as the public one: `lang`
+  // must be the language the preview is rendering.
   return (
-    <CmssyLocaleProvider
-      value={{
-        current: locale,
-        default: siteLocales.defaultLocale,
-        enabled: siteLocales.locales,
-      }}
-    >
-      {slot("header")}
-      {children}
-      {slot("footer")}
-    </CmssyLocaleProvider>
+    <html lang={locale}>
+      <body>
+        <CmssyLocaleProvider
+          value={{
+            current: locale,
+            default: siteLocales.defaultLocale,
+            enabled: siteLocales.locales,
+          }}
+        >
+          {slot("header")}
+          {children}
+          {slot("footer")}
+        </CmssyLocaleProvider>
+      </body>
+    </html>
   );
 }

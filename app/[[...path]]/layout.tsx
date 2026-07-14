@@ -1,3 +1,4 @@
+import "@/styles/main.css";
 import { draftMode } from "next/headers";
 import {
   fetchLayouts,
@@ -59,19 +60,28 @@ export default async function SiteLayout({
     />
   );
 
+  // This is the ROOT layout. <html> lives here, not a level up, because `lang`
+  // has to be the language the page is actually in - and the language is the
+  // path prefix, which only a layout with params can see. Reading it from a
+  // header instead would make every route dynamic and lose the ISR that keeps
+  // this site fast (CMS-952).
   return (
-    <CmssyLocaleProvider
-      value={{
-        current: locale,
-        default: siteLocales.defaultLocale,
-        enabled: siteLocales.locales,
-      }}
-    >
-      {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
-      {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
-      {slot("header")}
-      {children}
-      {slot("footer")}
-    </CmssyLocaleProvider>
+    <html lang={locale}>
+      <body>
+        <CmssyLocaleProvider
+          value={{
+            current: locale,
+            default: siteLocales.defaultLocale,
+            enabled: siteLocales.locales,
+          }}
+        >
+          {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
+          {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
+          {slot("header")}
+          {children}
+          {slot("footer")}
+        </CmssyLocaleProvider>
+      </body>
+    </html>
   );
 }
