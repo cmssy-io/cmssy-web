@@ -3,7 +3,8 @@ import {
   resolveSiteLocales,
   type CmssyLayoutGroup,
 } from "@cmssy/react";
-import { resolveEditorOrigin, splitCmssyLocale } from "@cmssy/next";
+import { resolveEditorOrigin } from "@cmssy/next";
+import { splitCmssyLocale } from "@cmssy/core";
 import { CmssyLocaleProvider } from "@cmssy/next/client";
 import { cmssy } from "@/cmssy/config";
 import { EditableLayout } from "@/cmssy/editable-layout";

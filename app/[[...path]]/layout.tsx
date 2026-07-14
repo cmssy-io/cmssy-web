@@ -5,7 +5,7 @@ import {
   CmssyServerLayout,
   type CmssyLayoutGroup,
 } from "@cmssy/react";
-import { splitCmssyLocale } from "@cmssy/next";
+import { splitCmssyLocale } from "@cmssy/core";
 import { CmssyLocaleProvider } from "@cmssy/next/client";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { blocks } from "@/cmssy/blocks";
