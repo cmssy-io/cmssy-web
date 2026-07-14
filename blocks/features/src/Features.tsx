@@ -15,8 +15,9 @@ import {
   Zap,
   type LucideIcon,
 } from "lucide-react";
+import type { BlockProps } from "@cmssy/react";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { featuresProps } from "../block";
 
 const iconMap: Record<string, LucideIcon> = {
   ZapIcon: Zap,
@@ -36,7 +37,9 @@ const iconMap: Record<string, LucideIcon> = {
   BlocksIcon: Blocks,
 };
 
-export default function Features({ content }: { content: BlockContent }) {
+export default function Features({
+  content,
+}: BlockProps<typeof featuresProps>) {
   const { heading, headingHighlight, description, features = [] } = content;
 
   return (

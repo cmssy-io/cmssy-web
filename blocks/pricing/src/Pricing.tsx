@@ -1,10 +1,11 @@
+import type { BlockProps } from "@cmssy/react";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { pricingProps } from "../block";
 
-export default function Pricing({ content }: { content: BlockContent }) {
+export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
   const {
     heading,
     headingHighlight,

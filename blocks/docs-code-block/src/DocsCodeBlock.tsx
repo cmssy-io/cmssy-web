@@ -1,7 +1,8 @@
+import type { BlockProps } from "@cmssy/react";
 import { useState } from "react";
 import { Copy, Check, FileCode } from "lucide-react";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { docsCodeBlockProps } from "../block";
 
 type DocsCodeBlockData = {
   /** Pre-highlighted markup produced server-side by shiki (see block.ts loader). */
@@ -11,10 +12,7 @@ type DocsCodeBlockData = {
 export default function DocsCodeBlock({
   content,
   data,
-}: {
-  content: BlockContent;
-  data?: DocsCodeBlockData;
-}) {
+}: BlockProps<typeof docsCodeBlockProps, DocsCodeBlockData>) {
   const {
     code = "",
     language = "typescript",

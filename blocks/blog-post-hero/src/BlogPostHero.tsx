@@ -1,7 +1,8 @@
+import type { BlockProps } from "@cmssy/react";
 import Image from "next/image";
 import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { blogPostHeroProps } from "../block";
 
 function formatDate(dateStr: string | undefined, lang = "en"): string {
   if (!dateStr) return "";
@@ -16,7 +17,9 @@ function formatDate(dateStr: string | undefined, lang = "en"): string {
   }
 }
 
-export default function BlogPostHero({ content }: { content: BlockContent }) {
+export default function BlogPostHero({
+  content,
+}: BlockProps<typeof blogPostHeroProps>) {
   const {
     coverImage,
     title,

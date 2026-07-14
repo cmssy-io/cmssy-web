@@ -1,13 +1,18 @@
-import type { CmssyBlockContext } from "@cmssy/react";
+import type { BlockProps, CmssyBlockContext } from "@cmssy/react";
 import { Container } from "../../../components/container";
-import type { BlockAdvanced, BlockContent } from "./block";
+import type { contactProps } from "../block";
 import { ContactForm } from "./ContactForm";
 import { InfoCard } from "./InfoCard";
 
+type ContactAdvanced = Pick<
+  BlockProps<typeof contactProps>["content"],
+  "formId"
+>;
+
 interface Props {
-  content: BlockContent;
+  content: BlockProps<typeof contactProps>["content"];
   context?: CmssyBlockContext;
-  advanced?: BlockAdvanced;
+  advanced?: ContactAdvanced;
 }
 
 export default function Contact({ content, context, advanced = {} }: Props) {

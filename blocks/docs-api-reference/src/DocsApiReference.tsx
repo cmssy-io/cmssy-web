@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import type { BlockProps } from "@cmssy/react";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { docsApiReferenceProps } from "../block";
 
 const METHOD_STYLES: Record<string, string> = {
   query: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
@@ -71,9 +72,7 @@ function CodeBlock({
 
 export default function DocsApiReference({
   content,
-}: {
-  content: BlockContent;
-}) {
+}: BlockProps<typeof docsApiReferenceProps>) {
   const {
     title,
     description,

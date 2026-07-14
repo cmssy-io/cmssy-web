@@ -1,5 +1,6 @@
+import type { BlockProps } from "@cmssy/react";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { docsFileTreeProps } from "../block";
 
 const FILE_ICONS: Record<string, string> = {
   ts: "📘",
@@ -68,7 +69,9 @@ function parseTree(raw: string): TreeLine[] {
     });
 }
 
-export default function DocsFileTree({ content }: { content: BlockContent }) {
+export default function DocsFileTree({
+  content,
+}: BlockProps<typeof docsFileTreeProps>) {
   const { title, tree, highlights = "", showIcons = true } = content;
 
   const lines = tree ? parseTree(tree) : [];

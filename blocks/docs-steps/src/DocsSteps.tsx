@@ -1,7 +1,10 @@
+import type { BlockProps } from "@cmssy/react";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { docsStepsProps } from "../block";
 
-export default function DocsSteps({ content }: { content: BlockContent }) {
+export default function DocsSteps({
+  content,
+}: BlockProps<typeof docsStepsProps>) {
   const {
     heading,
     description,

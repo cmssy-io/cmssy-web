@@ -1,8 +1,14 @@
+import type { BlockProps } from "@cmssy/react";
 import * as Icons from "lucide-react";
 import { ArrowRight, LucideIcon } from "lucide-react";
 import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
-import { BlockContent, BlockStyle } from "./block";
+import type { docsCardGridProps } from "../block";
+
+type DocsCardGridStyle = Pick<
+  BlockProps<typeof docsCardGridProps>["content"],
+  "columns"
+>;
 
 // Dynamic icon lookup
 function getIcon(name?: string): LucideIcon {
@@ -15,8 +21,8 @@ export default function DocsCardGrid({
   content,
   style = {},
 }: {
-  content: BlockContent;
-  style?: BlockStyle;
+  content: BlockProps<typeof docsCardGridProps>["content"];
+  style?: DocsCardGridStyle;
 }) {
   const { heading, description, cards = [] } = content;
   const { columns = "3" } = style;

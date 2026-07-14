@@ -1,9 +1,10 @@
+import type { BlockProps } from "@cmssy/react";
 import Image from "next/image";
 import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { heroProps } from "../block";
 
-export default function Hero({ content }: { content: BlockContent }) {
+export default function Hero({ content }: BlockProps<typeof heroProps>) {
   const {
     badgeText,
     heading,

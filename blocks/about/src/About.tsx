@@ -1,5 +1,6 @@
+import type { BlockProps } from "@cmssy/react";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { aboutProps } from "../block";
 
 // Icon components
 function SparklesIcon({ className }: { className?: string }) {
@@ -168,7 +169,7 @@ interface TechItem {
   category: string;
 }
 
-export default function About({ content }: { content: BlockContent }) {
+export default function About({ content }: BlockProps<typeof aboutProps>) {
   const {
     badgeText,
     heading,

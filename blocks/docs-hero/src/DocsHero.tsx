@@ -1,8 +1,14 @@
+import type { BlockProps } from "@cmssy/react";
 import * as Icons from "lucide-react";
 import { ArrowRight, LucideIcon } from "lucide-react";
 import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
-import { BlockContent, BlockStyle } from "./block";
+import type { docsHeroProps } from "../block";
+
+type DocsHeroStyle = Pick<
+  BlockProps<typeof docsHeroProps>["content"],
+  "variant"
+>;
 
 function getIcon(name?: string): LucideIcon {
   if (!name) return Icons.FileText;
@@ -14,8 +20,8 @@ export default function DocsHero({
   content,
   style = {},
 }: {
-  content: BlockContent;
-  style?: BlockStyle;
+  content: BlockProps<typeof docsHeroProps>["content"];
+  style?: DocsHeroStyle;
 }) {
   const { badge, heading, description, quickLinks = [] } = content;
   const { variant = "default" } = style;

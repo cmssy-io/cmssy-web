@@ -5,7 +5,8 @@ import { Github, Linkedin, Twitter } from "lucide-react";
 import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
 import { LanguageSwitcher } from "../../../components/language-switcher";
-import { BlockContent } from "./block";
+import type { BlockProps } from "@cmssy/react";
+import type { footerProps } from "../block";
 
 interface PlatformContext {
   locale?: {
@@ -19,10 +20,7 @@ interface PlatformContext {
 export default function Footer({
   content,
   context,
-}: {
-  content: BlockContent;
-  context?: PlatformContext;
-}) {
+}: BlockProps<typeof footerProps> & { context?: PlatformContext }) {
   const {
     logo,
     logoText,

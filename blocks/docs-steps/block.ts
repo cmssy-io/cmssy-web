@@ -1,23 +1,33 @@
-import type { ComponentType } from "react";
 import { defineBlock, fields } from "@cmssy/react";
 import Component from "./src";
+
+export const docsStepsProps = {
+  heading: fields.text({ label: "Heading" }),
+  description: fields.textarea({ label: "Description" }),
+  steps: fields.repeater({
+    label: "Steps",
+    itemSchema: {
+      title: fields.text({ label: "Step Title", required: true }),
+      content: fields.richText({ label: "Step Content" }),
+    },
+  }),
+  showNumbers: fields.boolean({
+    label: "Show Step Numbers",
+    defaultValue: true,
+  }),
+  connectorStyle: fields.select({
+    label: "Connector Style",
+    defaultValue: "line",
+    options: ["line", "dashed", "dots"],
+  }),
+};
 
 export const docsStepsBlock = defineBlock({
   type: "docs-steps",
   category: "Docs",
   label: "Docs Steps",
-  description: "Numbered step-by-step guide; for tutorials and how-to documentation.",
-  // Block components require their own content shape; the registry stores them
-  // as accepting arbitrary content (resolved from the CMS at runtime).
-  component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,
-  props: {
-    "heading": fields.text({ label: "Heading" }),
-    "description": fields.textarea({ label: "Description" }),
-    "steps": fields.repeater({ label: "Steps", itemSchema: {
-      "title": fields.text({ label: "Step Title", required: true }),
-      "content": fields.richText({ label: "Step Content" })
-    } }),
-    "showNumbers": fields.boolean({ label: "Show Step Numbers", defaultValue: true }),
-    "connectorStyle": fields.select({ label: "Connector Style", defaultValue: "line", options: ["line","dashed","dots"] })
-  },
+  description:
+    "Numbered step-by-step guide; for tutorials and how-to documentation.",
+  component: Component,
+  props: docsStepsProps,
 });

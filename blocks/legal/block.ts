@@ -1,18 +1,66 @@
-import type { ComponentType } from "react";
 import { defineBlock, fields } from "@cmssy/react";
 import Component from "./src";
+
+export const legalProps = {
+  badge: fields.text({ label: "Badge Text", defaultValue: "Privacy" }),
+  heading: fields.text({ label: "Heading", defaultValue: "Privacy" }),
+  headingHighlight: fields.text({
+    label: "Heading Highlight",
+    defaultValue: "Policy",
+  }),
+  description: fields.textarea({
+    label: "Description",
+    defaultValue:
+      "Learn how we collect, use, and protect your personal information.",
+  }),
+  showSummary: fields.boolean({
+    label: "Show Summary Box",
+    defaultValue: true,
+  }),
+  summaryTitle: fields.text({
+    label: "Summary Title",
+    defaultValue: "TL;DR",
+  }),
+  summaryContent: fields.textarea({
+    label: "Summary Content",
+    defaultValue:
+      "We respect your privacy and only collect data necessary to provide our services. We never sell your data.",
+  }),
+  sections: fields.repeater({
+    label: "Accordion Sections",
+    itemSchema: {
+      title: fields.text({ label: "Section Title", required: true }),
+      content: fields.richText({ label: "Section Content", required: true }),
+    },
+  }),
+  showFooterLinks: fields.boolean({
+    label: "Show Footer Links",
+    defaultValue: true,
+  }),
+  footerText: fields.text({
+    label: "Footer Text",
+    defaultValue: "This policy is part of our",
+  }),
+  footerLinks: fields.repeater({
+    label: "Footer Links",
+    itemSchema: {
+      text: fields.text({ label: "Link Text", required: true }),
+      url: fields.link({ label: "URL", required: true }),
+    },
+  }),
+  lastUpdated: fields.text({
+    label: "Last Updated Date",
+    defaultValue: "January 2025",
+  }),
+};
 
 export const legalBlock = defineBlock({
   type: "legal",
   category: "Content",
   label: "Legal",
-  description: "Long-form legal text such as terms or privacy; for a legal or policy page.",
-  // Block components require their own content shape; the registry stores them
-  // as accepting arbitrary content (resolved from the CMS at runtime).
-  component: Component as unknown as ComponentType<{
-    content: Record<string, unknown>;
-    data?: { sections?: string[] };
-  }>,
+  description:
+    "Long-form legal text such as terms or privacy; for a legal or policy page.",
+  component: Component,
   // Sanitize CMS-authored legal HTML server-side (stored-XSS guard). Runs during
   // SSR; the sanitized per-section HTML is passed to the (client) component as
   // `data.sections`. sanitize-html is dynamically imported so it never enters
@@ -71,56 +119,5 @@ export const legalBlock = defineBlock({
     );
     return { sections };
   },
-  props: {
-    badge: fields.text({ label: "Badge Text", defaultValue: "Privacy" }),
-    heading: fields.text({ label: "Heading", defaultValue: "Privacy" }),
-    headingHighlight: fields.text({
-      label: "Heading Highlight",
-      defaultValue: "Policy",
-    }),
-    description: fields.textarea({
-      label: "Description",
-      defaultValue:
-        "Learn how we collect, use, and protect your personal information.",
-    }),
-    showSummary: fields.boolean({
-      label: "Show Summary Box",
-      defaultValue: true,
-    }),
-    summaryTitle: fields.text({
-      label: "Summary Title",
-      defaultValue: "TL;DR",
-    }),
-    summaryContent: fields.textarea({
-      label: "Summary Content",
-      defaultValue:
-        "We respect your privacy and only collect data necessary to provide our services. We never sell your data.",
-    }),
-    sections: fields.repeater({
-      label: "Accordion Sections",
-      itemSchema: {
-        title: fields.text({ label: "Section Title", required: true }),
-        content: fields.richText({ label: "Section Content", required: true }),
-      },
-    }),
-    showFooterLinks: fields.boolean({
-      label: "Show Footer Links",
-      defaultValue: true,
-    }),
-    footerText: fields.text({
-      label: "Footer Text",
-      defaultValue: "This policy is part of our",
-    }),
-    footerLinks: fields.repeater({
-      label: "Footer Links",
-      itemSchema: {
-        text: fields.text({ label: "Link Text", required: true }),
-        url: fields.link({ label: "URL", required: true }),
-      },
-    }),
-    lastUpdated: fields.text({
-      label: "Last Updated Date",
-      defaultValue: "January 2025",
-    }),
-  },
+  props: legalProps,
 });

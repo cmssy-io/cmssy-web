@@ -1,7 +1,8 @@
+import type { BlockProps } from "@cmssy/react";
 import { Bug, Rss, Sparkles, Zap } from "lucide-react";
 import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { changelogProps } from "../block";
 
 const typeConfig = {
   feature: {
@@ -21,7 +22,9 @@ const typeConfig = {
   },
 };
 
-export default function Changelog({ content }: { content: BlockContent }) {
+export default function Changelog({
+  content,
+}: BlockProps<typeof changelogProps>) {
   const {
     badge,
     heading,

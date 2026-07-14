@@ -1,7 +1,10 @@
+import type { BlockProps } from "@cmssy/react";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { docsPropsTableProps } from "../block";
 
-export default function DocsPropsTable({ content }: { content: BlockContent }) {
+export default function DocsPropsTable({
+  content,
+}: BlockProps<typeof docsPropsTableProps>) {
   const {
     title,
     description,

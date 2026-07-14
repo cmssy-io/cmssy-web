@@ -1,12 +1,11 @@
+import type { BlockProps } from "@cmssy/react";
 import Image from "next/image";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { productShowcaseProps } from "../block";
 
 export default function ProductShowcase({
   content,
-}: {
-  content: BlockContent;
-}) {
+}: BlockProps<typeof productShowcaseProps>) {
   const {
     badgeText,
     heading,

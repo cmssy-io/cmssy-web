@@ -1,7 +1,8 @@
+import type { BlockProps } from "@cmssy/react";
 import { Calendar, ChevronLeft, ChevronRight, PenLine } from "lucide-react";
 import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { docsArticleProps } from "../block";
 import { TocSidebar } from "./TocSidebar";
 
 interface TocItem {
@@ -62,7 +63,9 @@ function formatDate(dateStr: string) {
   }
 }
 
-export default function DocsArticle({ content }: { content: BlockContent }) {
+export default function DocsArticle({
+  content,
+}: BlockProps<typeof docsArticleProps>) {
   const {
     breadcrumbs = [],
     title,

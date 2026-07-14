@@ -1,8 +1,14 @@
+import type { BlockProps } from "@cmssy/react";
 import { useState } from "react";
 import * as Icons from "lucide-react";
 import { LucideIcon } from "lucide-react";
 import { Container } from "../../../components/container";
-import { BlockContent, BlockStyle } from "./block";
+import type { docsTabsProps } from "../block";
+
+type DocsTabsStyle = Pick<
+  BlockProps<typeof docsTabsProps>["content"],
+  "variant"
+>;
 
 function getIcon(name?: string): LucideIcon | null {
   if (!name) return null;
@@ -14,8 +20,8 @@ export default function DocsTabs({
   content,
   style = {},
 }: {
-  content: BlockContent;
-  style?: BlockStyle;
+  content: BlockProps<typeof docsTabsProps>["content"];
+  style?: DocsTabsStyle;
 }) {
   const { tabs = [], defaultTab = 0 } = content;
   const { variant = "underline" } = style;

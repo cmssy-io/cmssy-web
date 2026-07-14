@@ -1,7 +1,13 @@
+import type { BlockProps } from "@cmssy/react";
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
 import { Container } from "../../../components/container";
-import { BlockContent, BlockStyle } from "./block";
+import type { docsTerminalProps } from "../block";
+
+type DocsTerminalStyle = Pick<
+  BlockProps<typeof docsTerminalProps>["content"],
+  "theme"
+>;
 
 const CLI_KEYWORDS = [
   "npx",
@@ -48,8 +54,8 @@ export default function DocsTerminal({
   content,
   style = {},
 }: {
-  content: BlockContent;
-  style?: BlockStyle;
+  content: BlockProps<typeof docsTerminalProps>["content"];
+  style?: DocsTerminalStyle;
 }) {
   const { title, commands = [], showCopyAll = true } = content;
   const { theme = "macos" } = style;

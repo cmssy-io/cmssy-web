@@ -1,3 +1,4 @@
+import type { BlockProps } from "@cmssy/react";
 import {
   Check,
   CheckCircle2,
@@ -8,7 +9,12 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Container } from "../../../components/container";
-import { BlockContent, BlockStyle } from "./block";
+import type { docsFeatureListProps } from "../block";
+
+type DocsFeatureListStyle = Pick<
+  BlockProps<typeof docsFeatureListProps>["content"],
+  "layout"
+>;
 
 const iconMap: Record<string, LucideIcon> = {
   CheckCircle2,
@@ -31,8 +37,8 @@ export default function DocsFeatureList({
   content,
   style = {},
 }: {
-  content: BlockContent;
-  style?: BlockStyle;
+  content: BlockProps<typeof docsFeatureListProps>["content"];
+  style?: DocsFeatureListStyle;
 }) {
   const {
     heading,

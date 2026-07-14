@@ -1,3 +1,4 @@
+import type { BlockProps } from "@cmssy/react";
 import {
   Info,
   Lightbulb,
@@ -6,7 +7,12 @@ import {
   FileText,
 } from "lucide-react";
 import { Container } from "../../../components/container";
-import { BlockContent, BlockStyle } from "./block";
+import type { docsCalloutProps } from "../block";
+
+type DocsCalloutStyle = Pick<
+  BlockProps<typeof docsCalloutProps>["content"],
+  "style"
+>;
 
 const calloutConfig = {
   info: {
@@ -60,8 +66,8 @@ export default function DocsCallout({
   content,
   style = {},
 }: {
-  content: BlockContent;
-  style?: BlockStyle;
+  content: BlockProps<typeof docsCalloutProps>["content"];
+  style?: DocsCalloutStyle;
 }) {
   const { type = "info", title, content: calloutContent = "" } = content;
   const { style: calloutStyle = "card" } = style;

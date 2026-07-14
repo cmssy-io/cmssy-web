@@ -1,3 +1,4 @@
+import type { BlockProps } from "@cmssy/react";
 import {
   Accordion,
   AccordionContent,
@@ -6,7 +7,9 @@ import {
 } from "@/components/ui/accordion";
 import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { legalProps } from "../block";
+
+type LegalData = { sections: string[] };
 
 // `data.sections` holds the section HTML already sanitized server-side by the
 // block loader (see block.ts). This component is client-rendered (Accordion),
@@ -16,10 +19,7 @@ import { BlockContent } from "./block";
 export default function Legal({
   content,
   data,
-}: {
-  content: BlockContent;
-  data?: { sections?: string[] };
-}) {
+}: BlockProps<typeof legalProps, LegalData>) {
   const {
     badge,
     heading,

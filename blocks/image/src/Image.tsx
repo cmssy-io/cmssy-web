@@ -1,15 +1,11 @@
+import type { BlockProps } from "@cmssy/react";
 import NextImage from "next/image";
+import type { imageProps } from "../block";
 
-interface ImageContent {
-  src?: string;
-  alt?: string;
-  caption?: string;
-}
-
-interface ImageStyle {
-  width?: "small" | "medium" | "large" | "full";
-  rounded?: boolean;
-}
+type ImageStyle = Pick<
+  BlockProps<typeof imageProps>["content"],
+  "width" | "rounded"
+>;
 
 const widthClasses: Record<string, string> = {
   small: "max-w-[480px]",
@@ -22,7 +18,7 @@ export default function Image({
   content,
   style = {},
 }: {
-  content: ImageContent;
+  content: BlockProps<typeof imageProps>["content"];
   style?: ImageStyle;
 }) {
   const { src, alt = "", caption } = content;

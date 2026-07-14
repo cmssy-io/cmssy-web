@@ -1,7 +1,10 @@
+import type { BlockProps } from "@cmssy/react";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { demoVideoProps } from "../block";
 
-export default function DemoVideo({ content }: { content: BlockContent }) {
+export default function DemoVideo({
+  content,
+}: BlockProps<typeof demoVideoProps>) {
   const {
     badgeText,
     heading,

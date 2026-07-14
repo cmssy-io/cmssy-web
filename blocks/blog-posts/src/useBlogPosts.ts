@@ -1,39 +1,35 @@
 "use client";
 
-import type { PageItem, PlatformContext } from "@cmssy/types";
+import type { BlockProps, CmssyBlockContext } from "@cmssy/react";
+import type { PageItem } from "@cmssy/types";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { BlogPostsData } from "../block";
-import type { BlockContent, BlockStyle } from "./block";
+import type { blogPostsProps, BlogPostsData } from "../block";
 import { PUBLIC_PAGES_QUERY } from "./query";
 import { getCustomField } from "./utils";
 
+type BlogPostsStyle = Pick<
+  BlockProps<typeof blogPostsProps>["content"],
+  "layout" | "columns"
+>;
+
 export function useBlogPosts(
-  content: BlockContent,
-  context?: PlatformContext,
+  content: BlockProps<typeof blogPostsProps>["content"],
+  context?: CmssyBlockContext,
   ssr?: BlogPostsData | null,
-  style: BlockStyle = {},
+  style: BlogPostsStyle = {},
 ) {
   const { parentPage, postsPerPage } = content;
   const { layout = "grid", columns = "3" } = style;
 
-  const parentSlug = Array.isArray(parentPage)
-    ? parentPage[0]?.slug
-    : typeof parentPage === "string"
-      ? parentPage
-      : undefined;
+  const parentSlug = parentPage?.[0]?.slug;
 
   const language = context?.locale?.current ?? "en";
-  const pagesCollection = context?.pages?._default;
   const isPreview = context?.isPreview ?? false;
   const workspaceId =
     context?.workspace?.id ?? process.env.NEXT_PUBLIC_CMSSY_WORKSPACE_ID;
 
-  const [items, setItems] = useState<PageItem[]>(
-    pagesCollection?.items ?? ssr?.items ?? [],
-  );
-  const [hasMore, setHasMore] = useState(
-    pagesCollection?.hasMore ?? ssr?.hasMore ?? false,
-  );
+  const [items, setItems] = useState<PageItem[]>(ssr?.items ?? []);
+  const [hasMore, setHasMore] = useState(ssr?.hasMore ?? false);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -76,14 +72,9 @@ export function useBlogPosts(
 
   useEffect(() => {
     if (isPreview || !debouncedSearch) {
-      if (!debouncedSearch) {
-        if (pagesCollection) {
-          setItems(pagesCollection.items ?? []);
-          setHasMore(pagesCollection.hasMore ?? false);
-        } else if (ssr) {
-          setItems(ssr.items);
-          setHasMore(ssr.hasMore);
-        }
+      if (!debouncedSearch && ssr) {
+        setItems(ssr.items);
+        setHasMore(ssr.hasMore);
       }
       return;
     }
@@ -98,10 +89,10 @@ export function useBlogPosts(
       })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [debouncedSearch, isPreview, fetchPages, pagesCollection, ssr]);
+  }, [debouncedSearch, isPreview, fetchPages, ssr]);
 
   useEffect(() => {
-    if (isPreview || pagesCollection || ssr || debouncedSearch) return;
+    if (isPreview || ssr || debouncedSearch) return;
     if (!workspaceId || !parentSlug) return;
 
     let active = true;
@@ -120,15 +111,7 @@ export function useBlogPosts(
     return () => {
       active = false;
     };
-  }, [
-    isPreview,
-    pagesCollection,
-    ssr,
-    debouncedSearch,
-    workspaceId,
-    parentSlug,
-    fetchPages,
-  ]);
+  }, [isPreview, ssr, debouncedSearch, workspaceId, parentSlug, fetchPages]);
 
   useEffect(() => {
     if (!isPreview || previewLoaded || !context?.workspace?.id || !parentSlug)

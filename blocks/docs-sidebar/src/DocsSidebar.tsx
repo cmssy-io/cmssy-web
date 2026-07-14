@@ -7,14 +7,17 @@ import {
   Search,
   X,
 } from "lucide-react";
+import type { BlockProps } from "@cmssy/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { CmssyLink } from "@cmssy/next/client";
 import { LanguageSwitcher } from "../../../components/language-switcher";
-import { BlockContent } from "./block";
+import type { docsSidebarProps } from "../block";
 
-type PageEntry =
-  string | { slug: string; displayName?: Record<string, string> };
+type DocsSidebarContent = BlockProps<typeof docsSidebarProps>["content"];
+type PageEntry = NonNullable<
+  NonNullable<DocsSidebarContent["sections"]>[number]["pages"]
+>[number];
 
 interface PlatformContext {
   locale?: {
@@ -25,20 +28,17 @@ interface PlatformContext {
   };
 }
 
-/** Extract slug from a page entry (string or object). */
+/** Extract slug from a page entry. */
 function getPageSlug(entry: PageEntry): string {
-  return typeof entry === "string" ? entry : entry.slug;
+  return entry.slug;
 }
 
-/** Get display label for a page entry, respecting current language. */
-function getPageLabel(entry: PageEntry, language?: string): string {
-  if (typeof entry === "object" && entry.displayName) {
-    const label =
-      (language && entry.displayName[language]) ||
-      entry.displayName.en ||
-      Object.values(entry.displayName)[0];
-    if (label) return label;
-  }
+/**
+ * Label for a page entry. The schema only ever gives us a `slug` (a `link`
+ * field, not a `pageSelector`) - there is no CMS-authored display name to fall
+ * back to, so the label is always derived from the slug.
+ */
+function getPageLabel(entry: PageEntry): string {
   return formatSlugAsLabel(getPageSlug(entry));
 }
 
@@ -53,14 +53,12 @@ function formatSlugAsLabel(slug: string): string {
 }
 
 function getCurrentPageLabel(
-  sections: BlockContent["sections"],
+  sections: DocsSidebarContent["sections"],
   currentPath: string,
-  language?: string,
 ): string {
   for (const section of sections || []) {
     for (const entry of section.pages || []) {
-      if (getPageSlug(entry) === currentPath)
-        return getPageLabel(entry, language);
+      if (getPageSlug(entry) === currentPath) return getPageLabel(entry);
     }
   }
   return "Documentation";
@@ -80,11 +78,10 @@ function SidebarContent({
   slackUrl,
   hasLanguageSwitcher,
   i18n,
-  language,
   currentPath,
   onNavigate,
 }: {
-  sections: BlockContent["sections"];
+  sections: DocsSidebarContent["sections"];
   showSearch: boolean;
   searchPlaceholder?: string;
   logo?: string;
@@ -100,7 +97,6 @@ function SidebarContent({
     defaultLanguage: string;
     currentLanguage: string;
   };
-  language?: string;
   currentPath: string;
   onNavigate?: () => void;
 }) {
@@ -201,7 +197,7 @@ function SidebarContent({
           const entries = section.pages || [];
 
           const filtered = entries.filter((entry) =>
-            matchesSearch(getPageLabel(entry, language), getPageSlug(entry)),
+            matchesSearch(getPageLabel(entry), getPageSlug(entry)),
           );
           if (filtered.length === 0 && searchQuery) return null;
 
@@ -213,7 +209,7 @@ function SidebarContent({
               <ul className="space-y-px">
                 {filtered.map((entry) => {
                   const slug = getPageSlug(entry);
-                  const label = getPageLabel(entry, language);
+                  const label = getPageLabel(entry);
                   const isActive = currentPath === slug;
                   return (
                     <li key={slug}>
@@ -248,10 +244,7 @@ function SidebarContent({
           sections?.every((s) =>
             (s.pages || []).every(
               (entry) =>
-                !matchesSearch(
-                  getPageLabel(entry, language),
-                  getPageSlug(entry),
-                ),
+                !matchesSearch(getPageLabel(entry), getPageSlug(entry)),
             ),
           ) && (
             <div className="text-center py-6">
@@ -307,7 +300,7 @@ export default function DocsSidebar({
   content,
   context,
 }: {
-  content: BlockContent;
+  content: DocsSidebarContent;
   context?: PlatformContext;
 }) {
   const {
@@ -331,7 +324,6 @@ export default function DocsSidebar({
         currentLanguage: context.locale.current,
       }
     : undefined;
-  const language = i18n?.currentLanguage;
   const hasLanguageSwitcher =
     showLanguageSwitcher && !!i18n && i18n.enabledLanguages.length > 1;
 
@@ -352,7 +344,7 @@ export default function DocsSidebar({
       currentPath = rawPath.slice(match[1]!.length + 1) || "/";
     }
   }
-  const currentPageLabel = getCurrentPageLabel(sections, currentPath, language);
+  const currentPageLabel = getCurrentPageLabel(sections, currentPath);
 
   // Lock body scroll when mobile drawer is open
   useEffect(() => {
@@ -377,7 +369,6 @@ export default function DocsSidebar({
     slackUrl,
     hasLanguageSwitcher,
     i18n,
-    language,
     currentPath,
   };
 

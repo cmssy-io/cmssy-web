@@ -6,9 +6,10 @@ import {
   Lightbulb,
   MessageSquare,
 } from "lucide-react";
+import type { BlockProps } from "@cmssy/react";
 import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { roadmapProps } from "../block";
 
 const statusConfig = {
   completed: {
@@ -37,7 +38,7 @@ const statusConfig = {
   },
 };
 
-export default function Roadmap({ content }: { content: BlockContent }) {
+export default function Roadmap({ content }: BlockProps<typeof roadmapProps>) {
   const {
     badge,
     heading,

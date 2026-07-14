@@ -41,12 +41,18 @@ import {
   Zap,
   type LucideIcon,
 } from "lucide-react";
+import type { BlockProps, CmssyBlockContext } from "@cmssy/react";
 import Image from "next/image";
 import { CmssyLink } from "@cmssy/next/client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Container } from "../../../components/container";
 import { LanguageSwitcher } from "../../../components/language-switcher";
-import { BlockContent, BlockStyle } from "./block";
+import type { headerProps } from "../block";
+
+type HeaderStyle = Pick<
+  BlockProps<typeof headerProps>["content"],
+  "logoSize" | "transparent" | "announcementBg" | "announcementTextColor"
+>;
 
 const iconMap: Record<string, LucideIcon> = {
   ArrowRight,
@@ -119,35 +125,10 @@ interface NavItem {
   children?: NavChild[];
 }
 
-interface PlatformContext {
-  auth?: {
-    isAuthenticated: boolean;
-    customer: {
-      id: string;
-      email: string;
-      profile: {
-        firstName?: string | null;
-        lastName?: string | null;
-        displayName?: string | null;
-        avatarUrl?: string | null;
-      };
-    } | null;
-    logout: () => Promise<void>;
-  };
-  locale?: {
-    current: string;
-    default: string;
-    enabled: string[];
-    localizeHref?: (href: string) => string;
-  };
-  language: string;
-  isPreview?: boolean;
-}
-
 interface HeaderProps {
-  content: BlockContent;
-  context?: PlatformContext;
-  style?: BlockStyle;
+  content: BlockProps<typeof headerProps>["content"];
+  context?: CmssyBlockContext;
+  style?: HeaderStyle;
 }
 
 function MegaMenuItem({ child }: { child: NavChild }) {
@@ -190,7 +171,6 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
     announcementText,
     announcementLink = "",
     announcementDismissible = true,
-    logoutButtonText,
     showLanguageSwitcher = true,
   } = content;
   const {
@@ -207,7 +187,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
   const headerRef = useRef<HTMLElement>(null);
 
   const isAuthenticated = context?.auth?.isAuthenticated ?? false;
-  const customer = context?.auth?.customer;
+  const member = context?.auth?.member;
   const navItems = navigation as NavItem[];
   const i18n = context?.locale
     ? {
@@ -306,35 +286,11 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
     showAnnouncement && announcementText && !announcementDismissed;
 
   const getUserInitial = () => {
-    if (customer?.profile?.displayName) {
-      return customer.profile.displayName[0].toUpperCase();
-    }
-    if (customer?.profile?.firstName) {
-      return customer.profile.firstName[0].toUpperCase();
-    }
-    if (customer?.email) {
-      return customer.email[0].toUpperCase();
-    }
-    return "U";
+    return member?.email ? member.email[0].toUpperCase() : "U";
   };
 
   const getUserDisplayName = () => {
-    if (customer?.profile?.displayName) {
-      return customer.profile.displayName;
-    }
-    if (customer?.profile?.firstName && customer?.profile?.lastName) {
-      return `${customer.profile.firstName} ${customer.profile.lastName}`;
-    }
-    if (customer?.profile?.firstName) {
-      return customer.profile.firstName;
-    }
-    return customer?.email ?? "";
-  };
-
-  const handleLogout = async () => {
-    if (context?.auth?.logout) {
-      await context.auth.logout();
-    }
+    return member?.email ?? "";
   };
 
   const getColumnClass = (columns?: string) => {
@@ -501,31 +457,13 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                   currentLanguage={i18n.currentLanguage}
                 />
               )}
-              {isAuthenticated && customer ? (
+              {isAuthenticated && member ? (
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
-                    {customer.profile?.avatarUrl ? (
-                      <Image
-                        src={customer.profile.avatarUrl}
-                        alt={getUserDisplayName()}
-                        className="w-8 h-8 rounded-full object-cover"
-                        width={32}
-                        height={32}
-                      />
-                    ) : (
-                      <span className="text-sm font-medium">
-                        {getUserInitial()}
-                      </span>
-                    )}
+                    <span className="text-sm font-medium">
+                      {getUserInitial()}
+                    </span>
                   </div>
-                  {logoutButtonText && (
-                    <button
-                      onClick={handleLogout}
-                      className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {logoutButtonText}
-                    </button>
-                  )}
                 </div>
               ) : (
                 <>
@@ -725,36 +663,18 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
 
             {/* Mobile CTAs */}
             <div className="border-t px-4 py-4">
-              {isAuthenticated && customer ? (
+              {isAuthenticated && member ? (
                 <div className="flex items-center justify-between py-2">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
-                      {customer.profile?.avatarUrl ? (
-                        <Image
-                          src={customer.profile.avatarUrl}
-                          alt={getUserDisplayName()}
-                          width={32}
-                          height={32}
-                          className="w-8 h-8 rounded-full object-cover"
-                        />
-                      ) : (
-                        <span className="text-sm font-medium">
-                          {getUserInitial()}
-                        </span>
-                      )}
+                      <span className="text-sm font-medium">
+                        {getUserInitial()}
+                      </span>
                     </div>
                     <span className="text-sm font-medium truncate max-w-45">
                       {getUserDisplayName()}
                     </span>
                   </div>
-                  {logoutButtonText && (
-                    <button
-                      onClick={handleLogout}
-                      className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {logoutButtonText}
-                    </button>
-                  )}
                 </div>
               ) : (
                 <div className="flex flex-col gap-3">

@@ -1,10 +1,11 @@
+import type { BlockProps } from "@cmssy/react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { ctaProps } from "../block";
 
-export default function Cta({ content }: { content: BlockContent }) {
+export default function Cta({ content }: BlockProps<typeof ctaProps>) {
   const {
     badgeText,
     heading,

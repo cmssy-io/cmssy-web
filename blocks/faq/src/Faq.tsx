@@ -1,12 +1,13 @@
+import type { BlockProps } from "@cmssy/react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { BlockContent } from "./block";
+import type { faqProps } from "../block";
 
-export default function Faq({ content }: { content: BlockContent }) {
+export default function Faq({ content }: BlockProps<typeof faqProps>) {
   const { heading, headingHighlight, description, faqs = [] } = content;
 
   return (

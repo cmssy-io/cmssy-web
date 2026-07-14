@@ -1,9 +1,12 @@
+import type { BlockProps } from "@cmssy/react";
 import { ArrowRight, Home } from "lucide-react";
 import { CmssyLink } from "@cmssy/next/client";
 import { Container } from "../../../components/container";
-import { BlockContent } from "./block";
+import type { notFoundProps } from "../block";
 
-export default function NotFound({ content }: { content: BlockContent }) {
+export default function NotFound({
+  content,
+}: BlockProps<typeof notFoundProps>) {
   const {
     heading,
     title,

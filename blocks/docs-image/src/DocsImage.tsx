@@ -1,15 +1,21 @@
+import type { BlockProps } from "@cmssy/react";
 import { useState, useEffect } from "react";
 import NextImage from "next/image";
 import { ZoomIn, X } from "lucide-react";
 import { Container } from "../../../components/container";
-import { BlockContent, BlockStyle } from "./block";
+import type { docsImageProps } from "../block";
+
+type DocsImageStyle = Pick<
+  BlockProps<typeof docsImageProps>["content"],
+  "width" | "border" | "rounded" | "shadow"
+>;
 
 export default function DocsImage({
   content,
   style = {},
 }: {
-  content: BlockContent;
-  style?: BlockStyle;
+  content: BlockProps<typeof docsImageProps>["content"];
+  style?: DocsImageStyle;
 }) {
   const { src, alt = "", caption, zoomable = true } = content;
   const {

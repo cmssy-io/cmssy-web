@@ -1,18 +1,22 @@
 "use client";
 
-import type { PlatformContext } from "@cmssy/types";
+import type { BlockProps, CmssyBlockContext } from "@cmssy/react";
 import { Container } from "../../../components/container";
-import type { BlogPostsData } from "../block";
-import type { BlockContent, BlockStyle } from "./block";
+import type { blogPostsProps, BlogPostsData } from "../block";
 import { EmptyDocIcon, SearchIcon } from "./icons";
 import { PlaceholderCard, PostCard } from "./PostCard";
 import { useBlogPosts } from "./useBlogPosts";
 
+type BlogPostsStyle = Pick<
+  BlockProps<typeof blogPostsProps>["content"],
+  "layout" | "columns"
+>;
+
 interface Props {
-  content: BlockContent;
-  context?: PlatformContext;
+  content: BlockProps<typeof blogPostsProps>["content"];
+  context?: CmssyBlockContext;
   data?: BlogPostsData | null;
-  style?: BlockStyle;
+  style?: BlogPostsStyle;
 }
 
 export default function BlogPosts({
