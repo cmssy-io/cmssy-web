@@ -4,11 +4,9 @@ import {
   resolveSiteLocales,
   type CmssyLayoutGroup,
 } from "@cmssy/react";
-import {
-  createCmssyEditPage,
-  resolveEditorOrigin,
-  splitCmssyLocale,
-} from "@cmssy/next";
+import { createCmssyEditPage } from "@cmssy/next/server";
+import { resolveEditorOrigin } from "@cmssy/next";
+import { splitCmssyLocale } from "@cmssy/core";
 import { cmssy } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
 import { EditableLayout } from "@/cmssy/editable-layout";

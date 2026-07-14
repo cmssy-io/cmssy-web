@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { applyCmssyCsp, cmssyEditRewrite } from "@cmssy/next";
+import { applyCmssyCsp, cmssyEditRewrite } from "@cmssy/next/middleware";
 import { cmssy } from "@/cmssy/config";
 
 export async function proxy(request: NextRequest) {

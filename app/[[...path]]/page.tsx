@@ -5,11 +5,8 @@ import {
   CmssyServerLayout,
   type CmssyLayoutGroup,
 } from "@cmssy/react";
-import {
-  buildCmssyMetadata,
-  createCmssyPage,
-  splitCmssyLocale,
-} from "@cmssy/next";
+import { buildCmssyMetadata, createCmssyPage } from "@cmssy/next/server";
+import { splitCmssyLocale } from "@cmssy/core";
 import { cmssy } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
 
