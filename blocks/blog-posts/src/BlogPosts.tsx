@@ -1,26 +1,24 @@
 "use client";
 
 import type { PlatformContext } from "@cmssy/types";
-import { Container } from "../../../components/container";
-import type { BlogPostsData } from "../block";
-import type { BlockContent, BlockStyle } from "./block";
-import { EmptyDocIcon, SearchIcon } from "./icons";
+import type { BlockProps } from "@cmssy/react";
+import { Container } from "@/components/container";
+import type { blogPostsProps, BlogPostsData } from "../block";
+import { FileText, Search } from "lucide-react";
 import { PlaceholderCard, PostCard } from "./PostCard";
 import { useBlogPosts } from "./useBlogPosts";
 
-interface Props {
-  content: BlockContent;
-  context?: PlatformContext;
-  data?: BlogPostsData | null;
-  style?: BlockStyle;
-}
+type BlockStyle = Pick<
+  BlockProps<typeof blogPostsProps>["content"],
+  "layout" | "columns"
+>;
 
 export default function BlogPosts({
   content,
   context,
   data,
   style = {},
-}: Props) {
+}: BlockProps<typeof blogPostsProps, BlogPostsData | null>) {
   const {
     badge,
     heading,
@@ -48,7 +46,12 @@ export default function BlogPosts({
     setActiveCategory,
     sentinelRef,
     items,
-  } = useBlogPosts(content, context, data, style);
+  } = useBlogPosts(
+    content,
+    context as unknown as PlatformContext | undefined,
+    data,
+    style as BlockStyle,
+  );
 
   const hasHeader = badge || heading || description;
   const hasFilters = showSearch || categories.length > 0;
@@ -80,7 +83,7 @@ export default function BlogPosts({
           <div className="flex flex-col sm:flex-row items-center gap-4 mb-8">
             {showSearch && (
               <div className="relative w-full sm:w-80">
-                <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <input
                   type="text"
                   value={search}
@@ -142,7 +145,7 @@ export default function BlogPosts({
 
         {showNoResults && (
           <div className="flex flex-col items-center py-16 text-center">
-            <EmptyDocIcon className="h-12 w-12 text-muted-foreground/40 mb-4" />
+            <FileText className="h-12 w-12 text-muted-foreground/40 mb-4" />
             {noResultsText && (
               <p className="text-muted-foreground">{noResultsText}</p>
             )}

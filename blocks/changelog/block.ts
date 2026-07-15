@@ -1,16 +1,7 @@
-import type { ComponentType } from "react";
 import { defineBlock, fields } from "@cmssy/react";
-import Component from "./src";
+import Changelog from "./Changelog";
 
-export const changelogBlock = defineBlock({
-  type: "changelog",
-  category: "Marketing",
-  label: "Changelog",
-  description: "Chronological list of product updates and releases; for a changelog or updates page.",
-  // Block components require their own content shape; the registry stores them
-  // as accepting arbitrary content (resolved from the CMS at runtime).
-  component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,
-  props: {
+export const changelogProps = {
     "badge": fields.text({ label: "Badge Text", defaultValue: "Changelog" }),
     "heading": fields.text({ label: "Heading", defaultValue: "What's" }),
     "headingHighlight": fields.text({ label: "Heading Highlight", defaultValue: "New" }),
@@ -28,5 +19,13 @@ export const changelogBlock = defineBlock({
     "subscribeText": fields.text({ label: "Subscribe Text", defaultValue: "Subscribe to get notified about new releases" }),
     "subscribeButtonText": fields.text({ label: "Subscribe Button Text", defaultValue: "Subscribe" }),
     "subscribeButtonUrl": fields.link({ label: "Subscribe Button URL", defaultValue: "/blog" })
-  },
+};
+
+export const changelogBlock = defineBlock({
+  type: "changelog",
+  category: "Marketing",
+  label: "Changelog",
+  description: "Chronological list of product updates and releases; for a changelog or updates page.",
+  component: Changelog,
+  props: changelogProps,
 });

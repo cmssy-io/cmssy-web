@@ -1,17 +1,7 @@
-import type { ComponentType } from "react";
 import { defineBlock, fields } from "@cmssy/react";
-import Component from "./src";
+import ProductShowcase from "./ProductShowcase";
 
-export const productShowcaseBlock = defineBlock({
-  type: "product-showcase",
-  category: "Marketing",
-  label: "Product Showcase",
-  description:
-    "Gallery of product screenshots with titles and captions; a mid-page showcase section on a marketing or home page.",
-  component: Component as unknown as ComponentType<{
-    content: Record<string, unknown>;
-  }>,
-  props: {
+export const productShowcaseProps = {
     badgeText: fields.text({
       label: "Badge Text",
       placeholder: "Inside the product",
@@ -44,5 +34,14 @@ export const productShowcaseBlock = defineBlock({
         }),
       },
     }),
-  },
+};
+
+export const productShowcaseBlock = defineBlock({
+  type: "product-showcase",
+  category: "Marketing",
+  label: "Product Showcase",
+  description:
+    "Gallery of product screenshots with titles and captions; a mid-page showcase section on a marketing or home page.",
+  component: ProductShowcase,
+  props: productShowcaseProps,
 });

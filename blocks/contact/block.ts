@@ -1,19 +1,7 @@
-import type { ComponentType } from "react";
 import { defineBlock, fields } from "@cmssy/react";
-import Component from "./src";
+import Contact from "./Contact";
 
-export const contactBlock = defineBlock({
-  type: "contact",
-  category: "Forms",
-  label: "Contact",
-  description:
-    "Contact details and/or contact form; near the end of a page or on a dedicated contact page.",
-  // Block components require their own content shape; the registry stores them
-  // as accepting arbitrary content (resolved from the CMS at runtime).
-  component: Component as unknown as ComponentType<{
-    content: Record<string, unknown>;
-  }>,
-  props: {
+export const contactProps = {
     badgeText: fields.text({ label: "Badge Text", defaultValue: "Contact Us" }),
     heading: fields.text({ label: "Heading", defaultValue: "Let's" }),
     headingHighlight: fields.text({
@@ -71,5 +59,14 @@ export const contactBlock = defineBlock({
       label: "Success Heading",
       defaultValue: "Message Sent!",
     }),
-  },
+};
+
+export const contactBlock = defineBlock({
+  type: "contact",
+  category: "Forms",
+  label: "Contact",
+  description:
+    "Contact details and/or contact form; near the end of a page or on a dedicated contact page.",
+  component: Contact,
+  props: contactProps,
 });

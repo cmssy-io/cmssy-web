@@ -12,16 +12,3 @@ export function getCustomField(item: PageItem, key: string): unknown {
   const field = item.customFields?.find((f) => f.fieldKey === key);
   return field?.value ?? null;
 }
-
-export function formatDate(dateStr: string | null, language: string): string {
-  if (!dateStr) return "";
-  try {
-    return new Date(dateStr).toLocaleDateString(language, {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  } catch {
-    return dateStr;
-  }
-}

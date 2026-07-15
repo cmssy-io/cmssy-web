@@ -1,7 +1,8 @@
 import Image from "next/image";
 import type { PageItem } from "@cmssy/types";
 import { CmssyLink } from "@cmssy/next/client";
-import { formatDate, getCustomField, getLocalizedField } from "./utils";
+import { formatDate } from "@/lib/utils";
+import { getCustomField, getLocalizedField } from "./utils";
 
 export function PlaceholderCard() {
   return (

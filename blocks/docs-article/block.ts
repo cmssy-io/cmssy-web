@@ -1,16 +1,7 @@
-import type { ComponentType } from "react";
 import { defineBlock, fields } from "@cmssy/react";
-import Component from "./src";
+import DocsArticle from "./DocsArticle";
 
-export const docsArticleBlock = defineBlock({
-  type: "docs-article",
-  category: "Docs",
-  label: "Docs Article",
-  description: "Long-form documentation article body; the main content of a docs page.",
-  // Block components require their own content shape; the registry stores them
-  // as accepting arbitrary content (resolved from the CMS at runtime).
-  component: Component as unknown as ComponentType<{ content: Record<string, unknown> }>,
-  props: {
+export const docsArticleProps = {
     "breadcrumbs": fields.repeater({ label: "Breadcrumbs", itemSchema: {
       "label": fields.text({ label: "Label", required: true }),
       "url": fields.link({ label: "URL" })
@@ -32,5 +23,13 @@ export const docsArticleBlock = defineBlock({
     } }),
     "showEditLink": fields.boolean({ label: "Show 'Edit on GitHub' Link", defaultValue: true }),
     "editUrl": fields.link({ label: "Edit URL" })
-  },
+};
+
+export const docsArticleBlock = defineBlock({
+  type: "docs-article",
+  category: "Docs",
+  label: "Docs Article",
+  description: "Long-form documentation article body; the main content of a docs page.",
+  component: DocsArticle,
+  props: docsArticleProps,
 });

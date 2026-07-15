@@ -2,12 +2,6 @@ import { NextResponse, type NextRequest } from "next/server";
 import { resolveApiUrl } from "@cmssy/react";
 import { cmssy } from "./config";
 
-/**
- * Forwards a client GraphQL request to the cmssy public delivery endpoint.
- * Used by client blocks that query at runtime (blog-posts listing/search,
- * contact form submit). Only the public* queries/mutations are reachable
- * without a token; we forward the body verbatim.
- */
 export async function proxyGraphql(request: NextRequest) {
   let body: unknown;
   try {
@@ -28,7 +22,6 @@ export async function proxyGraphql(request: NextRequest) {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        // Some public queries (e.g. public.form.get) are scoped by workspace id.
         ...(workspaceId ? { "x-workspace-id": workspaceId } : {}),
       },
       body: JSON.stringify(body),
@@ -42,4 +35,3 @@ export async function proxyGraphql(request: NextRequest) {
     );
   }
 }
-

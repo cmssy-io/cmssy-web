@@ -1,19 +1,7 @@
-import type { ComponentType } from "react";
 import { defineBlock, fields } from "@cmssy/react";
-import Component from "./src";
+import DocsSidebar from "./DocsSidebar";
 
-export const docsSidebarBlock = defineBlock({
-  type: "docs-sidebar",
-  category: "Docs",
-  label: "Docs Sidebar",
-  description: "Documentation navigation sidebar (layout block); left rail across docs pages.",
-  layoutPositions: ["sidebar_left"],
-  // Block components require their own content shape; the registry stores them
-  // as accepting arbitrary content (resolved from the CMS at runtime).
-  component: Component as unknown as ComponentType<{
-    content: Record<string, unknown>;
-  }>,
-  props: {
+export const docsSidebarProps = {
     logo: fields.media({ label: "Logo" }),
     logoText: fields.text({ label: "Logo Text", defaultValue: "Docs" }),
     logoUrl: fields.link({ label: "Logo Link", defaultValue: "/" }),
@@ -48,5 +36,14 @@ export const docsSidebarBlock = defineBlock({
       label: "Show Language Switcher",
       defaultValue: false,
     }),
-  },
+};
+
+export const docsSidebarBlock = defineBlock({
+  type: "docs-sidebar",
+  category: "Docs",
+  label: "Docs Sidebar",
+  description: "Documentation navigation sidebar (layout block); left rail across docs pages.",
+  layoutPositions: ["sidebar_left"],
+  component: DocsSidebar,
+  props: docsSidebarProps,
 });

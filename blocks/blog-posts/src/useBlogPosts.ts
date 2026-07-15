@@ -2,10 +2,13 @@
 
 import type { PageItem, PlatformContext } from "@cmssy/types";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { BlogPostsData } from "../block";
-import type { BlockContent, BlockStyle } from "./block";
+import type { BlockProps } from "@cmssy/react";
+import type { blogPostsProps, BlogPostsData } from "../block";
 import { PUBLIC_PAGES_QUERY } from "./query";
 import { getCustomField } from "./utils";
+
+type BlockContent = BlockProps<typeof blogPostsProps>["content"];
+type BlockStyle = Pick<BlockContent, "layout" | "columns">;
 
 export function useBlogPosts(
   content: BlockContent,

@@ -1,20 +1,9 @@
 import type { ComponentType } from "react";
 import { defineBlock, fields } from "@cmssy/react";
-import Component from "./src";
+import type { BlockProps } from "@cmssy/react";
+import Header from "./Header";
 
-export const headerBlock = defineBlock({
-  type: "header",
-  category: "Layout",
-  label: "Header Navigation",
-  description:
-    "Site header and navigation bar (layout block); top of every page.",
-  layoutPositions: ["header"],
-  // Block components require their own content shape; the registry stores them
-  // as accepting arbitrary content (resolved from the CMS at runtime).
-  component: Component as unknown as ComponentType<{
-    content: Record<string, unknown>;
-  }>,
-  props: {
+export const headerProps = {
     logo: fields.media({
       label: "Logo",
       placeholder: "Recommended: SVG or PNG with transparent background",
@@ -127,5 +116,21 @@ export const headerBlock = defineBlock({
       label: "Dismissible",
       defaultValue: true,
     }),
-  },
+};
+
+export const headerBlock = defineBlock({
+  type: "header",
+  category: "Layout",
+  label: "Header Navigation",
+  description:
+    "Site header and navigation bar (layout block); top of every page.",
+  layoutPositions: ["header"],
+  // The header is a layout block whose component reads a custom platform
+  // context (auth/customer/logout) that differs from the SDK's block context,
+  // so the component is cast; its content shape is still derived from the
+  // props schema so the SDK 8 content guard is satisfied.
+  component: Header as unknown as ComponentType<{
+    content: BlockProps<typeof headerProps>["content"];
+  }>,
+  props: headerProps,
 });
