@@ -48,6 +48,7 @@ import {
 import Image from "next/image";
 import { CmssyLink } from "@cmssy/next/client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { CmssyMark } from "@/components/cmssy-mark";
 import { Container } from "@/components/container";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import type { BlockProps } from "@cmssy/react";
@@ -408,15 +409,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                   height={40}
                 />
               ) : (
-                logoText && (
-                  <div
-                    className={`${logoSizeClasses[logoSize]} rounded-lg bg-linear-to-br from-violet-500 to-purple-600 flex items-center justify-center`}
-                  >
-                    <span className="text-white font-bold text-sm">
-                      {logoText.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                )
+                logoText && <CmssyMark className={logoSizeClasses[logoSize]} />
               )}
               {logoText && (
                 <span className={`font-bold ${logoTextSizeClasses[logoSize]}`}>
@@ -577,13 +570,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                   />
                 ) : (
                   logoText && (
-                    <div
-                      className={`${logoSizeClasses[logoSize]} rounded-lg bg-linear-to-br from-violet-500 to-purple-600 flex items-center justify-center`}
-                    >
-                      <span className="text-white font-bold text-sm">
-                        {logoText.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
+                    <CmssyMark className={logoSizeClasses[logoSize]} />
                   )
                 )}
                 {logoText && (

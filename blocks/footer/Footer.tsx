@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Github, Linkedin, Twitter } from "lucide-react";
 import { CmssyLink } from "@cmssy/next/client";
 import type { BlockProps } from "@cmssy/react";
+import { CmssyMark } from "@/components/cmssy-mark";
 import { Container } from "@/components/container";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import type { footerProps } from "./block";
@@ -53,11 +54,7 @@ export default function Footer({
                   className="h-8 w-auto"
                 />
               ) : logoText ? (
-                <div className="w-8 h-8 rounded-lg bg-linear-to-br from-violet-500 to-purple-600 flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">
-                    {logoText.charAt(0).toUpperCase()}
-                  </span>
-                </div>
+                <CmssyMark className="w-8 h-8" />
               ) : null}
               {logoText && (
                 <span className="font-bold text-xl">{logoText}</span>
