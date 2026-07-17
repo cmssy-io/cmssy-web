@@ -1,126 +1,137 @@
-import { Button } from "@/components/ui/button";
+"use client";
+
+import { useState } from "react";
 import { Check } from "lucide-react";
 import { CmssyLink } from "@cmssy/next/client";
 import type { BlockProps } from "@cmssy/react";
-import { Container } from "../../components/container";
+import { Container } from "@/components/container";
+import { FigEyebrow } from "@/components/fig-eyebrow";
 import type { pricingProps } from "./block";
 
 export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
   const {
-    heading,
-    headingHighlight,
-    description,
-    popularBadgeText,
+    fig = "FIG 6.0",
+    eyebrow = "",
+    heading = "",
+    description = "",
+    trialNotice = "",
+    popularBadgeText = "MOST POPULAR",
+    annualDiscountLabel = "Annual −20%",
     plans = [],
   } = content;
+  const [annual, setAnnual] = useState(true);
 
   return (
-    <section id="pricing" className="py-24">
+    <section id="pricing" className="bg-wash py-24">
       <Container>
-        {/* Section header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          {(heading || headingHighlight) && (
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              {heading}{" "}
-              {headingHighlight && (
-                <span className="bg-linear-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
-                  {headingHighlight}
-                </span>
-              )}
-            </h2>
-          )}
+        <div className="mx-auto max-w-3xl text-center">
+          <FigEyebrow fig={fig} label={eyebrow} />
+          <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-ink text-balance">
+            {heading}
+          </h2>
           {description && (
-            <p className="text-lg text-muted-foreground">{description}</p>
+            <p className="mt-4 text-lg text-ink/60">{description}</p>
           )}
+          <div className="mt-8 inline-flex rounded-full border border-ink/15 bg-white p-1">
+            {[
+              { label: "Monthly", value: false },
+              { label: annualDiscountLabel, value: true },
+            ].map((opt) => (
+              <button
+                key={opt.label}
+                type="button"
+                onClick={() => setAnnual(opt.value)}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                  annual === opt.value
+                    ? "bg-ink text-paper"
+                    : "text-ink/60 hover:text-ink"
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Pricing cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {plans.map((plan, index) => (
-            <div
-              key={index}
-              className={`relative rounded-2xl p-8 ${
-                plan.popular
-                  ? "bg-linear-to-b from-sky-500 to-blue-600 text-white shadow-xl shadow-sky-500/25 scale-105"
-                  : "bg-background border"
-              }`}
-            >
-              {/* Popular badge */}
-              {plan.popular && popularBadgeText && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-max">
-                  <span className="bg-linear-to-r from-amber-400 to-orange-400 text-black text-xs font-bold px-4 py-1 rounded-full">
+        <div className="mx-auto mt-12 grid max-w-5xl items-stretch gap-6 lg:grid-cols-3">
+          {plans.map((plan) => {
+            const price =
+              !annual && plan.priceMonthly ? plan.priceMonthly : plan.price;
+            const period =
+              !annual && plan.periodMonthly ? plan.periodMonthly : plan.period;
+            return (
+              <div
+                key={plan.name}
+                className={`relative flex flex-col rounded-2xl border p-7 ${
+                  plan.popular
+                    ? "border-elektryk/40 bg-ink text-paper shadow-xl shadow-elektryk/15 lg:scale-[1.03]"
+                    : "border-ink/10 bg-white text-ink"
+                }`}
+              >
+                {plan.popular && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-elektryk px-3 py-1 font-mono text-[10px] tracking-[0.12em] text-white uppercase">
                     {popularBadgeText}
                   </span>
-                </div>
-              )}
-
-              {/* Plan header */}
-              <div className="mb-6">
-                <h3 className="text-xl font-bold mb-1">{plan.name}</h3>
+                )}
+                <h3 className="font-heading text-xl font-semibold">
+                  {plan.name}
+                </h3>
                 <p
-                  className={`text-sm ${
-                    plan.popular ? "text-sky-100" : "text-muted-foreground"
+                  className={`mt-2 text-sm ${
+                    plan.popular ? "text-paper/60" : "text-ink/60"
                   }`}
                 >
                   {plan.description}
                 </p>
-              </div>
-
-              {/* Price */}
-              <div className="mb-6">
-                <span className="text-4xl font-bold">{plan.price}</span>
-                <span
-                  className={`text-sm ml-2 ${
-                    plan.popular ? "text-sky-100" : "text-muted-foreground"
-                  }`}
-                >
-                  {plan.period}
-                </span>
-              </div>
-
-              {/* Features */}
-              <ul className="space-y-3 mb-8">
-                {(Array.isArray(plan?.features) ? plan.features : []).map(
-                  (feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start gap-3">
+                <div className="mt-6 flex items-baseline gap-2">
+                  <span className="font-heading text-4xl font-semibold">
+                    {price}
+                  </span>
+                  {period && (
+                    <span
+                      className={`font-mono text-[12px] ${
+                        plan.popular ? "text-paper/50" : "text-ink/50"
+                      }`}
+                    >
+                      {period}
+                    </span>
+                  )}
+                </div>
+                <ul className="mt-6 flex-1 space-y-2.5">
+                  {(plan.features ?? []).map((f) => (
+                    <li key={f.feature} className="flex items-start gap-2.5">
                       <Check
-                        className={`w-5 h-5 shrink-0 mt-0.5 ${
-                          plan.popular ? "text-sky-200" : "text-sky-500"
+                        className={`mt-0.5 size-4 shrink-0 ${
+                          plan.popular ? "text-elektryk" : "text-elektryk"
                         }`}
                       />
                       <span
                         className={`text-sm ${
-                          plan.popular
-                            ? "text-sky-50"
-                            : "text-muted-foreground"
+                          plan.popular ? "text-paper/80" : "text-ink/75"
                         }`}
                       >
-                        {feature.feature}
+                        {f.feature}
                       </span>
                     </li>
-                  ),
-                )}
-              </ul>
-
-              {/* CTA */}
-              <Button
-                asChild
-                className={`w-full ${
-                  plan.popular
-                    ? "bg-white text-sky-600 hover:bg-sky-50"
-                    : "bg-linear-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 text-white"
-                }`}
-              >
-                <CmssyLink href={plan.href}>{plan.cta}</CmssyLink>
-              </Button>
-            </div>
-          ))}
+                  ))}
+                </ul>
+                <CmssyLink
+                  href={plan.href || "#"}
+                  className={`mt-7 block rounded-lg px-5 py-2.5 text-center text-sm font-medium transition-colors ${
+                    plan.popular
+                      ? "bg-elektryk text-white hover:bg-elektryk/85"
+                      : "border border-ink/15 text-ink hover:border-ink/35"
+                  }`}
+                >
+                  {plan.cta}
+                </CmssyLink>
+              </div>
+            );
+          })}
         </div>
-
-        {/* Money back guarantee */}
-        {content.trialNotice && (
-          <p className="text-center text-sm text-muted-foreground mt-12">
-            {content.trialNotice}
+        {trialNotice && (
+          <p className="mt-8 text-center font-mono text-[12px] text-ink/45">
+            {trialNotice}
           </p>
         )}
       </Container>
