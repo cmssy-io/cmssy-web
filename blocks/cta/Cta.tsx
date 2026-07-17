@@ -4,7 +4,7 @@ import { Container } from "@/components/container";
 import type { ctaProps } from "./block";
 
 function DockingMark() {
-  const fuse = { animation: "cta-fuse 6s linear infinite" };
+  const fuse = { animation: "cta-fuse 7s linear infinite" };
   return (
     <svg
       viewBox="-40 -40 660 790"
@@ -51,7 +51,7 @@ function DockingMark() {
         rx="36"
         fill="#00A8F0"
         style={{
-          animation: "cta-dock 6s cubic-bezier(0.3, 0.9, 0.25, 1) infinite",
+          animation: "cta-dock 7s cubic-bezier(0.45, 0, 0.2, 1) infinite",
         }}
       />
     </svg>
