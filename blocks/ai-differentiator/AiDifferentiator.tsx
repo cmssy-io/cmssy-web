@@ -1,3 +1,4 @@
+import { CmssyLink } from "@cmssy/next/client";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
 import { FigEyebrow } from "@/components/fig-eyebrow";
@@ -46,12 +47,12 @@ export default function AiDifferentiator({
               ))}
             </ul>
             {linkLabel && (
-              <a
-                href={linkUrl}
+              <CmssyLink
+                href={linkUrl || "#"}
                 className="mt-8 inline-block font-medium text-elektryk hover:underline"
               >
                 {linkLabel}
-              </a>
+              </CmssyLink>
             )}
           </div>
 

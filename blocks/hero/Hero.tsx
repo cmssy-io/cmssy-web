@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { CmssyLink } from "@cmssy/next/client";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
 import { FigEyebrow } from "@/components/fig-eyebrow";
@@ -67,20 +68,20 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
             )}
             <div className="mt-8 flex flex-wrap items-center gap-4">
               {primaryButtonText && (
-                <a
-                  href={primaryButtonUrl}
+                <CmssyLink
+                  href={primaryButtonUrl || "#"}
                   className="rounded-lg bg-elektryk px-6 py-3 text-base font-medium text-white transition-colors hover:bg-elektryk/85"
                 >
                   {primaryButtonText}
-                </a>
+                </CmssyLink>
               )}
               {secondaryButtonText && (
-                <a
-                  href={secondaryButtonUrl}
+                <CmssyLink
+                  href={secondaryButtonUrl || "#"}
                   className="rounded-lg border border-paper/20 px-6 py-3 text-base font-medium text-paper/85 transition-colors hover:border-paper/40"
                 >
                   {secondaryButtonText}
-                </a>
+                </CmssyLink>
               )}
             </div>
             {trustLine && (
