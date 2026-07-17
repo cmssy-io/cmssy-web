@@ -1,100 +1,61 @@
-import {
-  BarChart3,
-  Blocks,
-  Cloud,
-  Globe,
-  Layers,
-  Lock,
-  Paintbrush,
-  Settings,
-  ShieldCheck,
-  Smartphone,
-  Sparkles,
-  Square,
-  Users,
-  Zap,
-  type LucideIcon,
-} from "lucide-react";
 import { Container } from "@/components/container";
+import { FigEyebrow } from "@/components/fig-eyebrow";
 import type { BlockProps } from "@cmssy/react";
 import type { featuresProps } from "./block";
 
-const iconMap: Record<string, LucideIcon> = {
-  ZapIcon: Zap,
-  SparklesIcon: Sparkles,
-  GlobeAltIcon: Globe,
-  LayersIcon: Layers,
-  PaintBrushIcon: Paintbrush,
-  Squares2X2Icon: Square,
-  LightningBoltIcon: Zap,
-  CloudIcon: Cloud,
-  LockClosedIcon: Lock,
-  CogIcon: Settings,
-  ChartBarIcon: BarChart3,
-  DeviceMobileIcon: Smartphone,
-  UsersIcon: Users,
-  ShieldCheckIcon: ShieldCheck,
-  BlocksIcon: Blocks,
-};
-
-export default function Features({ content }: BlockProps<typeof featuresProps>) {
-  const { heading, headingHighlight, description, features = [] } = content;
+export default function Features({
+  content,
+}: BlockProps<typeof featuresProps>) {
+  const {
+    fig = "FIG 4.0",
+    eyebrow = "",
+    heading = "",
+    headingHighlight = "",
+    description = "",
+    features = [],
+  } = content;
 
   return (
-    <section id="features" className="py-24 bg-slate-50/50">
+    <section className="bg-wash py-24">
       <Container>
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          {(heading || headingHighlight) && (
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              {heading}{" "}
-              {headingHighlight && (
-                <span className="bg-linear-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
-                  {headingHighlight}
-                </span>
-              )}
-            </h2>
-          )}
+        <div className="mx-auto max-w-3xl text-center">
+          <FigEyebrow fig={fig} label={eyebrow} />
+          <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-ink text-balance">
+            {heading}
+            {headingHighlight && (
+              <>
+                {" "}
+                <span className="text-elektryk">{headingHighlight}</span>
+              </>
+            )}
+          </h2>
           {description && (
-            <p className="text-lg text-muted-foreground">{description}</p>
+            <p className="mt-4 text-lg text-ink/60">{description}</p>
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature, index) => {
-            const Icon = feature.icon ? iconMap[feature.icon] : Zap;
-            const bgColor = feature.color || "#0ea5e9";
-            const hoverColor = feature.hoverColor || bgColor;
-
-            return (
-              <div
-                key={index}
-                className="group relative p-6 rounded-2xl bg-background border transition-all duration-300 hover:shadow-lg"
-                style={
-                  {
-                    "--feature-color": bgColor,
-                    "--feature-hover-color": hoverColor,
-                  } as React.CSSProperties
-                }
-              >
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
-                  style={{ backgroundColor: bgColor }}
-                >
-                  {Icon && <Icon className="w-6 h-6 text-white" />}
-                </div>
-
-                <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {feature.description}
-                </p>
-
-                <div
-                  className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-[0.03] transition-opacity duration-300"
-                  style={{ backgroundColor: hoverColor }}
-                />
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((feature) => (
+            <div
+              key={feature.title}
+              className="group rounded-2xl border border-ink/10 bg-white p-6 transition-all hover:-translate-y-0.5 hover:shadow-[-.35rem_.35rem_0_rgba(0,168,240,.12)]"
+            >
+              <div className="flex gap-1.5">
+                <span className="size-2 rounded-[2px] bg-ink/20" />
+                <span className="size-2 rounded-[2px] bg-ink/20" />
+                <span className="size-2 rounded-[2px] bg-elektryk" />
               </div>
-            );
-          })}
+              <h3 className="font-heading mt-4 text-lg font-semibold text-ink">
+                {feature.title}
+              </h3>
+              <p className="mt-2 text-sm text-ink/60">{feature.description}</p>
+              {feature.stat && (
+                <div className="mt-4 font-mono text-[12px] font-medium text-elektryk">
+                  {feature.stat}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </Container>
     </section>
