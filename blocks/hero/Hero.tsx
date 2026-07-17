@@ -71,7 +71,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
       <Container>
         <div className="grid items-center gap-14 lg:grid-cols-[0.95fr_1.15fr]">
           <div>
-            <FigEyebrow fig={fig} label={eyebrow} dark />
+            <FigEyebrow fig={fig} label={eyebrow} dark pill />
             <h1 className="font-heading mt-6 text-5xl font-semibold tracking-tight text-paper text-balance lg:text-[3.4rem] lg:leading-[1.08]">
               {headingPre}{" "}
               <span className="text-elektryk">

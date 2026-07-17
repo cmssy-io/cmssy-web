@@ -31,7 +31,7 @@ export default function CodeTabs({
   return (
     <section id="code" className="bg-paper py-24">
       <Container>
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="max-w-3xl">
           <FigEyebrow fig={fig} label={eyebrow} />
           <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-ink text-balance">
             {heading}

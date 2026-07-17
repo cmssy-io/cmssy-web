@@ -18,7 +18,7 @@ export default function Features({
   return (
     <section className="bg-wash py-24">
       <Container>
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="max-w-3xl">
           <FigEyebrow fig={fig} label={eyebrow} />
           <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-ink text-balance">
             {heading}
@@ -41,9 +41,9 @@ export default function Features({
               className="group rounded-2xl border border-ink/10 bg-white p-6 transition-all hover:-translate-y-0.5 hover:shadow-[-.35rem_.35rem_0_rgba(0,168,240,.12)]"
             >
               <div className="flex gap-1.5">
-                <span className="size-2 rounded-[2px] bg-ink/20" />
-                <span className="size-2 rounded-[2px] bg-ink/20" />
-                <span className="size-2 rounded-[2px] bg-elektryk" />
+                <span className="size-2.5 rounded-[3px] bg-ink" />
+                <span className="size-2.5 rounded-[3px] bg-ink" />
+                <span className="size-2.5 rounded-[3px] bg-elektryk" />
               </div>
               <h3 className="font-heading mt-4 text-lg font-semibold text-ink">
                 {feature.title}

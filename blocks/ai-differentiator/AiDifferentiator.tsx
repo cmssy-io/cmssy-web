@@ -34,9 +34,13 @@ export default function AiDifferentiator({
               <p className="mt-4 text-lg text-paper/60">{description}</p>
             )}
             <ul className="mt-8 space-y-4">
-              {bullets.map((b) => (
+              {bullets.map((b, i) => (
                 <li key={b.strong} className="flex gap-3 text-paper/80">
-                  <span className="mt-2 inline-block size-2 shrink-0 rounded-[2px] bg-elektryk" />
+                  <span
+                    className={`mt-2 inline-block size-2.5 shrink-0 rounded-[3px] ${
+                      i === 0 ? "bg-elektryk" : "bg-paper/25"
+                    }`}
+                  />
                   <span>
                     <strong className="font-semibold text-paper">
                       {b.strong}

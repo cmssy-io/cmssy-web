@@ -44,7 +44,7 @@ export default function TwoAudiences({
   return (
     <section id="product" className="bg-paper py-24">
       <Container>
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="max-w-3xl">
           <FigEyebrow fig={fig} label={eyebrow} />
           <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-ink text-balance">
             {heading}
@@ -65,10 +65,11 @@ export default function TwoAudiences({
               }`}
             >
               <span
-                className={`font-mono text-[11px] tracking-[0.14em] uppercase ${
-                  card.dark ? "text-elektryk" : "text-elektryk"
+                className={`flex items-center gap-2 font-mono text-[11px] tracking-[0.14em] uppercase ${
+                  card.dark ? "text-paper/70" : "text-ink/60"
                 }`}
               >
+                <span className="inline-block size-2 rounded-[2px] bg-elektryk" />
                 {card.kicker}
               </span>
               <h3 className="font-heading mt-3 text-2xl font-semibold tracking-tight">
