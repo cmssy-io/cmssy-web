@@ -53,7 +53,7 @@ export function TocSidebar({ items, title }: TocSidebarProps) {
                 ${item.level === 3 ? "pl-4" : ""}
                 ${
                   activeId === item.id
-                    ? "text-violet-600 font-medium"
+                    ? "text-sky-600 font-medium"
                     : "text-muted-foreground hover:text-foreground"
                 }
               `}

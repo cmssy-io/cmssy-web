@@ -37,11 +37,11 @@ export default function DocsSteps({ content }: BlockProps<typeof docsStepsProps>
               {/* Timeline column */}
               <div className="flex flex-col items-center shrink-0">
                 {/* Step circle */}
-                <div className="relative z-10 flex items-center justify-center size-8 rounded-full bg-violet-100 text-violet-600 border-2 border-violet-200 font-semibold text-sm">
+                <div className="relative z-10 flex items-center justify-center size-8 rounded-full bg-sky-100 text-sky-600 border-2 border-sky-200 font-semibold text-sm">
                   {showNumbers ? (
                     index + 1
                   ) : (
-                    <div className="size-2.5 rounded-full bg-violet-500" />
+                    <div className="size-2.5 rounded-full bg-sky-500" />
                   )}
                 </div>
                 {/* Connector line */}
@@ -63,7 +63,7 @@ export default function DocsSteps({ content }: BlockProps<typeof docsStepsProps>
                       prose-p:my-2 prose-p:leading-relaxed
                       prose-pre:bg-zinc-950 prose-pre:border prose-pre:border-zinc-800
                       prose-code:text-xs
-                      prose-a:text-violet-600 prose-a:no-underline hover:prose-a:underline
+                      prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline
                       prose-ul:my-2 prose-li:my-0
                       prose-img:rounded-lg prose-img:border prose-img:border-border
                     "

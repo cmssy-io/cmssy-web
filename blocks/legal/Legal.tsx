@@ -40,7 +40,7 @@ export default function Legal({
         {/* Header */}
         <div className="text-center mb-16">
           {badge && (
-            <span className="inline-block px-4 py-1.5 rounded-full bg-violet-100 text-violet-700 text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-sky-100 text-sky-700 text-sm font-medium mb-4">
               {badge}
             </span>
           )}
@@ -48,7 +48,7 @@ export default function Legal({
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
               {heading}{" "}
               {headingHighlight && (
-                <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
                   {headingHighlight}
                 </span>
               )}
@@ -64,7 +64,7 @@ export default function Legal({
         <div className="max-w-3xl mx-auto">
           {/* Summary Box */}
           {showSummary && summaryContent && (
-            <div className="bg-linear-to-br from-violet-50 to-purple-50 rounded-2xl border border-violet-200 p-6 mb-8">
+            <div className="bg-linear-to-br from-sky-50 to-blue-50 rounded-2xl border border-sky-200 p-6 mb-8">
               {summaryTitle && (
                 <h3 className="font-semibold mb-2 text-lg">{summaryTitle}</h3>
               )}
@@ -73,7 +73,7 @@ export default function Legal({
           )}
 
           {/* Accordion Sections */}
-          <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-xl shadow-violet-500/5 p-6 sm:p-8">
+          <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-xl shadow-sky-500/5 p-6 sm:p-8">
             <Accordion type="single" collapsible className="w-full">
               {sections.map((section, index) => {
                 const safeHtml = data?.sections?.[index];
@@ -109,7 +109,7 @@ export default function Legal({
                     {index > 0 && " and "}
                     <CmssyLink
                       href={link.url}
-                      className="text-violet-600 hover:text-violet-700 underline"
+                      className="text-sky-600 hover:text-sky-700 underline"
                     >
                       {link.text}
                     </CmssyLink>

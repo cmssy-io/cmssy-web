@@ -31,12 +31,12 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
   return (
     <section className="cmssy-hero-section relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-linear-to-br from-violet-50 via-background to-purple-50" />
+      <div className="absolute inset-0 bg-linear-to-br from-sky-50 via-background to-blue-50" />
 
       {/* Animated gradient orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-400/30 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-sky-400/30 rounded-full blur-3xl animate-pulse" />
       <div
-        className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-400/30 rounded-full blur-3xl animate-pulse"
+        className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-400/30 rounded-full blur-3xl animate-pulse"
         style={{ animationDelay: "1000ms" }}
       />
 
@@ -51,7 +51,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
       <Container className="relative py-16 sm:py-24 lg:py-32 text-center">
         {/* Badge */}
         {badgeText && (
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-100 text-violet-700 text-sm font-medium mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-100 text-sky-700 text-sm font-medium mb-8">
             <Sparkles className="w-4 h-4" />
             <span>{badgeText}</span>
           </div>
@@ -64,7 +64,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
             {headingHighlight && (
               <>
                 <br />
-                <span className="bg-linear-to-r from-violet-600 via-purple-600 to-violet-600 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-sky-600 via-blue-600 to-sky-600 bg-clip-text text-transparent">
                   {headingHighlight}
                 </span>
               </>
@@ -83,7 +83,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 sm:mb-16">
           {primaryButtonText && (
             <CmssyLink href={primaryButtonUrl || "#"}>
-              <button className="inline-flex items-center justify-center gap-2 rounded-md bg-linear-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 px-6 sm:px-8 h-12 sm:h-14 text-base sm:text-lg font-medium text-white shadow-lg shadow-violet-500/25 transition-colors">
+              <button className="inline-flex items-center justify-center gap-2 rounded-md bg-linear-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 px-6 sm:px-8 h-12 sm:h-14 text-base sm:text-lg font-medium text-white shadow-lg shadow-sky-500/25 transition-colors">
                 {primaryButtonText}
                 <ArrowRight className="w-5 h-5" />
               </button>
@@ -122,7 +122,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
         {media && (
           <div className="mt-12 sm:mt-20 relative">
             <div className="absolute inset-0 bg-linear-to-t from-background via-transparent to-transparent z-10 pointer-events-none" />
-            <div className="relative rounded-xl shadow-2xl shadow-violet-500/10 overflow-hidden bg-background">
+            <div className="relative rounded-xl shadow-2xl shadow-sky-500/10 overflow-hidden bg-background">
               <div className="aspect-video relative overflow-hidden">
                 {isVideo ? (
                   <video

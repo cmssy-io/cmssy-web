@@ -80,7 +80,7 @@ export default function DocsApiReference({
 
           {description && (
             <div
-              className="mt-3 text-sm text-zinc-400 prose prose-sm prose-invert max-w-none prose-code:text-violet-400 prose-code:bg-violet-500/10 prose-code:px-1 prose-code:py-0.5 prose-code:rounded"
+              className="mt-3 text-sm text-zinc-400 prose prose-sm prose-invert max-w-none prose-code:text-sky-400 prose-code:bg-sky-500/10 prose-code:px-1 prose-code:py-0.5 prose-code:rounded"
               dangerouslySetInnerHTML={{ __html: description }}
             />
           )}
@@ -101,7 +101,7 @@ export default function DocsApiReference({
                   className="px-6 py-3 flex items-start gap-4 hover:bg-zinc-900/50 transition-colors"
                 >
                   <div className="flex items-center gap-2 shrink-0 min-w-35">
-                    <code className="text-sm font-mono font-semibold text-violet-400">
+                    <code className="text-sm font-mono font-semibold text-sky-400">
                       {param.name}
                     </code>
                     {param.required && (

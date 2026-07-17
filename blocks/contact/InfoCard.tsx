@@ -32,7 +32,7 @@ export function InfoCard({ icon, title, description, index }: InfoCardProps) {
 
   return (
     <div className="flex items-start gap-4">
-      <div className="shrink-0 w-12 h-12 rounded-xl bg-linear-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg shadow-violet-500/25">
+      <div className="shrink-0 w-12 h-12 rounded-xl bg-linear-to-br from-sky-500 to-blue-600 flex items-center justify-center shadow-lg shadow-sky-500/25">
         <Icon className="w-5 h-5 text-white" />
       </div>
       <div>

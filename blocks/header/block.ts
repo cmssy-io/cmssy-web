@@ -104,7 +104,7 @@ export const headerProps = {
     announcementLink: fields.link({ label: "Announcement Link" }),
     announcementBg: fields.color({
       label: "Announcement Background",
-      defaultValue: "#7c3aed",
+      defaultValue: "#00A8F0",
       tab: "style",
     }),
     announcementTextColor: fields.color({

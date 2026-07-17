@@ -66,7 +66,7 @@ export default function BlogPosts({
         {hasHeader && (
           <div className="text-center max-w-2xl mx-auto mb-12">
             {badge && (
-              <span className="inline-block text-xs font-semibold uppercase tracking-wider text-violet-600 bg-violet-100 px-3 py-1 rounded-full mb-4">
+              <span className="inline-block text-xs font-semibold uppercase tracking-wider text-sky-600 bg-sky-100 px-3 py-1 rounded-full mb-4">
                 {badge}
               </span>
             )}
@@ -90,7 +90,7 @@ export default function BlogPosts({
                   onChange={(e) => !isPreview && setSearch(e.target.value)}
                   placeholder={searchPlaceholder}
                   readOnly={isPreview}
-                  className={`w-full pl-10 pr-4 py-2.5 border rounded-lg bg-background text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 ${isPreview ? "opacity-60 cursor-not-allowed" : ""}`}
+                  className={`w-full pl-10 pr-4 py-2.5 border rounded-lg bg-background text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 ${isPreview ? "opacity-60 cursor-not-allowed" : ""}`}
                 />
               </div>
             )}
@@ -100,7 +100,7 @@ export default function BlogPosts({
                   onClick={() => setActiveCategory(null)}
                   className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                     !activeCategory
-                      ? "bg-violet-600 text-white"
+                      ? "bg-sky-600 text-white"
                       : "bg-muted text-muted-foreground hover:bg-muted/80"
                   }`}
                 >
@@ -114,7 +114,7 @@ export default function BlogPosts({
                     }
                     className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                       activeCategory === cat
-                        ? "bg-violet-600 text-white"
+                        ? "bg-sky-600 text-white"
                         : "bg-muted text-muted-foreground hover:bg-muted/80"
                     }`}
                   >

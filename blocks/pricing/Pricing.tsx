@@ -23,7 +23,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
               {heading}{" "}
               {headingHighlight && (
-                <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
                   {headingHighlight}
                 </span>
               )}
@@ -41,7 +41,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
               key={index}
               className={`relative rounded-2xl p-8 ${
                 plan.popular
-                  ? "bg-linear-to-b from-violet-500 to-purple-600 text-white shadow-xl shadow-violet-500/25 scale-105"
+                  ? "bg-linear-to-b from-sky-500 to-blue-600 text-white shadow-xl shadow-sky-500/25 scale-105"
                   : "bg-background border"
               }`}
             >
@@ -59,7 +59,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                 <h3 className="text-xl font-bold mb-1">{plan.name}</h3>
                 <p
                   className={`text-sm ${
-                    plan.popular ? "text-violet-100" : "text-muted-foreground"
+                    plan.popular ? "text-sky-100" : "text-muted-foreground"
                   }`}
                 >
                   {plan.description}
@@ -71,7 +71,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                 <span className="text-4xl font-bold">{plan.price}</span>
                 <span
                   className={`text-sm ml-2 ${
-                    plan.popular ? "text-violet-100" : "text-muted-foreground"
+                    plan.popular ? "text-sky-100" : "text-muted-foreground"
                   }`}
                 >
                   {plan.period}
@@ -85,13 +85,13 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                     <li key={featureIndex} className="flex items-start gap-3">
                       <Check
                         className={`w-5 h-5 shrink-0 mt-0.5 ${
-                          plan.popular ? "text-violet-200" : "text-violet-500"
+                          plan.popular ? "text-sky-200" : "text-sky-500"
                         }`}
                       />
                       <span
                         className={`text-sm ${
                           plan.popular
-                            ? "text-violet-50"
+                            ? "text-sky-50"
                             : "text-muted-foreground"
                         }`}
                       >
@@ -107,8 +107,8 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                 asChild
                 className={`w-full ${
                   plan.popular
-                    ? "bg-white text-violet-600 hover:bg-violet-50"
-                    : "bg-linear-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white"
+                    ? "bg-white text-sky-600 hover:bg-sky-50"
+                    : "bg-linear-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 text-white"
                 }`}
               >
                 <CmssyLink href={plan.href}>{plan.cta}</CmssyLink>

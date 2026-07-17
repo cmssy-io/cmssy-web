@@ -56,7 +56,7 @@ export default function DocsArticle({
                     </CmssyLink>
                   ) : (
                     <span
-                      className={isLast ? "text-violet-600 font-medium" : ""}
+                      className={isLast ? "text-sky-600 font-medium" : ""}
                       aria-current={isLast ? "page" : undefined}
                     >
                       {crumb.label}
@@ -95,8 +95,8 @@ export default function DocsArticle({
             prose-h2:text-2xl prose-h2:font-semibold prose-h2:mt-10 prose-h2:mb-4
             prose-h3:text-xl prose-h3:font-medium prose-h3:mt-8 prose-h3:mb-3
             prose-p:text-muted-foreground prose-p:leading-relaxed
-            prose-a:text-violet-600 prose-a:no-underline hover:prose-a:underline
-            prose-ul:text-muted-foreground prose-li:marker:text-violet-500
+            prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline
+            prose-ul:text-muted-foreground prose-li:marker:text-sky-500
           "
           dangerouslySetInnerHTML={{ __html: toc.html }}
         />
@@ -122,13 +122,13 @@ export default function DocsArticle({
             {prev ? (
               <CmssyLink
                 href={prev.url}
-                className="group flex flex-col p-4 rounded-lg border hover:border-violet-500 hover:bg-violet-50 transition-colors"
+                className="group flex flex-col p-4 rounded-lg border hover:border-sky-500 hover:bg-sky-50 transition-colors"
               >
                 <span className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
                   <ChevronLeft className="size-3" />
                   Previous
                 </span>
-                <span className="font-medium group-hover:text-violet-600 transition-colors">
+                <span className="font-medium group-hover:text-sky-600 transition-colors">
                   {prev.label}
                 </span>
               </CmssyLink>
@@ -138,13 +138,13 @@ export default function DocsArticle({
             {next && (
               <CmssyLink
                 href={next.url}
-                className="group flex flex-col items-end p-4 rounded-lg border hover:border-violet-500 hover:bg-violet-50 transition-colors"
+                className="group flex flex-col items-end p-4 rounded-lg border hover:border-sky-500 hover:bg-sky-50 transition-colors"
               >
                 <span className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
                   Next
                   <ChevronRight className="size-3" />
                 </span>
-                <span className="font-medium group-hover:text-violet-600 transition-colors">
+                <span className="font-medium group-hover:text-sky-600 transition-colors">
                   {next.label}
                 </span>
               </CmssyLink>

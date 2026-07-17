@@ -49,7 +49,7 @@ export default function DocsPropsTable({
                 {/* Name */}
                 <td className="px-4 py-3 align-top">
                   <div className="flex items-center gap-2">
-                    <code className="text-[13px] font-mono font-semibold text-violet-600">
+                    <code className="text-[13px] font-mono font-semibold text-sky-600">
                       {prop.name}
                     </code>
                     {showRequired && prop.required && (

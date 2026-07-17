@@ -20,9 +20,9 @@ const statusConfig = {
   },
   in_progress: {
     icon: Clock,
-    color: "text-violet-600",
-    bgColor: "bg-violet-50",
-    borderColor: "border-violet-200",
+    color: "text-sky-600",
+    bgColor: "bg-sky-50",
+    borderColor: "border-sky-200",
   },
   planned: {
     icon: Lightbulb,
@@ -58,7 +58,7 @@ export default function Roadmap({ content }: BlockProps<typeof roadmapProps>) {
         {/* Header */}
         <div className="text-center mb-16">
           {badge && (
-            <span className="inline-block px-4 py-1.5 rounded-full bg-violet-100 text-violet-700 text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-sky-100 text-sky-700 text-sm font-medium mb-4">
               {badge}
             </span>
           )}
@@ -66,7 +66,7 @@ export default function Roadmap({ content }: BlockProps<typeof roadmapProps>) {
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
               {heading}{" "}
               {headingHighlight && (
-                <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
                   {headingHighlight}
                 </span>
               )}
@@ -110,7 +110,7 @@ export default function Roadmap({ content }: BlockProps<typeof roadmapProps>) {
                       <div className="flex items-start justify-between gap-2 mb-2">
                         <h4 className="font-medium text-sm">{item.title}</h4>
                         {item.badge && (
-                          <span className="px-2 py-0.5 text-xs font-medium bg-violet-100 text-violet-700 rounded-full whitespace-nowrap">
+                          <span className="px-2 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 rounded-full whitespace-nowrap">
                             {item.badge}
                           </span>
                         )}
@@ -131,18 +131,18 @@ export default function Roadmap({ content }: BlockProps<typeof roadmapProps>) {
         {/* Feedback CTA */}
         {showCta && (
           <div className="max-w-2xl mx-auto">
-            <div className="bg-linear-to-br from-violet-500 to-purple-600 rounded-2xl shadow-xl shadow-violet-500/25 p-8 text-center text-white">
+            <div className="bg-linear-to-br from-sky-500 to-blue-600 rounded-2xl shadow-xl shadow-sky-500/25 p-8 text-center text-white">
               <MessageSquare className="size-10 mx-auto mb-4 opacity-90" />
               {ctaTitle && (
                 <h3 className="text-2xl font-bold mb-3">{ctaTitle}</h3>
               )}
               {ctaDescription && (
-                <p className="text-violet-100 mb-6">{ctaDescription}</p>
+                <p className="text-sky-100 mb-6">{ctaDescription}</p>
               )}
               {ctaButtonText && (
                 <CmssyLink
                   href={ctaButtonUrl}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-violet-600 font-medium rounded-lg hover:bg-violet-50 transition-colors"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-sky-600 font-medium rounded-lg hover:bg-sky-50 transition-colors"
                 >
                   {ctaButtonText}
                   <ArrowRight className="size-4" />

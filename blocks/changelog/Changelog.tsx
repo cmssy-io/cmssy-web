@@ -43,7 +43,7 @@ export default function Changelog({
         {/* Header */}
         <div className="text-center mb-16">
           {badge && (
-            <span className="inline-block px-4 py-1.5 rounded-full bg-violet-100 text-violet-700 text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-sky-100 text-sky-700 text-sm font-medium mb-4">
               {badge}
             </span>
           )}
@@ -51,7 +51,7 @@ export default function Changelog({
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
               {heading}{" "}
               {headingHighlight && (
-                <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
                   {headingHighlight}
                 </span>
               )}
@@ -67,9 +67,9 @@ export default function Changelog({
         {/* Subscribe CTA */}
         {showSubscribe && (
           <div className="max-w-2xl mx-auto mb-16">
-            <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-xl shadow-violet-500/5 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-xl shadow-sky-500/5 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <Rss className="w-5 h-5 text-violet-600" />
+                <Rss className="w-5 h-5 text-sky-600" />
                 {subscribeText && (
                   <span className="text-sm">{subscribeText}</span>
                 )}
@@ -98,16 +98,16 @@ export default function Changelog({
               return (
                 <div
                   key={index}
-                  className="relative pl-8 pb-8 border-l-2 border-violet-200 last:border-transparent last:pb-0"
+                  className="relative pl-8 pb-8 border-l-2 border-sky-200 last:border-transparent last:pb-0"
                 >
                   {/* Timeline dot */}
-                  <div className="absolute -left-2.25 top-0 w-4 h-4 rounded-full bg-linear-to-br from-violet-500 to-purple-600 border-4 border-background" />
+                  <div className="absolute -left-2.25 top-0 w-4 h-4 rounded-full bg-linear-to-br from-sky-500 to-blue-600 border-4 border-background" />
 
                   {/* Content */}
-                  <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-lg shadow-violet-500/5 p-6">
+                  <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-lg shadow-sky-500/5 p-6">
                     {/* Header */}
                     <div className="flex flex-wrap items-center gap-3 mb-4">
-                      <span className="px-3 py-1 rounded-full bg-violet-100 text-violet-700 text-sm font-mono font-semibold">
+                      <span className="px-3 py-1 rounded-full bg-sky-100 text-sky-700 text-sm font-mono font-semibold">
                         v{entry.version}
                       </span>
                       <span
@@ -133,7 +133,7 @@ export default function Changelog({
                           key={i}
                           className="flex items-start gap-2 text-sm text-muted-foreground"
                         >
-                          <span className="text-violet-500 mt-1">•</span>
+                          <span className="text-sky-500 mt-1">•</span>
                           {change.text}
                         </li>
                       ))}

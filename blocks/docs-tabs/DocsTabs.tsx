@@ -52,13 +52,13 @@ export default function DocsTabs({
 
             const variantClasses = {
               underline: isActive
-                ? "text-foreground border-b-2 border-violet-500 -mb-px"
+                ? "text-foreground border-b-2 border-sky-500 -mb-px"
                 : "text-muted-foreground hover:text-foreground -mb-px border-b-2 border-transparent",
               pills: isActive
                 ? "text-foreground bg-background rounded-md shadow-sm"
                 : "text-muted-foreground hover:text-foreground rounded-md",
               bordered: isActive
-                ? "text-foreground bg-background border-b-2 border-violet-500 -mb-px"
+                ? "text-foreground bg-background border-b-2 border-sky-500 -mb-px"
                 : "text-muted-foreground hover:text-foreground -mb-px border-b-2 border-transparent",
             };
 
@@ -88,7 +88,7 @@ export default function DocsTabs({
               prose-p:my-2 prose-p:leading-relaxed
               prose-pre:bg-zinc-950 prose-pre:border prose-pre:border-zinc-800 prose-pre:rounded-lg
               prose-code:text-xs
-              prose-a:text-violet-600 prose-a:no-underline hover:prose-a:underline
+              prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline
               prose-ul:my-2 prose-li:my-0
             "
             dangerouslySetInnerHTML={{ __html: activeContent }}
