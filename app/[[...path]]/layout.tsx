@@ -1,4 +1,5 @@
 import "@/styles/main.css";
+import { Space_Grotesk } from "next/font/google";
 import { draftMode } from "next/headers";
 import {
   fetchLayouts,
@@ -11,6 +12,12 @@ import { CmssyLocaleProvider } from "@cmssy/next/client";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { blocks } from "@/cmssy/blocks";
 import { cmssy } from "@/cmssy/config";
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-heading",
+});
 
 async function getLayoutGroups(draft: boolean): Promise<CmssyLayoutGroup[]> {
   try {
@@ -57,7 +64,7 @@ export default async function SiteLayout({
   );
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={spaceGrotesk.variable}>
       <body>
         <CmssyLocaleProvider
           value={{
