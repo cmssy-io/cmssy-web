@@ -2,73 +2,67 @@ import { defineBlock, fields } from "@cmssy/react";
 import Hero from "./Hero";
 
 export const heroProps = {
-  badgeText: fields.text({
-    label: "Badge Text",
-    defaultValue: "AI-Powered Page Builder",
-    placeholder: "Badge Text",
+  fig: fields.text({ label: "Fig Number", defaultValue: "FIG 0.1" }),
+  eyebrow: fields.text({
+    label: "Eyebrow",
+    defaultValue: "AI-NATIVE HEADLESS CMS",
   }),
-  heading: fields.text({
-    label: "Main Heading",
-    defaultValue: "Build reusable UI blocks with any framework",
-    placeholder: "Build websites",
+  headingPre: fields.text({
+    label: "Heading Before Word",
+    defaultValue: "Content",
     required: true,
   }),
-  headingHighlight: fields.text({
-    label: "Heading Highlight",
-    defaultValue: "without limits",
+  rotatingWords: fields.repeater({
+    label: "Rotating Words",
+    itemSchema: {
+      word: fields.text({ label: "Word", required: true }),
+    },
+  }),
+  headingPost: fields.text({
+    label: "Heading After Word",
+    defaultValue: "edits. A frontend you own.",
   }),
   subheading: fields.textarea({
     label: "Subheading",
-    placeholder: "The modern CMS that makes website creation effortless...",
+    defaultValue:
+      "The structured content model and visual editor your team actually uses — plus Claude editing content through MCP. Delivered to any Next.js site you own and deploy. No tickets, no redeploys.",
   }),
   primaryButtonText: fields.text({
     label: "Primary Button Text",
-    defaultValue: "Start Building Free",
+    defaultValue: "Try it free →",
   }),
   primaryButtonUrl: fields.link({
     label: "Primary Button URL",
-    defaultValue: "/signup",
+    defaultValue: "https://cmssy.io/login",
   }),
   secondaryButtonText: fields.text({
     label: "Secondary Button Text",
-    defaultValue: "Watch Demo",
+    defaultValue: "See how it works",
   }),
   secondaryButtonUrl: fields.link({
     label: "Secondary Button URL",
-    defaultValue: "#demo",
+    defaultValue: "#code",
   }),
-  socialProofPrefix: fields.text({
-    label: "Social Proof Prefix",
-    defaultValue: "Join",
+  trustLine: fields.text({
+    label: "Trust Line (mono)",
+    defaultValue: "@cmssy/next · 70+ MCP tools · No card needed",
   }),
-  socialProofCount: fields.text({
-    label: "Social Proof Count",
-    defaultValue: "2,000+",
+  chatPrompt: fields.text({
+    label: "Mockup: Chat Prompt",
+    defaultValue: "add a testimonials section in German",
   }),
-  socialProofText: fields.text({
-    label: "Social Proof Text",
-    defaultValue: "creators already building with cmssy",
-  }),
-  media: fields.media({
-    label: "Media (Image or Video)",
-    placeholder: "Upload an image or video for the hero section",
-  }),
-  mediaPlaceholderHeading: fields.text({
-    label: "Media Placeholder Heading",
-    defaultValue: "Page Builder Preview",
-  }),
-  mediaPlaceholderText: fields.text({
-    label: "Media Placeholder Text",
-    defaultValue: "Drag & drop interface with real-time preview",
+  chatStatus: fields.text({
+    label: "Mockup: Chat Status",
+    defaultValue: "via MCP · block created, page published",
   }),
 };
 
 export const heroBlock = defineBlock({
   type: "hero",
-  category: "Hero",
-  label: "Hero Section",
+  category: "Marketing",
+  label: "Hero",
   description:
-    "Full-width top banner with headline, subheading and primary CTA; the first block on a landing or home page.",
+    "Homepage hero: rotating-word headline, CTAs, mono trust line and an animated editor mockup with a Claude-over-MCP demo loop.",
   component: Hero,
   props: heroProps,
 });
