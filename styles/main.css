@@ -123,14 +123,46 @@
   0%,
   12% {
     transform: translate(0, 0);
+    opacity: 1;
+  }
+  26% {
+    transform: translate(-60px, 190px);
+    opacity: 1;
   }
   28%,
   62% {
-    transform: translate(-60px, 200px);
+    transform: translate(-60px, 190px);
+    opacity: 0;
+  }
+  64% {
+    transform: translate(-60px, 190px);
+    opacity: 1;
   }
   78%,
   100% {
     transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes cta-fuse {
+  0%,
+  26% {
+    opacity: 0;
+  }
+  28%,
+  62% {
+    opacity: 1;
+  }
+  64%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-anim {
+    animation: none !important;
   }
 }
 
