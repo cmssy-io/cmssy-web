@@ -15,7 +15,7 @@ export default function Error({
 
   return (
     <main className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
-      <p className="text-sm font-medium text-violet-600">
+      <p className="text-sm font-medium text-sky-600">
         Something went wrong
       </p>
       <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
@@ -28,7 +28,7 @@ export default function Error({
       <div className="mt-8 flex gap-3">
         <button
           onClick={reset}
-          className="inline-flex h-11 items-center rounded-xl bg-violet-600 px-5 text-sm font-medium text-white transition-colors hover:bg-violet-700"
+          className="inline-flex h-11 items-center rounded-xl bg-sky-600 px-5 text-sm font-medium text-white transition-colors hover:bg-sky-700"
         >
           Try again
         </button>

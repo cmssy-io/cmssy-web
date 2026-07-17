@@ -19,7 +19,7 @@ export default function ProductShowcase({
       <Container>
         <div className="text-center max-w-3xl mx-auto mb-16">
           {badgeText && (
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-100 text-violet-700 text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-100 text-sky-700 text-sm font-medium mb-6">
               {badgeText}
             </div>
           )}
@@ -27,7 +27,7 @@ export default function ProductShowcase({
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
               {heading}{" "}
               {headingHighlight && (
-                <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
                   {headingHighlight}
                 </span>
               )}
@@ -43,7 +43,7 @@ export default function ProductShowcase({
             {items.map((item, index) => (
               <figure
                 key={index}
-                className="group flex flex-col rounded-xl border border-border/60 bg-background overflow-hidden shadow-sm transition-shadow hover:shadow-lg hover:shadow-violet-500/10"
+                className="group flex flex-col rounded-xl border border-border/60 bg-background overflow-hidden shadow-sm transition-shadow hover:shadow-lg hover:shadow-sky-500/10"
               >
                 <div className="aspect-video relative overflow-hidden bg-slate-100">
                   {item.image ? (

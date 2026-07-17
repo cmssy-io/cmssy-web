@@ -48,7 +48,7 @@ export default function Features({ content }: BlockProps<typeof featuresProps>) 
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
               {heading}{" "}
               {headingHighlight && (
-                <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
                   {headingHighlight}
                 </span>
               )}
@@ -62,7 +62,7 @@ export default function Features({ content }: BlockProps<typeof featuresProps>) 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => {
             const Icon = feature.icon ? iconMap[feature.icon] : Zap;
-            const bgColor = feature.color || "#8b5cf6";
+            const bgColor = feature.color || "#0ea5e9";
             const hoverColor = feature.hoverColor || bgColor;
 
             return (

@@ -42,7 +42,7 @@ export default function BlogPostHero({
           </>
         ) : (
           <>
-            <div className="absolute inset-0 bg-linear-to-br from-violet-700 via-purple-800 to-indigo-900" />
+            <div className="absolute inset-0 bg-linear-to-br from-sky-700 via-blue-800 to-indigo-900" />
             <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
           </>
         )}

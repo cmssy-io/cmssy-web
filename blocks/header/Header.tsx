@@ -172,7 +172,7 @@ function MegaMenuItem({ child }: { child: NavChild }) {
       className="group flex items-start gap-3 rounded-lg p-3 hover:bg-accent transition-colors"
     >
       {child.icon && iconMap[child.icon] && (
-        <div className="mt-0.5 shrink-0 rounded-lg bg-violet-100 p-2 text-violet-600 transition-colors group-hover:bg-violet-500 group-hover:text-white">
+        <div className="mt-0.5 shrink-0 rounded-lg bg-sky-100 p-2 text-sky-600 transition-colors group-hover:bg-sky-500 group-hover:text-white">
           <IconRenderer name={child.icon} className="h-4 w-4" />
         </div>
       )}
@@ -208,7 +208,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
   } = content;
   const {
     logoSize = "md",
-    announcementBg = "#7c3aed",
+    announcementBg = "#00A8F0",
     announcementTextColor = "#ffffff",
   } = style;
 
@@ -523,7 +523,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                   {showCta && ctaLabel && (
                     <CmssyLink
                       href={ctaUrl}
-                      className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 bg-linear-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white transition-colors"
+                      className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 bg-linear-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 text-white transition-colors"
                     >
                       {ctaLabel}
                     </CmssyLink>
@@ -614,7 +614,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
                             {child.icon && iconMap[child.icon] && (
-                              <div className="mt-0.5 shrink-0 rounded-lg bg-violet-100 p-2 text-violet-600">
+                              <div className="mt-0.5 shrink-0 rounded-lg bg-sky-100 p-2 text-sky-600">
                                 <IconRenderer
                                   name={child.icon}
                                   className="h-4 w-4"
@@ -711,7 +711,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                   {showCta && ctaLabel && (
                     <CmssyLink
                       href={ctaUrl}
-                      className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 w-full bg-linear-to-r from-violet-600 to-purple-600 text-white transition-colors"
+                      className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 w-full bg-linear-to-r from-sky-600 to-blue-600 text-white transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {ctaLabel}

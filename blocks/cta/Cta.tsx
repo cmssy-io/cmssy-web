@@ -21,7 +21,7 @@ export default function Cta({ content }: BlockProps<typeof ctaProps>) {
     <section className="py-24">
       <Container>
         <div className="relative rounded-3xl overflow-hidden">
-          <div className="absolute inset-0 bg-linear-to-br from-violet-600 via-purple-600 to-violet-700" />
+          <div className="absolute inset-0 bg-linear-to-br from-sky-600 via-blue-600 to-sky-700" />
 
           <div
             className="absolute inset-0 opacity-10"
@@ -55,7 +55,7 @@ export default function Cta({ content }: BlockProps<typeof ctaProps>) {
             )}
 
             {description && (
-              <p className="text-lg text-violet-100 max-w-2xl mx-auto mb-10">
+              <p className="text-lg text-sky-100 max-w-2xl mx-auto mb-10">
                 {description}
               </p>
             )}
@@ -65,7 +65,7 @@ export default function Cta({ content }: BlockProps<typeof ctaProps>) {
                 <Button
                   size="lg"
                   asChild
-                  className="bg-white text-violet-600 hover:bg-violet-50 text-lg px-8 h-14 shadow-lg"
+                  className="bg-white text-sky-600 hover:bg-sky-50 text-lg px-8 h-14 shadow-lg"
                 >
                   <CmssyLink
                     href={primaryButtonUrl}

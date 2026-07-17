@@ -109,7 +109,7 @@ export default function DocsFileTree({
                   key={i}
                   className={
                     highlighted
-                      ? "bg-violet-500/10 -mx-4 px-4 text-violet-300"
+                      ? "bg-sky-500/10 -mx-4 px-4 text-sky-300"
                       : "text-zinc-300"
                   }
                 >
@@ -126,7 +126,7 @@ export default function DocsFileTree({
                       line.isDir
                         ? "font-semibold text-sky-400"
                         : highlighted
-                          ? "text-violet-300"
+                          ? "text-sky-300"
                           : "text-zinc-300"
                     }
                   >

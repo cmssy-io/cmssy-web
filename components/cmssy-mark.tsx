@@ -1,45 +1,18 @@
-const ACCENT = "#7c3aed";
+const ACCENT = "#00A8F0";
 
 export function CmssyMark({ className }: { className?: string }) {
   return (
     <svg
-      viewBox="6.5 6.5 19 19"
+      viewBox="0 0 604 604"
       className={className}
       fill="none"
       aria-hidden="true"
     >
-      <rect
-        x="6.5"
-        y="8.95"
-        width="7.28"
-        height="7.28"
-        rx="1.68"
-        fill="currentColor"
-      />
-      <rect
-        x="6.5"
-        y="18.2"
-        width="7.28"
-        height="7.28"
-        rx="1.68"
-        fill="currentColor"
-      />
-      <rect
-        x="15.77"
-        y="18.2"
-        width="7.28"
-        height="7.28"
-        rx="1.68"
-        fill="currentColor"
-      />
-      <rect
-        x="18.2"
-        y="6.5"
-        width="7.28"
-        height="7.28"
-        rx="1.68"
-        fill={ACCENT}
-      />
+      <rect x="0" y="432" width="172" height="172" rx="40" fill="currentColor" />
+      <rect x="0" y="216" width="172" height="172" rx="40" fill="currentColor" />
+      <rect x="216" y="216" width="172" height="172" rx="40" fill={ACCENT} />
+      <rect x="216" y="0" width="172" height="172" rx="40" fill={ACCENT} />
+      <rect x="432" y="0" width="172" height="172" rx="40" fill="currentColor" />
     </svg>
   );
 }

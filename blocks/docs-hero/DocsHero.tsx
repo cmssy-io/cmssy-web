@@ -13,7 +13,7 @@ export default function DocsHero({
 
   const bgClasses = {
     default: "bg-background",
-    gradient: "bg-gradient-to-b from-violet-50 via-background to-background",
+    gradient: "bg-gradient-to-b from-sky-50 via-background to-background",
     minimal: "bg-background",
   };
 
@@ -35,7 +35,7 @@ export default function DocsHero({
         <div className="max-w-3xl mx-auto text-center">
           {/* Badge */}
           {badge && (
-            <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 text-xs font-medium tracking-wider uppercase rounded-full bg-violet-100 text-violet-700">
+            <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 text-xs font-medium tracking-wider uppercase rounded-full bg-sky-100 text-sky-700">
               {badge}
             </div>
           )}
@@ -79,13 +79,13 @@ export default function DocsHero({
                 <CmssyLink
                   key={index}
                   href={link.url}
-                  className="group relative flex flex-col p-5 rounded-xl border bg-card hover:border-violet-500/50 hover:shadow-lg hover:shadow-violet-500/5 transition-all duration-200"
+                  className="group relative flex flex-col p-5 rounded-xl border bg-card hover:border-sky-500/50 hover:shadow-lg hover:shadow-sky-500/5 transition-all duration-200"
                 >
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2 rounded-lg bg-violet-100 text-violet-600 group-hover:bg-violet-500 group-hover:text-white transition-colors">
+                    <div className="p-2 rounded-lg bg-sky-100 text-sky-600 group-hover:bg-sky-500 group-hover:text-white transition-colors">
                       <Icon className="h-5 w-5" />
                     </div>
-                    <h3 className="font-semibold group-hover:text-violet-600 transition-colors">
+                    <h3 className="font-semibold group-hover:text-sky-600 transition-colors">
                       {link.title}
                     </h3>
                   </div>
@@ -94,7 +94,7 @@ export default function DocsHero({
                       {link.description}
                     </p>
                   )}
-                  <div className="mt-auto flex items-center gap-1 text-sm font-medium text-violet-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="mt-auto flex items-center gap-1 text-sm font-medium text-sky-600 opacity-0 group-hover:opacity-100 transition-opacity">
                     <span>Get started</span>
                     <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
                   </div>

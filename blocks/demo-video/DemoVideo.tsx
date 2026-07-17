@@ -18,7 +18,7 @@ export default function DemoVideo({ content }: BlockProps<typeof demoVideoProps>
       <Container>
         <div className="text-center max-w-3xl mx-auto mb-12">
           {badgeText && (
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-100 text-violet-700 text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-100 text-sky-700 text-sm font-medium mb-6">
               {badgeText}
             </div>
           )}
@@ -26,7 +26,7 @@ export default function DemoVideo({ content }: BlockProps<typeof demoVideoProps>
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
               {heading}{" "}
               {headingHighlight && (
-                <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
                   {headingHighlight}
                 </span>
               )}
@@ -39,8 +39,8 @@ export default function DemoVideo({ content }: BlockProps<typeof demoVideoProps>
 
         {videoUrl && (
           <div className="relative max-w-5xl mx-auto">
-            <div className="absolute -inset-4 bg-linear-to-r from-violet-500/20 to-purple-500/20 rounded-3xl blur-2xl" />
-            <div className="relative rounded-xl shadow-2xl shadow-violet-500/10 overflow-hidden bg-background ring-1 ring-black/5">
+            <div className="absolute -inset-4 bg-linear-to-r from-sky-500/20 to-blue-500/20 rounded-3xl blur-2xl" />
+            <div className="relative rounded-xl shadow-2xl shadow-sky-500/10 overflow-hidden bg-background ring-1 ring-black/5">
               <div className="aspect-video relative overflow-hidden">
                 {autoplay ? (
                   <video

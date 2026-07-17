@@ -20,7 +20,7 @@ export default function Faq({ content }: BlockProps<typeof faqProps>) {
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
               {heading}{" "}
               {headingHighlight && (
-                <span className="bg-linear-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
                   {headingHighlight}
                 </span>
               )}
@@ -37,7 +37,7 @@ export default function Faq({ content }: BlockProps<typeof faqProps>) {
             <AccordionItem
               key={index}
               value={`item-${index}`}
-              className="bg-background border rounded-xl px-6 last:border-b data-[state=open]:shadow-lg data-[state=open]:shadow-violet-500/5 transition-shadow"
+              className="bg-background border rounded-xl px-6 last:border-b data-[state=open]:shadow-lg data-[state=open]:shadow-sky-500/5 transition-shadow"
             >
               <AccordionTrigger className="text-left font-semibold hover:no-underline py-6">
                 {faq.question}
