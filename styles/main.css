@@ -119,6 +119,21 @@
   }
 }
 
+@keyframes cta-dock {
+  0%,
+  12% {
+    transform: translate(0, 0);
+  }
+  28%,
+  62% {
+    transform: translate(-60px, 200px);
+  }
+  78%,
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-anim {
     animation: none !important;
