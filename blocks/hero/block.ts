@@ -55,6 +55,29 @@ export const heroProps = {
     label: "Mockup: Chat Status",
     defaultValue: "via MCP · block created, page published",
   }),
+  mockupTitle: fields.text({
+    label: "Mockup: Title Bar",
+    defaultValue: "Cmssy · Homepage",
+  }),
+  mockupBadge: fields.text({
+    label: "Mockup: Status Badge",
+    defaultValue: "Published",
+  }),
+  mockupMeta: fields.text({
+    label: "Mockup: Meta (right side)",
+    defaultValue: "EN · Auto-saved",
+  }),
+  mockupPages: fields.repeater({
+    label: "Mockup: Pages Panel",
+    itemSchema: {
+      name: fields.text({ label: "Page Name", required: true }),
+      tag: fields.text({ label: "Tag", placeholder: "e.g. Draft" }),
+    },
+  }),
+  mockupDockLabel: fields.text({
+    label: "Mockup: Docking Block Label",
+    defaultValue: "DE · Kundenstimmen · testimonials · de",
+  }),
 };
 
 export const heroBlock = defineBlock({

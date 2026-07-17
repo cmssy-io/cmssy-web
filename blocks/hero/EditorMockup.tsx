@@ -9,22 +9,30 @@ function d(delay: string, anim = "hero-snap-in") {
 export function EditorMockup({
   chatPrompt,
   chatStatus,
+  title,
+  badge,
+  meta,
+  pages,
+  dockLabel,
 }: {
   chatPrompt: string;
   chatStatus: string;
+  title: string;
+  badge: string;
+  meta: string;
+  pages: { name: string; tag?: string }[];
+  dockLabel: string;
 }) {
   return (
     <div className="overflow-hidden rounded-2xl border border-paper/10 bg-[#14161b] shadow-2xl shadow-black/40">
       <div className="flex items-center gap-3 border-b border-paper/10 px-4 py-2.5">
         <span className="size-3 rounded-[4px] bg-elektryk" />
-        <span className="font-mono text-[12px] text-paper/70">
-          Cmssy · Homepage
-        </span>
+        <span className="font-mono text-[12px] text-paper/70">{title}</span>
         <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 font-mono text-[10px] text-emerald-400">
-          Published
+          {badge}
         </span>
         <span className="ml-auto font-mono text-[11px] text-paper/40">
-          EN · Auto-saved
+          {meta}
         </span>
         <span className="grid size-6 place-items-center rounded-full bg-elektryk/20 font-mono text-[9px] text-elektryk">
           AD
@@ -37,21 +45,23 @@ export function EditorMockup({
             Pages
           </div>
           <ul className="mt-2 space-y-1 text-[12px]">
-            <li className="rounded bg-elektryk/15 px-2 py-1 font-medium text-elektryk">
-              Homepage
-            </li>
-            {["About", "Features"].map((p) => (
-              <li key={p} className="px-2 py-1 text-paper/55">
-                {p}
+            {pages.map((p, i) => (
+              <li
+                key={p.name}
+                className={
+                  i === 0
+                    ? "rounded bg-elektryk/15 px-2 py-1 font-medium text-elektryk"
+                    : "flex items-center justify-between px-2 py-1 text-paper/55"
+                }
+              >
+                {p.name}
+                {i > 0 && p.tag && (
+                  <span className="rounded bg-paper/10 px-1 font-mono text-[9px] text-paper/45">
+                    {p.tag}
+                  </span>
+                )}
               </li>
             ))}
-            <li className="flex items-center justify-between px-2 py-1 text-paper/55">
-              Pricing
-              <span className="rounded bg-paper/10 px-1 font-mono text-[9px] text-paper/45">
-                Draft
-              </span>
-            </li>
-            <li className="px-2 py-1 text-paper/55">Contact</li>
           </ul>
         </div>
 
@@ -91,7 +101,7 @@ export function EditorMockup({
             className="hero-anim mt-2 rounded-md bg-elektryk px-3 py-2 font-mono text-[10px] text-white"
             style={d("5.4s", "hero-dock")}
           >
-            DE · Kundenstimmen · testimonials · de
+            {dockLabel}
           </div>
 
           <div

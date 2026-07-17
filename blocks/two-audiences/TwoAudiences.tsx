@@ -3,12 +3,12 @@ import { Container } from "@/components/container";
 import { FigEyebrow } from "@/components/fig-eyebrow";
 import type { twoAudiencesProps } from "./block";
 
-function EditorWireframe() {
+function EditorWireframe({ caption }: { caption: string }) {
   return (
     <div className="mt-8 rounded-xl border border-ink/10 bg-white p-4 shadow-sm">
       <div className="flex items-center gap-2 border-b border-ink/8 pb-3 font-mono text-[11px] text-ink/40">
         <span className="size-2 rounded-full bg-ink/15" />
-        editor · /home
+        {caption}
       </div>
       <div className="mt-3 space-y-2">
         <div className="rounded-md border-2 border-elektryk/60 bg-elektryk/5 px-3 py-2">
@@ -88,7 +88,7 @@ export default function TwoAudiences({
                   </pre>
                 </div>
               ) : (
-                <EditorWireframe />
+                <EditorWireframe caption={card.wireframeCaption ?? ""} />
               )}
             </div>
           ))}

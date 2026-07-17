@@ -23,6 +23,11 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
     trustLine = "",
     chatPrompt = "",
     chatStatus = "",
+    mockupTitle = "",
+    mockupBadge = "",
+    mockupMeta = "",
+    mockupPages = [],
+    mockupDockLabel = "",
   } = content;
 
   const words = rotatingWords.map((w) => w.word).filter(Boolean);
@@ -91,7 +96,15 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
             )}
           </div>
 
-          <EditorMockup chatPrompt={chatPrompt} chatStatus={chatStatus} />
+          <EditorMockup
+            chatPrompt={chatPrompt}
+            chatStatus={chatStatus}
+            title={mockupTitle}
+            badge={mockupBadge}
+            meta={mockupMeta}
+            pages={mockupPages}
+            dockLabel={mockupDockLabel}
+          />
         </div>
       </Container>
     </section>

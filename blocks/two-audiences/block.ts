@@ -27,6 +27,10 @@ export const twoAudiencesProps = {
         label: "Code Snippet",
         placeholder: "Optional - dark card shows code instead of wireframe",
       }),
+      wireframeCaption: fields.text({
+        label: "Wireframe Caption",
+        defaultValue: "editor · /home",
+      }),
       dark: fields.boolean({ label: "Dark Card", defaultValue: false }),
     },
   }),
