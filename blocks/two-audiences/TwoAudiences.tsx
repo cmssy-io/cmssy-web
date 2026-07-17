@@ -1,0 +1,99 @@
+import type { BlockProps } from "@cmssy/react";
+import { Container } from "@/components/container";
+import { FigEyebrow } from "@/components/fig-eyebrow";
+import type { twoAudiencesProps } from "./block";
+
+function EditorWireframe() {
+  return (
+    <div className="mt-8 rounded-xl border border-ink/10 bg-white p-4 shadow-sm">
+      <div className="flex items-center gap-2 border-b border-ink/8 pb-3 font-mono text-[11px] text-ink/40">
+        <span className="size-2 rounded-full bg-ink/15" />
+        editor · /home
+      </div>
+      <div className="mt-3 space-y-2">
+        <div className="rounded-md border-2 border-elektryk/60 bg-elektryk/5 px-3 py-2">
+          <div className="h-3 w-2/3 rounded bg-ink/15" />
+        </div>
+        <div
+          className="h-14 rounded-md border border-ink/10"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(45deg, rgba(16,20,28,.06) 0 6px, transparent 6px 12px)",
+          }}
+        />
+        <div className="grid grid-cols-2 gap-2">
+          <div className="h-10 rounded-md border border-ink/10 bg-ink/3" />
+          <div className="h-10 rounded-md border border-ink/10 bg-ink/3" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function TwoAudiences({
+  content,
+}: BlockProps<typeof twoAudiencesProps>) {
+  const {
+    fig = "FIG 3.0",
+    eyebrow = "",
+    heading = "",
+    description = "",
+    cards = [],
+  } = content;
+
+  return (
+    <section id="product" className="bg-paper py-24">
+      <Container>
+        <div className="mx-auto max-w-3xl text-center">
+          <FigEyebrow fig={fig} label={eyebrow} />
+          <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-ink text-balance">
+            {heading}
+          </h2>
+          {description && (
+            <p className="mt-4 text-lg text-ink/60">{description}</p>
+          )}
+        </div>
+
+        <div className="mt-12 grid gap-6 lg:grid-cols-2">
+          {cards.map((card) => (
+            <div
+              key={card.title}
+              className={`rounded-2xl border p-8 ${
+                card.dark
+                  ? "border-paper/10 bg-ink text-paper"
+                  : "border-ink/10 bg-white text-ink"
+              }`}
+            >
+              <span
+                className={`font-mono text-[11px] tracking-[0.14em] uppercase ${
+                  card.dark ? "text-elektryk" : "text-elektryk"
+                }`}
+              >
+                {card.kicker}
+              </span>
+              <h3 className="font-heading mt-3 text-2xl font-semibold tracking-tight">
+                {card.title}
+              </h3>
+              <p
+                className={`mt-3 text-base ${
+                  card.dark ? "text-paper/60" : "text-ink/60"
+                }`}
+              >
+                {card.description}
+              </p>
+              {card.code ? (
+                <div className="mt-8 overflow-x-auto rounded-xl border border-paper/10 bg-ink-deep p-4">
+                  <pre className="font-mono text-[12.5px] leading-relaxed whitespace-pre text-paper/85">
+                    {card.code}
+                  </pre>
+                </div>
+              ) : (
+                <EditorWireframe />
+              )}
+            </div>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
