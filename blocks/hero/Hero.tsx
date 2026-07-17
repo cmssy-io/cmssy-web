@@ -32,15 +32,32 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
 
   const words = rotatingWords.map((w) => w.word).filter(Boolean);
   const [index, setIndex] = useState(0);
+  const [typed, setTyped] = useState(words[0] ?? "");
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (words.length < 2) return;
-    const id = setInterval(
-      () => setIndex((i) => (i + 1) % words.length),
-      2200,
+    const word = words[index] ?? "";
+    if (!deleting && typed === word) {
+      const id = setTimeout(() => setDeleting(true), 1800);
+      return () => clearTimeout(id);
+    }
+    if (deleting && typed === "") {
+      setDeleting(false);
+      setIndex((i) => (i + 1) % words.length);
+      return;
+    }
+    const id = setTimeout(
+      () =>
+        setTyped(
+          deleting
+            ? word.slice(0, typed.length - 1)
+            : word.slice(0, typed.length + 1),
+        ),
+      deleting ? 45 : 85,
     );
-    return () => clearInterval(id);
-  }, [words.length]);
+    return () => clearTimeout(id);
+  }, [words, index, typed, deleting]);
 
   return (
     <section className="dot-grid-dark relative overflow-hidden bg-ink py-20 lg:py-28">
@@ -58,7 +75,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
             <h1 className="font-heading mt-6 text-5xl font-semibold tracking-tight text-paper text-balance lg:text-[3.4rem] lg:leading-[1.08]">
               {headingPre}{" "}
               <span className="text-elektryk">
-                {words[index] ?? words[0] ?? ""}
+                {words.length > 1 ? typed : (words[0] ?? "")}
                 <span
                   className="ml-1 inline-block h-[0.85em] w-[0.42em] translate-y-[0.1em] bg-elektryk align-baseline"
                   style={{ animation: "hero-blink 1.1s step-end infinite" }}
