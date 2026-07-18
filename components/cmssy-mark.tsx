@@ -16,16 +16,3 @@ export function CmssyMark({ className }: { className?: string }) {
   );
 }
 
-export function CmssyMarkMini({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 580 710"
-      className={className}
-      fill="none"
-      aria-hidden="true"
-    >
-      <rect x="0" y="240" width="470" height="470" rx="106" fill="currentColor" />
-      <rect x="390" y="0" width="180" height="180" rx="40" fill="#00A8F0" />
-    </svg>
-  );
-}
