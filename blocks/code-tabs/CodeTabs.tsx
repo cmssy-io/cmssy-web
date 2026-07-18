@@ -7,16 +7,17 @@ import { FigEyebrow } from "@/components/fig-eyebrow";
 import type { codeTabsProps } from "./block";
 
 const TOKEN =
-  /("[^"\n]*")|(\/\/[^\n]*|#[^\n]*)|(\b(?:import|from|export|default|async|function|const|await|return|query)\b)|(<\/?[A-Z][\w.]*|\/>)|(✓)|(^[>] )|((?<=:\s)[A-Z]\w*!?)|([A-Za-z_][\w]*(?=\())/gm;
+  /("[^"\n]*")|(\/\/[^\n]*|#[^\n]*|—[^\n]*)|(\b(?:import|from|export|default|async|function|const|await|return|query)\b)|(<\/?[A-Z][\w.]*|\/>)|(✓)|(^[>] |(?<=✓ )[a-z_]+)|((?<=:\s)[A-Z]\w*!?)|(--[\w-]+|^\$(?= ))|([A-Za-z_][\w]*(?=\())/gm;
 
 const TOKEN_COLORS = [
   "#6ee7b7", // string
-  "#7f8794", // comment
+  "#7f8794", // comment / em-dash aside
   "#6ec8f7", // keyword (elektryk-tinted)
-  "#5bc6f7", // jsx tag / prompt arrow
+  "#5bc6f7", // jsx tag
   "#6ee7b7", // check mark
-  "#5bc6f7", // "> " prompt
+  "#5bc6f7", // "> " prompt / tool name after check
   "#6ee7b7", // GraphQL type after colon
+  "#6ec8f7", // CLI flag / "$" prompt sign
   "#f0c674", // function name
 ];
 
