@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { CmssyLink } from "@cmssy/next/client";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
@@ -61,11 +61,6 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
   }, [words, index, typed, deleting]);
 
   const display = words.length > 1 ? typed : (words[0] ?? "");
-  const measureRef = useRef<HTMLSpanElement>(null);
-  const [slotWidth, setSlotWidth] = useState<number | null>(null);
-  useLayoutEffect(() => {
-    if (measureRef.current) setSlotWidth(measureRef.current.offsetWidth);
-  }, [display]);
 
   return (
     <section className="dot-grid-dark relative overflow-hidden bg-ink py-20 lg:py-28">
@@ -83,22 +78,12 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
             <h1 className="font-heading mt-6 text-[clamp(1.75rem,6.5vw,3.4rem)] leading-[1.1] font-semibold tracking-tight text-paper">
               <span className="block whitespace-nowrap">
                 {headingPre}{" "}
+                <span className="whitespace-pre text-elektryk">{display}</span>
                 <span
-                  className="inline-flex items-baseline whitespace-nowrap text-elektryk"
-                  style={{
-                    width: slotWidth === null ? undefined : slotWidth,
-                    transition: "width 100ms ease-out",
-                  }}
-                >
-                  <span ref={measureRef} className="whitespace-pre">
-                    {display}
-                  </span>
-                </span>
-                <span
-                  className="mx-1 inline-block h-[0.85em] w-[0.42em] translate-y-[0.12em] bg-elektryk"
+                  className="ml-1 inline-block h-[0.85em] w-[0.42em] translate-y-[0.12em] bg-elektryk"
                   style={{ animation: "hero-blink 1.1s step-end infinite" }}
                 />
-                {headingPost}
+                {headingPost && <> {headingPost}</>}
               </span>
               {headingLine2 && <span className="block">{headingLine2}</span>}
             </h1>
