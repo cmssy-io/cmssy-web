@@ -10,7 +10,7 @@ import type { heroProps } from "./block";
 
 export default function Hero({ content }: BlockProps<typeof heroProps>) {
   const {
-    fig = "FIG 0.1",
+    fig = "",
     eyebrow = "",
     headingPre = "",
     rotatingWords = [],

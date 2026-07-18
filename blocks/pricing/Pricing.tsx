@@ -10,13 +10,13 @@ import type { pricingProps } from "./block";
 
 export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
   const {
-    fig = "FIG 6.0",
+    fig = "",
     eyebrow = "",
     heading = "",
     description = "",
     trialNotice = "",
-    popularBadgeText = "MOST POPULAR",
-    annualDiscountLabel = "Annual −20%",
+    popularBadgeText = "",
+    annualDiscountLabel = "",
     plans = [],
   } = content;
   const [annual, setAnnual] = useState(true);
@@ -32,6 +32,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
           {description && (
             <p className="mt-4 text-lg text-ink/60">{description}</p>
           )}
+          {annualDiscountLabel && (
           <div className="mt-8 inline-flex rounded-full border border-ink/15 bg-white p-1">
             {[
               { label: "Monthly", value: false },
@@ -51,6 +52,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
               </button>
             ))}
           </div>
+          )}
         </div>
 
         <div className="mx-auto mt-12 grid max-w-5xl items-stretch gap-6 lg:grid-cols-3">
@@ -68,7 +70,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                     : "border-ink/10 bg-white text-ink"
                 }`}
               >
-                {plan.popular && (
+                {plan.popular && popularBadgeText && (
                   <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-elektryk px-3 py-1 font-mono text-[10px] font-semibold tracking-[0.12em] text-ink uppercase">
                     {popularBadgeText}
                   </span>

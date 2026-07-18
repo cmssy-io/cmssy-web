@@ -35,7 +35,7 @@ export default function TwoAudiences({
   content,
 }: BlockProps<typeof twoAudiencesProps>) {
   const {
-    fig = "FIG 3.0",
+    fig = "",
     eyebrow = "",
     heading = "",
     description = "",

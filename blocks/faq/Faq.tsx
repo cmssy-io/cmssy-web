@@ -12,7 +12,7 @@ import type { faqProps } from "./block";
 
 export default function Faq({ content }: BlockProps<typeof faqProps>) {
   const {
-    fig = "FIG 7.0",
+    fig = "",
     eyebrow = "",
     heading = "",
     headingHighlight = "",

@@ -7,7 +7,7 @@ export default function ComparisonTable({
   content,
 }: BlockProps<typeof comparisonTableProps>) {
   const {
-    fig = "FIG 5.0",
+    fig = "",
     eyebrow = "",
     heading = "",
     description = "",

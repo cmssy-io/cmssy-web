@@ -11,7 +11,7 @@ export default function CodeTabs({
   content,
 }: BlockProps<typeof codeTabsProps>) {
   const {
-    fig = "FIG 1.0",
+    fig = "",
     eyebrow = "",
     heading = "",
     description = "",

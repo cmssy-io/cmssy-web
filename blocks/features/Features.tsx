@@ -7,7 +7,7 @@ export default function Features({
   content,
 }: BlockProps<typeof featuresProps>) {
   const {
-    fig = "FIG 4.0",
+    fig = "",
     eyebrow = "",
     heading = "",
     headingHighlight = "",

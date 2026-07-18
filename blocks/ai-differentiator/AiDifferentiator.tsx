@@ -9,7 +9,7 @@ export default function AiDifferentiator({
   content,
 }: BlockProps<typeof aiDifferentiatorProps>) {
   const {
-    fig = "FIG 2.0",
+    fig = "",
     eyebrow = "",
     heading = "",
     description = "",

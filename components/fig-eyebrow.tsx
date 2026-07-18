@@ -9,6 +9,8 @@ export function FigEyebrow({
   dark?: boolean;
   pill?: boolean;
 }) {
+  if (!fig && !label) return null;
+  const text = fig && label ? `${fig} — ${label}` : fig || label;
   const tone = dark ? "text-paper/60" : "text-ink/55";
   if (pill) {
     return (
@@ -18,7 +20,7 @@ export function FigEyebrow({
         }`}
       >
         <span className="inline-block size-1.5 rounded-[2px] bg-elektryk" />
-        {fig} — {label}
+        {text}
       </span>
     );
   }
@@ -26,7 +28,7 @@ export function FigEyebrow({
     <span
       className={`inline-flex items-center gap-2 font-mono text-[12px] tracking-[0.14em] uppercase ${tone}`}
     >
-      {fig} — {label}
+      {text}
     </span>
   );
 }

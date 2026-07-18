@@ -27,19 +27,26 @@ export function EditorMockup({
     <div className="overflow-hidden rounded-2xl border border-paper/10 bg-[#14161b] shadow-2xl shadow-black/40">
       <div className="flex items-center gap-3 border-b border-paper/10 px-4 py-2.5">
         <span className="size-3 rounded-[4px] bg-elektryk" />
-        <span className="font-mono text-[12px] text-paper/70">{title}</span>
-        <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 font-mono text-[10px] text-emerald-400">
-          {badge}
-        </span>
-        <span className="ml-auto font-mono text-[11px] text-paper/40">
-          {meta}
-        </span>
+        {title && (
+          <span className="font-mono text-[12px] text-paper/70">{title}</span>
+        )}
+        {badge && (
+          <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 font-mono text-[10px] text-emerald-400">
+            {badge}
+          </span>
+        )}
+        {meta && (
+          <span className="ml-auto font-mono text-[11px] text-paper/40">
+            {meta}
+          </span>
+        )}
         <span className="grid size-6 place-items-center rounded-full bg-elektryk/20 font-mono text-[9px] text-elektryk">
           AD
         </span>
       </div>
 
       <div className="flex">
+        {pages.length > 0 && (
         <div className="hidden w-36 shrink-0 border-r border-paper/10 p-3 sm:block">
           <div className="font-mono text-[10px] tracking-wider text-paper/35 uppercase">
             Pages
@@ -64,6 +71,7 @@ export function EditorMockup({
             ))}
           </ul>
         </div>
+        )}
 
         <div className="dot-grid-light relative min-h-[290px] flex-1 bg-paper p-4">
           <div
@@ -97,13 +105,16 @@ export function EditorMockup({
               style={d("1.6s")}
             />
           </div>
-          <div
-            className="hero-anim mt-2 rounded-md bg-elektryk px-3 py-2 font-mono text-[10px] font-medium text-ink"
-            style={d("5.4s", "hero-dock")}
-          >
-            {dockLabel}
-          </div>
+          {dockLabel && (
+            <div
+              className="hero-anim mt-2 rounded-md bg-elektryk px-3 py-2 font-mono text-[10px] font-medium text-ink"
+              style={d("5.4s", "hero-dock")}
+            >
+              {dockLabel}
+            </div>
+          )}
 
+          {(chatPrompt || chatStatus) && (
           <div
             className="hero-anim absolute right-3 bottom-3 left-3 rounded-lg border border-ink/10 bg-white p-2.5 shadow-lg"
             style={d("0s", "hero-chat-in")}
@@ -119,10 +130,13 @@ export function EditorMockup({
                 </span>
               </span>
             </div>
-            <div className="mt-1 pl-4 font-mono text-[10px] text-emerald-600">
-              ✓ {chatStatus}
-            </div>
+            {chatStatus && (
+              <div className="mt-1 pl-4 font-mono text-[10px] text-emerald-600">
+                ✓ {chatStatus}
+              </div>
+            )}
           </div>
+          )}
         </div>
       </div>
     </div>
