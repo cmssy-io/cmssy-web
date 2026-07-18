@@ -1,6 +1,6 @@
 import { CmssyLink } from "@cmssy/next/client";
 import type { BlockProps } from "@cmssy/react";
-import { CmssyMarkMini } from "@/components/cmssy-mark";
+import { CmssyMark } from "@/components/cmssy-mark";
 import { Container } from "@/components/container";
 import { FigEyebrow } from "@/components/fig-eyebrow";
 import type { aiDifferentiatorProps } from "./block";
@@ -63,7 +63,7 @@ export default function AiDifferentiator({
 
           <div className="overflow-hidden rounded-2xl border border-paper/10 bg-ink-deep shadow-2xl">
             <div className="flex items-center gap-2.5 border-b border-paper/10 px-4 py-3 font-mono text-[12px] text-paper/40">
-              <CmssyMarkMini className="h-3.5 w-auto text-paper" />
+              <CmssyMark className="h-3.5 w-auto text-paper" />
               claude · cmssy mcp
             </div>
             <div className="flex flex-col gap-4 p-5">
