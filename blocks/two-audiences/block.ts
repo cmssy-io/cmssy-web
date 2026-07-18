@@ -27,6 +27,10 @@ export const twoAudiencesProps = {
         label: "Code Snippet",
         placeholder: "Optional - dark card shows code instead of wireframe",
       }),
+      codeLabel: fields.text({
+        label: "Code Panel Label",
+        defaultValue: "page.tsx",
+      }),
       wireframeCaption: fields.text({
         label: "Wireframe Caption",
         defaultValue: "editor · /home",

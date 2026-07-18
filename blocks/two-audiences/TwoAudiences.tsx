@@ -1,4 +1,5 @@
 import type { BlockProps } from "@cmssy/react";
+import { CodeSnippet } from "@/components/code-snippet";
 import { Container } from "@/components/container";
 import { FigEyebrow } from "@/components/fig-eyebrow";
 import type { twoAudiencesProps } from "./block";
@@ -58,35 +59,41 @@ export default function TwoAudiences({
           {cards.map((card) => (
             <div
               key={card.title}
-              className={`rounded-2xl border p-8 ${
+              className={`flex flex-col rounded-2xl p-[30px] ${
                 card.dark
-                  ? "border-paper/10 bg-ink text-paper"
-                  : "border-ink/10 bg-white text-ink"
+                  ? "bg-ink text-paper"
+                  : "border border-ink/10 bg-white text-ink"
               }`}
             >
               <span
-                className={`flex items-center gap-2 font-mono text-[11px] tracking-[0.14em] uppercase ${
-                  card.dark ? "text-paper/70" : "text-ink/60"
+                className={`flex items-center gap-2.5 font-mono text-[13px] font-semibold ${
+                  card.dark ? "text-[#9aa1ad]" : "text-ink/55"
                 }`}
               >
-                <span className="inline-block size-2 rounded-[2px] bg-elektryk" />
+                <span className="inline-block size-2.5 rounded-[3px] bg-elektryk" />
                 {card.kicker}
               </span>
-              <h3 className="font-heading mt-3 text-2xl font-semibold tracking-tight">
+              <h3 className="font-heading mt-2 text-2xl font-semibold tracking-tight">
                 {card.title}
               </h3>
               <p
-                className={`mt-3 text-base ${
-                  card.dark ? "text-paper/60" : "text-ink/60"
+                className={`mt-2.5 text-[15px] leading-relaxed ${
+                  card.dark ? "text-[#9aa1ad]" : "text-ink/60"
                 }`}
               >
                 {card.description}
               </p>
               {card.code ? (
-                <div className="mt-8 overflow-x-auto rounded-xl border border-paper/10 bg-ink-deep p-4">
-                  <pre className="font-mono text-[12.5px] leading-relaxed whitespace-pre text-paper/85">
-                    {card.code}
-                  </pre>
+                <div className="mt-auto overflow-hidden rounded-[11px] border border-white/10 bg-ink-deep pt-0">
+                  <div className="flex h-[34px] items-center border-b border-white/8 px-3 font-mono text-[11px] font-medium text-[#9aa1ad]">
+                    {card.codeLabel ?? ""}
+                  </div>
+                  <div className="overflow-x-auto p-4">
+                    <CodeSnippet
+                      code={card.code}
+                      className="text-[12.5px] leading-[1.7]"
+                    />
+                  </div>
                 </div>
               ) : (
                 <EditorWireframe caption={card.wireframeCaption ?? ""} />
