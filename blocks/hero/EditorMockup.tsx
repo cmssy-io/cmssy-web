@@ -11,7 +11,7 @@ import {
   Undo2,
   Users,
 } from "lucide-react";
-import { CmssyMark } from "@/components/cmssy-mark";
+import { CmssyMarkMini } from "@/components/cmssy-mark";
 
 const LOOP = "12s";
 
@@ -52,7 +52,7 @@ export function EditorMockup({
     <div className="overflow-hidden rounded-2xl border border-paper/10 bg-[#14161b] shadow-2xl shadow-black/40">
       <div className="flex items-center gap-3 border-b border-paper/10 px-4 py-2.5">
         <span className="grid size-6 place-items-center rounded-md bg-elektryk">
-          <CmssyMark className="h-3 w-auto text-ink" />
+          <CmssyMarkMini className="h-3 w-auto text-ink" />
         </span>
         {title && (
           <span className="font-mono text-[12px] text-paper/70">{title}</span>
@@ -220,7 +220,7 @@ export function EditorMockup({
               style={d("0s", "hero-chat-in")}
             >
               <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-md bg-elektryk">
-                <CmssyMark className="h-3 w-auto text-ink" />
+                <CmssyMarkMini className="h-3 w-auto text-ink" />
               </span>
               <span className="min-w-0 leading-snug">
                 <span className="relative block overflow-hidden font-mono text-[11px] whitespace-nowrap text-paper/90">
