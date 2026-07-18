@@ -51,7 +51,7 @@ export function EditorMockup({
   return (
     <div className="overflow-hidden rounded-2xl border border-paper/10 bg-[#14161b] shadow-2xl shadow-black/40">
       <div className="flex items-center gap-3 border-b border-paper/10 px-4 py-2.5">
-        <span className="grid size-6 place-items-center rounded-md bg-elektryk">
+        <span className="grid size-6 place-items-center rounded-md bg-white">
           <CmssyMarkMini className="h-3 w-auto text-ink" />
         </span>
         {title && (
@@ -219,7 +219,7 @@ export function EditorMockup({
               className="hero-anim absolute right-3 bottom-3 left-3 flex items-start gap-2.5 rounded-lg bg-ink p-3 shadow-xl"
               style={d("0s", "hero-chat-in")}
             >
-              <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-md bg-elektryk">
+              <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-md bg-white">
                 <CmssyMarkMini className="h-3 w-auto text-ink" />
               </span>
               <span className="min-w-0 leading-snug">
