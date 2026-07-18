@@ -34,7 +34,7 @@ export default function ComparisonTable({
             <thead>
               <tr className="bg-ink text-paper">
                 <th className="px-5 py-4 font-medium" />
-                <th className="bg-elektryk px-5 py-4 font-heading font-semibold">
+                <th className="bg-elektryk-deep px-5 py-4 font-heading font-semibold">
                   cmssy
                 </th>
                 {competitors.map((c) => (

@@ -69,7 +69,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                 }`}
               >
                 {plan.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-elektryk px-3 py-1 font-mono text-[10px] tracking-[0.12em] text-white uppercase">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-elektryk-deep px-3 py-1 font-mono text-[10px] tracking-[0.12em] text-white uppercase">
                     {popularBadgeText}
                   </span>
                 )}

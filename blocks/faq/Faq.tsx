@@ -31,7 +31,7 @@ export default function Faq({ content }: BlockProps<typeof faqProps>) {
               {headingHighlight && (
                 <>
                   {" "}
-                  <span className="text-elektryk">{headingHighlight}</span>
+                  <span className="text-elektryk-deep">{headingHighlight}</span>
                 </>
               )}
             </h2>
@@ -51,8 +51,8 @@ export default function Faq({ content }: BlockProps<typeof faqProps>) {
               <AccordionTrigger className="group py-5 text-left font-heading font-semibold text-ink hover:no-underline [&>svg]:hidden">
                 <span className="flex-1">{faq.question}</span>
                 <span className="relative mt-1 size-4 shrink-0" aria-hidden>
-                  <span className="absolute top-1/2 left-0 h-[2px] w-full -translate-y-1/2 rounded-full bg-elektryk" />
-                  <span className="absolute top-0 left-1/2 h-full w-[2px] -translate-x-1/2 rounded-full bg-elektryk transition-transform duration-200 group-data-[state=open]:scale-y-0" />
+                  <span className="absolute top-1/2 left-0 h-[2px] w-full -translate-y-1/2 rounded-full bg-elektryk-deep" />
+                  <span className="absolute top-0 left-1/2 h-full w-[2px] -translate-x-1/2 rounded-full bg-elektryk-deep transition-transform duration-200 group-data-[state=open]:scale-y-0" />
                 </span>
               </AccordionTrigger>
               <AccordionContent className="pb-5 text-ink/60">
