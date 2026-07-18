@@ -12,32 +12,32 @@ function DockingMark() {
       fill="none"
       aria-hidden="true"
     >
-      <rect x="0" y="190" width="360" height="520" rx="90" fill="#FAFAF8" />
-      <rect x="0" y="350" width="520" height="360" rx="90" fill="#FAFAF8" />
+      <rect x="0" y="190" width="360" height="520" rx="117" fill="#FAFAF8" />
+      <rect x="0" y="350" width="520" height="360" rx="117" fill="#FAFAF8" />
       <rect x="60" y="410" width="260" height="240" fill="#FAFAF8" />
       <rect
         className="cta-anim"
-        x="270"
+        x="243"
         y="190"
-        width="90"
-        height="90"
+        width="117"
+        height="117"
         fill="#FAFAF8"
         opacity="0"
         style={fuse}
       />
       <rect
         className="cta-anim"
-        x="430"
+        x="403"
         y="350"
-        width="90"
-        height="90"
+        width="117"
+        height="117"
         fill="#FAFAF8"
         opacity="0"
         style={fuse}
       />
       <path
         className="cta-anim"
-        d="M360 190 H430 A90 90 0 0 1 520 280 V350 H360 Z"
+        d="M360 190 H403 A117 117 0 0 1 520 307 V350 H360 Z"
         fill="#00A8F0"
         opacity="0"
         style={fuse}
