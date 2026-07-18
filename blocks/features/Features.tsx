@@ -25,7 +25,7 @@ export default function Features({
             {headingHighlight && (
               <>
                 {" "}
-                <span className="text-elektryk-deep">{headingHighlight}</span>
+                <span className="text-elektryk-700">{headingHighlight}</span>
               </>
             )}
           </h2>
@@ -50,7 +50,7 @@ export default function Features({
               </h3>
               <p className="mt-2 text-sm text-ink/60">{feature.description}</p>
               {feature.stat && (
-                <div className="mt-4 font-mono text-[12px] font-medium text-elektryk-deep">
+                <div className="mt-4 font-mono text-[12px] font-medium text-elektryk-700">
                   {feature.stat}
                 </div>
               )}

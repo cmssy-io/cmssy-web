@@ -94,7 +94,7 @@ export default function AiDifferentiator({
                 )}
               </div>
               {chatBadge && (
-                <div className="inline-flex items-center self-start rounded-lg border border-elektryk/30 bg-elektryk/12 px-3 py-2 font-mono text-[12px] text-[#5bc6f7]">
+                <div className="inline-flex items-center self-start rounded-lg border border-elektryk/30 bg-elektryk/12 px-3 py-2 font-mono text-[12px] text-elektryk-300">
                   {chatBadge}
                 </div>
               )}

@@ -9,8 +9,10 @@
   --color-ink-deep: #0b0e15;
   --color-paper: #fafaf8;
   --color-wash: #f1f0ec;
-  --color-elektryk: #00a8f0;
-  --color-elektryk-deep: #0077b6;
+  --color-elektryk-300: #5bc6f7;
+  --color-elektryk-500: #00a8f0;
+  --color-elektryk-700: #0077b6;
+  --color-elektryk: var(--color-elektryk-500);
   --font-heading: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
 }
 
