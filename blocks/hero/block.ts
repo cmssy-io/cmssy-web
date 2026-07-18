@@ -19,8 +19,12 @@ export const heroProps = {
     },
   }),
   headingPost: fields.text({
-    label: "Heading After Word",
-    defaultValue: "edits. A frontend you own.",
+    label: "Heading After Word (same line)",
+    defaultValue: "edits.",
+  }),
+  headingLine2: fields.text({
+    label: "Heading Line 2",
+    defaultValue: "A frontend you own.",
   }),
   subheading: fields.textarea({
     label: "Subheading",

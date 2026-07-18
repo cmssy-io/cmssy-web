@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { CmssyLink } from "@cmssy/next/client";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
@@ -15,6 +15,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
     headingPre = "",
     rotatingWords = [],
     headingPost = "",
+    headingLine2 = "",
     subheading = "",
     primaryButtonText = "",
     primaryButtonUrl = "",
@@ -31,7 +32,6 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
   } = content;
 
   const words = rotatingWords.map((w) => w.word).filter(Boolean);
-  const longest = words.reduce((a, b) => (b.length > a.length ? b : a), "");
   const [index, setIndex] = useState(0);
   const [typed, setTyped] = useState(words[0] ?? "");
   const [deleting, setDeleting] = useState(false);
@@ -60,6 +60,13 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
     return () => clearTimeout(id);
   }, [words, index, typed, deleting]);
 
+  const display = words.length > 1 ? typed : (words[0] ?? "");
+  const measureRef = useRef<HTMLSpanElement>(null);
+  const [slotWidth, setSlotWidth] = useState<number | null>(null);
+  useLayoutEffect(() => {
+    if (measureRef.current) setSlotWidth(measureRef.current.offsetWidth);
+  }, [display]);
+
   return (
     <section className="dot-grid-dark relative overflow-hidden bg-ink py-20 lg:py-28">
       <div
@@ -73,22 +80,27 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
         <div className="grid items-center gap-14 lg:grid-cols-[0.95fr_1.15fr]">
           <div>
             <FigEyebrow fig={fig} label={eyebrow} dark pill />
-            <h1 className="font-heading mt-6 text-5xl font-semibold tracking-tight text-paper text-balance lg:text-[3.4rem] lg:leading-[1.08]">
-              {headingPre}{" "}
-              <span className="relative inline-block text-elektryk">
-                <span aria-hidden className="invisible whitespace-nowrap">
-                  {longest}
-                  <span className="ml-1 inline-block h-[0.85em] w-[0.42em]" />
+            <h1 className="font-heading mt-6 text-[clamp(1.75rem,6.5vw,3.4rem)] leading-[1.1] font-semibold tracking-tight text-paper">
+              <span className="block whitespace-nowrap">
+                {headingPre}{" "}
+                <span
+                  className="inline-flex items-baseline whitespace-nowrap text-elektryk"
+                  style={{
+                    width: slotWidth === null ? undefined : slotWidth,
+                    transition: "width 100ms ease-out",
+                  }}
+                >
+                  <span ref={measureRef} className="whitespace-pre">
+                    {display}
+                  </span>
                 </span>
-                <span className="absolute inset-y-0 left-0 whitespace-nowrap">
-                  {words.length > 1 ? typed : (words[0] ?? "")}
-                  <span
-                    className="ml-1 inline-block h-[0.85em] w-[0.42em] translate-y-[0.1em] bg-elektryk align-baseline"
-                    style={{ animation: "hero-blink 1.1s step-end infinite" }}
-                  />
-                </span>
-              </span>{" "}
-              {headingPost}
+                <span
+                  className="mx-1 inline-block h-[0.85em] w-[0.42em] translate-y-[0.12em] bg-elektryk"
+                  style={{ animation: "hero-blink 1.1s step-end infinite" }}
+                />
+                {headingPost}
+              </span>
+              {headingLine2 && <span className="block">{headingLine2}</span>}
             </h1>
             {subheading && (
               <p className="mt-5 max-w-xl text-lg text-paper/60">
