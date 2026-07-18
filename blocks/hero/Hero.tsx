@@ -76,8 +76,8 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
           <div>
             <FigEyebrow fig={fig} label={eyebrow} dark pill />
             <h1 className="font-heading mt-6 text-[clamp(1.75rem,6.5vw,3.4rem)] leading-[1.1] font-semibold tracking-tight text-paper">
+              <span className="block">{headingPre}</span>
               <span className="block whitespace-nowrap">
-                {headingPre}{" "}
                 <span className="whitespace-pre text-elektryk">{display}</span>
                 <span
                   className="ml-1 inline-block h-[0.85em] w-[0.42em] translate-y-[0.12em] bg-elektryk"
