@@ -1,10 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
 import { FigEyebrow } from "@/components/fig-eyebrow";
 import type { codeTabsProps } from "./block";
+
+const TOKEN =
+  /("[^"\n]*")|(\/\/[^\n]*|#[^\n]*)|(\b(?:import|from|export|default|async|function|const|await|return|query)\b)|(<\/?[A-Z][\w.]*|\/>)|(✓)|(^[>] )|([A-Za-z_][\w]*(?=\())/gm;
+
+const TOKEN_COLORS = [
+  "#6ee7b7", // string
+  "#7f8794", // comment
+  "#6ec8f7", // keyword (elektryk-tinted)
+  "#5bc6f7", // jsx tag / prompt arrow
+  "#6ee7b7", // check mark
+  "#5bc6f7", // "> " prompt
+  "#f0c674", // function name
+];
+
+function highlight(code: string) {
+  const out: React.ReactNode[] = [];
+  let last = 0;
+  let key = 0;
+  for (const match of code.matchAll(TOKEN)) {
+    const start = match.index ?? 0;
+    if (start > last) out.push(code.slice(last, start));
+    const groupIndex = match.slice(1).findIndex((g) => g !== undefined);
+    out.push(
+      <span key={key++} style={{ color: TOKEN_COLORS[groupIndex] }}>
+        {match[0]}
+      </span>,
+    );
+    last = start + match[0].length;
+  }
+  if (last < code.length) out.push(code.slice(last));
+  return out;
+}
 
 export default function CodeTabs({
   content,
@@ -27,22 +59,24 @@ export default function CodeTabs({
   }
 
   const tab = tabs[Math.min(active, tabs.length - 1)];
+  const code = tab.comment ? `${tab.comment}\n${tab.code}` : tab.code;
+  const showCaret = tab.label?.toUpperCase().includes("MCP");
 
   return (
     <section id="code" className="bg-paper py-24">
       <Container>
         <div className="max-w-3xl">
           <FigEyebrow fig={fig} label={eyebrow} />
-          <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-ink text-balance">
+          <h2 className="font-heading mt-4 text-4xl font-bold tracking-tight text-ink text-balance">
             {heading}
           </h2>
           {description && (
-            <p className="mt-4 text-lg text-ink/60">{description}</p>
+            <p className="mt-3 max-w-lg text-lg text-ink/60">{description}</p>
           )}
         </div>
 
-        <div className="mx-auto mt-12 max-w-3xl overflow-hidden rounded-2xl border border-ink/10 bg-ink shadow-2xl shadow-ink/10">
-          <div className="flex items-center gap-1 border-b border-paper/10 px-3 pt-2">
+        <div className="mt-9 overflow-hidden rounded-[14px] bg-ink shadow-[0_30px_60px_-30px_rgba(16,20,28,.4)]">
+          <div className="flex gap-1 border-b border-white/8 px-3 pt-3">
             {tabs.map((t, i) => (
               <button
                 key={t.label}
@@ -50,22 +84,25 @@ export default function CodeTabs({
                 onClick={() => setActive(i)}
                 className={`rounded-t-md px-4 py-2.5 font-mono text-[13px] transition-colors ${
                   i === active
-                    ? "border-b-2 border-elektryk text-paper"
-                    : "text-paper/50 hover:text-paper/80"
+                    ? "border-b-2 border-elektryk bg-white/6 text-paper"
+                    : "border-b-2 border-transparent text-paper/50 hover:text-paper/80"
                 }`}
               >
                 {t.label}
               </button>
             ))}
           </div>
-          <div className="overflow-x-auto p-6">
-            {tab.comment && (
-              <div className="mb-3 font-mono text-[13px] text-paper/40">
-                {tab.comment}
-              </div>
-            )}
-            <pre className="font-mono text-[13.5px] leading-relaxed whitespace-pre text-paper/90">
-              {tab.code}
+          <div className="min-h-[260px] overflow-x-auto px-6 py-[22px]">
+            <pre className="m-0 font-mono text-[14px] leading-[1.7] whitespace-pre text-[#e6e8ec]">
+              {highlight(code).map((node, i) => (
+                <Fragment key={i}>{node}</Fragment>
+              ))}
+              {showCaret && (
+                <span
+                  className="ml-1 inline-block h-4 w-[9px] translate-y-[3px] bg-elektryk"
+                  style={{ animation: "hero-blink 1s step-end infinite" }}
+                />
+              )}
             </pre>
           </div>
         </div>
