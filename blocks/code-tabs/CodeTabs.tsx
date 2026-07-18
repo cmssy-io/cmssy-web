@@ -7,7 +7,7 @@ import { FigEyebrow } from "@/components/fig-eyebrow";
 import type { codeTabsProps } from "./block";
 
 const TOKEN =
-  /("[^"\n]*")|(\/\/[^\n]*|#[^\n]*)|(\b(?:import|from|export|default|async|function|const|await|return|query)\b)|(<\/?[A-Z][\w.]*|\/>)|(✓)|(^[>] )|([A-Za-z_][\w]*(?=\())/gm;
+  /("[^"\n]*")|(\/\/[^\n]*|#[^\n]*)|(\b(?:import|from|export|default|async|function|const|await|return|query)\b)|(<\/?[A-Z][\w.]*|\/>)|(✓)|(^[>] )|((?<=:\s)[A-Z]\w*!?)|([A-Za-z_][\w]*(?=\())/gm;
 
 const TOKEN_COLORS = [
   "#6ee7b7", // string
@@ -16,6 +16,7 @@ const TOKEN_COLORS = [
   "#5bc6f7", // jsx tag / prompt arrow
   "#6ee7b7", // check mark
   "#5bc6f7", // "> " prompt
+  "#6ee7b7", // GraphQL type after colon
   "#f0c674", // function name
 ];
 
