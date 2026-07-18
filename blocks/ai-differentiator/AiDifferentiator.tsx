@@ -1,5 +1,6 @@
 import { CmssyLink } from "@cmssy/next/client";
 import type { BlockProps } from "@cmssy/react";
+import { CmssyMark } from "@/components/cmssy-mark";
 import { Container } from "@/components/container";
 import { FigEyebrow } from "@/components/fig-eyebrow";
 import type { aiDifferentiatorProps } from "./block";
@@ -61,30 +62,39 @@ export default function AiDifferentiator({
           </div>
 
           <div className="overflow-hidden rounded-2xl border border-paper/10 bg-ink-deep shadow-2xl">
-            <div className="border-b border-paper/10 px-4 py-3 font-mono text-[12px] text-paper/40">
+            <div className="flex items-center gap-2.5 border-b border-paper/10 px-4 py-3 font-mono text-[12px] text-paper/40">
+              <CmssyMark className="h-3.5 w-auto text-paper" />
               claude · cmssy mcp
             </div>
-            <div className="space-y-4 p-5">
-              <div className="ml-auto max-w-[85%] rounded-xl rounded-br-sm bg-elektryk px-4 py-3 text-[14px] text-white">
+            <div className="flex flex-col gap-4 p-5">
+              <div className="max-w-[80%] self-end rounded-[12px] rounded-br-[3px] bg-elektryk px-[15px] py-[11px] text-[14px] leading-normal text-white">
                 {chatUser}
               </div>
-              <div className="max-w-[85%] rounded-xl rounded-bl-sm border border-paper/10 bg-ink px-4 py-3 text-[14px] text-paper/85">
+              <div className="max-w-[88%] self-start rounded-[12px] rounded-bl-[3px] border border-white/8 bg-[#161b26] px-[15px] py-[13px] text-[14px] leading-snug text-[#d7dae0]">
                 {chatReply}
+                {chatTools.length > 0 && (
+                  <div className="mt-3 flex flex-col gap-[7px] font-mono text-[12px] leading-normal">
+                    {chatTools.map((t) => {
+                      const [name, ...rest] = t.call.split(" · ");
+                      return (
+                        <span
+                          key={t.call}
+                          className="flex items-center gap-2 text-[#9aa1ad]"
+                        >
+                          <span className="text-[#6ee7b7]">✓</span> {name}
+                          {rest.length > 0 && (
+                            <span className="opacity-60">
+                              · {rest.join(" · ")}
+                            </span>
+                          )}
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
-              {chatTools.length > 0 && (
-                <div className="space-y-1.5 rounded-lg border border-paper/8 bg-ink px-4 py-3">
-                  {chatTools.map((t) => (
-                    <div
-                      key={t.call}
-                      className="font-mono text-[12px] text-emerald-400"
-                    >
-                      ✓ {t.call}
-                    </div>
-                  ))}
-                </div>
-              )}
               {chatBadge && (
-                <div className="inline-block rounded-full border border-paper/15 px-3 py-1 font-mono text-[11px] text-paper/50">
+                <div className="inline-flex items-center self-start rounded-lg border border-elektryk/30 bg-elektryk/12 px-3 py-2 font-mono text-[12px] text-[#5bc6f7]">
                   {chatBadge}
                 </div>
               )}
