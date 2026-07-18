@@ -29,6 +29,11 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
     mockupMeta = "",
     mockupPages = [],
     mockupDockLabel = "",
+    mockupDockTag = "",
+    mockupDockSub = "",
+    inspectorTitle = "",
+    inspectorSubtitle = "",
+    inspectorFooter = "",
   } = content;
 
   const words = rotatingWords.map((w) => w.word).filter(Boolean);
@@ -125,6 +130,11 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
             meta={mockupMeta}
             pages={mockupPages}
             dockLabel={mockupDockLabel}
+            dockTag={mockupDockTag}
+            dockSub={mockupDockSub}
+            inspectorTitle={inspectorTitle}
+            inspectorSubtitle={inspectorSubtitle}
+            inspectorFooter={inspectorFooter}
           />
         </div>
       </Container>

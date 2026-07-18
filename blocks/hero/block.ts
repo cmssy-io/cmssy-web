@@ -80,7 +80,27 @@ export const heroProps = {
   }),
   mockupDockLabel: fields.text({
     label: "Mockup: Docking Block Label",
-    defaultValue: "DE · Kundenstimmen · testimonials · de",
+    defaultValue: "Kundenstimmen",
+  }),
+  mockupDockTag: fields.text({
+    label: "Mockup: Docking Block Tag",
+    defaultValue: "DE",
+  }),
+  mockupDockSub: fields.text({
+    label: "Mockup: Docking Block Subtitle",
+    defaultValue: "testimonials · de",
+  }),
+  inspectorTitle: fields.text({
+    label: "Mockup: Inspector Title",
+    defaultValue: "Header Navigation",
+  }),
+  inspectorSubtitle: fields.text({
+    label: "Mockup: Inspector Subtitle",
+    defaultValue: "Edit this block's content",
+  }),
+  inspectorFooter: fields.text({
+    label: "Mockup: Inspector Footer",
+    defaultValue: "typed fields",
   }),
 };
 
