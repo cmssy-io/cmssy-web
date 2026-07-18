@@ -2,6 +2,8 @@ import { defineBlock, fields } from "@cmssy/react";
 import Features from "./Features";
 
 export const featuresProps = {
+  fig: fields.text({ label: "Fig Number", defaultValue: "FIG 4.0" }),
+  eyebrow: fields.text({ label: "Eyebrow", defaultValue: "BUILT IN, NOT BOLTED ON" }),
   heading: fields.text({
     label: "Heading",
     defaultValue: "Heading",
@@ -28,6 +30,10 @@ export const featuresProps = {
         label: "Description",
         defaultValue: "Feature description goes here.",
         required: true,
+      }),
+      stat: fields.text({
+        label: "Mono Stat",
+        placeholder: "e.g. 15 field types",
       }),
       color: fields.color({ label: "Color" }),
       hoverColor: fields.color({ label: "Hover Color" }),
@@ -59,7 +65,7 @@ export const featuresBlock = defineBlock({
   category: "Marketing",
   label: "Features",
   description:
-    "Grid of product features with icons and copy; a supporting section below the hero.",
+    "Spec-sheet grid of feature cards with a mono stat line each; a supporting section below the hero.",
   component: Features,
   props: featuresProps,
 });

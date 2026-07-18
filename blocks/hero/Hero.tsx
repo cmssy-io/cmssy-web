@@ -1,154 +1,142 @@
-import Image from "next/image";
-import { ArrowRight, PlayCircle, Sparkles } from "lucide-react";
+"use client";
+
+import { useEffect, useState } from "react";
 import { CmssyLink } from "@cmssy/next/client";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
+import { FigEyebrow } from "@/components/fig-eyebrow";
+import { EditorMockup } from "./EditorMockup";
 import type { heroProps } from "./block";
 
 export default function Hero({ content }: BlockProps<typeof heroProps>) {
   const {
-    badgeText,
-    heading,
-    headingHighlight,
-    subheading,
-    primaryButtonText,
-    primaryButtonUrl = "/signup",
-    secondaryButtonText,
-    secondaryButtonUrl = "#demo",
-    socialProofPrefix,
-    socialProofCount,
-    socialProofText,
-    media,
+    fig = "",
+    eyebrow = "",
+    headingPre = "",
+    rotatingWords = [],
+    headingPost = "",
+    headingLine2 = "",
+    subheading = "",
+    primaryButtonText = "",
+    primaryButtonUrl = "",
+    secondaryButtonText = "",
+    secondaryButtonUrl = "",
+    trustLine = "",
+    chatPrompt = "",
+    chatStatus = "",
+    mockupTitle = "",
+    mockupBadge = "",
+    mockupMeta = "",
+    mockupPages = [],
+    mockupDockLabel = "",
+    mockupDockTag = "",
+    mockupDockSub = "",
+    inspectorTitle = "",
+    inspectorSubtitle = "",
+    inspectorFooter = "",
   } = content;
 
-  // Detect if media is a video (by file extension)
-  const isVideo =
-    media &&
-    (media.endsWith(".mp4") ||
-      media.endsWith(".webm") ||
-      media.endsWith(".ogg"));
+  const words = rotatingWords.map((w) => w.word).filter(Boolean);
+  const [index, setIndex] = useState(0);
+  const [typed, setTyped] = useState(words[0] ?? "");
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    if (words.length < 2) return;
+    const word = words[index] ?? "";
+    if (!deleting && typed === word) {
+      const id = setTimeout(() => setDeleting(true), 1800);
+      return () => clearTimeout(id);
+    }
+    if (deleting && typed === "") {
+      setDeleting(false);
+      setIndex((i) => (i + 1) % words.length);
+      return;
+    }
+    const id = setTimeout(
+      () =>
+        setTyped(
+          deleting
+            ? word.slice(0, typed.length - 1)
+            : word.slice(0, typed.length + 1),
+        ),
+      deleting ? 45 : 85,
+    );
+    return () => clearTimeout(id);
+  }, [words, index, typed, deleting]);
+
+  const display = words.length > 1 ? typed : (words[0] ?? "");
 
   return (
-    <section className="cmssy-hero-section relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-linear-to-br from-sky-50 via-background to-blue-50" />
-
-      {/* Animated gradient orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-sky-400/30 rounded-full blur-3xl animate-pulse" />
+    <section className="dot-grid-dark relative overflow-hidden bg-ink py-20 lg:py-28">
       <div
-        className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-400/30 rounded-full blur-3xl animate-pulse"
-        style={{ animationDelay: "1000ms" }}
-      />
-
-      {/* Grid pattern overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.02]"
+        className="pointer-events-none absolute -top-40 right-0 h-[480px] w-[480px] rounded-full"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          background:
+            "radial-gradient(circle, rgba(0,168,240,.16) 0%, transparent 65%)",
         }}
       />
-
-      <Container className="relative py-16 sm:py-24 lg:py-32 text-center">
-        {/* Badge */}
-        {badgeText && (
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-100 text-sky-700 text-sm font-medium mb-8">
-            <Sparkles className="w-4 h-4" />
-            <span>{badgeText}</span>
-          </div>
-        )}
-
-        {/* Main heading */}
-        {(heading || headingHighlight) && (
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
-            {heading}
-            {headingHighlight && (
-              <>
-                <br />
-                <span className="bg-linear-to-r from-sky-600 via-blue-600 to-sky-600 bg-clip-text text-transparent">
-                  {headingHighlight}
-                </span>
-              </>
+      <Container>
+        <div className="grid items-center gap-14 lg:grid-cols-[0.95fr_1.15fr]">
+          <div>
+            <FigEyebrow fig={fig} label={eyebrow} dark pill />
+            <h1 className="font-heading mt-6 text-[clamp(1.75rem,6.5vw,3.4rem)] leading-[1.1] font-semibold tracking-tight text-paper">
+              <span className="block">{headingPre}</span>
+              <span className="block whitespace-nowrap">
+                <span className="whitespace-pre text-elektryk">{display}</span>
+                <span
+                  className="ml-1 inline-block h-[0.85em] w-[0.42em] translate-y-[0.12em] bg-elektryk"
+                  style={{ animation: "hero-blink 1.1s step-end infinite" }}
+                />
+                {headingPost && <> {headingPost}</>}
+              </span>
+              {headingLine2 && <span className="block">{headingLine2}</span>}
+            </h1>
+            {subheading && (
+              <p className="mt-5 max-w-xl text-lg text-paper/60">
+                {subheading}
+              </p>
             )}
-          </h1>
-        )}
-
-        {/* Subheading */}
-        {subheading && (
-          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-10">
-            {subheading}
-          </p>
-        )}
-
-        {/* CTA buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 sm:mb-16">
-          {primaryButtonText && (
-            <CmssyLink href={primaryButtonUrl || "#"}>
-              <button className="inline-flex items-center justify-center gap-2 rounded-md bg-linear-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 px-6 sm:px-8 h-12 sm:h-14 text-base sm:text-lg font-medium text-white shadow-lg shadow-sky-500/25 transition-colors">
-                {primaryButtonText}
-                <ArrowRight className="w-5 h-5" />
-              </button>
-            </CmssyLink>
-          )}
-          {secondaryButtonText && (
-            <CmssyLink
-              href={secondaryButtonUrl || "#"}
-              className="inline-flex items-center justify-center gap-2 rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground px-6 sm:px-8 h-12 sm:h-14 text-base sm:text-lg font-medium transition-colors"
-            >
-              <PlayCircle className="w-5 h-5" />
-              {secondaryButtonText}
-            </CmssyLink>
-          )}
-        </div>
-
-        {/* Social proof */}
-        {(socialProofPrefix || socialProofText) && (
-          <div className="flex flex-col items-center gap-4">
-            <p className="text-sm text-muted-foreground">
-              {socialProofPrefix}
-              {socialProofCount && (
-                <>
-                  {" "}
-                  <span className="font-semibold text-foreground">
-                    {socialProofCount}
-                  </span>
-                </>
-              )}{" "}
-              {socialProofText}
-            </p>
-          </div>
-        )}
-
-        {/* Hero image/preview */}
-        {media && (
-          <div className="mt-12 sm:mt-20 relative">
-            <div className="absolute inset-0 bg-linear-to-t from-background via-transparent to-transparent z-10 pointer-events-none" />
-            <div className="relative rounded-xl shadow-2xl shadow-sky-500/10 overflow-hidden bg-background">
-              <div className="aspect-video relative overflow-hidden">
-                {isVideo ? (
-                  <video
-                    src={media}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="w-full h-full object-cover"
-                  >
-                    Your browser does not support the video tag.
-                  </video>
-                ) : (
-                  <Image
-                    src={media}
-                    alt={heading}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-                    className="object-cover"
-                    priority
-                  />
-                )}
-              </div>
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              {primaryButtonText && (
+                <CmssyLink
+                  href={primaryButtonUrl || "#"}
+                  className="rounded-lg bg-elektryk px-6 py-3 text-base font-semibold text-ink transition-colors hover:bg-elektryk/85"
+                >
+                  {primaryButtonText}
+                </CmssyLink>
+              )}
+              {secondaryButtonText && (
+                <CmssyLink
+                  href={secondaryButtonUrl || "#"}
+                  className="rounded-lg border border-paper/20 px-6 py-3 text-base font-medium text-paper/85 transition-colors hover:border-paper/40"
+                >
+                  {secondaryButtonText}
+                </CmssyLink>
+              )}
             </div>
+            {trustLine && (
+              <div className="mt-8 font-mono text-[13px] text-paper/40">
+                {trustLine}
+              </div>
+            )}
           </div>
-        )}
+
+          <EditorMockup
+            chatPrompt={chatPrompt}
+            chatStatus={chatStatus}
+            title={mockupTitle}
+            badge={mockupBadge}
+            meta={mockupMeta}
+            pages={mockupPages}
+            dockLabel={mockupDockLabel}
+            dockTag={mockupDockTag}
+            dockSub={mockupDockSub}
+            inspectorTitle={inspectorTitle}
+            inspectorSubtitle={inspectorSubtitle}
+            inspectorFooter={inspectorFooter}
+          />
+        </div>
       </Container>
     </section>
   );

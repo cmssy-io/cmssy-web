@@ -1,8 +1,11 @@
 // Block registry: import each blocks/*/block.ts and add it to the array below.
 import { aboutBlock } from "@/blocks/about/block";
+import { aiDifferentiatorBlock } from "@/blocks/ai-differentiator/block";
 import { blogPostHeroBlock } from "@/blocks/blog-post-hero/block";
 import { blogPostsBlock } from "@/blocks/blog-posts/block";
 import { changelogBlock } from "@/blocks/changelog/block";
+import { codeTabsBlock } from "@/blocks/code-tabs/block";
+import { comparisonTableBlock } from "@/blocks/comparison-table/block";
 import { contactBlock } from "@/blocks/contact/block";
 import { ctaBlock } from "@/blocks/cta/block";
 import { demoVideoBlock } from "@/blocks/demo-video/block";
@@ -31,9 +34,14 @@ import { notFoundBlock } from "@/blocks/not-found/block";
 import { pricingBlock } from "@/blocks/pricing/block";
 import { productShowcaseBlock } from "@/blocks/product-showcase/block";
 import { roadmapBlock } from "@/blocks/roadmap/block";
+import { twoAudiencesBlock } from "@/blocks/two-audiences/block";
 
 export const blocks = [
   aboutBlock,
+  aiDifferentiatorBlock,
+  codeTabsBlock,
+  comparisonTableBlock,
+  twoAudiencesBlock,
   blogPostHeroBlock,
   blogPostsBlock,
   changelogBlock,

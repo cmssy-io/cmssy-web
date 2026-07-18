@@ -22,6 +22,8 @@ export default function Footer({
     twitterUrl,
     githubUrl,
     linkedinUrl,
+    metaLine,
+    builtOnText,
     copyrightText,
     showLanguageSwitcher = false,
   } = content;
@@ -37,14 +39,18 @@ export default function Footer({
     showLanguageSwitcher && i18n && i18n.enabledLanguages.length > 1;
 
   const currentYear = new Date().getFullYear();
+  const socials = [
+    { url: twitterUrl, Icon: Twitter, label: "Twitter" },
+    { url: githubUrl, Icon: Github, label: "GitHub" },
+    { url: linkedinUrl, Icon: Linkedin, label: "LinkedIn" },
+  ].filter((s) => s.url);
 
   return (
-    <footer className="border-t bg-slate-50/50">
-      <Container className="py-16">
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-          {/* Brand column */}
-          <div className="col-span-2 sm:col-span-3 md:col-span-1 lg:col-span-2">
-            <CmssyLink href="/" className="flex items-center gap-2 mb-4">
+    <footer className="border-t border-white/8 bg-ink-deep text-[#9aa1ad]">
+      <Container className="pt-16 pb-10">
+        <div className="mb-12 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-6">
+          <div className="col-span-2 sm:col-span-3 lg:col-span-2">
+            <CmssyLink href="/" className="mb-3.5 flex items-center gap-2.5 text-paper">
               {logo ? (
                 <Image
                   src={logo}
@@ -53,69 +59,52 @@ export default function Footer({
                   height={32}
                   className="h-8 w-auto"
                 />
-              ) : logoText ? (
-                <CmssyMark className="w-8 h-8" />
-              ) : null}
+              ) : (
+                <CmssyMark className="h-[22px] w-auto" />
+              )}
               {logoText && (
-                <span className="font-bold text-xl">{logoText}</span>
+                <span className="font-heading text-xl font-bold tracking-tight">
+                  {logoText}
+                </span>
               )}
             </CmssyLink>
             {tagline && (
-              <p className="text-sm text-muted-foreground mb-6 max-w-xs">
+              <p className="mb-4 max-w-[280px] text-sm leading-relaxed">
                 {tagline}
               </p>
             )}
-
-            {/* Social links */}
-            {showSocial && (twitterUrl || githubUrl || linkedinUrl) && (
-              <div className="flex gap-4">
-                {twitterUrl && (
+            {metaLine && (
+              <p className="font-mono text-[12px] text-[#5a606b]">{metaLine}</p>
+            )}
+            {showSocial && socials.length > 0 && (
+              <div className="mt-5 flex gap-4">
+                {socials.map(({ url, Icon, label }) => (
                   <a
-                    href={twitterUrl}
+                    key={label}
+                    href={url}
+                    aria-label={label}
+                    className="transition-colors hover:text-paper"
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="X (Twitter)"
-                    className="text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    <Twitter className="size-5" />
+                    <Icon className="size-4" />
                   </a>
-                )}
-                {githubUrl && (
-                  <a
-                    href={githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="GitHub"
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <Github className="size-5" />
-                  </a>
-                )}
-                {linkedinUrl && (
-                  <a
-                    href={linkedinUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="LinkedIn"
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <Linkedin className="size-5" />
-                  </a>
-                )}
+                ))}
               </div>
             )}
           </div>
 
-          {/* Link columns */}
-          {linkColumns.map((column, index) => (
-            <div key={index}>
-              <h3 className="font-semibold mb-4">{column.title}</h3>
-              <ul className="space-y-3">
-                {(column.links || []).map((link, linkIndex) => (
-                  <li key={linkIndex}>
+          {linkColumns.map((column) => (
+            <div key={column.title}>
+              <h4 className="font-heading mb-3.5 text-sm font-semibold text-paper">
+                {column.title}
+              </h4>
+              <ul className="flex flex-col gap-2.5 text-sm">
+                {(column.links ?? []).map((link) => (
+                  <li key={link.name}>
                     <CmssyLink
                       href={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      className="transition-colors hover:text-paper"
                     >
                       {link.name}
                     </CmssyLink>
@@ -126,27 +115,23 @@ export default function Footer({
           ))}
         </div>
 
-        {/* Bottom bar */}
-        {(copyrightText || hasLanguageSwitcher) && (
-          <div
-            className={`mt-12 pt-8 border-t ${hasLanguageSwitcher ? "flex items-center justify-between" : ""}`}
-          >
-            {copyrightText && (
-              <p
-                className={`text-sm text-muted-foreground ${hasLanguageSwitcher ? "" : "text-center"}`}
-              >
-                © {currentYear} {copyrightText}
-              </p>
-            )}
-            {hasLanguageSwitcher && (
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/8 pt-6 text-[13px] text-[#5a606b]">
+          {copyrightText && (
+            <span>
+              © {currentYear} {copyrightText}
+            </span>
+          )}
+          <div className="flex items-center gap-5">
+            {hasLanguageSwitcher && i18n && (
               <LanguageSwitcher
                 enabledLanguages={i18n.enabledLanguages}
                 defaultLanguage={i18n.defaultLanguage}
                 currentLanguage={i18n.currentLanguage}
               />
             )}
+            {builtOnText && <span className="font-mono">{builtOnText}</span>}
           </div>
-        )}
+        </div>
       </Container>
     </footer>
   );

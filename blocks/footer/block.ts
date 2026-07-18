@@ -16,6 +16,8 @@ export const footerProps = {
   "twitterUrl": fields.link({ label: "Twitter/X URL" }),
   "githubUrl": fields.link({ label: "GitHub URL" }),
   "linkedinUrl": fields.link({ label: "LinkedIn URL" }),
+  "metaLine": fields.text({ label: "Meta Line (mono)", placeholder: "This site ships llms.txt + schema.org" }),
+  "builtOnText": fields.text({ label: "Built-on Text (mono)", placeholder: "Built on cmssy" }),
   "copyrightText": fields.text({ label: "Copyright Text", defaultValue: "cmssy. All rights reserved." }),
   "showLanguageSwitcher": fields.boolean({ label: "Show Language Switcher", defaultValue: false })
 };

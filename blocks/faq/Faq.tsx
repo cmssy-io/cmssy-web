@@ -6,49 +6,62 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import type { BlockProps } from "@cmssy/react";
+import { Container } from "@/components/container";
+import { FigEyebrow } from "@/components/fig-eyebrow";
 import type { faqProps } from "./block";
 
 export default function Faq({ content }: BlockProps<typeof faqProps>) {
-  const { heading, headingHighlight, description, faqs = [] } = content;
+  const {
+    fig = "",
+    eyebrow = "",
+    heading = "",
+    headingHighlight = "",
+    description = "",
+    faqs = [],
+  } = content;
 
   return (
-    <section id="faq" className="py-24 bg-slate-50/50">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
-        <div className="text-center mb-12">
+    <section id="faq" className="bg-paper py-24">
+      <Container className="max-w-3xl">
+        <div className="mb-12 text-center">
+          <FigEyebrow fig={fig} label={eyebrow} />
           {(heading || headingHighlight) && (
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              {heading}{" "}
+            <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-ink text-balance">
+              {heading}
               {headingHighlight && (
-                <span className="bg-linear-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
-                  {headingHighlight}
-                </span>
+                <>
+                  {" "}
+                  <span className="text-elektryk-700">{headingHighlight}</span>
+                </>
               )}
             </h2>
           )}
           {description && (
-            <p className="text-lg text-muted-foreground">{description}</p>
+            <p className="mt-4 text-lg text-ink/60">{description}</p>
           )}
         </div>
 
-        {/* FAQ accordion */}
-        <Accordion type="single" collapsible className="space-y-4">
+        <Accordion type="single" collapsible className="space-y-3">
           {faqs.map((faq, index) => (
             <AccordionItem
               key={index}
               value={`item-${index}`}
-              className="bg-background border rounded-xl px-6 last:border-b data-[state=open]:shadow-lg data-[state=open]:shadow-sky-500/5 transition-shadow"
+              className="rounded-xl border border-ink/10 bg-white px-6 last:border-b data-[state=open]:shadow-[-.35rem_.35rem_0_rgba(0,168,240,.1)] transition-shadow"
             >
-              <AccordionTrigger className="text-left font-semibold hover:no-underline py-6">
-                {faq.question}
+              <AccordionTrigger className="group py-5 text-left font-heading font-semibold text-ink hover:no-underline [&>svg]:hidden">
+                <span className="flex-1">{faq.question}</span>
+                <span className="relative mt-1 size-4 shrink-0" aria-hidden>
+                  <span className="absolute top-1/2 left-0 h-[2px] w-full -translate-y-1/2 rounded-full bg-elektryk-700" />
+                  <span className="absolute top-0 left-1/2 h-full w-[2px] -translate-x-1/2 rounded-full bg-elektryk-700 transition-transform duration-200 group-data-[state=open]:scale-y-0" />
+                </span>
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground pb-6">
+              <AccordionContent className="pb-5 text-ink/60">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
-      </div>
+      </Container>
     </section>
   );
 }

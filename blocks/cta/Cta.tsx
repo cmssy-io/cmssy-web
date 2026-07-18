@@ -1,9 +1,62 @@
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles } from "lucide-react";
 import { CmssyLink } from "@cmssy/next/client";
 import type { BlockProps } from "@cmssy/react";
-import { Container } from "../../components/container";
+import { Container } from "@/components/container";
 import type { ctaProps } from "./block";
+
+function DockingMark() {
+  const fuse = { animation: "cta-fuse 7s linear infinite" };
+  return (
+    <svg
+      viewBox="-40 -40 660 790"
+      className="mx-auto h-24 w-auto"
+      fill="none"
+      aria-hidden="true"
+    >
+      <rect x="0" y="190" width="360" height="520" rx="117" fill="#FAFAF8" />
+      <rect x="0" y="350" width="520" height="360" rx="117" fill="#FAFAF8" />
+      <rect x="60" y="410" width="260" height="240" fill="#FAFAF8" />
+      <rect
+        className="cta-anim"
+        x="243"
+        y="190"
+        width="117"
+        height="117"
+        fill="#FAFAF8"
+        opacity="0"
+        style={fuse}
+      />
+      <rect
+        className="cta-anim"
+        x="403"
+        y="350"
+        width="117"
+        height="117"
+        fill="#FAFAF8"
+        opacity="0"
+        style={fuse}
+      />
+      <path
+        className="cta-anim"
+        d="M360 190 H403 A117 117 0 0 1 520 307 V350 H360 Z"
+        fill="#00A8F0"
+        opacity="0"
+        style={fuse}
+      />
+      <rect
+        className="cta-anim"
+        x="420"
+        y="0"
+        width="160"
+        height="160"
+        rx="36"
+        fill="#00A8F0"
+        style={{
+          animation: "cta-dock 7s cubic-bezier(0.45, 0, 0.2, 1) infinite",
+        }}
+      />
+    </svg>
+  );
+}
 
 export default function Cta({ content }: BlockProps<typeof ctaProps>) {
   const {
@@ -18,78 +71,45 @@ export default function Cta({ content }: BlockProps<typeof ctaProps>) {
   } = content;
 
   return (
-    <section className="py-24">
-      <Container>
-        <div className="relative rounded-3xl overflow-hidden">
-          <div className="absolute inset-0 bg-linear-to-br from-sky-600 via-blue-600 to-sky-700" />
-
-          <div
-            className="absolute inset-0 opacity-10"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            }}
-          />
-
-          <div className="absolute top-10 left-10 w-20 h-20 bg-white/10 rounded-2xl rotate-12" />
-          <div className="absolute bottom-10 right-10 w-32 h-32 bg-white/10 rounded-full" />
-          <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-white/10 rounded-xl -rotate-12" />
-
-          <div className="relative px-8 py-20 sm:px-16 sm:py-24 text-center">
-            {badgeText && (
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white text-sm font-medium mb-6">
-                <Sparkles className="w-4 h-4" />
-                <span>{badgeText}</span>
-              </div>
-            )}
-
-            {(heading || headingLine2) && (
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-                {heading}
-                {headingLine2 && (
-                  <>
-                    <br />
-                    {headingLine2}
-                  </>
-                )}
-              </h2>
-            )}
-
-            {description && (
-              <p className="text-lg text-sky-100 max-w-2xl mx-auto mb-10">
-                {description}
-              </p>
-            )}
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              {primaryButtonUrl && (
-                <Button
-                  size="lg"
-                  asChild
-                  className="bg-white text-sky-600 hover:bg-sky-50 text-lg px-8 h-14 shadow-lg"
-                >
-                  <CmssyLink
-                    href={primaryButtonUrl}
-                    className="flex items-center gap-2"
-                  >
-                    {primaryButtonText}
-                    <ArrowRight className="w-5 h-5" />
-                  </CmssyLink>
-                </Button>
-              )}
-              {secondaryButtonUrl && (
-                <Button
-                  size="lg"
-                  variant="outline"
-                  asChild
-                  className="bg-white/10 border-white/30 text-white hover:bg-white/20 hover:border-white/40 text-lg px-8 h-14"
-                >
-                  <CmssyLink href={secondaryButtonUrl}>
-                    {secondaryButtonText}
-                  </CmssyLink>
-                </Button>
-              )}
-            </div>
+    <section className="dot-grid-dark bg-ink py-24">
+      <Container className="max-w-3xl text-center">
+        <DockingMark />
+        {badgeText && (
+          <div className="mt-8 inline-block rounded-full border border-paper/15 px-3 py-1 font-mono text-[11px] tracking-[0.14em] text-paper/60 uppercase">
+            {badgeText}
           </div>
+        )}
+        <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-paper text-balance lg:text-5xl">
+          {heading}
+          {headingLine2 && (
+            <>
+              {" "}
+              <span className="text-elektryk">{headingLine2}</span>
+            </>
+          )}
+        </h2>
+        {description && (
+          <p className="mx-auto mt-5 max-w-xl text-lg text-paper/60">
+            {description}
+          </p>
+        )}
+        <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
+          {primaryButtonText && (
+            <CmssyLink
+              href={primaryButtonUrl || "#"}
+              className="rounded-lg bg-elektryk px-7 py-3 text-base font-semibold text-ink transition-colors hover:bg-elektryk/85"
+            >
+              {primaryButtonText}
+            </CmssyLink>
+          )}
+          {secondaryButtonText && (
+            <CmssyLink
+              href={secondaryButtonUrl || "#"}
+              className="rounded-lg border border-paper/20 px-7 py-3 text-base font-medium text-paper/85 transition-colors hover:border-paper/40"
+            >
+              {secondaryButtonText}
+            </CmssyLink>
+          )}
         </div>
       </Container>
     </section>
