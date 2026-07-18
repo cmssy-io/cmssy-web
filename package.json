@@ -12,9 +12,9 @@
     "smoke:edit": "node smoke-edit.mjs"
   },
   "dependencies": {
-    "@cmssy/core": "^9.4.0",
-    "@cmssy/next": "^9.4.0",
-    "@cmssy/react": "^9.4.0",
+    "@cmssy/core": "^9.6.0",
+    "@cmssy/next": "^9.6.0",
+    "@cmssy/react": "^9.6.0",
     "@next/third-parties": "^16.2.7",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-dropdown-menu": "^2.1.20",
@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@cmssy/eslint-plugin": "^9.0.0",
-    "@cmssy/types": "^0.26.0",
+    "@cmssy/types": "^0.29.0",
     "@eslint/js": "^9.39.3",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/hast": "^3.0.5",
