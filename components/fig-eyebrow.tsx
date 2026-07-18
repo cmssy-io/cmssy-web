@@ -24,7 +24,7 @@ export function FigEyebrow({
   }
   return (
     <span
-      className={`flex items-center gap-2 font-mono text-[12px] tracking-[0.14em] uppercase ${tone}`}
+      className={`inline-flex items-center gap-2 font-mono text-[12px] tracking-[0.14em] uppercase ${tone}`}
     >
       {fig} — {label}
     </span>
