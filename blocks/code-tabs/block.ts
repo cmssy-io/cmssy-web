@@ -17,6 +17,10 @@ export const codeTabsProps = {
     defaultValue:
       "Fetch typed content and render blocks you own. Same content over the SDK, GraphQL, or the MCP server.",
   }),
+  equalHeight: fields.boolean({
+    label: "Equal Height Tabs",
+    defaultValue: true,
+  }),
   tabs: fields.repeater({
     label: "Tabs",
     itemSchema: {

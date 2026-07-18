@@ -46,6 +46,7 @@ export default function CodeTabs({
     eyebrow = "",
     heading = "",
     description = "",
+    equalHeight = true,
     tabs = [],
   } = content;
   const [active, setActive] = useState(0);
@@ -58,9 +59,24 @@ export default function CodeTabs({
     );
   }
 
-  const tab = tabs[Math.min(active, tabs.length - 1)];
-  const code = tab.comment ? `${tab.comment}\n${tab.code}` : tab.code;
-  const showCaret = tab.label?.toUpperCase().includes("MCP");
+  const activeIndex = Math.min(active, tabs.length - 1);
+  const renderTab = (t: (typeof tabs)[number]) => {
+    const code = t.comment ? `${t.comment}\n${t.code}` : t.code;
+    const showCaret = t.label?.toUpperCase().includes("MCP");
+    return (
+      <pre className="m-0 font-mono text-[14px] leading-[1.7] whitespace-pre text-[#e6e8ec]">
+        {highlight(code).map((node, i) => (
+          <Fragment key={i}>{node}</Fragment>
+        ))}
+        {showCaret && (
+          <span
+            className="ml-1 inline-block h-4 w-[9px] translate-y-[3px] bg-elektryk"
+            style={{ animation: "hero-blink 1s step-end infinite" }}
+          />
+        )}
+      </pre>
+    );
+  };
 
   return (
     <section id="code" className="bg-paper py-24">
@@ -93,17 +109,23 @@ export default function CodeTabs({
             ))}
           </div>
           <div className="min-h-[260px] overflow-x-auto px-6 py-[22px]">
-            <pre className="m-0 font-mono text-[14px] leading-[1.7] whitespace-pre text-[#e6e8ec]">
-              {highlight(code).map((node, i) => (
-                <Fragment key={i}>{node}</Fragment>
-              ))}
-              {showCaret && (
-                <span
-                  className="ml-1 inline-block h-4 w-[9px] translate-y-[3px] bg-elektryk"
-                  style={{ animation: "hero-blink 1s step-end infinite" }}
-                />
-              )}
-            </pre>
+            {equalHeight ? (
+              <div className="grid">
+                {tabs.map((t, i) => (
+                  <div
+                    key={t.label}
+                    aria-hidden={i !== activeIndex}
+                    className={`col-start-1 row-start-1 ${
+                      i === activeIndex ? "" : "invisible"
+                    }`}
+                  >
+                    {renderTab(t)}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              renderTab(tabs[activeIndex])
+            )}
           </div>
         </div>
       </Container>
