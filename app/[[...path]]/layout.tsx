@@ -7,6 +7,7 @@ import {
   CmssyServerLayout,
   type CmssyLayoutGroup,
 } from "@cmssy/react";
+import { fetchSiteConfig } from "@cmssy/core";
 import { splitCmssyLocale } from "@cmssy/core";
 import { CmssyLocaleProvider } from "@cmssy/next/client";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
@@ -18,6 +19,13 @@ const spaceGrotesk = Space_Grotesk({
   weight: ["400", "500", "600", "700"],
   variable: "--font-heading",
 });
+
+export async function generateMetadata() {
+  const siteConfig = await fetchSiteConfig(cmssy).catch(() => null);
+  const favicon = siteConfig?.branding?.faviconUrl;
+  if (!favicon) return {};
+  return { icons: { icon: favicon, apple: favicon } };
+}
 
 async function getLayoutGroups(draft: boolean): Promise<CmssyLayoutGroup[]> {
   try {
