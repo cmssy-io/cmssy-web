@@ -122,7 +122,13 @@ export default function Footer({
             </span>
           )}
           <div className="flex items-center gap-5">
-            {hasLanguageSwitcher && i18n && <LanguageSwitcher i18n={i18n} />}
+            {hasLanguageSwitcher && i18n && (
+              <LanguageSwitcher
+                enabledLanguages={i18n.enabledLanguages}
+                defaultLanguage={i18n.defaultLanguage}
+                currentLanguage={i18n.currentLanguage}
+              />
+            )}
             {builtOnText && <span className="font-mono">{builtOnText}</span>}
           </div>
         </div>
