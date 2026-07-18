@@ -67,7 +67,7 @@ export default function AiDifferentiator({
               claude · cmssy mcp
             </div>
             <div className="flex flex-col gap-4 p-5">
-              <div className="max-w-[80%] self-end rounded-[12px] rounded-br-[3px] bg-elektryk px-[15px] py-[11px] text-[14px] leading-normal text-white">
+              <div className="max-w-[80%] self-end rounded-[12px] rounded-br-[3px] bg-elektryk px-[15px] py-[11px] text-[14px] leading-normal font-medium text-ink">
                 {chatUser}
               </div>
               <div className="max-w-[88%] self-start rounded-[12px] rounded-bl-[3px] border border-white/8 bg-[#161b26] px-[15px] py-[13px] text-[14px] leading-snug text-[#d7dae0]">

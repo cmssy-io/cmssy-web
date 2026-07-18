@@ -97,7 +97,7 @@ export default function Cta({ content }: BlockProps<typeof ctaProps>) {
           {primaryButtonText && (
             <CmssyLink
               href={primaryButtonUrl || "#"}
-              className="rounded-lg bg-elektryk px-7 py-3 text-base font-medium text-white transition-colors hover:bg-elektryk/85"
+              className="rounded-lg bg-elektryk px-7 py-3 text-base font-semibold text-ink transition-colors hover:bg-elektryk/85"
             >
               {primaryButtonText}
             </CmssyLink>

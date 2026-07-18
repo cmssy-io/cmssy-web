@@ -74,7 +74,7 @@ export function EditorMockup({
             className="hero-anim relative mt-2 rounded-md border-2 border-elektryk/70 bg-white px-3 py-2"
             style={d("0.5s")}
           >
-            <span className="absolute -top-2 left-2 rounded-sm bg-elektryk px-1 font-mono text-[8px] text-white">
+            <span className="absolute -top-2 left-2 rounded-sm bg-elektryk px-1 font-mono text-[8px] text-ink">
               Heading
             </span>
             <div className="h-3 w-3/4 rounded bg-ink/15" />
@@ -98,7 +98,7 @@ export function EditorMockup({
             />
           </div>
           <div
-            className="hero-anim mt-2 rounded-md bg-elektryk px-3 py-2 font-mono text-[10px] text-white"
+            className="hero-anim mt-2 rounded-md bg-elektryk px-3 py-2 font-mono text-[10px] font-medium text-ink"
             style={d("5.4s", "hero-dock")}
           >
             {dockLabel}

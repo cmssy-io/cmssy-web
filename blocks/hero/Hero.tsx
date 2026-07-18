@@ -96,7 +96,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
               {primaryButtonText && (
                 <CmssyLink
                   href={primaryButtonUrl || "#"}
-                  className="rounded-lg bg-elektryk px-6 py-3 text-base font-medium text-white transition-colors hover:bg-elektryk/85"
+                  className="rounded-lg bg-elektryk px-6 py-3 text-base font-semibold text-ink transition-colors hover:bg-elektryk/85"
                 >
                   {primaryButtonText}
                 </CmssyLink>

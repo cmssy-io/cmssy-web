@@ -119,7 +119,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                   href={plan.href || "#"}
                   className={`mt-7 block rounded-lg px-5 py-2.5 text-center text-sm font-medium transition-colors ${
                     plan.popular
-                      ? "bg-elektryk text-white hover:bg-elektryk/85"
+                      ? "bg-elektryk font-semibold text-ink hover:bg-elektryk/85"
                       : "border border-ink/15 text-ink hover:border-ink/35"
                   }`}
                 >
