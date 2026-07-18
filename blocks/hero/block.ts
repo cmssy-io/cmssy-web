@@ -69,7 +69,7 @@ export const heroProps = {
   }),
   mockupMeta: fields.text({
     label: "Mockup: Meta (right side)",
-    defaultValue: "EN · Auto-saved",
+    defaultValue: "EN",
   }),
   mockupPages: fields.repeater({
     label: "Mockup: Pages Panel",
