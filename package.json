@@ -12,9 +12,9 @@
     "smoke:edit": "node smoke-edit.mjs"
   },
   "dependencies": {
-    "@cmssy/core": "^9.7.1",
-    "@cmssy/next": "^9.7.1",
-    "@cmssy/react": "^9.7.1",
+    "@cmssy/core": "^9.7.2",
+    "@cmssy/next": "^9.7.2",
+    "@cmssy/react": "^9.7.2",
     "@next/third-parties": "^16.2.7",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-dropdown-menu": "^2.1.20",
