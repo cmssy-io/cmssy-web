@@ -1,7 +1,8 @@
 import { CmssyServerPage } from "@cmssy/react";
 import { cmssy } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
-import { getPageById, getSiteConfig, siteLocales } from "@/cmssy/site";
+import { getPageById } from "@/services/pages";
+import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 import { CmssyLocaleProvider } from "@/components/cmssy-locale";
 
 function DefaultNotFound() {
@@ -17,14 +18,14 @@ function DefaultNotFound() {
 // path is itself a fallback, so any backend hiccup degrades to the built-in
 // message rather than a 500.
 export default async function NotFound() {
-  const config = await getSiteConfig();
+  const config = await fetchSiteConfig();
   const notFoundPageId = config?.notFoundPageId;
   if (!notFoundPageId) return <DefaultNotFound />;
 
   const page = await getPageById(notFoundPageId);
   if (!page || page.blocks.length === 0) return <DefaultNotFound />;
 
-  const { defaultLocale, locales } = siteLocales(config);
+  const { defaultLocale, locales } = await resolveSiteLocales();
 
   return (
     <CmssyLocaleProvider

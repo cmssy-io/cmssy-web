@@ -2,10 +2,13 @@
 
 import type { PageItem, PlatformContext } from "@cmssy/types";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { print } from "graphql";
 import type { BlockProps } from "@cmssy/react";
+import { PublicPagesByTypeDocument } from "@/graphql/generated/graphql";
 import type { blogPostsProps, BlogPostsData } from "../block";
-import { PUBLIC_PAGES_QUERY } from "./query";
 import { getCustomField } from "./utils";
+
+const PUBLIC_PAGES_QUERY = print(PublicPagesByTypeDocument);
 
 type BlockContent = BlockProps<typeof blogPostsProps>["content"];
 type BlockStyle = Pick<BlockContent, "layout" | "columns">;

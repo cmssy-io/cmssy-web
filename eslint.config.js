@@ -35,6 +35,7 @@ export default tseslint.config(
       "vendor/",
       "scripts/",
       "smoke-edit.mjs",
+      "graphql/generated/",
     ],
   },
 );

@@ -4,12 +4,9 @@ import { resolveEditorOrigin } from "@cmssy/next";
 import { cmssy } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
 import { EditableLayout } from "@/cmssy/editable-layout";
-import {
-  getLayoutGroups,
-  getSiteConfig,
-  siteLocales,
-  splitLocaleFromPath,
-} from "@/cmssy/site";
+import { splitLocaleFromPath } from "@/lib/locale-path";
+import { fetchChromeLayouts } from "@/services/layout";
+import { resolveSiteLocales } from "@/services/site";
 
 export const dynamic = "force-dynamic";
 
@@ -28,13 +25,12 @@ type PageProps = {
 
 export default async function EditPage({ params, searchParams }: PageProps) {
   const { path } = await params;
-  const siteConfig = await getSiteConfig();
-  const locales = siteLocales(siteConfig);
+  const locales = await resolveSiteLocales();
   const { path: strippedPath, locale } = splitLocaleFromPath(path, locales);
   const slug = "/" + (strippedPath ?? []).join("/");
 
   const [groups, content] = await Promise.all([
-    getLayoutGroups(slug, cmssy.draftSecret),
+    fetchChromeLayouts(slug, cmssy.draftSecret),
     renderEditPage({ params: Promise.resolve({ path }), searchParams }),
   ]);
   const sidebar = groups.find((g) => g.position === "sidebar_left");

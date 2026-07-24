@@ -1,12 +1,9 @@
 import "@/styles/main.css";
 import { resolveEditorOrigin } from "@cmssy/next";
 import { cmssy } from "@/cmssy/config";
-import {
-  getLayoutGroups,
-  getSiteConfig,
-  siteLocales,
-  splitLocaleFromPath,
-} from "@/cmssy/site";
+import { splitLocaleFromPath } from "@/lib/locale-path";
+import { fetchChromeLayouts } from "@/services/layout";
+import { resolveSiteLocales } from "@/services/site";
 import { EditableLayout } from "@/cmssy/editable-layout";
 import { CmssyLocaleProvider } from "@/components/cmssy-locale";
 
@@ -21,11 +18,10 @@ export default async function EditLayout({
   params: Promise<{ path?: string[] }>;
 }) {
   const { path } = await params;
-  const [siteConfig, groups] = await Promise.all([
-    getSiteConfig(),
-    getLayoutGroups("/", cmssy.draftSecret),
+  const [locales, groups] = await Promise.all([
+    resolveSiteLocales(),
+    fetchChromeLayouts("/", cmssy.draftSecret),
   ]);
-  const locales = siteLocales(siteConfig);
   const { locale } = splitLocaleFromPath(path, locales);
   const resolvedEditorOrigin = resolveEditorOrigin(cmssy.editorOrigin);
   const editorOrigin = Array.isArray(resolvedEditorOrigin)

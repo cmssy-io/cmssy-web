@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { resolveApiUrl } from "./site";
+import { resolveApiUrl } from "@/services/gateway";
 
 export async function proxyGraphql(request: NextRequest) {
   let body: unknown;

@@ -1,10 +1,8 @@
 import { draftMode } from "next/headers";
 import { cmssy } from "@/cmssy/config";
-import {
-  getPageId,
-  resolveSiteLocales,
-  splitLocaleFromPath,
-} from "@/cmssy/site";
+import { splitLocaleFromPath } from "@/lib/locale-path";
+import { getPageId } from "@/services/pages";
+import { resolveSiteLocales } from "@/services/site";
 
 const ADMIN_URL = process.env.CMSSY_ADMIN_URL?.trim() || "https://cmssy.io";
 

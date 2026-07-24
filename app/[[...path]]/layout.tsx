@@ -5,12 +5,9 @@ import { CmssyServerLayout } from "@cmssy/react";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { blocks } from "@/cmssy/blocks";
 import { cmssy } from "@/cmssy/config";
-import {
-  getLayoutGroups,
-  getSiteConfig,
-  siteLocales,
-  splitLocaleFromPath,
-} from "@/cmssy/site";
+import { splitLocaleFromPath } from "@/lib/locale-path";
+import { fetchChromeLayouts } from "@/services/layout";
+import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 import { CmssyLocaleProvider } from "@/components/cmssy-locale";
 import { DraftPreviewBanner } from "@/components/draft-preview-banner";
 
@@ -40,7 +37,7 @@ const plexMono = IBM_Plex_Mono({
 const THEME_INIT = `(function(){try{var t=localStorage.getItem('cmssy-docs-theme');if(t==='dark'||t==='light'){document.documentElement.dataset.theme=t;}}catch(e){}})();`;
 
 export async function generateMetadata() {
-  const siteConfig = await getSiteConfig();
+  const siteConfig = await fetchSiteConfig();
   const favicon = siteConfig?.branding?.faviconUrl;
   if (!favicon) return {};
   return { icons: { icon: favicon, apple: favicon } };
@@ -55,11 +52,10 @@ export default async function SiteLayout({
 }) {
   const { path } = await params;
   const { isEnabled: draft } = await draftMode();
-  const [siteConfig, groups] = await Promise.all([
-    getSiteConfig(),
-    getLayoutGroups("/", draft ? cmssy.draftSecret : undefined),
+  const [locales, groups] = await Promise.all([
+    resolveSiteLocales(),
+    fetchChromeLayouts("/", draft ? cmssy.draftSecret : undefined),
   ]);
-  const locales = siteLocales(siteConfig);
   const { locale } = splitLocaleFromPath(path, locales);
   const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim();
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim();

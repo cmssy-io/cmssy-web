@@ -1,18 +1,17 @@
 import type { MetadataRoute } from "next";
-import {
-  getPages,
-  getSiteConfig,
-  localizedPath,
-  siteLocales,
-} from "@/cmssy/site";
+import { localizedPath } from "@/lib/locale-path";
+import { listPublicPages } from "@/services/pages";
+import { resolveSiteLocales } from "@/services/site";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cmssy.io";
 
 export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [config, pages] = await Promise.all([getSiteConfig(), getPages()]);
-  const { defaultLocale, locales } = siteLocales(config);
+  const [{ defaultLocale, locales }, pages] = await Promise.all([
+    resolveSiteLocales(),
+    listPublicPages(),
+  ]);
 
   return pages
     .filter((page) => page.publishedAt)

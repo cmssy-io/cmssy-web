@@ -1,0 +1,16 @@
+query PublicPageById($workspaceSlug: String!, $pageId: ID!) {
+  public {
+    page {
+      getById(workspaceSlug: $workspaceSlug, pageId: $pageId) {
+        id
+        publishedBlocks {
+          id
+          type
+          content
+          style
+          advanced
+        }
+      }
+    }
+  }
+}

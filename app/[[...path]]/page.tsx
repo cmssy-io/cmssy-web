@@ -1,12 +1,10 @@
 import { createCmssyPage } from "@cmssy/next/server";
 import { cmssy } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
-import { buildPageMetadata } from "@/cmssy/metadata";
-import {
-  getPages,
-  resolveSiteLocales,
-  splitLocaleFromPath,
-} from "@/cmssy/site";
+import { splitLocaleFromPath } from "@/lib/locale-path";
+import { listPublicPages } from "@/services/pages";
+import { buildPageMetadata } from "@/services/seo";
+import { resolveSiteLocales } from "@/services/site";
 import { DocsShell } from "@/components/docs-shell";
 import { DocsSidebarNav } from "@/components/docs-sidebar-nav";
 import { buildDocsNav, type DocsNavSection } from "@/lib/docs-nav";
@@ -28,7 +26,7 @@ export async function generateMetadata({ params }: PageProps) {
 
 // Docs navigation derived from the published page tree (see lib/docs-nav.ts).
 async function getDocsNav(): Promise<DocsNavSection[]> {
-  const pages = await getPages();
+  const pages = await listPublicPages();
   return buildDocsNav(pages, DOCS_NAV_CONFIG);
 }
 
