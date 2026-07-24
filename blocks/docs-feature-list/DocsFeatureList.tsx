@@ -21,10 +21,10 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 const iconColorMap: Record<string, string> = {
-  violet: "text-violet-600",
-  emerald: "text-emerald-600",
-  blue: "text-blue-600",
-  amber: "text-amber-600",
+  violet: "text-violet-500",
+  emerald: "text-emerald-500",
+  blue: "text-blue-500",
+  amber: "text-amber-500",
   foreground: "text-foreground",
 };
 

@@ -50,8 +50,8 @@ export default function DocsCodeBlock({
           >
             {copied ? (
               <>
-                <Check className="h-3.5 w-3.5 text-emerald-600" />
-                <span className="text-emerald-600">Copied!</span>
+                <Check className="h-3.5 w-3.5 text-primary" />
+                <span className="text-primary">Copied!</span>
               </>
             ) : (
               <>
@@ -76,7 +76,7 @@ export default function DocsCodeBlock({
           // Fallback for contexts where the server loader didn't run (e.g. the
           // editor): plain, escaped code with optional line numbers.
           <div className="overflow-x-auto">
-            <pre className="p-4 text-sm leading-relaxed">
+            <pre className="p-4 font-mono text-sm leading-relaxed">
               <code>
                 {code.split("\n").map((line, index) => (
                   <div key={index} className="flex">

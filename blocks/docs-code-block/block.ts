@@ -88,7 +88,8 @@ export const docsCodeBlockBlock = defineBlock({
   type: "docs-code-block",
   category: "Docs",
   label: "Docs Code Block",
-  description: "Syntax-highlighted code snippet; inline within documentation content.",
+  description:
+    "Syntax-highlighted code snippet; inline within documentation content.",
   component: DocsCodeBlock,
   // Server-side syntax highlighting via shiki. Runs during SSR; the resulting
   // HTML is passed to the (client) component as `data.html`. shiki is heavy and
@@ -130,11 +131,15 @@ export const docsCodeBlockBlock = defineBlock({
           ]
         : [];
 
+    // Dual theme: shiki emits both palettes as CSS variables
+    // (--shiki-light / --shiki-dark); index.css switches on the docs theme.
+    const themes = { light: "github-light", dark: "github-dark" } as const;
     const { codeToHtml } = await import("shiki");
     try {
       const html = await codeToHtml(code, {
         lang,
-        theme: "github-light",
+        themes,
+        defaultColor: false,
         transformers,
       });
       return { html };
@@ -142,7 +147,8 @@ export const docsCodeBlockBlock = defineBlock({
       // Unknown/unsupported language — fall back to plaintext.
       const html = await codeToHtml(code, {
         lang: "text",
-        theme: "github-light",
+        themes,
+        defaultColor: false,
         transformers,
       });
       return { html };

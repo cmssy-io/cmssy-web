@@ -8,7 +8,7 @@ const METHOD_STYLES: Record<string, string> = {
   mutation: "bg-amber-500/15 text-amber-400 border-amber-500/30",
   subscription: "bg-purple-500/15 text-purple-400 border-purple-500/30",
   GET: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
-  POST: "bg-sky-500/15 text-sky-400 border-sky-500/30",
+  POST: "bg-elektryk-500/15 text-elektryk-300 border-elektryk-500/30",
   PUT: "bg-amber-500/15 text-amber-400 border-amber-500/30",
   DELETE: "bg-red-500/15 text-red-400 border-red-500/30",
 };
@@ -20,7 +20,7 @@ const AUTH_LABELS: Record<string, { text: string; className: string }> = {
   },
   optional: {
     text: "Auth Optional",
-    className: "text-sky-400 bg-sky-500/10",
+    className: "text-elektryk-300 bg-elektryk-500/10",
   },
   none: {
     text: "No Auth",
@@ -80,7 +80,7 @@ export default function DocsApiReference({
 
           {description && (
             <div
-              className="mt-3 text-sm text-zinc-400 prose prose-sm prose-invert max-w-none prose-code:text-sky-400 prose-code:bg-sky-500/10 prose-code:px-1 prose-code:py-0.5 prose-code:rounded"
+              className="mt-3 text-sm text-zinc-400 prose prose-sm prose-invert max-w-none prose-code:text-elektryk-300 prose-code:bg-elektryk-500/10 prose-code:px-1 prose-code:py-0.5 prose-code:rounded"
               dangerouslySetInnerHTML={{ __html: description }}
             />
           )}
@@ -101,7 +101,7 @@ export default function DocsApiReference({
                   className="px-6 py-3 flex items-start gap-4 hover:bg-zinc-900/50 transition-colors"
                 >
                   <div className="flex items-center gap-2 shrink-0 min-w-35">
-                    <code className="text-sm font-mono font-semibold text-sky-400">
+                    <code className="text-sm font-mono font-semibold text-elektryk-300">
                       {param.name}
                     </code>
                     {param.required && (

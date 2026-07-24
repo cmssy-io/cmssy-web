@@ -1,5 +1,5 @@
 import "@/styles/main.css";
-import { Space_Grotesk } from "next/font/google";
+import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { draftMode } from "next/headers";
 import {
   fetchLayouts,
@@ -20,6 +20,25 @@ const spaceGrotesk = Space_Grotesk({
   weight: ["400", "500", "600", "700"],
   variable: "--font-heading",
 });
+
+const plexSans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-mono",
+  display: "swap",
+});
+
+// Applies the persisted docs theme before first paint (no flash). Docs-scoped:
+// only sets data-theme when the user explicitly chose one; default stays light,
+// so the light-only marketing surface is never darkened.
+const THEME_INIT = `(function(){try{var t=localStorage.getItem('cmssy-docs-theme');if(t==='dark'||t==='light'){document.documentElement.dataset.theme=t;}}catch(e){}})();`;
 
 export async function generateMetadata() {
   const siteConfig = await fetchSiteConfig(cmssy).catch(() => null);
@@ -73,7 +92,14 @@ export default async function SiteLayout({
   );
 
   return (
-    <html lang={locale} className={spaceGrotesk.variable}>
+    <html
+      lang={locale}
+      className={`${spaceGrotesk.variable} ${plexSans.variable} ${plexMono.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
+      </head>
       <body>
         <CmssyLocaleProvider
           value={{
