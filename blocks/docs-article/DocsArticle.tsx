@@ -4,13 +4,14 @@ import type { BlockProps } from "@cmssy/react";
 import { Container } from "../../components/container";
 import { extractTocItems } from "@/lib/toc";
 import { formatDate } from "@/lib/utils";
-import type { docsArticleProps } from "./block";
+import type { docsArticleProps, DocsArticleData } from "./block";
 import { TocSidebar } from "./TocSidebar";
 
 export default function DocsArticle({
   content,
   context,
-}: BlockProps<typeof docsArticleProps>) {
+  data,
+}: BlockProps<typeof docsArticleProps, DocsArticleData>) {
   const lang = context?.locale.current;
   const {
     breadcrumbs = [],
@@ -27,9 +28,11 @@ export default function DocsArticle({
     editUrl,
   } = content;
 
-  const toc = showToc
-    ? extractTocItems(articleContent)
-    : { html: articleContent, items: [] };
+  const rendered = data?.html
+    ? { html: data.html, items: data.toc ?? [] }
+    : showToc
+      ? extractTocItems(articleContent)
+      : { html: articleContent, items: [] };
   const prev = prevPage[0];
   const next = nextPage[0];
 
@@ -56,7 +59,7 @@ export default function DocsArticle({
                     </CmssyLink>
                   ) : (
                     <span
-                      className={isLast ? "text-sky-600 font-medium" : ""}
+                      className={isLast ? "text-primary font-medium" : ""}
                       aria-current={isLast ? "page" : undefined}
                     >
                       {crumb.label}
@@ -90,15 +93,15 @@ export default function DocsArticle({
 
         {/* Content */}
         <div
-          className="prose prose-violet max-w-none
+          className="prose max-w-none
             prose-headings:scroll-mt-20
             prose-h2:text-2xl prose-h2:font-semibold prose-h2:mt-10 prose-h2:mb-4
             prose-h3:text-xl prose-h3:font-medium prose-h3:mt-8 prose-h3:mb-3
             prose-p:text-muted-foreground prose-p:leading-relaxed
-            prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline
-            prose-ul:text-muted-foreground prose-li:marker:text-sky-500
+            prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+            prose-ul:text-muted-foreground prose-li:marker:text-primary
           "
-          dangerouslySetInnerHTML={{ __html: toc.html }}
+          dangerouslySetInnerHTML={{ __html: rendered.html }}
         />
 
         {/* Edit Link */}
@@ -122,13 +125,13 @@ export default function DocsArticle({
             {prev ? (
               <CmssyLink
                 href={prev.url}
-                className="group flex flex-col p-4 rounded-lg border hover:border-sky-500 hover:bg-sky-50 transition-colors"
+                className="group flex flex-col p-4 rounded-lg border hover:border-primary hover:bg-primary/5 transition-colors"
               >
                 <span className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
                   <ChevronLeft className="size-3" />
                   Previous
                 </span>
-                <span className="font-medium group-hover:text-sky-600 transition-colors">
+                <span className="font-medium group-hover:text-primary transition-colors">
                   {prev.label}
                 </span>
               </CmssyLink>
@@ -138,13 +141,13 @@ export default function DocsArticle({
             {next && (
               <CmssyLink
                 href={next.url}
-                className="group flex flex-col items-end p-4 rounded-lg border hover:border-sky-500 hover:bg-sky-50 transition-colors"
+                className="group flex flex-col items-end p-4 rounded-lg border hover:border-primary hover:bg-primary/5 transition-colors"
               >
                 <span className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
                   Next
                   <ChevronRight className="size-3" />
                 </span>
-                <span className="font-medium group-hover:text-sky-600 transition-colors">
+                <span className="font-medium group-hover:text-primary transition-colors">
                   {next.label}
                 </span>
               </CmssyLink>
@@ -154,8 +157,8 @@ export default function DocsArticle({
       </article>
 
       {/* Table of Contents — client component for scroll tracking */}
-      {showToc && toc.items.length > 0 && (
-        <TocSidebar items={toc.items} title={tocTitle} />
+      {showToc && rendered.items.length > 0 && (
+        <TocSidebar items={rendered.items} title={tocTitle} />
       )}
     </Container>
   );

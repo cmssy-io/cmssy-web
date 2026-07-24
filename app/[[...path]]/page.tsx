@@ -1,15 +1,11 @@
-import { draftMode } from "next/headers";
-import {
-  fetchLayouts,
-  resolveSiteLocales,
-  CmssyServerLayout,
-  type CmssyLayoutGroup,
-} from "@cmssy/react";
 import { buildCmssyMetadata, createCmssyPage } from "@cmssy/next/server";
-import { splitCmssyLocale } from "@cmssy/core";
+import { splitCmssyLocale, fetchPages } from "@cmssy/core";
 import { cmssy } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
 import { DocsShell } from "@/components/docs-shell";
+import { DocsSidebarNav } from "@/components/docs-sidebar-nav";
+import { buildDocsNav, type DocsNavSection } from "@/lib/docs-nav";
+import { DOCS_NAV_CONFIG } from "@/lib/docs-nav.config";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -25,20 +21,15 @@ export async function generateMetadata({ params }: PageProps) {
   return buildCmssyMetadata(cmssy, path);
 }
 
-async function getPageLayoutGroups(
-  slug: string,
-  draft: boolean,
-): Promise<CmssyLayoutGroup[]> {
+// Docs navigation derived from the published page tree (see lib/docs-nav.ts).
+async function getDocsNav(): Promise<DocsNavSection[]> {
   try {
-    return await fetchLayouts(
-      {
-        apiUrl: cmssy.apiUrl,
-        org: cmssy.org,
-        workspaceSlug: cmssy.workspaceSlug,
-      },
-      slug,
-      { previewSecret: draft ? cmssy.draftSecret : undefined },
-    );
+    const pages = await fetchPages({
+      apiUrl: cmssy.apiUrl,
+      org: cmssy.org,
+      workspaceSlug: cmssy.workspaceSlug,
+    });
+    return buildDocsNav(pages, DOCS_NAV_CONFIG);
   } catch {
     return [];
   }
@@ -46,36 +37,25 @@ async function getPageLayoutGroups(
 
 export default async function Page({ params }: PageProps) {
   const { path } = await params;
-  const { path: strippedPath, locale } = await splitCmssyLocale(cmssy, path);
+  const { path: strippedPath } = await splitCmssyLocale(cmssy, path);
   const slug = "/" + (strippedPath ?? []).join("/");
-  const { isEnabled: draft } = await draftMode();
-
-  const [groups, content, siteLocales] = await Promise.all([
-    getPageLayoutGroups(slug, draft),
-    renderPage({ params: Promise.resolve({ path }) }),
-    resolveSiteLocales(cmssy),
-  ]);
-  const sidebar = groups.find((g) => g.position === "sidebar_left");
-  const hasSidebar = !!sidebar && sidebar.blocks.length > 0;
   const isDocs = slug === "/docs" || slug.startsWith("/docs/");
 
-  const body = hasSidebar ? (
-    <div className="flex flex-col md:flex-row">
-      <div className="md:sticky md:top-0 md:h-screen md:w-64 md:shrink-0 md:overflow-y-auto md:border-r md:border-border">
-        <CmssyServerLayout
-          groups={groups}
-          blocks={blocks}
-          position="sidebar_left"
-          locale={locale}
-          defaultLocale={siteLocales.defaultLocale}
-          enabledLocales={siteLocales.locales}
-        />
-      </div>
-      <main className="min-w-0 flex-1">{content}</main>
-    </div>
-  ) : (
-    content
-  );
+  const [content, nav] = await Promise.all([
+    renderPage({ params: Promise.resolve({ path }) }),
+    isDocs ? getDocsNav() : Promise.resolve<DocsNavSection[]>([]),
+  ]);
 
-  return isDocs ? <DocsShell>{body}</DocsShell> : body;
+  if (!isDocs) return content;
+
+  return (
+    <DocsShell>
+      <div className="flex flex-col md:flex-row">
+        <aside className="md:sticky md:top-0 md:h-screen md:w-64 md:shrink-0 md:overflow-y-auto md:border-r md:border-border">
+          <DocsSidebarNav sections={nav} />
+        </aside>
+        <main className="min-w-0 flex-1">{content}</main>
+      </div>
+    </DocsShell>
+  );
 }

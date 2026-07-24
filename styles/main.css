@@ -259,6 +259,29 @@ html[data-theme="dark"] .docs-shell .prose pre {
   background-color: #0d1117;
 }
 
+/* Syntax-highlighted (shiki, dual-theme) code blocks inside prose. Colors are
+   shiki CSS vars; the block follows the docs theme instead of the flat dark. */
+.docs-shell .prose pre.shiki {
+  background-color: var(--shiki-light-bg);
+  border: 1px solid var(--border);
+}
+.docs-shell .prose pre.shiki,
+.docs-shell .prose pre.shiki span {
+  color: var(--shiki-light);
+}
+.docs-shell .prose pre.shiki code {
+  color: inherit;
+  background: transparent;
+  font-weight: inherit;
+}
+html[data-theme="dark"] .docs-shell .prose pre.shiki {
+  background-color: var(--shiki-dark-bg);
+}
+html[data-theme="dark"] .docs-shell .prose pre.shiki,
+html[data-theme="dark"] .docs-shell .prose pre.shiki span {
+  color: var(--shiki-dark);
+}
+
 @theme {
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
