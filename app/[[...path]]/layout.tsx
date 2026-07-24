@@ -13,6 +13,7 @@ import { CmssyLocaleProvider } from "@cmssy/next/client";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { blocks } from "@/cmssy/blocks";
 import { cmssy } from "@/cmssy/config";
+import { DraftPreviewBanner } from "@/components/draft-preview-banner";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -86,6 +87,7 @@ export default async function SiteLayout({
           {slot("header")}
           {children}
           {slot("footer")}
+          <DraftPreviewBanner path={path} />
         </CmssyLocaleProvider>
       </body>
     </html>
