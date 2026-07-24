@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Github, Linkedin, Twitter } from "lucide-react";
-import { CmssyLink } from "@cmssy/next/client";
+import { CmssyLink } from "@/components/cmssy-locale";
 import type { BlockProps } from "@cmssy/react";
 import { CmssyMark } from "@/components/cmssy-mark";
 import { Container } from "@/components/container";

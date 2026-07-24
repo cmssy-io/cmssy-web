@@ -1,18 +1,17 @@
 import "@/styles/main.css";
 import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { draftMode } from "next/headers";
-import {
-  fetchLayouts,
-  resolveSiteLocales,
-  CmssyServerLayout,
-  type CmssyLayoutGroup,
-} from "@cmssy/react";
-import { fetchSiteConfig } from "@cmssy/core";
-import { splitCmssyLocale } from "@cmssy/core";
-import { CmssyLocaleProvider } from "@cmssy/next/client";
+import { CmssyServerLayout } from "@cmssy/react";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { blocks } from "@/cmssy/blocks";
 import { cmssy } from "@/cmssy/config";
+import {
+  getLayoutGroups,
+  getSiteConfig,
+  siteLocales,
+  splitLocaleFromPath,
+} from "@/cmssy/site";
+import { CmssyLocaleProvider } from "@/components/cmssy-locale";
 import { DraftPreviewBanner } from "@/components/draft-preview-banner";
 
 const spaceGrotesk = Space_Grotesk({
@@ -41,26 +40,10 @@ const plexMono = IBM_Plex_Mono({
 const THEME_INIT = `(function(){try{var t=localStorage.getItem('cmssy-docs-theme');if(t==='dark'||t==='light'){document.documentElement.dataset.theme=t;}}catch(e){}})();`;
 
 export async function generateMetadata() {
-  const siteConfig = await fetchSiteConfig(cmssy).catch(() => null);
+  const siteConfig = await getSiteConfig();
   const favicon = siteConfig?.branding?.faviconUrl;
   if (!favicon) return {};
   return { icons: { icon: favicon, apple: favicon } };
-}
-
-async function getLayoutGroups(draft: boolean): Promise<CmssyLayoutGroup[]> {
-  try {
-    return await fetchLayouts(
-      {
-        apiUrl: cmssy.apiUrl,
-        org: cmssy.org,
-        workspaceSlug: cmssy.workspaceSlug,
-      },
-      "/",
-      { previewSecret: draft ? cmssy.draftSecret : undefined },
-    );
-  } catch {
-    return [];
-  }
 }
 
 export default async function SiteLayout({
@@ -72,11 +55,12 @@ export default async function SiteLayout({
 }) {
   const { path } = await params;
   const { isEnabled: draft } = await draftMode();
-  const [{ locale }, siteLocales, groups] = await Promise.all([
-    splitCmssyLocale(cmssy, path),
-    resolveSiteLocales(cmssy),
-    getLayoutGroups(draft),
+  const [siteConfig, groups] = await Promise.all([
+    getSiteConfig(),
+    getLayoutGroups("/", draft ? cmssy.draftSecret : undefined),
   ]);
+  const locales = siteLocales(siteConfig);
+  const { locale } = splitLocaleFromPath(path, locales);
   const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim();
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim();
 
@@ -86,8 +70,8 @@ export default async function SiteLayout({
       blocks={blocks}
       position={position}
       locale={locale}
-      defaultLocale={siteLocales.defaultLocale}
-      enabledLocales={siteLocales.locales}
+      defaultLocale={locales.defaultLocale}
+      enabledLocales={locales.locales}
     />
   );
 
@@ -104,8 +88,8 @@ export default async function SiteLayout({
         <CmssyLocaleProvider
           value={{
             current: locale,
-            default: siteLocales.defaultLocale,
-            enabled: siteLocales.locales,
+            default: locales.defaultLocale,
+            enabled: locales.locales,
           }}
         >
           {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}

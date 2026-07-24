@@ -1,12 +1,18 @@
 "use server";
 
-import {
-  createCmssyClient,
-  SUBMIT_FORM_MUTATION,
-  type CmssyFormSubmitResponse,
-} from "@cmssy/react";
+import { createCmssyClient, type CmssyFormSubmitResponse } from "@cmssy/react";
 import { cmssy } from "@/cmssy/config";
 import type { ContactState } from "./types";
+
+const SUBMIT_FORM_MUTATION = `mutation SubmitForm($formId: ID!, $input: SubmitFormInput!) {
+  public {
+    form {
+      submit(formId: $formId, input: $input) {
+        success message submissionId redirectUrl accessToken customer
+      }
+    }
+  }
+}`;
 
 const workspaceId =
   process.env.CMSSY_WORKSPACE_ID ?? process.env.NEXT_PUBLIC_CMSSY_WORKSPACE_ID;

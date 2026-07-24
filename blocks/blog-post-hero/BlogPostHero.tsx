@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Calendar, Clock } from "lucide-react";
-import { CmssyLink } from "@cmssy/next/client";
+import { CmssyLink } from "@/components/cmssy-locale";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "../../components/container";
 import { formatDate } from "@/lib/utils";

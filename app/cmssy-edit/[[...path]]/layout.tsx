@@ -1,30 +1,14 @@
 import "@/styles/main.css";
-import {
-  fetchLayouts,
-  resolveSiteLocales,
-  type CmssyLayoutGroup,
-} from "@cmssy/react";
 import { resolveEditorOrigin } from "@cmssy/next";
-import { splitCmssyLocale } from "@cmssy/core";
-import { CmssyLocaleProvider } from "@cmssy/next/client";
 import { cmssy } from "@/cmssy/config";
+import {
+  getLayoutGroups,
+  getSiteConfig,
+  siteLocales,
+  splitLocaleFromPath,
+} from "@/cmssy/site";
 import { EditableLayout } from "@/cmssy/editable-layout";
-
-async function getDraftLayoutGroups(): Promise<CmssyLayoutGroup[]> {
-  try {
-    return await fetchLayouts(
-      {
-        apiUrl: cmssy.apiUrl,
-        org: cmssy.org,
-        workspaceSlug: cmssy.workspaceSlug,
-      },
-      "/",
-      { previewSecret: cmssy.draftSecret },
-    );
-  } catch {
-    return [];
-  }
-}
+import { CmssyLocaleProvider } from "@/components/cmssy-locale";
 
 // Editable site chrome for the middleware-rewritten editor route. The route
 // itself is force-dynamic, so reading nothing but params here is fine - the
@@ -37,11 +21,12 @@ export default async function EditLayout({
   params: Promise<{ path?: string[] }>;
 }) {
   const { path } = await params;
-  const [{ locale }, siteLocales, groups] = await Promise.all([
-    splitCmssyLocale(cmssy, path),
-    resolveSiteLocales(cmssy),
-    getDraftLayoutGroups(),
+  const [siteConfig, groups] = await Promise.all([
+    getSiteConfig(),
+    getLayoutGroups("/", cmssy.draftSecret),
   ]);
+  const locales = siteLocales(siteConfig);
+  const { locale } = splitLocaleFromPath(path, locales);
   const resolvedEditorOrigin = resolveEditorOrigin(cmssy.editorOrigin);
   const editorOrigin = Array.isArray(resolvedEditorOrigin)
     ? resolvedEditorOrigin[0]
@@ -52,8 +37,8 @@ export default async function EditLayout({
       groups={groups}
       position={position}
       locale={locale}
-      defaultLocale={siteLocales.defaultLocale}
-      enabledLocales={siteLocales.locales}
+      defaultLocale={locales.defaultLocale}
+      enabledLocales={locales.locales}
       edit={{ editorOrigin }}
     />
   );
@@ -66,8 +51,8 @@ export default async function EditLayout({
         <CmssyLocaleProvider
           value={{
             current: locale,
-            default: siteLocales.defaultLocale,
-            enabled: siteLocales.locales,
+            default: locales.defaultLocale,
+            enabled: locales.locales,
           }}
         >
           {slot("header")}

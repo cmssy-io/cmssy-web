@@ -1,6 +1,10 @@
 import { draftMode } from "next/headers";
-import { fetchPage } from "@cmssy/core";
 import { cmssy } from "@/cmssy/config";
+import {
+  getPageId,
+  resolveSiteLocales,
+  splitLocaleFromPath,
+} from "@/cmssy/site";
 
 const ADMIN_URL = process.env.CMSSY_ADMIN_URL?.trim() || "https://cmssy.io";
 
@@ -11,9 +15,12 @@ export async function DraftPreviewBanner({ path }: { path?: string[] }) {
   const currentPath = "/" + (path ?? []).filter(Boolean).join("/");
   const exitHref = `/api/draft?disable=1&redirect=${encodeURIComponent(currentPath)}`;
 
-  const page = await fetchPage(cmssy, path, {
-    previewSecret: cmssy.draftSecret,
-  }).catch(() => null);
+  const { path: strippedPath } = splitLocaleFromPath(
+    path,
+    await resolveSiteLocales(),
+  );
+  const slug = "/" + (strippedPath ?? []).join("/");
+  const page = await getPageId(slug, cmssy.draftSecret);
   const editHref = page
     ? `${ADMIN_URL}/dashboard/organizations/${cmssy.org}/workspaces/${cmssy.workspaceSlug}/editor?pageId=${page.id}`
     : null;

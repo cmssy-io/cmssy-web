@@ -46,7 +46,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import Image from "next/image";
-import { CmssyLink } from "@cmssy/next/client";
+import { CmssyLink } from "@/components/cmssy-locale";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CmssyMark } from "@/components/cmssy-mark";
 import { Container } from "@/components/container";

@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { CmssyLink } from "@cmssy/next/client";
+import { CmssyLink } from "@/components/cmssy-locale";
 import { Container } from "@/components/container";
 import type { BlockProps } from "@cmssy/react";
 import type { legalProps } from "./block";
