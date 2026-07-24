@@ -16,9 +16,9 @@ const body = `# cmssy
 ## Docs
 
 - Documentation: https://www.cmssy.com/docs
-- Quickstart: https://www.cmssy.com/docs/quickstart
-- Headless SDK installation: https://www.cmssy.com/docs/installation
-- MCP server: https://www.cmssy.com/docs/mcp-server
+- Quickstart: https://www.cmssy.com/docs/start/quickstart
+- Headless SDK installation: https://www.cmssy.com/docs/start/installation
+- MCP server: https://www.cmssy.com/docs/api/mcp
 - Pricing: https://www.cmssy.com/pricing
 
 ## App
