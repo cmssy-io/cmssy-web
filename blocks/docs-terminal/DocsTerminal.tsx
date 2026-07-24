@@ -43,7 +43,7 @@ function renderCleanCommand(command: string): string {
   const keywordPattern = new RegExp(`\\b(${CLI_KEYWORDS.join("|")})\\b`, "g");
   return escaped.replace(
     keywordPattern,
-    '<span class="text-sky-400">$1</span>',
+    '<span class="text-elektryk-300">$1</span>',
   );
 }
 

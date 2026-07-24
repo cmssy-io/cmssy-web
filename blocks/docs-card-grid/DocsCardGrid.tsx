@@ -37,14 +37,14 @@ export default function DocsCardGrid({
             <CmssyLink
               key={index}
               href={card.url}
-              className="group relative flex flex-col p-6 rounded-xl border bg-card hover:border-sky-500 hover:shadow-lg hover:shadow-sky-500/5 transition-all duration-200"
+              className="group relative flex flex-col p-6 rounded-xl border bg-card hover:border-primary hover:shadow-lg hover:shadow-primary/5 transition-all duration-200"
             >
               <div className="flex items-start gap-4">
-                <div className="p-2 rounded-lg bg-sky-100 text-sky-600 group-hover:bg-sky-500 group-hover:text-white transition-colors">
+                <div className="p-2 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                   <Icon className="h-5 w-5" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold mb-1 group-hover:text-sky-600 transition-colors">
+                  <h3 className="font-semibold mb-1 group-hover:text-primary transition-colors">
                     {card.title}
                   </h3>
                   {card.description && (
@@ -55,7 +55,7 @@ export default function DocsCardGrid({
                 </div>
               </div>
 
-              <div className="mt-4 flex items-center gap-1 text-sm font-medium text-sky-600 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="mt-4 flex items-center gap-1 text-sm font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
                 <span>Learn more</span>
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>

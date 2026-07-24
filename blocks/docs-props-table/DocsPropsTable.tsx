@@ -49,11 +49,11 @@ export default function DocsPropsTable({
                 {/* Name */}
                 <td className="px-4 py-3 align-top">
                   <div className="flex items-center gap-2">
-                    <code className="text-[13px] font-mono font-semibold text-sky-600">
+                    <code className="text-[13px] font-mono font-semibold text-primary">
                       {prop.name}
                     </code>
                     {showRequired && prop.required && (
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-red-500 bg-red-50 px-1.5 py-0.5 rounded">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-red-500 bg-red-500/10 px-1.5 py-0.5 rounded">
                         required
                       </span>
                     )}
@@ -62,7 +62,7 @@ export default function DocsPropsTable({
 
                 {/* Type */}
                 <td className="px-4 py-3 align-top">
-                  <code className="text-[13px] font-mono text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">
+                  <code className="text-[13px] font-mono text-amber-600 bg-amber-500/10 px-1.5 py-0.5 rounded">
                     {prop.type}
                   </code>
                 </td>

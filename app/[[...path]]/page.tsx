@@ -9,6 +9,7 @@ import { buildCmssyMetadata, createCmssyPage } from "@cmssy/next/server";
 import { splitCmssyLocale } from "@cmssy/core";
 import { cmssy } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
+import { DocsShell } from "@/components/docs-shell";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -56,10 +57,9 @@ export default async function Page({ params }: PageProps) {
   ]);
   const sidebar = groups.find((g) => g.position === "sidebar_left");
   const hasSidebar = !!sidebar && sidebar.blocks.length > 0;
+  const isDocs = slug === "/docs" || slug.startsWith("/docs/");
 
-  if (!hasSidebar) return content;
-
-  return (
+  const body = hasSidebar ? (
     <div className="flex flex-col md:flex-row">
       <div className="md:sticky md:top-0 md:h-screen md:w-64 md:shrink-0 md:overflow-y-auto md:border-r md:border-border">
         <CmssyServerLayout
@@ -73,5 +73,9 @@ export default async function Page({ params }: PageProps) {
       </div>
       <main className="min-w-0 flex-1">{content}</main>
     </div>
+  ) : (
+    content
   );
+
+  return isDocs ? <DocsShell>{body}</DocsShell> : body;
 }

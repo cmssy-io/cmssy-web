@@ -14,6 +14,8 @@
   --color-elektryk-700: #0077b6;
   --color-elektryk: var(--color-elektryk-500);
   --font-heading: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, "SF Mono", Menlo, monospace;
 }
 
 @utility dot-grid-dark {
@@ -207,6 +209,7 @@
   .prose pre {
     background-color: #18181b; /* zinc-900 */
     color: #fafafa; /* zinc-50 */
+    font-family: var(--font-mono);
   }
   .prose pre code {
     background-color: transparent;
@@ -221,11 +224,39 @@
     padding: 0.125rem 0.375rem;
     border-radius: 0.25rem;
     font-size: 0.875em;
+    font-family: var(--font-mono);
   }
   .prose code::before,
   .prose code::after {
     content: none;
   }
+}
+
+/* Docs dark: prose reading colors + code surfaces (CMS-1037), scoped to
+   .docs-shell so marketing prose (blog) is untouched. */
+html[data-theme="dark"] .docs-shell .prose {
+  --tw-prose-body: #c3ccd6;
+  --tw-prose-headings: #e7edf3;
+  --tw-prose-lead: #aab7c4;
+  --tw-prose-bold: #e7edf3;
+  --tw-prose-links: #35b4ef;
+  --tw-prose-code: #e7edf3;
+  --tw-prose-quotes: #aab7c4;
+  --tw-prose-quote-borders: #222c3a;
+  --tw-prose-bullets: #45566a;
+  --tw-prose-counters: #8b98a6;
+  --tw-prose-hr: #222c3a;
+  --tw-prose-th-borders: #222c3a;
+  --tw-prose-td-borders: #1a2432;
+}
+
+html[data-theme="dark"] .docs-shell .prose :not(pre) > code {
+  background-color: #1a2432;
+  color: #e7edf3;
+}
+
+html[data-theme="dark"] .docs-shell .prose pre {
+  background-color: #0d1117;
 }
 
 @theme {
@@ -322,4 +353,37 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+}
+
+/* ---------------------------------------------------------------------------
+   Docs surface (CMS-1037)
+   - Plex body font + elektryk as the single accent (light).
+   - Dark tokens are scoped to `.docs-shell`, so the light-only marketing
+     surface is never darkened even when the <html> theme flag is "dark".
+--------------------------------------------------------------------------- */
+.docs-shell {
+  font-family: var(--font-sans);
+  --primary: var(--color-elektryk-700);
+  --primary-foreground: #ffffff;
+  --ring: var(--color-elektryk-500);
+}
+
+html[data-theme="dark"] .docs-shell {
+  --background: #0b0f16;
+  --foreground: #e7edf3;
+  --card: #111825;
+  --card-foreground: #e7edf3;
+  --popover: #111825;
+  --popover-foreground: #e7edf3;
+  --primary: #35b4ef;
+  --primary-foreground: #0b0f16;
+  --secondary: #1a2432;
+  --secondary-foreground: #e7edf3;
+  --muted: #161f2b;
+  --muted-foreground: #8b98a6;
+  --accent: #1a2432;
+  --accent-foreground: #e7edf3;
+  --border: #222c3a;
+  --input: #222c3a;
+  --ring: #35b4ef;
 }
