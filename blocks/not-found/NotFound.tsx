@@ -1,5 +1,5 @@
 import { ArrowRight, Home } from "lucide-react";
-import { CmssyLink } from "@cmssy/next/client";
+import { CmssyLink } from "@/components/cmssy-locale";
 import { Container } from "@/components/container";
 import type { BlockProps } from "@cmssy/react";
 import type { notFoundProps } from "./block";

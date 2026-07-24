@@ -1,9 +1,11 @@
+import { print } from "graphql";
 import { createCmssyClient } from "@cmssy/react";
 import type { PageItem } from "@cmssy/types";
 import { cmssy } from "@/cmssy/config";
-import { PUBLIC_PAGES_QUERY } from "./src/query";
+import { PublicPagesByTypeDocument } from "@/graphql/generated/graphql";
 
 const client = createCmssyClient(cmssy);
+const PUBLIC_PAGES_QUERY = print(PublicPagesByTypeDocument);
 
 export type LoadPostsVars = {
   parentSlug: string;

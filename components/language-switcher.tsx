@@ -2,8 +2,8 @@
 
 import { usePathname } from "next/navigation";
 import { Globe } from "lucide-react";
-import { buildLocaleSwitchHref } from "@cmssy/react";
-import { useCmssyLocale } from "@cmssy/react/client";
+import { localizeHref } from "@cmssy/core";
+import { useCmssyLocale } from "./cmssy-locale";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -71,7 +71,7 @@ export function LanguageSwitcher({
           return (
             <DropdownMenuItem key={lang} asChild>
               <a
-                href={buildLocaleSwitchHref(lang, pathname, localeCtx)}
+                href={localizeHref(pathname, { ...localeCtx, current: lang })}
                 data-no-localize
                 className={cn(
                   "capitalize",

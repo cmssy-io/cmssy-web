@@ -1,15 +1,7 @@
 "use server";
 
-import {
-  createCmssyClient,
-  SUBMIT_FORM_MUTATION,
-  type CmssyFormSubmitResponse,
-} from "@cmssy/react";
-import { cmssy } from "@/cmssy/config";
+import { submitForm } from "@/services/forms";
 import type { ContactState } from "./types";
-
-const workspaceId =
-  process.env.CMSSY_WORKSPACE_ID ?? process.env.NEXT_PUBLIC_CMSSY_WORKSPACE_ID;
 
 export async function submitContact(
   formId: string,
@@ -27,18 +19,10 @@ export async function submitContact(
   }
 
   try {
-    const client = createCmssyClient({
-      apiUrl: cmssy.apiUrl,
-      org: cmssy.org,
-      workspaceSlug: cmssy.workspaceSlug,
-    });
-    const res = await client.queryScoped<{
-      public: { form: { submit: CmssyFormSubmitResponse } };
-    }>(SUBMIT_FORM_MUTATION, { formId, input: { data } }, { workspaceId });
-    const result = res.public.form.submit;
+    const result = await submitForm(formId, data);
     return {
       status: result.success ? "success" : "error",
-      message: result.message ?? null,
+      message: result.message,
     };
   } catch {
     return { status: "error", message: null };

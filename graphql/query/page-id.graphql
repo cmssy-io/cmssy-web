@@ -1,0 +1,17 @@
+query PublicPageId(
+  $workspaceSlug: String!
+  $slug: String!
+  $previewSecret: String
+) {
+  public {
+    page {
+      get(
+        workspaceSlug: $workspaceSlug
+        slug: $slug
+        previewSecret: $previewSecret
+      ) {
+        id
+      }
+    }
+  }
+}

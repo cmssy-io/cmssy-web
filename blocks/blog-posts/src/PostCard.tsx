@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { PageItem } from "@cmssy/types";
-import { CmssyLink } from "@cmssy/next/client";
+import { CmssyLink } from "@/components/cmssy-locale";
 import { formatDate } from "@/lib/utils";
 import { getCustomField, getLocalizedField } from "./utils";
 

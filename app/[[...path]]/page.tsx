@@ -1,7 +1,10 @@
-import { buildCmssyMetadata, createCmssyPage } from "@cmssy/next/server";
-import { splitCmssyLocale, fetchPages } from "@cmssy/core";
+import { createCmssyPage } from "@cmssy/next/server";
 import { cmssy } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
+import { splitLocaleFromPath } from "@/lib/locale-path";
+import { listPublicPages } from "@/services/pages";
+import { buildPageMetadata } from "@/services/seo";
+import { resolveSiteLocales } from "@/services/site";
 import { DocsShell } from "@/components/docs-shell";
 import { DocsSidebarNav } from "@/components/docs-sidebar-nav";
 import { buildDocsNav, type DocsNavSection } from "@/lib/docs-nav";
@@ -18,26 +21,21 @@ type PageProps = {
 
 export async function generateMetadata({ params }: PageProps) {
   const { path } = await params;
-  return buildCmssyMetadata(cmssy, path);
+  return buildPageMetadata(path);
 }
 
 // Docs navigation derived from the published page tree (see lib/docs-nav.ts).
 async function getDocsNav(): Promise<DocsNavSection[]> {
-  try {
-    const pages = await fetchPages({
-      apiUrl: cmssy.apiUrl,
-      org: cmssy.org,
-      workspaceSlug: cmssy.workspaceSlug,
-    });
-    return buildDocsNav(pages, DOCS_NAV_CONFIG);
-  } catch {
-    return [];
-  }
+  const pages = await listPublicPages();
+  return buildDocsNav(pages, DOCS_NAV_CONFIG);
 }
 
 export default async function Page({ params }: PageProps) {
   const { path } = await params;
-  const { path: strippedPath } = await splitCmssyLocale(cmssy, path);
+  const { path: strippedPath } = splitLocaleFromPath(
+    path,
+    await resolveSiteLocales(),
+  );
   const slug = "/" + (strippedPath ?? []).join("/");
   const isDocs = slug === "/docs" || slug.startsWith("/docs/");
 

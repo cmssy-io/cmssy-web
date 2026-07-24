@@ -1,15 +1,12 @@
 import nextDynamic from "next/dynamic";
-import {
-  fetchLayouts,
-  resolveSiteLocales,
-  type CmssyLayoutGroup,
-} from "@cmssy/react";
 import { createCmssyEditPage } from "@cmssy/next/server";
 import { resolveEditorOrigin } from "@cmssy/next";
-import { splitCmssyLocale } from "@cmssy/core";
 import { cmssy } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
 import { EditableLayout } from "@/cmssy/editable-layout";
+import { splitLocaleFromPath } from "@/lib/locale-path";
+import { fetchChromeLayouts } from "@/services/layout";
+import { resolveSiteLocales } from "@/services/site";
 
 export const dynamic = "force-dynamic";
 
@@ -26,31 +23,15 @@ type PageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
-async function getPageLayoutGroups(slug: string): Promise<CmssyLayoutGroup[]> {
-  try {
-    return await fetchLayouts(
-      {
-        apiUrl: cmssy.apiUrl,
-        org: cmssy.org,
-        workspaceSlug: cmssy.workspaceSlug,
-      },
-      slug,
-      { previewSecret: cmssy.draftSecret },
-    );
-  } catch {
-    return [];
-  }
-}
-
 export default async function EditPage({ params, searchParams }: PageProps) {
   const { path } = await params;
-  const { path: strippedPath, locale } = await splitCmssyLocale(cmssy, path);
+  const locales = await resolveSiteLocales();
+  const { path: strippedPath, locale } = splitLocaleFromPath(path, locales);
   const slug = "/" + (strippedPath ?? []).join("/");
 
-  const [groups, content, siteLocales] = await Promise.all([
-    getPageLayoutGroups(slug),
+  const [groups, content] = await Promise.all([
+    fetchChromeLayouts(slug, cmssy.draftSecret),
     renderEditPage({ params: Promise.resolve({ path }), searchParams }),
-    resolveSiteLocales(cmssy),
   ]);
   const sidebar = groups.find((g) => g.position === "sidebar_left");
   const hasSidebar = !!sidebar && sidebar.blocks.length > 0;
@@ -69,8 +50,8 @@ export default async function EditPage({ params, searchParams }: PageProps) {
           groups={groups}
           position="sidebar_left"
           locale={locale}
-          defaultLocale={siteLocales.defaultLocale}
-          enabledLocales={siteLocales.locales}
+          defaultLocale={locales.defaultLocale}
+          enabledLocales={locales.locales}
           edit={{ editorOrigin }}
         />
       </div>

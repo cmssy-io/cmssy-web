@@ -6,7 +6,7 @@ import {
   Lightbulb,
   MessageSquare,
 } from "lucide-react";
-import { CmssyLink } from "@cmssy/next/client";
+import { CmssyLink } from "@/components/cmssy-locale";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
 import type { roadmapProps } from "./block";

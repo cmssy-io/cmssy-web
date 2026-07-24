@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { CmssyLink } from "@cmssy/next/client";
+import { CmssyLink } from "./cmssy-locale";
 import type { DocsNavSection } from "@/lib/docs-nav";
 
 // Auto docs sidebar: rendered from the page tree (see lib/docs-nav.ts), not a
