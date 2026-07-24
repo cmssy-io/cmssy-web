@@ -44,7 +44,6 @@ export const DOCS_NAV_CONFIG: DocsNavConfig = {
       "/docs/blocks/define",
       "/docs/blocks/fields",
       "/docs/blocks/loaders",
-      "/docs/blocks/theming",
       "/docs/blocks/advanced",
       "/docs/blocks/testing",
     ],
