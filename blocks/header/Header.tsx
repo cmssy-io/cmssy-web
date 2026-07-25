@@ -51,7 +51,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { CmssyMark } from "@/components/cmssy-mark";
 import { Container } from "@/components/container";
 import { LanguageSwitcher } from "@/components/language-switcher";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/components/theme";
 import type { BlockProps } from "@cmssy/react";
 import type { headerProps } from "./block";
 
