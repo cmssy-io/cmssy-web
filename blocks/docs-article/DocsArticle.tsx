@@ -1,4 +1,4 @@
-import { Calendar, PenLine } from "lucide-react";
+import { Calendar } from "lucide-react";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "../../components/container";
 import { extractTocItems } from "@/lib/toc";
@@ -19,8 +19,6 @@ export default function DocsArticle({
     content: articleContent = "",
     showToc = true,
     tocTitle,
-    showEditLink = true,
-    editUrl,
   } = content;
 
   const rendered = data?.html
@@ -42,7 +40,8 @@ export default function DocsArticle({
           {lastUpdated && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Calendar className="size-4" />
-              <span>Last updated: {formatDate(lastUpdated, lang)}</span>
+              {/* The date is localized; a label in front of it would not be. */}
+              <span>{formatDate(lastUpdated, lang)}</span>
             </div>
           )}
         </header>
@@ -59,21 +58,6 @@ export default function DocsArticle({
           "
           dangerouslySetInnerHTML={{ __html: rendered.html }}
         />
-
-        {/* Edit Link */}
-        {showEditLink && editUrl && (
-          <div className="mt-12 pt-6 border-t">
-            <a
-              href={editUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <PenLine className="size-4" />
-              Edit this page on GitHub
-            </a>
-          </div>
-        )}
       </article>
 
       {/* Table of Contents — client component for scroll tracking */}

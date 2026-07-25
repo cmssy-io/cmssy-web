@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react";
 import { CmssyLink } from "./cmssy-locale";
 import { DocsSearch, type DocsSearchItem } from "./docs-search";
 import type { DocsNavSection } from "@/lib/docs-nav";
+import type { DocsUi } from "@/lib/docs-ui";
 
 // Auto docs sidebar: rendered from the page tree (see lib/docs-nav.ts), not a
 // hand-authored block. Desktop: a sticky rail. Mobile: a sticky bar plus an
@@ -15,11 +16,13 @@ export function DocsSidebarNav({
   root,
   sections,
   searchItems,
+  ui,
 }: {
   /** The section's own root page - its slug and label both come from the CMS. */
   root: { slug: string; label: string };
   sections: DocsNavSection[];
   searchItems: DocsSearchItem[];
+  ui: DocsUi;
 }) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -104,7 +107,7 @@ export function DocsSidebarNav({
           onClick={() => setOpen(true)}
           aria-expanded={open}
           aria-controls="docs-mobile-nav"
-          aria-label="Open documentation navigation"
+          aria-label={ui.navOpen}
           className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
         >
           <Menu className="h-5 w-5" />
@@ -123,7 +126,7 @@ export function DocsSidebarNav({
             <button
               type="button"
               tabIndex={open ? 0 : -1}
-              aria-label="Close documentation navigation"
+              aria-label={ui.navClose}
               onClick={() => setOpen(false)}
               className={`absolute inset-0 h-full w-full cursor-default bg-black/50 transition-opacity duration-200 ${
                 open ? "opacity-100" : "opacity-0"
@@ -131,7 +134,7 @@ export function DocsSidebarNav({
             />
             <nav
               id="docs-mobile-nav"
-              aria-label="Documentation"
+              aria-label={root.label}
               className={`absolute inset-y-0 left-0 flex w-[min(20rem,85vw)] flex-col overflow-y-auto overscroll-contain border-r border-border bg-background text-sm shadow-xl transition-transform duration-200 ease-out ${
                 open ? "translate-x-0" : "-translate-x-full"
               }`}
@@ -146,18 +149,14 @@ export function DocsSidebarNav({
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  aria-label="Close documentation navigation"
+                  aria-label={ui.navClose}
                   className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>
               <div className="px-4 pt-4">
-                <DocsSearch
-                  items={searchItems}
-                  placeholder={`Search ${root.label.toLowerCase()}`}
-                  label={root.label}
-                />
+                <DocsSearch items={searchItems} label={root.label} ui={ui} />
               </div>
               <div className="px-4 py-4">{links}</div>
             </nav>
@@ -166,7 +165,7 @@ export function DocsSidebarNav({
         )}
 
       {/* Desktop rail */}
-      <nav aria-label="Documentation" className="hidden text-sm md:block">
+      <nav aria-label={root.label} className="hidden text-sm md:block">
         <CmssyLink
           href={root.slug}
           className="block px-4 pb-3 pt-6 font-semibold text-foreground"
@@ -174,11 +173,7 @@ export function DocsSidebarNav({
           {root.label}
         </CmssyLink>
         <div className="px-4 pb-4">
-          <DocsSearch
-            items={searchItems}
-            placeholder={`Search ${root.label.toLowerCase()}`}
-            label={root.label}
-          />
+          <DocsSearch items={searchItems} label={root.label} ui={ui} />
         </div>
         <div className="px-4 pb-6">{links}</div>
       </nav>

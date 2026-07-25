@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { useCmssyLocale } from "@/components/cmssy-locale";
 import { localizeHref } from "@cmssy/core";
+import type { DocsUi } from "@/lib/docs-ui";
 
 export const DOCS_SEARCH_EVENT = "cmssy:docs-search";
 
@@ -42,12 +43,13 @@ function useMatches(items: DocsSearchItem[], query: string): DocsSearchItem[] {
  */
 export function DocsSearch({
   items,
-  placeholder,
   label,
+  ui,
 }: {
   items: DocsSearchItem[];
-  placeholder: string;
+  /** The section's own name, for the dialog's accessible name. */
   label: string;
+  ui: DocsUi;
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -112,7 +114,7 @@ export function DocsSearch({
         className="flex w-full items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-left text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
       >
         <Search className="h-4 w-4 shrink-0" />
-        <span className="truncate">{placeholder}</span>
+        <span className="truncate">{ui.searchPlaceholder}</span>
         <kbd className="ml-auto hidden rounded border border-border px-1.5 font-mono text-[10px] sm:block">
           /
         </kbd>
@@ -122,7 +124,7 @@ export function DocsSearch({
         <div className="fixed inset-0 z-[100] flex items-start justify-center p-4 pt-[12vh]">
           <button
             type="button"
-            aria-label="Close search"
+            aria-label={ui.searchClose}
             onClick={() => setOpen(false)}
             className="absolute inset-0 h-full w-full cursor-default bg-black/50"
           />
@@ -151,17 +153,16 @@ export function DocsSearch({
                     go(matches[active].slug);
                   }
                 }}
-                placeholder={placeholder}
+                placeholder={ui.searchPlaceholder}
                 className="w-full bg-transparent py-3.5 text-sm outline-none placeholder:text-muted-foreground"
               />
             </div>
 
             {query && (
               <ul className="max-h-[60vh] overflow-y-auto py-2">
-                {matches.length === 0 && (
+                {matches.length === 0 && ui.searchEmpty && (
                   <li className="px-4 py-6 text-center text-sm text-muted-foreground">
-                    {/* Nothing invented: the CMS has no page matching this. */}
-                    No matches
+                    {ui.searchEmpty}
                   </li>
                 )}
                 {matches.map((item, i) => (

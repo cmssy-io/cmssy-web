@@ -13,12 +13,9 @@ export const docsArticleProps = {
     label: "Show Table of Contents",
     defaultValue: true,
   }),
-  tocTitle: fields.text({ label: "TOC Title", defaultValue: "On this page" }),
-  showEditLink: fields.boolean({
-    label: "Show 'Edit on GitHub' Link",
-    defaultValue: true,
-  }),
-  editUrl: fields.link({ label: "Edit URL" }),
+  // No default: the heading above the TOC is copy, and copy is written in the
+  // CMS, in the languages the workspace has - not in English here.
+  tocTitle: fields.text({ label: "TOC Title" }),
 };
 
 export type DocsArticleData = {
