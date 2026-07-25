@@ -71,7 +71,7 @@ export default function BlogPostHero({
 
           {/* Category */}
           {category && (
-            <span className="inline-block text-[11px] font-bold uppercase tracking-[0.15em] text-white bg-white/15 backdrop-blur-sm px-3 py-1.5 rounded mb-5">
+            <span className="inline-block text-[11px] font-bold uppercase tracking-[0.15em] text-white bg-card/15 backdrop-blur-sm px-3 py-1.5 rounded mb-5">
               {category}
             </span>
           )}
@@ -91,7 +91,7 @@ export default function BlogPostHero({
           )}
 
           {/* Divider */}
-          <div className="w-16 h-px bg-white/25 mb-5" />
+          <div className="w-16 h-px bg-card/25 mb-5" />
 
           {/* Meta */}
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/60">
@@ -106,7 +106,7 @@ export default function BlogPostHero({
                     className="rounded-full object-cover ring-2 ring-white/20"
                   />
                 ) : (
-                  <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white text-[11px] font-semibold">
+                  <div className="w-7 h-7 rounded-full bg-card/20 flex items-center justify-center text-white text-[11px] font-semibold">
                     {author.charAt(0).toUpperCase()}
                   </div>
                 )}

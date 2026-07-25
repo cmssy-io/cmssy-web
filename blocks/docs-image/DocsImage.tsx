@@ -98,7 +98,7 @@ export default function DocsImage({
           <button
             type="button"
             onClick={() => setIsZoomed(false)}
-            className="absolute top-4 right-4 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+            className="absolute top-4 right-4 p-2 rounded-full bg-card/10 text-white hover:bg-card/20 transition-colors"
             aria-label="Close"
           >
             <X className="h-5 w-5" />

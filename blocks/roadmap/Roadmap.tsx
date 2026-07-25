@@ -142,7 +142,7 @@ export default function Roadmap({ content }: BlockProps<typeof roadmapProps>) {
               {ctaButtonText && ctaButtonUrl && (
                 <CmssyLink
                   href={ctaButtonUrl}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-sky-600 font-medium rounded-lg hover:bg-sky-50 transition-colors"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-card text-sky-600 font-medium rounded-lg hover:bg-sky-50 transition-colors"
                 >
                   {ctaButtonText}
                   <ArrowRight className="size-4" />

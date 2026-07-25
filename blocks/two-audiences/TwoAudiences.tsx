@@ -6,25 +6,25 @@ import type { twoAudiencesProps } from "./block";
 
 function EditorWireframe({ caption }: { caption: string }) {
   return (
-    <div className="mt-8 rounded-xl border border-ink/10 bg-white p-4 shadow-sm">
-      <div className="flex items-center gap-2 border-b border-ink/8 pb-3 font-mono text-[11px] text-ink/40">
-        <span className="size-2 rounded-full bg-ink/15" />
+    <div className="mt-8 rounded-xl border border-border bg-card p-4 shadow-sm">
+      <div className="flex items-center gap-2 border-b border-border pb-3 font-mono text-[11px] text-muted-foreground">
+        <span className="size-2 rounded-full bg-muted" />
         {caption}
       </div>
       <div className="mt-3 space-y-2">
         <div className="rounded-md border-2 border-elektryk/60 bg-elektryk/5 px-3 py-2">
-          <div className="h-3 w-2/3 rounded bg-ink/15" />
+          <div className="h-3 w-2/3 rounded bg-muted" />
         </div>
         <div
-          className="h-14 rounded-md border border-ink/10"
+          className="h-14 rounded-md border border-border"
           style={{
             backgroundImage:
               "repeating-linear-gradient(45deg, rgba(16,20,28,.06) 0 6px, transparent 6px 12px)",
           }}
         />
         <div className="grid grid-cols-2 gap-2">
-          <div className="h-10 rounded-md border border-ink/10 bg-ink/3" />
-          <div className="h-10 rounded-md border border-ink/10 bg-ink/3" />
+          <div className="h-10 rounded-md border border-border bg-muted" />
+          <div className="h-10 rounded-md border border-border bg-muted" />
         </div>
       </div>
     </div>
@@ -43,15 +43,15 @@ export default function TwoAudiences({
   } = content;
 
   return (
-    <section id="product" className="bg-paper py-24">
+    <section id="product" className="bg-background py-24">
       <Container>
         <div className="max-w-3xl">
           <FigEyebrow fig={fig} label={eyebrow} />
-          <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-ink text-balance">
+          <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-foreground text-balance">
             {heading}
           </h2>
           {description && (
-            <p className="mt-4 text-lg text-ink/60">{description}</p>
+            <p className="mt-4 text-lg text-muted-foreground">{description}</p>
           )}
         </div>
 
@@ -62,12 +62,12 @@ export default function TwoAudiences({
               className={`flex flex-col rounded-2xl p-[30px] ${
                 card.dark
                   ? "bg-ink text-paper"
-                  : "border border-ink/10 bg-white text-ink"
+                  : "border border-border bg-card text-foreground"
               }`}
             >
               <span
                 className={`flex items-center gap-2.5 font-mono text-[13px] font-semibold ${
-                  card.dark ? "text-[#9aa1ad]" : "text-ink/55"
+                  card.dark ? "text-[#9aa1ad]" : "text-muted-foreground"
                 }`}
               >
                 <span className="inline-block size-2.5 rounded-[3px] bg-elektryk" />
@@ -78,7 +78,7 @@ export default function TwoAudiences({
               </h3>
               <p
                 className={`mt-2.5 text-[15px] leading-relaxed ${
-                  card.dark ? "text-[#9aa1ad]" : "text-ink/60"
+                  card.dark ? "text-[#9aa1ad]" : "text-muted-foreground"
                 }`}
               >
                 {card.description}

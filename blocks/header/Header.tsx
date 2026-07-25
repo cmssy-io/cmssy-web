@@ -51,6 +51,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { CmssyMark } from "@/components/cmssy-mark";
 import { Container } from "@/components/container";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
 import type { BlockProps } from "@cmssy/react";
 import type { headerProps } from "./block";
 
@@ -404,7 +405,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                 <Image
                   src={logo}
                   alt={logoText || ""}
-                  className={`${logoSizeClasses[logoSize]} object-contain`}
+                  className={`brand-logo ${logoSizeClasses[logoSize]} object-contain`}
                   width={120}
                   height={40}
                 />
@@ -477,6 +478,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
 
             {/* Desktop CTAs */}
             <div className="hidden lg:flex items-center gap-4">
+              <ThemeToggle />
               {hasLanguageSwitcher && (
                 <LanguageSwitcher
                   enabledLanguages={i18n.enabledLanguages}
@@ -653,7 +655,10 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
               </div>
             </div>
 
-            {/* Mobile Language Switcher */}
+            {/* Mobile theme + language */}
+            <div className="flex items-center gap-2 border-t px-4 py-3">
+              <ThemeToggle />
+            </div>
             {hasLanguageSwitcher && (
               <div className="border-t px-4 py-3">
                 <LanguageSwitcher

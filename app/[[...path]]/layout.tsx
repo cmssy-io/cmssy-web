@@ -31,10 +31,9 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
-// Applies the persisted docs theme before first paint (no flash). Docs-scoped:
-// only sets data-theme when the user explicitly chose one; default stays light,
-// so the light-only marketing surface is never darkened.
-const THEME_INIT = `(function(){try{var t=localStorage.getItem('cmssy-docs-theme');if(t==='dark'||t==='light'){document.documentElement.dataset.theme=t;}}catch(e){}})();`;
+// Applies the theme before first paint, so there is no flash: the user's own
+// choice if they made one, otherwise whatever their system asks for.
+const THEME_INIT = `(function(){try{var t=localStorage.getItem('cmssy-theme');if(t!=='dark'&&t!=='light'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.dataset.theme=t;}catch(e){}})();`;
 
 export async function generateMetadata() {
   const siteConfig = await fetchSiteConfig();
