@@ -12,10 +12,15 @@ export default function DocsArticle({
   data,
 }: BlockProps<typeof docsArticleProps, DocsArticleData>) {
   const lang = context?.locale.current;
+  // A field on the page, handed over by the route (context.app), not content
+  // an editor retypes inside this block.
+  const lastUpdated =
+    typeof context?.app?.lastUpdated === "string"
+      ? context.app.lastUpdated
+      : "";
   const {
     title,
     description,
-    lastUpdated,
     content: articleContent = "",
     showToc = true,
     tocTitle,

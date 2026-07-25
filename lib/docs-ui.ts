@@ -24,6 +24,15 @@ export type DocsUi = Partial<
 
 export type PageCustomField = { fieldKey: string; value: unknown };
 
+/** Read one custom field off a page, when it holds a plain string. */
+export function customFieldText(
+  fields: PageCustomField[] | null | undefined,
+  fieldKey: string,
+): string {
+  const value = (fields ?? []).find((f) => f.fieldKey === fieldKey)?.value;
+  return typeof value === "string" ? value : "";
+}
+
 function isLocalized(
   value: unknown,
 ): value is Record<string, string> | string | null | undefined {

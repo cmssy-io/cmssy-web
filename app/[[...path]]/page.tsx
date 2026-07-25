@@ -17,13 +17,32 @@ import {
   pickLocalizedValue,
   type DocsNavSection,
 } from "@/lib/docs-nav";
-import { docsUiFrom } from "@/lib/docs-ui";
+import { customFieldText, docsUiFrom } from "@/lib/docs-ui";
 import type { DocsSearchItem } from "@/components/docs-search";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
 
-const renderPage = createCmssyPage(cmssy, blocks);
+/**
+ * What the blocks on this page get to see beyond their own content. The page's
+ * "last updated" date is a field on the page, not on a block - one page, one
+ * date, readable by anything that needs it - and this is how it reaches the
+ * article block, which cannot query the CMS about itself.
+ *
+ * The lookup rides on the sibling list the sidebar already fetched, so it costs
+ * no extra request.
+ */
+async function appContextFor(slug: string): Promise<Record<string, unknown>> {
+  const parent = slug.slice(0, slug.lastIndexOf("/")) || "/";
+  const siblings = await listChildPages(parent);
+  const page = siblings.find((entry) => entry.fullSlug === slug);
+  const lastUpdated = customFieldText(page?.customFields, "lastUpdated");
+  return lastUpdated ? { lastUpdated } : {};
+}
+
+const renderPage = createCmssyPage(cmssy, blocks, {
+  appContext: ({ page }) => appContextFor(page.slug ?? "/"),
+});
 
 type PageProps = {
   params: Promise<{ path?: string[] }>;
