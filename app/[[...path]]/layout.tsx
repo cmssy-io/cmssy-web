@@ -10,6 +10,7 @@ import { fetchChromeLayouts } from "@/services/layout";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 import { CmssyLocaleProvider } from "@/components/cmssy-locale";
 import { DraftPreviewBanner } from "@/components/draft-preview-banner";
+import { ThemeProvider, THEME_INIT_SCRIPT } from "@/components/theme";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -30,10 +31,6 @@ const plexMono = IBM_Plex_Mono({
   variable: "--font-mono",
   display: "swap",
 });
-
-// Applies the theme before first paint, so there is no flash: the user's own
-// choice if they made one, otherwise whatever their system asks for.
-const THEME_INIT = `(function(){try{var t=localStorage.getItem('cmssy-theme');if(t!=='dark'&&t!=='light'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.dataset.theme=t;}catch(e){}})();`;
 
 export async function generateMetadata() {
   const siteConfig = await fetchSiteConfig();
@@ -77,7 +74,7 @@ export default async function SiteLayout({
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
       <body>
         <CmssyLocaleProvider
@@ -87,12 +84,14 @@ export default async function SiteLayout({
             enabled: locales.locales,
           }}
         >
-          {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
-          {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
-          {slot("header")}
-          {children}
-          {slot("footer")}
-          <DraftPreviewBanner path={path} />
+          <ThemeProvider>
+            {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
+            {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
+            {slot("header")}
+            {children}
+            {slot("footer")}
+            <DraftPreviewBanner path={path} />
+          </ThemeProvider>
         </CmssyLocaleProvider>
       </body>
     </html>
