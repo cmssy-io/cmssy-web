@@ -7,7 +7,12 @@ import { buildPageMetadata } from "@/services/seo";
 import { resolveSiteLocales } from "@/services/site";
 import { DocsShell } from "@/components/docs-shell";
 import { DocsSidebarNav } from "@/components/docs-sidebar-nav";
-import { buildDocsNav, type DocsNavSection } from "@/lib/docs-nav";
+import { DocsPrevNext } from "@/components/docs-prev-next";
+import {
+  buildDocsNav,
+  docsPrevNext,
+  type DocsNavSection,
+} from "@/lib/docs-nav";
 import { DOCS_NAV_CONFIG } from "@/lib/docs-nav.config";
 
 export const revalidate = 3600;
@@ -46,13 +51,18 @@ export default async function Page({ params }: PageProps) {
 
   if (!isDocs) return content;
 
+  const { prev, next } = docsPrevNext(slug, nav);
+
   return (
     <DocsShell>
       <div className="flex flex-col md:flex-row">
         <aside className="sticky top-0 z-30 md:h-screen md:w-64 md:shrink-0 md:overflow-y-auto md:border-r md:border-border">
           <DocsSidebarNav sections={nav} />
         </aside>
-        <main className="min-w-0 flex-1">{content}</main>
+        <main className="min-w-0 flex-1">
+          {content}
+          <DocsPrevNext prev={prev} next={next} />
+        </main>
       </div>
     </DocsShell>
   );

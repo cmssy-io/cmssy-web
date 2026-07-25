@@ -18,24 +18,6 @@ export const docsArticleProps = {
     defaultValue: true,
   }),
   tocTitle: fields.text({ label: "TOC Title", defaultValue: "On this page" }),
-  showPrevNext: fields.boolean({
-    label: "Show Prev/Next Navigation",
-    defaultValue: true,
-  }),
-  prevPage: fields.repeater({
-    label: "Previous Page",
-    itemSchema: {
-      label: fields.text({ label: "Label", required: true }),
-      url: fields.link({ label: "URL", required: true }),
-    },
-  }),
-  nextPage: fields.repeater({
-    label: "Next Page",
-    itemSchema: {
-      label: fields.text({ label: "Label", required: true }),
-      url: fields.link({ label: "URL", required: true }),
-    },
-  }),
   showEditLink: fields.boolean({
     label: "Show 'Edit on GitHub' Link",
     defaultValue: true,
