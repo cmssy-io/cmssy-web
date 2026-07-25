@@ -1,12 +1,9 @@
-import type { CmssyPageSummary } from "@cmssy/core";
-
-// Auto-navigation for /docs, derived from the page tree.
+// Docs navigation, derived entirely from the CMS.
 //
-// `fetchPages` only returns { id, slug, updatedAt, publishedAt } — no title,
-// parent, or order. So membership + structure are derived automatically from
-// the nested slugs, while section order, page order, and label overrides come
-// from a small config (see docs-nav.config.ts). New pages appear in nav with
-// zero wiring; only their order/label is optionally curated.
+// Order comes from the page tree (`sortBy: order_asc` - what an editor sees
+// when dragging pages around), labels come from each page's `displayName` in
+// the active language. Nothing about the docs structure lives in this repo:
+// add, rename, reorder or translate a page in cmssy and the sidebar follows.
 
 export type DocsNavPage = {
   slug: string;
@@ -16,24 +13,19 @@ export type DocsNavPage = {
 };
 
 export type DocsNavSection = {
-  /** Section root slug, e.g. /docs/blocks (may not exist as a page). */
-  key: string;
+  /** Section root slug, e.g. /docs/blocks. */
   slug: string;
   label: string;
   pages: DocsNavPage[];
 };
 
-export type DocsNavConfig = {
-  /** Root under which docs live. */
-  root: string;
-  /** Explicit section order (by key). Unknown sections sort after, A→Z. */
-  sectionOrder: string[];
-  /** Per-slug label overrides (acronyms, multi-word section names). */
-  labels: Record<string, string>;
-  /** Optional explicit page order per section key (by full slug). */
-  pageOrder: Record<string, string[]>;
+/** One published page, as the delivery API returns it under a parent slug. */
+export type DocsPageNode = {
+  fullSlug: string;
+  displayName?: Record<string, string> | string | null;
 };
 
+/** Last resort: a page with no display name in any language. */
 function humanizeSlug(slug: string): string {
   const last = slug.replace(/\/+$/, "").split("/").pop() || slug;
   return last
@@ -43,105 +35,71 @@ function humanizeSlug(slug: string): string {
     .join(" ");
 }
 
-function labelFor(slug: string, config: DocsNavConfig): string {
-  return config.labels[slug] ?? humanizeSlug(slug);
-}
-
-/** Segments of a slug below the docs root: /docs/blocks/fields → ["blocks","fields"]. */
-function segmentsUnderRoot(slug: string, root: string): string[] {
-  const normRoot = root.replace(/\/+$/, "");
-  if (slug === normRoot) return [];
-  if (!slug.startsWith(normRoot + "/")) return [];
-  return slug
-    .slice(normRoot.length + 1)
-    .split("/")
-    .filter(Boolean);
-}
-
-function orderIndex(order: string[], key: string): number {
-  const i = order.indexOf(key);
-  return i === -1 ? Number.MAX_SAFE_INTEGER : i;
+export function labelForPage(
+  page: DocsPageNode,
+  locale: string,
+  defaultLocale: string,
+): string {
+  const name = page.displayName;
+  if (typeof name === "string" && name.trim()) return name;
+  if (name && typeof name === "object") {
+    const picked =
+      name[locale] ?? name[defaultLocale] ?? Object.values(name)[0] ?? "";
+    if (picked.trim()) return picked;
+  }
+  return humanizeSlug(page.fullSlug);
 }
 
 /**
- * Build the docs sidebar tree from the flat page list.
- * - Only published pages under the root are included.
- * - Section = first segment under root; its index = the /docs/<section> page.
- * - Pages nested deeper than one level are flattened onto their section.
+ * Build the sidebar from the section pages and their children, both already
+ * ordered by the CMS. A section leads with its own index page.
  */
 export function buildDocsNav(
-  pages: CmssyPageSummary[],
-  config: DocsNavConfig,
+  sections: { page: DocsPageNode; children: DocsPageNode[] }[],
+  locale: string,
+  defaultLocale: string,
 ): DocsNavSection[] {
-  const normRoot = config.root.replace(/\/+$/, "");
-  const sections = new Map<string, DocsNavSection>();
+  const label = (page: DocsPageNode) =>
+    labelForPage(page, locale, defaultLocale);
 
-  const ensureSection = (key: string): DocsNavSection => {
-    let section = sections.get(key);
-    if (!section) {
-      const slug = `${normRoot}/${key}`;
-      section = { key, slug, label: labelFor(slug, config), pages: [] };
-      sections.set(key, section);
-    }
-    return section;
-  };
-
-  for (const page of pages) {
-    if (!page.publishedAt) continue;
-    const segments = segmentsUnderRoot(page.slug, normRoot);
-    if (segments.length === 0) continue; // the /docs hub itself is not a nav item
-    const [key] = segments;
-    const section = ensureSection(key);
-    section.pages.push({
-      slug: page.slug,
-      label: labelFor(page.slug, config),
-      isIndex: segments.length === 1,
-    });
-  }
-
-  const sorted = [...sections.values()].sort(
-    (a, b) =>
-      orderIndex(config.sectionOrder, a.key) -
-        orderIndex(config.sectionOrder, b.key) || a.key.localeCompare(b.key),
-  );
-
-  for (const section of sorted) {
-    const explicit = config.pageOrder[section.key] ?? [];
-    section.pages.sort((a, b) => {
-      // Index page always first.
-      if (a.isIndex !== b.isIndex) return a.isIndex ? -1 : 1;
-      const ai = explicit.indexOf(a.slug);
-      const bi = explicit.indexOf(b.slug);
-      if (ai !== -1 || bi !== -1) {
-        return (
-          (ai === -1 ? Number.MAX_SAFE_INTEGER : ai) -
-          (bi === -1 ? Number.MAX_SAFE_INTEGER : bi)
-        );
-      }
-      return a.slug.localeCompare(b.slug);
-    });
-  }
-
-  return sorted;
+  return sections.map(({ page, children }) => ({
+    slug: page.fullSlug,
+    label: label(page),
+    pages: [
+      { slug: page.fullSlug, label: label(page), isIndex: true },
+      ...children.map((child) => ({
+        slug: child.fullSlug,
+        label: label(child),
+        isIndex: false,
+      })),
+    ],
+  }));
 }
 
-/** Flatten the nav to an ordered list of page slugs (for prev/next). */
+/** Flatten the nav to an ordered list of pages (for prev/next). */
 export function flattenDocsNav(sections: DocsNavSection[]): DocsNavPage[] {
   return sections.flatMap((s) => s.pages);
 }
 
-/** Breadcrumb trail for a slug, from docs root down to the page. */
+/** Breadcrumb trail for a slug, from the docs root down to the page. */
 export function docsBreadcrumbs(
   slug: string,
-  config: DocsNavConfig,
+  sections: DocsNavSection[],
+  root: string,
 ): { slug: string; label: string }[] {
-  const normRoot = config.root.replace(/\/+$/, "");
-  const segments = segmentsUnderRoot(slug, normRoot);
-  const trail = [{ slug: normRoot, label: labelFor(normRoot, config) }];
+  const flat = flattenDocsNav(sections);
+  const labelOf = (target: string) =>
+    flat.find((p) => p.slug === target)?.label ?? humanizeSlug(target);
+
+  const normRoot = root.replace(/\/+$/, "");
+  const trail = [{ slug: normRoot, label: labelOf(normRoot) }];
+  if (!slug.startsWith(normRoot + "/")) return trail;
+
   let acc = normRoot;
-  for (const seg of segments) {
-    acc = `${acc}/${seg}`;
-    trail.push({ slug: acc, label: labelFor(acc, config) });
+  for (const segment of slug.slice(normRoot.length + 1).split("/")) {
+    if (!segment) continue;
+    acc = `${acc}/${segment}`;
+    trail.push({ slug: acc, label: labelOf(acc) });
   }
   return trail;
 }

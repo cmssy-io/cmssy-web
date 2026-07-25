@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
 import { localizedPath } from "@/lib/locale-path";
+import { siteUrl } from "@/services/seo";
 import { listPublicPages } from "@/services/pages";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cmssy.io";
 
 export const dynamic = "force-dynamic";
 
@@ -22,14 +22,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return pages
     .filter((page) => page.publishedAt && page.id !== notFoundPageId)
     .map((page) => {
-      const url = `${SITE_URL}${localizedPath(page.slug, defaultLocale, defaultLocale)}`;
+      const url = `${siteUrl()}${localizedPath(page.slug, defaultLocale, defaultLocale)}`;
       const lastModified = page.updatedAt ?? page.publishedAt ?? undefined;
       const languages =
         locales.length > 1
           ? Object.fromEntries(
               locales.map((locale) => [
                 locale,
-                `${SITE_URL}${localizedPath(page.slug, locale, defaultLocale)}`,
+                `${siteUrl()}${localizedPath(page.slug, locale, defaultLocale)}`,
               ]),
             )
           : undefined;

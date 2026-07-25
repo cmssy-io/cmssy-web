@@ -9,7 +9,24 @@ import {
 import { publicRequest } from "@/services/gateway";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cmssy.io";
+/**
+ * The site's own public origin. It is the app's to know - the CMS stores
+ * canonical slugs, never your host. Missing, it is reported once and the
+ * absolute URLs simply do not get built, rather than pointing at someone
+ * else's domain.
+ */
+let warned = false;
+export function siteUrl(): string {
+  const value = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (value) return value.replace(/\/+$/, "");
+  if (!warned) {
+    warned = true;
+    console.error(
+      "[cmssy-web] NEXT_PUBLIC_SITE_URL is not set: canonical URLs, hreflang alternates and the sitemap will be relative",
+    );
+  }
+  return "";
+}
 
 export async function buildPageMetadata(path?: string[]): Promise<Metadata> {
   const [config, { defaultLocale, locales }] = await Promise.all([
@@ -45,22 +62,26 @@ export async function buildPageMetadata(path?: string[]): Promise<Metadata> {
       : undefined;
   const image = config?.branding?.ogImageUrl ?? undefined;
 
-  const canonical = `${SITE_URL}${localizedPath(slug, locale, defaultLocale)}`;
+  const canonical = `${siteUrl()}${localizedPath(slug, locale, defaultLocale)}`;
   const languages =
     locales.length > 1
       ? {
           ...Object.fromEntries(
             locales.map((l) => [
               l,
-              `${SITE_URL}${localizedPath(slug, l, defaultLocale)}`,
+              `${siteUrl()}${localizedPath(slug, l, defaultLocale)}`,
             ]),
           ),
-          "x-default": `${SITE_URL}${localizedPath(slug, defaultLocale, defaultLocale)}`,
+          "x-default": `${siteUrl()}${localizedPath(slug, defaultLocale, defaultLocale)}`,
         }
       : undefined;
 
+  const base = siteUrl();
+
   return {
-    metadataBase: new URL(SITE_URL),
+    // Relative URLs stay relative when the origin is unknown, instead of
+    // resolving against a domain that is not ours.
+    ...(base ? { metadataBase: new URL(base) } : {}),
     ...(title ? { title } : {}),
     ...(description ? { description } : {}),
     ...(keywords ? { keywords } : {}),
