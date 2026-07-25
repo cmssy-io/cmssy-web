@@ -6,6 +6,7 @@ import { fetchChromeLayouts } from "@/services/layout";
 import { resolveSiteLocales } from "@/services/site";
 import { EditableLayout } from "@/cmssy/editable-layout";
 import { CmssyLocaleProvider } from "@/components/cmssy-locale";
+import { ThemeProvider, THEME_INIT_SCRIPT } from "@/components/theme";
 
 // Editable site chrome for the middleware-rewritten editor route. The route
 // itself is force-dynamic, so reading nothing but params here is fine - the
@@ -42,7 +43,10 @@ export default async function EditLayout({
   // Root layout for the editor route - same reason as the public one: `lang`
   // must be the language the preview is rendering.
   return (
-    <html lang={locale || undefined}>
+    <html lang={locale || undefined} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body>
         <CmssyLocaleProvider
           value={{
@@ -51,9 +55,14 @@ export default async function EditLayout({
             enabled: locales.locales,
           }}
         >
-          {slot("header")}
-          {children}
-          {slot("footer")}
+          {/* The editor renders the same blocks as the site, so it has to offer
+              them the same providers - a header with a theme switch throws
+              without this one. */}
+          <ThemeProvider>
+            {slot("header")}
+            {children}
+            {slot("footer")}
+          </ThemeProvider>
         </CmssyLocaleProvider>
       </body>
     </html>
