@@ -11,6 +11,7 @@ import {
   PublicPagesDocument,
 } from "@/graphql/generated/graphql";
 import { publicRequest } from "@/services/gateway";
+import type { PageCustomField } from "@/lib/docs-ui";
 
 /** A published child page, in the order the CMS tree puts it. */
 export type ChildPage = {
@@ -19,6 +20,8 @@ export type ChildPage = {
   pageType?: string | null;
   displayName?: Record<string, string> | string | null;
   seoDescription?: Record<string, string> | string | null;
+  /** A section root carries the shell's own copy here (see lib/docs-ui.ts). */
+  customFields?: PageCustomField[] | null;
 };
 
 const PAGES_BY_TYPE_QUERY = print(PublicPagesByTypeDocument);

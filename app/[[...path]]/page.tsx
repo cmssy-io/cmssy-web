@@ -17,6 +17,7 @@ import {
   pickLocalizedValue,
   type DocsNavSection,
 } from "@/lib/docs-nav";
+import { docsUiFrom } from "@/lib/docs-ui";
 import type { DocsSearchItem } from "@/components/docs-search";
 
 export const revalidate = 3600;
@@ -107,6 +108,9 @@ export default async function Page({ params }: PageProps) {
     slug: rootPage.fullSlug,
     label: labelForPage(rootPage, locale, locales.defaultLocale),
   };
+  // The shell's own words - "Previous", the search placeholder - are authored
+  // on the section root alongside its name.
+  const ui = docsUiFrom(rootPage.customFields, locale, locales.defaultLocale);
   const { prev, next } = docsPrevNext(slug, nav);
 
   return (
@@ -117,12 +121,13 @@ export default async function Page({ params }: PageProps) {
             root={root}
             sections={nav}
             searchItems={searchItems}
+            ui={ui}
           />
         </aside>
         <main className="min-w-0 flex-1">
           <DocsBreadcrumbs trail={docsBreadcrumbs(slug, nav, root)} />
           {content}
-          <DocsPrevNext prev={prev} next={next} />
+          <DocsPrevNext prev={prev} next={next} ui={ui} />
         </main>
       </div>
     </DocsShell>
