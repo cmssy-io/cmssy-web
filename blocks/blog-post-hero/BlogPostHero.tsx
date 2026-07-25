@@ -21,7 +21,7 @@ export default function BlogPostHero({
     date,
     readingTime = 5,
     breadcrumbLabel,
-    breadcrumbUrl = "/blog",
+    breadcrumbUrl,
   } = content;
 
   return (
@@ -51,7 +51,7 @@ export default function BlogPostHero({
         <Container className="relative z-10 pb-10 sm:pb-14 pt-32">
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm text-white/60 mb-5">
-            {breadcrumbLabel && (
+            {breadcrumbLabel && breadcrumbUrl && (
               <>
                 <CmssyLink
                   href={breadcrumbUrl}

@@ -7,9 +7,9 @@ export const ctaProps = {
   "headingLine2": fields.text({ label: "Heading Line 2", defaultValue: "amazing?" }),
   "description": fields.textarea({ label: "Description", defaultValue: "Join thousands of creators who trust cmssy to build their online presence. Start free, no credit card required.", placeholder: "Enter description" }),
   "primaryButtonText": fields.text({ label: "Primary Button Text", defaultValue: "Get Started Free" }),
-  "primaryButtonUrl": fields.link({ label: "Primary Button URL", defaultValue: "/signup" }),
+  "primaryButtonUrl": fields.link({ label: "Primary Button URL" }),
   "secondaryButtonText": fields.text({ label: "Secondary Button Text", defaultValue: "Talk to Sales" }),
-  "secondaryButtonUrl": fields.link({ label: "Secondary Button URL", defaultValue: "/contact" })
+  "secondaryButtonUrl": fields.link({ label: "Secondary Button URL" })
 };
 
 export const ctaBlock = defineBlock({

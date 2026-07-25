@@ -19,7 +19,6 @@ export const notFoundProps = {
     }),
     primaryButtonUrl: fields.link({
       label: "Primary Button URL",
-      defaultValue: "/",
     }),
     secondaryButtonText: fields.text({
       label: "Secondary Button Text",
@@ -27,7 +26,6 @@ export const notFoundProps = {
     }),
     secondaryButtonUrl: fields.link({
       label: "Secondary Button URL",
-      defaultValue: "/contact",
     }),
 };
 

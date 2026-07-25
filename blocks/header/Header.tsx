@@ -195,10 +195,10 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
     navigation = [],
     showCta = true,
     ctaLabel,
-    ctaUrl = "/signup",
+    ctaUrl,
     showSecondaryCta = false,
     secondaryCtaLabel,
-    secondaryCtaUrl = "/login",
+    secondaryCtaUrl,
     showAnnouncement = false,
     announcementText,
     announcementLink = "",
@@ -512,7 +512,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                 </div>
               ) : (
                 <>
-                  {showSecondaryCta && secondaryCtaLabel && (
+                  {showSecondaryCta && secondaryCtaLabel && secondaryCtaUrl && (
                     <CmssyLink
                       href={secondaryCtaUrl}
                       className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 hover:bg-accent hover:text-accent-foreground transition-colors"
@@ -520,7 +520,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                       {secondaryCtaLabel}
                     </CmssyLink>
                   )}
-                  {showCta && ctaLabel && (
+                  {showCta && ctaLabel && ctaUrl && (
                     <CmssyLink
                       href={ctaUrl}
                       className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 bg-linear-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 text-white transition-colors"
@@ -699,7 +699,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                 </div>
               ) : (
                 <div className="flex flex-col gap-3">
-                  {showSecondaryCta && secondaryCtaLabel && (
+                  {showSecondaryCta && secondaryCtaLabel && secondaryCtaUrl && (
                     <CmssyLink
                       href={secondaryCtaUrl}
                       className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 w-full border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
@@ -708,7 +708,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                       {secondaryCtaLabel}
                     </CmssyLink>
                   )}
-                  {showCta && ctaLabel && (
+                  {showCta && ctaLabel && ctaUrl && (
                     <CmssyLink
                       href={ctaUrl}
                       className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 w-full bg-linear-to-r from-sky-600 to-blue-600 text-white transition-colors"

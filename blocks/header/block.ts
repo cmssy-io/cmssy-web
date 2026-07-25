@@ -56,7 +56,7 @@ export const headerProps = {
       label: "CTA Label",
       defaultValue: "Get Started",
     }),
-    ctaUrl: fields.link({ label: "CTA URL", defaultValue: "/signup" }),
+    ctaUrl: fields.link({ label: "CTA URL" }),
     ctaStyle: fields.select({
       label: "CTA Style",
       defaultValue: "primary",
@@ -72,7 +72,6 @@ export const headerProps = {
     }),
     secondaryCtaUrl: fields.link({
       label: "Secondary CTA URL",
-      defaultValue: "/login",
     }),
     secondaryCtaStyle: fields.select({
       label: "Secondary CTA Style",

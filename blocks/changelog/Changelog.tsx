@@ -34,7 +34,7 @@ export default function Changelog({
     showSubscribe = true,
     subscribeText,
     subscribeButtonText,
-    subscribeButtonUrl = "/blog",
+    subscribeButtonUrl,
   } = content;
 
   return (
@@ -74,7 +74,7 @@ export default function Changelog({
                   <span className="text-sm">{subscribeText}</span>
                 )}
               </div>
-              {subscribeButtonText && (
+              {subscribeButtonText && subscribeButtonUrl && (
                 <CmssyLink
                   href={subscribeButtonUrl}
                   className="px-4 py-2 text-sm font-medium border rounded-lg hover:bg-accent transition-colors"

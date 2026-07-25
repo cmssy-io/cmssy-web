@@ -15,7 +15,7 @@ export default function AiDifferentiator({
     description = "",
     bullets = [],
     linkLabel = "",
-    linkUrl = "",
+    linkUrl,
     chatUser = "",
     chatReply = "",
     chatTools = [],
@@ -51,9 +51,9 @@ export default function AiDifferentiator({
                 </li>
               ))}
             </ul>
-            {linkLabel && (
+            {linkLabel && linkUrl && (
               <CmssyLink
-                href={linkUrl || "#"}
+                href={linkUrl}
                 className="mt-8 inline-block font-medium text-elektryk hover:underline"
               >
                 {linkLabel}
