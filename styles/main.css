@@ -4,6 +4,11 @@
 @source "../components";
 @plugin "@tailwindcss/typography";
 
+/* Brand colours, literal and theme-independent: `ink` is dark and `paper` is
+   light in both themes, because the inverted bands (a dark hero on a light
+   page) are a design decision, not a consequence of the theme. Everything that
+   should follow the theme uses the semantic tokens below (background,
+   foreground, card, muted, border). */
 @theme inline {
   --color-ink: #10141c;
   --color-ink-deep: #0b0e15;
@@ -232,9 +237,8 @@
   }
 }
 
-/* Docs dark: prose reading colors + code surfaces (CMS-1037), scoped to
-   .docs-shell so marketing prose (blog) is untouched. */
-html[data-theme="dark"] .docs-shell .prose {
+/* Dark reading colours for prose - docs and blog alike. */
+html[data-theme="dark"] .prose {
   --tw-prose-body: #c3ccd6;
   --tw-prose-headings: #e7edf3;
   --tw-prose-lead: #aab7c4;
@@ -250,35 +254,35 @@ html[data-theme="dark"] .docs-shell .prose {
   --tw-prose-td-borders: #1a2432;
 }
 
-html[data-theme="dark"] .docs-shell .prose :not(pre) > code {
+html[data-theme="dark"] .prose :not(pre) > code {
   background-color: #1a2432;
   color: #e7edf3;
 }
 
-html[data-theme="dark"] .docs-shell .prose pre {
+html[data-theme="dark"] .prose pre {
   background-color: #0d1117;
 }
 
 /* Syntax-highlighted (shiki, dual-theme) code blocks inside prose. Colors are
    shiki CSS vars; the block follows the docs theme instead of the flat dark. */
-.docs-shell .prose pre.shiki {
+.prose pre.shiki {
   background-color: var(--shiki-light-bg);
   border: 1px solid var(--border);
 }
-.docs-shell .prose pre.shiki,
-.docs-shell .prose pre.shiki span {
+.prose pre.shiki,
+.prose pre.shiki span {
   color: var(--shiki-light);
 }
-.docs-shell .prose pre.shiki code {
+.prose pre.shiki code {
   color: inherit;
   background: transparent;
   font-weight: inherit;
 }
-html[data-theme="dark"] .docs-shell .prose pre.shiki {
+html[data-theme="dark"] .prose pre.shiki {
   background-color: var(--shiki-dark-bg);
 }
-html[data-theme="dark"] .docs-shell .prose pre.shiki,
-html[data-theme="dark"] .docs-shell .prose pre.shiki span {
+html[data-theme="dark"] .prose pre.shiki,
+html[data-theme="dark"] .prose pre.shiki span {
   color: var(--shiki-dark);
 }
 
@@ -380,9 +384,8 @@ html[data-theme="dark"] .docs-shell .prose pre.shiki span {
 
 /* ---------------------------------------------------------------------------
    Docs surface (CMS-1037)
-   - Plex body font + elektryk as the single accent (light).
-   - Dark tokens are scoped to `.docs-shell`, so the light-only marketing
-     surface is never darkened even when the <html> theme flag is "dark".
+   - Plex body font + elektryk as the single accent. The dark tokens live on
+     the document (see below), so every surface follows the same theme.
 --------------------------------------------------------------------------- */
 .docs-shell {
   font-family: var(--font-sans);
@@ -391,7 +394,16 @@ html[data-theme="dark"] .docs-shell .prose pre.shiki span {
   --ring: var(--color-elektryk-500);
 }
 
-html[data-theme="dark"] .docs-shell {
+/* A workspace stores one logo, and most are drawn for a light page. In dark it
+   keeps its own colours and gets a light chip to sit on, rather than being
+   inverted into something that is no longer the brand. */
+html[data-theme="dark"] .brand-logo {
+  background: #f4f8fb;
+  border-radius: 0.5rem;
+  padding: 0.15rem;
+}
+
+html[data-theme="dark"] {
   --background: #0b0f16;
   --foreground: #e7edf3;
   --card: #111825;

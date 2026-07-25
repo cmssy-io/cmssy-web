@@ -17,20 +17,20 @@ export default function ComparisonTable({
   } = content;
 
   return (
-    <section className="bg-paper py-24">
+    <section className="bg-background py-24">
       <Container>
         <div className="max-w-3xl">
           <FigEyebrow fig={fig} label={eyebrow} />
-          <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-ink text-balance">
+          <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-foreground text-balance">
             {heading}
           </h2>
           {description && (
-            <p className="mt-4 text-lg text-ink/60">{description}</p>
+            <p className="mt-4 text-lg text-muted-foreground">{description}</p>
           )}
         </div>
 
-        <div className="mt-12 overflow-x-auto rounded-2xl border border-ink/10">
-          <table className="w-full min-w-[760px] border-collapse bg-white text-left text-[15px]">
+        <div className="mt-12 overflow-x-auto rounded-2xl border border-border">
+          <table className="w-full min-w-[760px] border-collapse bg-card text-left text-[15px]">
             <thead>
               <tr className="bg-ink text-paper">
                 <th className="px-5 py-4 font-medium" />
@@ -46,15 +46,15 @@ export default function ComparisonTable({
             </thead>
             <tbody>
               {rows.map((row) => (
-                <tr key={row.label} className="border-t border-ink/8">
-                  <td className="px-5 py-4 font-medium text-ink">
+                <tr key={row.label} className="border-t border-border">
+                  <td className="px-5 py-4 font-medium text-foreground">
                     {row.label}
                   </td>
                   <td className="bg-elektryk/6 px-5 py-4 font-semibold text-ink">
                     {row.cmssy}
                   </td>
                   {(row.values ?? "").split("|").map((v, i) => (
-                    <td key={i} className="px-5 py-4 text-ink/60">
+                    <td key={i} className="px-5 py-4 text-muted-foreground">
                       {v.trim()}
                     </td>
                   ))}
@@ -64,7 +64,7 @@ export default function ComparisonTable({
           </table>
         </div>
         {footnote && (
-          <p className="mt-4 text-center font-mono text-[12px] text-ink/40">
+          <p className="mt-4 text-center font-mono text-[12px] text-muted-foreground">
             {footnote}
           </p>
         )}

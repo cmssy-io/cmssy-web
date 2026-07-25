@@ -22,18 +22,18 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
   const [annual, setAnnual] = useState(true);
 
   return (
-    <section id="pricing" className="bg-wash py-24">
+    <section id="pricing" className="bg-muted py-24">
       <Container>
         <div className="mx-auto max-w-3xl text-center">
           <FigEyebrow fig={fig} label={eyebrow} />
-          <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-ink text-balance">
+          <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-foreground text-balance">
             {heading}
           </h2>
           {description && (
-            <p className="mt-4 text-lg text-ink/60">{description}</p>
+            <p className="mt-4 text-lg text-muted-foreground">{description}</p>
           )}
           {annualDiscountLabel && (
-          <div className="mt-8 inline-flex rounded-full border border-ink/15 bg-white p-1">
+          <div className="mt-8 inline-flex rounded-full border border-border bg-card p-1">
             {[
               { label: "Monthly", value: false },
               { label: annualDiscountLabel, value: true },
@@ -45,7 +45,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                 className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
                   annual === opt.value
                     ? "bg-ink text-paper"
-                    : "text-ink/60 hover:text-ink"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {opt.label}
@@ -67,7 +67,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                 className={`relative flex flex-col rounded-2xl border p-7 ${
                   plan.popular
                     ? "border-elektryk/40 bg-ink text-paper shadow-xl shadow-elektryk/15 lg:scale-[1.03]"
-                    : "border-ink/10 bg-white text-ink"
+                    : "border-border bg-card text-foreground"
                 }`}
               >
                 {plan.popular && popularBadgeText && (
@@ -80,7 +80,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                 </h3>
                 <p
                   className={`mt-2 text-sm ${
-                    plan.popular ? "text-paper/60" : "text-ink/60"
+                    plan.popular ? "text-paper/60" : "text-muted-foreground"
                   }`}
                 >
                   {plan.description}
@@ -92,7 +92,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                   {period && (
                     <span
                       className={`font-mono text-[12px] ${
-                        plan.popular ? "text-paper/50" : "text-ink/50"
+                        plan.popular ? "text-paper/50" : "text-muted-foreground"
                       }`}
                     >
                       {period}
@@ -109,7 +109,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                       />
                       <span
                         className={`text-sm ${
-                          plan.popular ? "text-paper/80" : "text-ink/75"
+                          plan.popular ? "text-paper/80" : "text-foreground/75"
                         }`}
                       >
                         {f.feature}
@@ -122,7 +122,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                   className={`mt-7 block rounded-lg px-5 py-2.5 text-center text-sm font-medium transition-colors ${
                     plan.popular
                       ? "bg-elektryk font-semibold text-ink hover:bg-elektryk/85"
-                      : "border border-ink/15 text-ink hover:border-ink/35"
+                      : "border border-border text-foreground hover:border-border"
                   }`}
                 >
                   {plan.cta}
@@ -132,7 +132,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
           })}
         </div>
         {trialNotice && (
-          <p className="mt-8 text-center font-mono text-[12px] text-ink/45">
+          <p className="mt-8 text-center font-mono text-[12px] text-muted-foreground">
             {trialNotice}
           </p>
         )}

@@ -21,12 +21,12 @@ export default function Faq({ content }: BlockProps<typeof faqProps>) {
   } = content;
 
   return (
-    <section id="faq" className="bg-paper py-24">
+    <section id="faq" className="bg-background py-24">
       <Container className="max-w-3xl">
         <div className="mb-12 text-center">
           <FigEyebrow fig={fig} label={eyebrow} />
           {(heading || headingHighlight) && (
-            <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-ink text-balance">
+            <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-foreground text-balance">
               {heading}
               {headingHighlight && (
                 <>
@@ -37,7 +37,7 @@ export default function Faq({ content }: BlockProps<typeof faqProps>) {
             </h2>
           )}
           {description && (
-            <p className="mt-4 text-lg text-ink/60">{description}</p>
+            <p className="mt-4 text-lg text-muted-foreground">{description}</p>
           )}
         </div>
 
@@ -52,16 +52,16 @@ export default function Faq({ content }: BlockProps<typeof faqProps>) {
               <AccordionItem
                 key={faq.id}
                 value={faq.id}
-                className="rounded-xl border border-ink/10 bg-white px-6 last:border-b data-[state=open]:shadow-[-.35rem_.35rem_0_rgba(0,168,240,.1)] transition-shadow"
+                className="rounded-xl border border-border bg-card px-6 last:border-b data-[state=open]:shadow-[-.35rem_.35rem_0_rgba(0,168,240,.1)] transition-shadow"
               >
-                <AccordionTrigger className="group py-5 text-left font-heading font-semibold text-ink hover:no-underline [&>svg]:hidden">
+                <AccordionTrigger className="group py-5 text-left font-heading font-semibold text-foreground hover:no-underline [&>svg]:hidden">
                   <span className="flex-1">{question}</span>
                   <span className="relative mt-1 size-4 shrink-0" aria-hidden>
                     <span className="absolute top-1/2 left-0 h-[2px] w-full -translate-y-1/2 rounded-full bg-elektryk-700" />
                     <span className="absolute top-0 left-1/2 h-full w-[2px] -translate-x-1/2 rounded-full bg-elektryk-700 transition-transform duration-200 group-data-[state=open]:scale-y-0" />
                   </span>
                 </AccordionTrigger>
-                <AccordionContent className="pb-5 text-ink/60">
+                <AccordionContent className="pb-5 text-muted-foreground">
                   {answer}
                 </AccordionContent>
               </AccordionItem>

@@ -51,8 +51,8 @@ export function EditorMockup({
   return (
     <div className="overflow-hidden rounded-2xl border border-paper/10 bg-[#14161b] shadow-2xl shadow-black/40">
       <div className="flex items-center gap-3 border-b border-paper/10 px-4 py-2.5">
-        <span className="grid size-6 place-items-center rounded-md bg-white">
-          <CmssyMark className="h-3 w-auto text-ink" />
+        <span className="grid size-6 place-items-center rounded-md bg-card">
+          <CmssyMark className="h-3 w-auto text-foreground" />
         </span>
         {title && (
           <span className="font-mono text-[12px] text-paper/70">{title}</span>
@@ -63,8 +63,8 @@ export function EditorMockup({
             {badge}
           </span>
         )}
-        <span className="mx-auto hidden items-center gap-1 rounded-md bg-paper/6 p-0.5 md:flex">
-          <span className="rounded bg-paper/12 p-1">
+        <span className="mx-auto hidden items-center gap-1 rounded-md bg-background/6 p-0.5 md:flex">
+          <span className="rounded bg-background/12 p-1">
             <Monitor className="size-3 text-paper/80" />
           </span>
           <span className="p-1">
@@ -103,8 +103,8 @@ export function EditorMockup({
 
         {pages.length > 0 && (
           <div className="hidden w-40 shrink-0 border-r border-paper/10 p-3 sm:block">
-            <div className="flex items-center gap-1 rounded-md bg-paper/6 p-0.5 font-mono text-[10px]">
-              <span className="rounded bg-paper/12 px-1.5 py-0.5 text-paper/90">
+            <div className="flex items-center gap-1 rounded-md bg-background/6 p-0.5 font-mono text-[10px]">
+              <span className="rounded bg-background/12 px-1.5 py-0.5 text-paper/90">
                 Pages
               </span>
               <span className="px-1.5 py-0.5 text-paper/40">Layers</span>
@@ -133,7 +133,7 @@ export function EditorMockup({
                     {p.name}
                   </span>
                   {i > 0 && p.tag && (
-                    <span className="rounded bg-paper/10 px-1 font-mono text-[9px] text-paper/45">
+                    <span className="rounded bg-background/10 px-1 font-mono text-[9px] text-paper/45">
                       {p.tag}
                     </span>
                   )}
@@ -143,51 +143,51 @@ export function EditorMockup({
           </div>
         )}
 
-        <div className="dot-grid-light relative min-h-[330px] flex-1 bg-paper p-4">
+        <div className="dot-grid-light relative min-h-[330px] flex-1 bg-background p-4">
           <div
-            className="hero-anim flex h-8 items-center justify-between rounded-md border border-ink/10 bg-white px-2"
+            className="hero-anim flex h-8 items-center justify-between rounded-md border border-border bg-card px-2"
             style={d("0.1s")}
           >
-            <span className="h-2.5 w-14 rounded bg-ink/15" />
+            <span className="h-2.5 w-14 rounded bg-muted" />
             <span className="flex items-center gap-1.5">
-              <span className="h-2 w-8 rounded bg-ink/10" />
-              <span className="h-2 w-8 rounded bg-ink/10" />
+              <span className="h-2 w-8 rounded bg-muted" />
+              <span className="h-2 w-8 rounded bg-muted" />
               <span className="h-4 w-12 rounded bg-elektryk" />
             </span>
           </div>
           <div
-            className="hero-anim relative mt-2 rounded-md border-2 border-elektryk/70 bg-white px-3 py-2.5"
+            className="hero-anim relative mt-2 rounded-md border-2 border-elektryk/70 bg-card px-3 py-2.5"
             style={d("0.5s")}
           >
             <span className="absolute -top-2 left-2 rounded-sm bg-elektryk px-1 font-mono text-[8px] text-ink">
               Heading
             </span>
-            <span className="absolute -top-1 -left-1 size-1.5 border border-elektryk bg-white" />
-            <span className="absolute -top-1 -right-1 size-1.5 border border-elektryk bg-white" />
-            <span className="absolute -bottom-1 -left-1 size-1.5 border border-elektryk bg-white" />
-            <span className="absolute -right-1 -bottom-1 size-1.5 border border-elektryk bg-white" />
-            <div className="h-3 w-3/4 rounded bg-ink/15" />
-            <div className="mt-1.5 h-3 w-1/2 rounded bg-ink/15" />
+            <span className="absolute -top-1 -left-1 size-1.5 border border-elektryk bg-card" />
+            <span className="absolute -top-1 -right-1 size-1.5 border border-elektryk bg-card" />
+            <span className="absolute -bottom-1 -left-1 size-1.5 border border-elektryk bg-card" />
+            <span className="absolute -right-1 -bottom-1 size-1.5 border border-elektryk bg-card" />
+            <div className="h-3 w-3/4 rounded bg-muted" />
+            <div className="mt-1.5 h-3 w-1/2 rounded bg-muted" />
           </div>
           <div
-            className="hero-anim mt-2 grid h-16 place-items-center rounded-md border border-ink/10"
+            className="hero-anim mt-2 grid h-16 place-items-center rounded-md border border-border"
             style={{
               ...d("0.9s"),
               backgroundImage:
                 "repeating-linear-gradient(45deg, rgba(16,20,28,.06) 0 6px, transparent 6px 12px)",
             }}
           >
-            <span className="font-mono text-[10px] text-ink/35">
+            <span className="font-mono text-[10px] text-muted-foreground">
               product shot
             </span>
           </div>
           <div className="mt-2 grid grid-cols-2 gap-2">
             <div
-              className="hero-anim h-11 rounded-md border border-ink/10 bg-white"
+              className="hero-anim h-11 rounded-md border border-border bg-card"
               style={d("1.3s")}
             />
             <div
-              className="hero-anim h-11 rounded-md border border-ink/10 bg-white"
+              className="hero-anim h-11 rounded-md border border-border bg-card"
               style={d("1.6s")}
             />
           </div>
@@ -197,16 +197,16 @@ export function EditorMockup({
               style={d("5.4s", "hero-dock")}
             >
               {dockTag && (
-                <span className="grid size-6 place-items-center rounded bg-ink/20 font-mono text-[9px] font-semibold text-ink">
+                <span className="grid size-6 place-items-center rounded bg-muted font-mono text-[9px] font-semibold text-foreground">
                   {dockTag}
                 </span>
               )}
               <span className="leading-tight">
-                <span className="block text-[11px] font-semibold text-ink">
+                <span className="block text-[11px] font-semibold text-foreground">
                   {dockLabel}
                 </span>
                 {dockSub && (
-                  <span className="block font-mono text-[9px] text-ink/60">
+                  <span className="block font-mono text-[9px] text-muted-foreground">
                     {dockSub}
                   </span>
                 )}
@@ -219,8 +219,8 @@ export function EditorMockup({
               className="hero-anim absolute right-3 bottom-3 left-3 flex items-start gap-2.5 rounded-lg bg-ink p-3 shadow-xl"
               style={d("0s", "hero-chat-in")}
             >
-              <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-md bg-white">
-                <CmssyMark className="h-3 w-auto text-ink" />
+              <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-md bg-card">
+                <CmssyMark className="h-3 w-auto text-foreground" />
               </span>
               <span className="min-w-0 leading-snug">
                 <span className="relative block overflow-hidden font-mono text-[11px] whitespace-nowrap text-paper/90">
