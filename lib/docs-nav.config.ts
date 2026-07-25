@@ -31,6 +31,8 @@ export const DOCS_NAV_CONFIG: DocsNavConfig = {
     "/docs/api/cli": "CLI",
     "/docs/api/ai": "AI Features",
     "/docs/api/types": "@cmssy/types",
+    "/docs/api/webhooks": "Webhooks",
+    "/docs/start/env": "Environment",
   },
   pageOrder: {
     start: [
@@ -38,6 +40,7 @@ export const DOCS_NAV_CONFIG: DocsNavConfig = {
       "/docs/start/how-it-works",
       "/docs/start/quickstart",
       "/docs/start/installation",
+      "/docs/start/env",
     ],
     blocks: [
       "/docs/blocks",
@@ -73,6 +76,7 @@ export const DOCS_NAV_CONFIG: DocsNavConfig = {
       "/docs/api",
       "/docs/api/mcp",
       "/docs/api/graphql",
+      "/docs/api/webhooks",
       "/docs/api/cli",
       "/docs/api/ai",
       "/docs/api/types",
