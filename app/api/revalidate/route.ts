@@ -1,5 +1,6 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextResponse, type NextRequest } from "next/server";
+import { CONTENT_TAG } from "@/services/pages";
 
 // On-demand ISR webhook. cmssy calls this on publish to refresh cached pages.
 // Auth: shared secret via `?secret=` or `x-revalidate-secret` header.
@@ -25,6 +26,13 @@ export async function POST(request: NextRequest) {
       // no body - fall through to full revalidation
     }
   }
+
+  // The nav, the site config and the page list are cached under one tag, so a
+  // publish has to clear it too - otherwise a new page is live but missing
+  // from every sidebar until the hourly window rolls over.
+  // `expire: 0` - the tag is stale immediately, which is the point of a
+  // publish webhook.
+  revalidateTag(CONTENT_TAG, { expire: 0 });
 
   if (path) {
     revalidatePath(path);

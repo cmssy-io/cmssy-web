@@ -1,3 +1,5 @@
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { print } from "graphql";
 import { createCmssyClient } from "@cmssy/react";
 import type { CmssyPageData, CmssyPageSummary } from "@cmssy/react";
@@ -21,17 +23,36 @@ export type ChildPage = {
 
 const PAGES_BY_TYPE_QUERY = print(PublicPagesByTypeDocument);
 
+/** One tag for everything the CMS can change; the publish webhook clears it. */
+export const CONTENT_TAG = "cmssy-content";
+
 /**
  * Direct children of a slug, ordered as in the page tree. `queryScoped` fills
  * in the workspace id, so this needs no id of its own.
+ *
+ * Cached twice on purpose. `cache` dedupes within one render - the nav is
+ * asked for the same section by the page and its metadata - and
+ * `unstable_cache` keeps it across renders, because the delivery API allows
+ * 100 requests a minute per IP and a serverless region shares one. A cold
+ * docs page used to fan out a dozen queries; a burst of them is what turned
+ * into 429s and 500-ed the page (CMS-1052).
  *
  * A failure degrades to an empty list - a section without a sidebar still
  * reads - but it is logged: a silently empty nav looks like a content problem
  * and sends whoever debugs it to the CMS instead of the delivery API.
  */
-export async function listChildPages(
+export const listChildPages = cache(
+  (parentSlug: string, limit = 100): Promise<ChildPage[]> =>
+    unstable_cache(
+      () => fetchChildPages(parentSlug, limit),
+      ["cmssy-child-pages", parentSlug, String(limit)],
+      { tags: [CONTENT_TAG], revalidate: 3600 },
+    )(),
+);
+
+async function fetchChildPages(
   parentSlug: string,
-  limit = 100,
+  limit: number,
 ): Promise<ChildPage[]> {
   try {
     const data = await createCmssyClient(cmssy).queryScoped<{
