@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { CmssyLink } from "./cmssy-locale";
+import { DocsSearch, type DocsSearchItem } from "./docs-search";
 import type { DocsNavSection } from "@/lib/docs-nav";
 
 // Auto docs sidebar: rendered from the page tree (see lib/docs-nav.ts), not a
@@ -13,10 +14,12 @@ import type { DocsNavSection } from "@/lib/docs-nav";
 export function DocsSidebarNav({
   root,
   sections,
+  searchItems,
 }: {
   /** The section's own root page - its slug and label both come from the CMS. */
   root: { slug: string; label: string };
   sections: DocsNavSection[];
+  searchItems: DocsSearchItem[];
 }) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -149,6 +152,13 @@ export function DocsSidebarNav({
                   <X className="h-5 w-5" />
                 </button>
               </div>
+              <div className="px-4 pt-4">
+                <DocsSearch
+                  items={searchItems}
+                  placeholder={`Search ${root.label.toLowerCase()}`}
+                  label={root.label}
+                />
+              </div>
               <div className="px-4 py-4">{links}</div>
             </nav>
           </div>,
@@ -159,10 +169,17 @@ export function DocsSidebarNav({
       <nav aria-label="Documentation" className="hidden text-sm md:block">
         <CmssyLink
           href={root.slug}
-          className="block px-4 pb-4 pt-6 font-semibold text-foreground"
+          className="block px-4 pb-3 pt-6 font-semibold text-foreground"
         >
           {root.label}
         </CmssyLink>
+        <div className="px-4 pb-4">
+          <DocsSearch
+            items={searchItems}
+            placeholder={`Search ${root.label.toLowerCase()}`}
+            label={root.label}
+          />
+        </div>
         <div className="px-4 pb-6">{links}</div>
       </nav>
     </>

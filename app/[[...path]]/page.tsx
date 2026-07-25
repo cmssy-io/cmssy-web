@@ -12,8 +12,10 @@ import {
   buildDocsNav,
   docsPrevNext,
   labelForPage,
+  pickLocalizedValue,
   type DocsNavSection,
 } from "@/lib/docs-nav";
+import type { DocsSearchItem } from "@/components/docs-search";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -41,18 +43,37 @@ function isPageTree(children: ChildPage[]): boolean {
   );
 }
 
-async function buildSectionNav(
+async function buildSection(
   sectionPages: ChildPage[],
   locale: string,
   defaultLocale: string,
-): Promise<DocsNavSection[]> {
+): Promise<{ nav: DocsNavSection[]; searchItems: DocsSearchItem[] }> {
   const withChildren = await Promise.all(
     sectionPages.map(async (page) => ({
       page,
       children: await listChildPages(page.fullSlug),
     })),
   );
-  return buildDocsNav(withChildren, locale, defaultLocale);
+
+  // The search index is the same tree the sidebar shows: nothing to reindex,
+  // and a page published today is searchable today.
+  const searchItems = withChildren.flatMap(({ page, children }) =>
+    [page, ...children].map((entry) => ({
+      slug: entry.fullSlug,
+      label: labelForPage(entry, locale, defaultLocale),
+      section: labelForPage(page, locale, defaultLocale),
+      description: pickLocalizedValue(
+        entry.seoDescription,
+        locale,
+        defaultLocale,
+      ),
+    })),
+  );
+
+  return {
+    nav: buildDocsNav(withChildren, locale, defaultLocale),
+    searchItems,
+  };
 }
 
 export default async function Page({ params }: PageProps) {
@@ -75,7 +96,7 @@ export default async function Page({ params }: PageProps) {
   const rootPage = topLevel.find((page) => page.fullSlug === sectionRoot);
   if (!rootPage || !isPageTree(sectionPages)) return content;
 
-  const nav = await buildSectionNav(
+  const { nav, searchItems } = await buildSection(
     sectionPages,
     locale,
     locales.defaultLocale,
@@ -92,6 +113,7 @@ export default async function Page({ params }: PageProps) {
               label: labelForPage(rootPage, locale, locales.defaultLocale),
             }}
             sections={nav}
+            searchItems={searchItems}
           />
         </aside>
         <main className="min-w-0 flex-1">

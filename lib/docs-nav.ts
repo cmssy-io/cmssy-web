@@ -23,7 +23,19 @@ export type DocsNavSection = {
 export type DocsPageNode = {
   fullSlug: string;
   displayName?: Record<string, string> | string | null;
+  seoDescription?: Record<string, string> | string | null;
 };
+
+/** Same fallback chain as the labels, for any localized field. */
+export function pickLocalizedValue(
+  value: Record<string, string> | string | null | undefined,
+  locale: string,
+  defaultLocale: string,
+): string {
+  if (!value) return "";
+  if (typeof value === "string") return value;
+  return value[locale] ?? value[defaultLocale] ?? Object.values(value)[0] ?? "";
+}
 
 /** Last resort: a page with no display name in any language. */
 function humanizeSlug(slug: string): string {
