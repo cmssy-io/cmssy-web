@@ -2,6 +2,7 @@ import { ArrowRight, FileText } from "lucide-react";
 import { CmssyLink } from "@/components/cmssy-locale";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
+import { DocsSearchTrigger } from "@/components/docs-search-trigger";
 import { getLucideIcon } from "@/components/get-lucide-icon";
 import type { docsHeroProps } from "./block";
 
@@ -14,6 +15,8 @@ export default function DocsHero({
     description,
     variant = "default",
     quickLinks = [],
+    showSearch = false,
+    searchPlaceholder,
   } = content;
 
   const bgClasses = {
@@ -63,6 +66,11 @@ export default function DocsHero({
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
               {description}
             </p>
+          )}
+
+          {/* Search - the field the block schema has always offered */}
+          {showSearch && searchPlaceholder && (
+            <DocsSearchTrigger placeholder={searchPlaceholder} />
           )}
         </div>
 

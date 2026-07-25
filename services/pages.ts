@@ -16,6 +16,7 @@ export type ChildPage = {
   fullSlug: string;
   pageType?: string | null;
   displayName?: Record<string, string> | string | null;
+  seoDescription?: Record<string, string> | string | null;
 };
 
 const PAGES_BY_TYPE_QUERY = print(PublicPagesByTypeDocument);
