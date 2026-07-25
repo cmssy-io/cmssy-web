@@ -10,9 +10,9 @@ export default function NotFound({ content }: BlockProps<typeof notFoundProps>) 
     title,
     description,
     primaryButtonText,
-    primaryButtonUrl = "/",
+    primaryButtonUrl,
     secondaryButtonText,
-    secondaryButtonUrl = "/contact",
+    secondaryButtonUrl,
   } = content;
 
   return (
@@ -108,18 +108,18 @@ export default function NotFound({ content }: BlockProps<typeof notFoundProps>) 
 
         {/* CTA buttons */}
         <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-          {primaryButtonText && (
+          {primaryButtonText && primaryButtonUrl && (
             <CmssyLink
-              href={primaryButtonUrl || "/"}
+              href={primaryButtonUrl}
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-sky-600 to-blue-600 px-6 py-3 text-base font-medium text-white shadow-lg shadow-sky-500/20 transition-all hover:from-sky-700 hover:to-blue-700 hover:shadow-sky-500/30 sm:px-8 sm:py-3.5 sm:text-lg"
             >
               <Home className="h-4 w-4 sm:h-5 sm:w-5" />
               {primaryButtonText}
             </CmssyLink>
           )}
-          {secondaryButtonText && (
+          {secondaryButtonText && secondaryButtonUrl && (
             <CmssyLink
-              href={secondaryButtonUrl || "#"}
+              href={secondaryButtonUrl}
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-input bg-background px-6 py-3 text-base font-medium transition-colors hover:bg-accent hover:text-accent-foreground sm:px-8 sm:py-3.5 sm:text-lg"
             >
               {secondaryButtonText}

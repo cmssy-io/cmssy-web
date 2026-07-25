@@ -2,7 +2,7 @@ import { createCmssyPage } from "@cmssy/next/server";
 import { cmssy } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
 import { splitLocaleFromPath } from "@/lib/locale-path";
-import { listPublicPages } from "@/services/pages";
+import { listChildPages, type ChildPage } from "@/services/pages";
 import { buildPageMetadata } from "@/services/seo";
 import { resolveSiteLocales } from "@/services/site";
 import { DocsShell } from "@/components/docs-shell";
@@ -11,9 +11,9 @@ import { DocsPrevNext } from "@/components/docs-prev-next";
 import {
   buildDocsNav,
   docsPrevNext,
+  labelForPage,
   type DocsNavSection,
 } from "@/lib/docs-nav";
-import { DOCS_NAV_CONFIG } from "@/lib/docs-nav.config";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
@@ -29,35 +29,70 @@ export async function generateMetadata({ params }: PageProps) {
   return buildPageMetadata(path);
 }
 
-// Docs navigation derived from the published page tree (see lib/docs-nav.ts).
-async function getDocsNav(): Promise<DocsNavSection[]> {
-  const pages = await listPublicPages();
-  return buildDocsNav(pages, DOCS_NAV_CONFIG);
+/**
+ * A top-level section gets the reading shell - sidebar plus prev/next - when
+ * the CMS says it is a tree of pages rather than a feed of posts. No slug is
+ * named here: the section is whatever the current URL's first segment is, and
+ * whether it qualifies comes from the page types the CMS returns.
+ */
+function isPageTree(children: ChildPage[]): boolean {
+  return (
+    children.length > 0 && children.every((child) => child.pageType !== "post")
+  );
+}
+
+async function buildSectionNav(
+  sectionPages: ChildPage[],
+  locale: string,
+  defaultLocale: string,
+): Promise<DocsNavSection[]> {
+  const withChildren = await Promise.all(
+    sectionPages.map(async (page) => ({
+      page,
+      children: await listChildPages(page.fullSlug),
+    })),
+  );
+  return buildDocsNav(withChildren, locale, defaultLocale);
 }
 
 export default async function Page({ params }: PageProps) {
   const { path } = await params;
-  const { path: strippedPath } = splitLocaleFromPath(
-    path,
-    await resolveSiteLocales(),
-  );
-  const slug = "/" + (strippedPath ?? []).join("/");
-  const isDocs = slug === "/docs" || slug.startsWith("/docs/");
+  const locales = await resolveSiteLocales();
+  const { locale, path: strippedPath } = splitLocaleFromPath(path, locales);
+  const segments = strippedPath ?? [];
+  const slug = "/" + segments.join("/");
+  const sectionRoot = segments[0] ? `/${segments[0]}` : null;
 
-  const [content, nav] = await Promise.all([
+  const [content, topLevel, sectionPages] = await Promise.all([
     renderPage({ params: Promise.resolve({ path }) }),
-    isDocs ? getDocsNav() : Promise.resolve<DocsNavSection[]>([]),
+    sectionRoot ? listChildPages("/") : Promise.resolve<ChildPage[]>([]),
+    sectionRoot
+      ? listChildPages(sectionRoot)
+      : Promise.resolve<ChildPage[]>([]),
   ]);
 
-  if (!isDocs) return content;
+  // The section's own page carries the label the sidebar heads with.
+  const rootPage = topLevel.find((page) => page.fullSlug === sectionRoot);
+  if (!rootPage || !isPageTree(sectionPages)) return content;
 
+  const nav = await buildSectionNav(
+    sectionPages,
+    locale,
+    locales.defaultLocale,
+  );
   const { prev, next } = docsPrevNext(slug, nav);
 
   return (
     <DocsShell>
       <div className="flex flex-col md:flex-row">
         <aside className="sticky top-0 z-30 md:h-screen md:w-64 md:shrink-0 md:overflow-y-auto md:border-r md:border-border">
-          <DocsSidebarNav sections={nav} />
+          <DocsSidebarNav
+            root={{
+              slug: rootPage.fullSlug,
+              label: labelForPage(rootPage, locale, locales.defaultLocale),
+            }}
+            sections={nav}
+          />
         </aside>
         <main className="min-w-0 flex-1">
           {content}

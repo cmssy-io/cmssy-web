@@ -10,7 +10,14 @@ import type { DocsNavSection } from "@/lib/docs-nav";
 // Auto docs sidebar: rendered from the page tree (see lib/docs-nav.ts), not a
 // hand-authored block. Desktop: a sticky rail. Mobile: a sticky bar plus an
 // overlay drawer that slides in over the content (never pushes it down).
-export function DocsSidebarNav({ sections }: { sections: DocsNavSection[] }) {
+export function DocsSidebarNav({
+  root,
+  sections,
+}: {
+  /** The section's own root page - its slug and label both come from the CMS. */
+  root: { slug: string; label: string };
+  sections: DocsNavSection[];
+}) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
@@ -18,8 +25,9 @@ export function DocsSidebarNav({ sections }: { sections: DocsNavSection[] }) {
   // Drawer is portaled to <body> so no ancestor stacking context (the CMS
   // header block sits at z-50) can paint over it.
   useEffect(() => setMounted(true), []);
-  // Locale-agnostic active matching: strip anything before the docs root.
-  const idx = pathname.indexOf("/docs");
+  // Locale-agnostic active matching: strip anything before the section root,
+  // whatever that root happens to be.
+  const idx = pathname.indexOf(root.slug);
   const path = idx >= 0 ? pathname.slice(idx) : pathname;
 
   // Close on route change so a tap on a link never leaves the drawer open.
@@ -49,7 +57,7 @@ export function DocsSidebarNav({ sections }: { sections: DocsNavSection[] }) {
           const page = section.pages[0];
           return (
             <NavLink
-              key={section.key}
+              key={section.slug}
               href={page.slug}
               label={page.label}
               active={path === page.slug}
@@ -60,7 +68,7 @@ export function DocsSidebarNav({ sections }: { sections: DocsNavSection[] }) {
 
         return (
           <div
-            key={section.key}
+            key={section.slug}
             className="mt-6 flex flex-col gap-0.5 first:mt-0"
           >
             <span className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -85,8 +93,8 @@ export function DocsSidebarNav({ sections }: { sections: DocsNavSection[] }) {
     <>
       {/* Mobile bar — the wrapping <aside> makes it stick while reading */}
       <div className="flex items-center justify-between border-b border-border bg-background/90 px-4 py-3 backdrop-blur md:hidden">
-        <CmssyLink href="/docs" className="font-semibold text-foreground">
-          cmssy docs
+        <CmssyLink href={root.slug} className="font-semibold text-foreground">
+          {root.label}
         </CmssyLink>
         <button
           type="button"
@@ -127,10 +135,10 @@ export function DocsSidebarNav({ sections }: { sections: DocsNavSection[] }) {
             >
               <div className="flex items-center justify-between border-b border-border px-4 py-3">
                 <CmssyLink
-                  href="/docs"
+                  href={root.slug}
                   className="font-semibold text-foreground"
                 >
-                  cmssy docs
+                  {root.label}
                 </CmssyLink>
                 <button
                   type="button"
@@ -150,10 +158,10 @@ export function DocsSidebarNav({ sections }: { sections: DocsNavSection[] }) {
       {/* Desktop rail */}
       <nav aria-label="Documentation" className="hidden text-sm md:block">
         <CmssyLink
-          href="/docs"
+          href={root.slug}
           className="block px-4 pb-4 pt-6 font-semibold text-foreground"
         >
-          cmssy docs
+          {root.label}
         </CmssyLink>
         <div className="px-4 pb-6">{links}</div>
       </nav>

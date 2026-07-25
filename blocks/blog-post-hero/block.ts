@@ -29,7 +29,6 @@ export const blogPostHeroProps = {
   }),
   breadcrumbUrl: fields.link({
     label: "Breadcrumb URL",
-    defaultValue: "/blog",
   }),
 };
 

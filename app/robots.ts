@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
+import { siteUrl } from "@/services/seo";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cmssy.io";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +11,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/cmssy-edit/", "/api/"],
     },
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    sitemap: `${siteUrl()}/sitemap.xml`,
   };
 }

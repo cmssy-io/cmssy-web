@@ -18,7 +18,7 @@ export const changelogProps = {
     "showSubscribe": fields.boolean({ label: "Show Subscribe CTA", defaultValue: true }),
     "subscribeText": fields.text({ label: "Subscribe Text", defaultValue: "Subscribe to get notified about new releases" }),
     "subscribeButtonText": fields.text({ label: "Subscribe Button Text", defaultValue: "Subscribe" }),
-    "subscribeButtonUrl": fields.link({ label: "Subscribe Button URL", defaultValue: "/blog" })
+    "subscribeButtonUrl": fields.link({ label: "Subscribe Button URL" })
 };
 
 export const changelogBlock = defineBlock({

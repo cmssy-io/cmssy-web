@@ -49,7 +49,7 @@ export default function Roadmap({ content }: BlockProps<typeof roadmapProps>) {
     ctaTitle,
     ctaDescription,
     ctaButtonText,
-    ctaButtonUrl = "/contact",
+    ctaButtonUrl,
   } = content;
 
   return (
@@ -139,7 +139,7 @@ export default function Roadmap({ content }: BlockProps<typeof roadmapProps>) {
               {ctaDescription && (
                 <p className="text-sky-100 mb-6">{ctaDescription}</p>
               )}
-              {ctaButtonText && (
+              {ctaButtonText && ctaButtonUrl && (
                 <CmssyLink
                   href={ctaButtonUrl}
                   className="inline-flex items-center gap-2 px-6 py-3 bg-white text-sky-600 font-medium rounded-lg hover:bg-sky-50 transition-colors"

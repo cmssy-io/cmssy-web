@@ -48,7 +48,6 @@ export const roadmapProps = {
     }),
     ctaButtonUrl: fields.link({
       label: "CTA Button URL",
-      defaultValue: "/contact",
     }),
 };
 

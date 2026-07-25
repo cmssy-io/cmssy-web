@@ -28,7 +28,7 @@ export const aiDifferentiatorProps = {
     label: "Link Label",
     defaultValue: "Read the MCP docs →",
   }),
-  linkUrl: fields.text({ label: "Link URL", defaultValue: "/docs/api/mcp" }),
+  linkUrl: fields.text({ label: "Link URL" }),
   chatUser: fields.text({
     label: "Chat: User Message",
     defaultValue: "Add a pricing section in German to the home page.",
