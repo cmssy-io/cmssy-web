@@ -1,14 +1,10 @@
 import { defineBlock, fields } from "@cmssy/react";
 import DocsArticle from "./DocsArticle";
 
+// Breadcrumbs and prev/next are not fields here: both come from the page's
+// place in the CMS tree and are rendered route-level (see lib/docs-nav.ts), so
+// an editor cannot enter a trail that disagrees with the sidebar.
 export const docsArticleProps = {
-  breadcrumbs: fields.repeater({
-    label: "Breadcrumbs",
-    itemSchema: {
-      label: fields.text({ label: "Label", required: true }),
-      url: fields.link({ label: "URL" }),
-    },
-  }),
   title: fields.text({ label: "Title", required: true }),
   description: fields.textarea({ label: "Description" }),
   lastUpdated: fields.date({ label: "Last Updated" }),

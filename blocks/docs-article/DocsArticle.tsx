@@ -1,5 +1,4 @@
-import { Calendar, ChevronRight, PenLine } from "lucide-react";
-import { CmssyLink } from "@/components/cmssy-locale";
+import { Calendar, PenLine } from "lucide-react";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "../../components/container";
 import { extractTocItems } from "@/lib/toc";
@@ -14,7 +13,6 @@ export default function DocsArticle({
 }: BlockProps<typeof docsArticleProps, DocsArticleData>) {
   const lang = context?.locale.current;
   const {
-    breadcrumbs = [],
     title,
     description,
     lastUpdated,
@@ -35,43 +33,6 @@ export default function DocsArticle({
     <Container className="py-6 flex gap-8 lg:py-12">
       {/* Main Content */}
       <article className="flex-1 min-w-0">
-        {/* Breadcrumbs */}
-        {breadcrumbs.length > 0 && (
-          <nav
-            aria-label="Breadcrumb"
-            className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground mb-6"
-          >
-            {breadcrumbs.map((crumb, index) => {
-              const isLast = index === breadcrumbs.length - 1;
-              return (
-                <span key={index} className="flex items-center gap-1.5">
-                  {crumb.url && !isLast ? (
-                    <CmssyLink
-                      href={crumb.url}
-                      className="hover:text-foreground transition-colors"
-                    >
-                      {crumb.label}
-                    </CmssyLink>
-                  ) : (
-                    <span
-                      className={isLast ? "text-primary font-medium" : ""}
-                      aria-current={isLast ? "page" : undefined}
-                    >
-                      {crumb.label}
-                    </span>
-                  )}
-                  {!isLast && (
-                    <ChevronRight
-                      className="size-3 shrink-0 text-muted-foreground/60"
-                      aria-hidden="true"
-                    />
-                  )}
-                </span>
-              );
-            })}
-          </nav>
-        )}
-
         {/* Header */}
         <header className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold mb-4">{title}</h1>
