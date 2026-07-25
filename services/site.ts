@@ -1,30 +1,45 @@
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import { cmssy } from "@/cmssy/config";
 import {
   PublicSiteConfigDocument,
   type PublicSiteConfigQuery,
 } from "@/graphql/generated/graphql";
 import type { SiteLocales } from "@/lib/locale-path";
+import { CONTENT_TAG } from "@/services/pages";
 import { publicRequest } from "@/services/gateway";
 
 export type SiteConfig = NonNullable<
   PublicSiteConfigQuery["public"]["siteConfig"]
 >;
 
-let cached: SiteConfig | null | undefined;
+/**
+ * Site config is asked for by the layout, the metadata and the sitemap on the
+ * same render, and it only changes when the workspace settings do - so it is
+ * deduped per render and cached across them, under the tag the publish webhook
+ * clears (CMS-1052). A failed fetch is not cached: one bad request must not
+ * pin the process to an unknown locale set.
+ */
+export const fetchSiteConfig = cache(
+  (): Promise<SiteConfig | null> =>
+    unstable_cache(fetchSiteConfigUncached, ["cmssy-site-config"], {
+      tags: [CONTENT_TAG],
+      revalidate: 3600,
+    })(),
+);
 
-export async function fetchSiteConfig(): Promise<SiteConfig | null> {
-  if (cached !== undefined) return cached;
+async function fetchSiteConfigUncached(): Promise<SiteConfig | null> {
   try {
     const data = await publicRequest(
       PublicSiteConfigDocument,
       { workspaceSlug: cmssy.workspaceSlug },
       "site config",
     );
-    cached = data.public.siteConfig ?? null;
-  } catch {
+    return data.public.siteConfig ?? null;
+  } catch (error) {
+    console.error("[cmssy-web] site config could not be fetched", error);
     return null;
   }
-  return cached;
 }
 
 /**
