@@ -8,8 +8,10 @@ import { resolveSiteLocales } from "@/services/site";
 import { DocsShell } from "@/components/docs-shell";
 import { DocsSidebarNav } from "@/components/docs-sidebar-nav";
 import { DocsPrevNext } from "@/components/docs-prev-next";
+import { DocsBreadcrumbs } from "@/components/docs-breadcrumbs";
 import {
   buildDocsNav,
+  docsBreadcrumbs,
   docsPrevNext,
   labelForPage,
   pickLocalizedValue,
@@ -101,6 +103,10 @@ export default async function Page({ params }: PageProps) {
     locale,
     locales.defaultLocale,
   );
+  const root = {
+    slug: rootPage.fullSlug,
+    label: labelForPage(rootPage, locale, locales.defaultLocale),
+  };
   const { prev, next } = docsPrevNext(slug, nav);
 
   return (
@@ -108,15 +114,13 @@ export default async function Page({ params }: PageProps) {
       <div className="flex flex-col md:flex-row">
         <aside className="sticky top-0 z-30 md:h-screen md:w-64 md:shrink-0 md:overflow-y-auto md:border-r md:border-border">
           <DocsSidebarNav
-            root={{
-              slug: rootPage.fullSlug,
-              label: labelForPage(rootPage, locale, locales.defaultLocale),
-            }}
+            root={root}
             sections={nav}
             searchItems={searchItems}
           />
         </aside>
         <main className="min-w-0 flex-1">
+          <DocsBreadcrumbs trail={docsBreadcrumbs(slug, nav, root)} />
           {content}
           <DocsPrevNext prev={prev} next={next} />
         </main>

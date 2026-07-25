@@ -93,18 +93,22 @@ export function flattenDocsNav(sections: DocsNavSection[]): DocsNavPage[] {
   return sections.flatMap((s) => s.pages);
 }
 
-/** Breadcrumb trail for a slug, from the docs root down to the page. */
+/**
+ * Breadcrumb trail for a slug, from the section root down to the page. Labels
+ * come from the same nav the sidebar renders, so a crumb can never read
+ * differently from the entry it points at.
+ */
 export function docsBreadcrumbs(
   slug: string,
   sections: DocsNavSection[],
-  root: string,
+  root: { slug: string; label: string },
 ): { slug: string; label: string }[] {
   const flat = flattenDocsNav(sections);
   const labelOf = (target: string) =>
     flat.find((p) => p.slug === target)?.label ?? humanizeSlug(target);
 
-  const normRoot = root.replace(/\/+$/, "");
-  const trail = [{ slug: normRoot, label: labelOf(normRoot) }];
+  const normRoot = root.slug.replace(/\/+$/, "");
+  const trail = [{ slug: normRoot, label: root.label }];
   if (!slug.startsWith(normRoot + "/")) return trail;
 
   let acc = normRoot;
