@@ -4,10 +4,13 @@ import DocsArticle from "./DocsArticle";
 // Breadcrumbs and prev/next are not fields here: both come from the page's
 // place in the CMS tree and are rendered route-level (see lib/docs-nav.ts), so
 // an editor cannot enter a trail that disagrees with the sidebar.
+//
+// Neither is the "last updated" date. One page has one date, whoever renders
+// it, so it is a custom field on the page and reaches this block through
+// context.app - see appContextFor in app/[[...path]]/page.tsx.
 export const docsArticleProps = {
   title: fields.text({ label: "Title", required: true }),
   description: fields.textarea({ label: "Description" }),
-  lastUpdated: fields.date({ label: "Last Updated" }),
   content: fields.richText({ label: "Content", required: true }),
   showToc: fields.boolean({
     label: "Show Table of Contents",
