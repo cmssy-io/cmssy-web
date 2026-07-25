@@ -42,7 +42,7 @@ export default async function EditLayout({
   // Root layout for the editor route - same reason as the public one: `lang`
   // must be the language the preview is rendering.
   return (
-    <html lang={locale}>
+    <html lang={locale || undefined}>
       <body>
         <CmssyLocaleProvider
           value={{

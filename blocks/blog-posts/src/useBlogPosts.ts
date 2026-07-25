@@ -28,7 +28,7 @@ export function useBlogPosts(
       ? parentPage
       : undefined;
 
-  const language = context?.locale?.current ?? "en";
+  const language = context?.locale?.current;
   const pagesCollection = context?.pages?._default;
   const isPreview = context?.isPreview ?? false;
   const workspaceId =
