@@ -1,4 +1,4 @@
-import { Calendar, ChevronLeft, ChevronRight, PenLine } from "lucide-react";
+import { Calendar, ChevronRight, PenLine } from "lucide-react";
 import { CmssyLink } from "@/components/cmssy-locale";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "../../components/container";
@@ -21,9 +21,6 @@ export default function DocsArticle({
     content: articleContent = "",
     showToc = true,
     tocTitle,
-    showPrevNext = true,
-    prevPage = [],
-    nextPage = [],
     showEditLink = true,
     editUrl,
   } = content;
@@ -33,8 +30,6 @@ export default function DocsArticle({
     : showToc
       ? extractTocItems(articleContent)
       : { html: articleContent, items: [] };
-  const prev = prevPage[0];
-  const next = nextPage[0];
 
   return (
     <Container className="py-6 flex gap-8 lg:py-12">
@@ -117,42 +112,6 @@ export default function DocsArticle({
               Edit this page on GitHub
             </a>
           </div>
-        )}
-
-        {/* Prev/Next Navigation */}
-        {showPrevNext && (prev || next) && (
-          <nav className="mt-8 pt-8 border-t grid grid-cols-2 gap-4">
-            {prev ? (
-              <CmssyLink
-                href={prev.url}
-                className="group flex flex-col p-4 rounded-lg border hover:border-primary hover:bg-primary/5 transition-colors"
-              >
-                <span className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
-                  <ChevronLeft className="size-3" />
-                  Previous
-                </span>
-                <span className="font-medium group-hover:text-primary transition-colors">
-                  {prev.label}
-                </span>
-              </CmssyLink>
-            ) : (
-              <div />
-            )}
-            {next && (
-              <CmssyLink
-                href={next.url}
-                className="group flex flex-col items-end p-4 rounded-lg border hover:border-primary hover:bg-primary/5 transition-colors"
-              >
-                <span className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
-                  Next
-                  <ChevronRight className="size-3" />
-                </span>
-                <span className="font-medium group-hover:text-primary transition-colors">
-                  {next.label}
-                </span>
-              </CmssyLink>
-            )}
-          </nav>
         )}
       </article>
 
