@@ -49,7 +49,7 @@ export default async function Page({ params }: PageProps) {
   return (
     <DocsShell>
       <div className="flex flex-col md:flex-row">
-        <aside className="md:sticky md:top-0 md:h-screen md:w-64 md:shrink-0 md:overflow-y-auto md:border-r md:border-border">
+        <aside className="sticky top-0 z-30 md:h-screen md:w-64 md:shrink-0 md:overflow-y-auto md:border-r md:border-border">
           <DocsSidebarNav sections={nav} />
         </aside>
         <main className="min-w-0 flex-1">{content}</main>
