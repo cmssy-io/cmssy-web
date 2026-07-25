@@ -27,12 +27,18 @@ export async function fetchSiteConfig(): Promise<SiteConfig | null> {
   return cached;
 }
 
+/**
+ * The languages are the workspace's, never this repo's. When the config cannot
+ * be read the answer is "unknown" - an empty set - not a guessed default: a
+ * hardcoded "en" would silently serve an English-shaped site to every visitor
+ * of a workspace whose default is something else.
+ */
 export async function resolveSiteLocales(): Promise<SiteLocales> {
   const config = await fetchSiteConfig();
-  const defaultLocale = config?.defaultLanguage || "en";
+  const defaultLocale = config?.defaultLanguage ?? "";
   const enabled = config?.enabledLanguages ?? [];
   return {
     defaultLocale,
-    locales: enabled.length > 0 ? enabled : [defaultLocale],
+    locales: enabled.length > 0 ? enabled : defaultLocale ? [defaultLocale] : [],
   };
 }

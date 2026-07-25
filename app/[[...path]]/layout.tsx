@@ -73,7 +73,7 @@ export default async function SiteLayout({
 
   return (
     <html
-      lang={locale}
+      lang={locale || undefined}
       className={`${spaceGrotesk.variable} ${plexSans.variable} ${plexMono.variable}`}
       suppressHydrationWarning
     >

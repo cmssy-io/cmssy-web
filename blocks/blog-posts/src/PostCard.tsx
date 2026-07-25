@@ -23,7 +23,7 @@ export function PostCard({
   layout,
 }: {
   item: PageItem;
-  language: string;
+  language: string | undefined;
   layout: string;
 }) {
   const title = getLocalizedField(item.displayName, language);

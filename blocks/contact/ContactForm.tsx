@@ -21,8 +21,10 @@ function getLocalized(field: unknown, fallback = ""): string {
   if (!field) return fallback;
   if (typeof field === "string") return field;
   if (typeof field === "object") {
+    // No language is privileged here: the block context carries the active one,
+    // and anything else is just the first translation that exists.
     const o = field as Record<string, string>;
-    return o["en"] || Object.values(o)[0] || fallback;
+    return Object.values(o)[0] || fallback;
   }
   return fallback;
 }
