@@ -9,16 +9,9 @@ import {
 } from "react";
 import { usePathname } from "next/navigation";
 import { Moon, Sun } from "lucide-react";
+import { THEME_STORAGE_KEY } from "@/lib/theme-script";
 
 export type Theme = "light" | "dark";
-
-export const THEME_STORAGE_KEY = "cmssy-theme";
-
-/**
- * Applied before first paint by the root layout, so the page never flashes the
- * wrong theme. Kept as a string because it has to run inline, ahead of React.
- */
-export const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('${THEME_STORAGE_KEY}');if(t!=='dark'&&t!=='light'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.dataset.theme=t;}catch(e){}})();`;
 
 function storedTheme(): Theme {
   try {
