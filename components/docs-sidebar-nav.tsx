@@ -165,17 +165,20 @@ export function DocsSidebarNav({
         )}
 
       {/* Desktop rail */}
-      <nav aria-label={root.label} className="hidden text-sm md:block">
+      <nav
+        aria-label={root.label}
+        className="hidden pl-4 pr-4 text-sm md:block lg:pl-6"
+      >
         <CmssyLink
           href={root.slug}
-          className="block px-4 pb-3 pt-6 font-semibold text-foreground"
+          className="block px-2 pb-3 pt-6 font-semibold text-foreground"
         >
           {root.label}
         </CmssyLink>
-        <div className="px-4 pb-4">
+        <div className="px-2 pb-4">
           <DocsSearch items={searchItems} label={root.label} ui={ui} />
         </div>
-        <div className="px-4 pb-6">{links}</div>
+        <div className="px-2 pb-6">{links}</div>
       </nav>
     </>
   );

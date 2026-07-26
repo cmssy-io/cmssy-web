@@ -61,7 +61,9 @@ export default async function SiteLayout({
       <LocaleSync />
       {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
       {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
-      {slot("header")}
+      <div className="contents [&>[data-block-type]]:contents">
+        {slot("header")}
+      </div>
       {children}
       {slot("footer")}
       <DraftPreviewBanner path={path} />

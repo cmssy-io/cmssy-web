@@ -226,6 +226,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLElement>(null);
+  const chromeRef = useRef<HTMLDivElement>(null);
 
   const isAuthenticated = context?.auth?.isAuthenticated ?? false;
   const customer = context?.auth?.customer;
@@ -311,6 +312,21 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
     };
   }, []);
 
+  useEffect(() => {
+    const chrome = chromeRef.current;
+    if (!chrome) return;
+    const root = document.documentElement;
+    const publish = () =>
+      root.style.setProperty("--site-chrome", `${chrome.offsetHeight}px`);
+    publish();
+    const observer = new ResizeObserver(publish);
+    observer.observe(chrome);
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("--site-chrome");
+    };
+  }, []);
+
   // The workspace owns both marks; the app hands them over through context.app
   // (see the layouts). A workspace without a dark variant keeps its one logo.
   const { theme } = useTheme();
@@ -378,8 +394,9 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
 
   return (
     <>
-      {/* Announcement Bar */}
-      {showAnnouncementBar && (
+      <div ref={chromeRef} className="sticky top-0 z-50">
+        {/* Announcement Bar */}
+        {showAnnouncementBar && (
         <div
           className="relative w-full text-center text-sm py-2 px-4"
           style={{
@@ -409,7 +426,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
       {/* Main Header */}
       <header
         ref={headerRef}
-        className={`relative z-50 w-full transition-all duration-300 ${isScrolled || isMobileMenuOpen ? "bg-background/95 backdrop-blur-lg border-b shadow-sm" : "bg-background border-b"}`}
+        className={`w-full transition-all duration-300 ${isScrolled || isMobileMenuOpen ? "bg-background/95 backdrop-blur-lg border-b shadow-sm" : "bg-background border-b"}`}
       >
         <Container as="nav">
           <div className="relative flex items-center justify-between h-16">
@@ -564,6 +581,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
           </div>
         </Container>
       </header>
+      </div>
 
       {/* Mobile fullscreen overlay */}
       {isMobileMenuOpen && (
