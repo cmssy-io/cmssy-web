@@ -40,7 +40,11 @@ export default function DocsHero({
       )}
 
       <Container className="relative py-16 lg:py-24">
-        <div className="max-w-3xl mx-auto text-center">
+        <div
+          className={`max-w-3xl mx-auto text-center ${
+            quickLinks.length > 0 ? "mb-12 lg:mb-16" : ""
+          }`}
+        >
           {/* Badge */}
           {badge && (
             <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 text-xs font-medium tracking-wider uppercase rounded-full bg-primary/10 text-primary">
@@ -63,21 +67,23 @@ export default function DocsHero({
 
           {/* Description */}
           {description && (
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               {description}
             </p>
           )}
 
           {/* Search - the field the block schema has always offered */}
           {showSearch && searchPlaceholder && (
-            <DocsSearchTrigger placeholder={searchPlaceholder} />
+            <div className="mt-8">
+              <DocsSearchTrigger placeholder={searchPlaceholder} />
+            </div>
           )}
         </div>
 
         {/* Quick Links Grid */}
         {quickLinks.length > 0 && (
           <div
-            className={`grid gap-4 max-w-4xl mx-auto ${
+            className={`grid gap-5 max-w-4xl mx-auto ${
               quickLinks.length <= 2
                 ? "md:grid-cols-2"
                 : quickLinks.length === 3
