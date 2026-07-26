@@ -405,6 +405,19 @@ html[data-theme="dark"] .prose pre.shiki span {
   --ring: var(--color-elektryk-500);
 }
 
+html[data-theme="dark"] .docs-shell {
+  --primary: var(--color-elektryk-500);
+}
+
+.docs-shell main:has([data-block-type="docs-hero"]) {
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--primary) 5%, transparent),
+    transparent 24rem
+  );
+  background-repeat: no-repeat;
+}
+
 /* A workspace stores one logo, and most are drawn for a light page. In dark it
    keeps its own colours and gets a light chip to sit on, rather than being
    inverted into something that is no longer the brand. */

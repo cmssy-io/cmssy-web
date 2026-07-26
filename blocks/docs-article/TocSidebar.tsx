@@ -41,7 +41,7 @@ export function TocSidebar({ items, title }: TocSidebarProps) {
 
   return (
     <aside className="hidden xl:block w-64 shrink-0">
-      <div className="sticky top-20">
+      <div className="sticky top-[calc(var(--site-chrome,4rem)+1rem)] max-h-[calc(100dvh-var(--site-chrome,4rem)-2rem)] overflow-y-auto overscroll-contain">
         {title && <h4 className="text-sm font-semibold mb-4">{title}</h4>}
         <nav className="space-y-1">
           {items.map((item) => (

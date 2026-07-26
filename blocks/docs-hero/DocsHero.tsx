@@ -21,7 +21,7 @@ export default function DocsHero({
 
   const bgClasses = {
     default: "bg-background",
-    gradient: "bg-gradient-to-b from-primary/5 via-background to-background",
+    gradient: "bg-transparent",
     minimal: "bg-background",
   };
 

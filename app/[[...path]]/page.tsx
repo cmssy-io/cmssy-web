@@ -134,8 +134,8 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <DocsShell>
-      <div className="flex flex-col md:flex-row">
-        <aside className="sticky top-0 z-30 md:h-screen md:w-64 md:shrink-0 md:overflow-y-auto md:border-r md:border-border">
+      <div className="mx-auto flex w-full max-w-320 flex-col md:flex-row">
+        <aside className="sticky top-[var(--site-chrome,4rem)] z-30 md:h-[calc(100dvh-var(--site-chrome,4rem))] md:w-64 md:shrink-0 md:overflow-y-auto md:overscroll-contain md:border-r md:border-border">
           <DocsSidebarNav
             root={root}
             sections={nav}
