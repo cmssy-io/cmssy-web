@@ -8,6 +8,7 @@ query PublicSiteConfig($workspaceSlug: String!) {
       branding {
         brandName
         logoUrl
+        logoDarkUrl
         faviconUrl
         ogImageUrl
       }

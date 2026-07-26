@@ -397,12 +397,6 @@ html[data-theme="dark"] .prose pre.shiki span {
 /* A workspace stores one logo, and most are drawn for a light page. In dark it
    keeps its own colours and gets a light chip to sit on, rather than being
    inverted into something that is no longer the brand. */
-html[data-theme="dark"] .brand-logo {
-  background: #f4f8fb;
-  border-radius: 0.5rem;
-  padding: 0.15rem;
-}
-
 html[data-theme="dark"] {
   --background: #0b0f16;
   --foreground: #e7edf3;
