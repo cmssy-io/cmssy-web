@@ -1,7 +1,8 @@
 import "@/styles/main.css";
 import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { resolveSiteLocales } from "@/services/site";
-import { ThemeProvider, THEME_INIT_SCRIPT } from "@/components/theme";
+import { ThemeProvider } from "@/components/theme";
+import { themeInitScript } from "@/lib/theme-script";
 
 /**
  * The real root layout: the document, the fonts, the theme.
@@ -43,10 +44,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // The workspace's own default. A page in another language corrects this from
-  // the client (see LocaleSync) - `<html lang>` cannot be set from a nested
-  // layout, and reading the path here would make every page dynamic.
-  const { defaultLocale } = await resolveSiteLocales();
+  // The workspace's own default: `<html lang>` cannot be set from a nested
+  // layout, and reading the path here would make every page dynamic. The
+  // inline script below corrects it from the URL before the first paint, and
+  // LocaleSync keeps it right across client navigation.
+  const { defaultLocale, locales } = await resolveSiteLocales();
 
   return (
     <html
@@ -55,7 +57,9 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        <script
+          dangerouslySetInnerHTML={{ __html: themeInitScript(locales) }}
+        />
       </head>
       <body>
         <ThemeProvider>{children}</ThemeProvider>
