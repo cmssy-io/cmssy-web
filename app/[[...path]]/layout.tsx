@@ -48,9 +48,10 @@ export default async function SiteLayout({
 }) {
   const { path } = await params;
   const { isEnabled: draft } = await draftMode();
-  const [locales, groups] = await Promise.all([
+  const [locales, groups, siteConfig] = await Promise.all([
     resolveSiteLocales(),
     fetchChromeLayouts("/", draft ? cmssy.draftSecret : undefined),
+    fetchSiteConfig(),
   ]);
   const { locale } = splitLocaleFromPath(path, locales);
   const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim();
@@ -64,6 +65,9 @@ export default async function SiteLayout({
       locale={locale}
       defaultLocale={locales.defaultLocale}
       enabledLocales={locales.locales}
+      // The header picks its mark by theme, and only the workspace knows
+      // whether it has a dark one.
+      appContext={{ branding: siteConfig?.branding ?? null }}
     />
   );
 

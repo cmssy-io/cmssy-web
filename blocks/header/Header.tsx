@@ -51,7 +51,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { CmssyMark } from "@/components/cmssy-mark";
 import { Container } from "@/components/container";
 import { LanguageSwitcher } from "@/components/language-switcher";
-import { ThemeToggle } from "@/components/theme";
+import { ThemeToggle, useTheme } from "@/components/theme";
 import type { BlockProps } from "@cmssy/react";
 import type { headerProps } from "./block";
 
@@ -156,6 +156,13 @@ interface PlatformContext {
   };
   language: string;
   isPreview?: boolean;
+  /** Whatever the route handed the renderer; see the layouts. */
+  app?: {
+    branding?: {
+      logoUrl?: string | null;
+      logoDarkUrl?: string | null;
+    } | null;
+  };
 }
 
 interface HeaderProps {
@@ -304,6 +311,13 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
     };
   }, []);
 
+  // The workspace owns both marks; the app hands them over through context.app
+  // (see the layouts). A workspace without a dark variant keeps its one logo.
+  const { theme } = useTheme();
+  const branding = context?.app?.branding;
+  const themedLogo =
+    theme === "dark" && branding?.logoDarkUrl ? branding.logoDarkUrl : logo;
+
   const logoSizeClasses = {
     sm: "w-6 h-6",
     md: "w-8 h-8",
@@ -401,11 +415,11 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
           <div className="relative flex items-center justify-between h-16">
             {/* Logo */}
             <CmssyLink href={homeHref} className="flex items-center gap-2">
-              {logo ? (
+              {themedLogo ? (
                 <Image
-                  src={logo}
+                  src={themedLogo}
                   alt={logoText || ""}
-                  className={`brand-logo ${logoSizeClasses[logoSize]} object-contain`}
+                  className={`${logoSizeClasses[logoSize]} object-contain`}
                   width={120}
                   height={40}
                 />
