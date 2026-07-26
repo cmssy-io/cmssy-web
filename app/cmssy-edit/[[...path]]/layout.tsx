@@ -1,12 +1,10 @@
-import "@/styles/main.css";
 import { resolveEditorOrigin } from "@cmssy/next";
 import { cmssy } from "@/cmssy/config";
 import { splitLocaleFromPath } from "@/lib/locale-path";
 import { fetchChromeLayouts } from "@/services/layout";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 import { EditableLayout } from "@/cmssy/editable-layout";
-import { CmssyLocaleProvider } from "@/components/cmssy-locale";
-import { ThemeProvider, THEME_INIT_SCRIPT } from "@/components/theme";
+import { CmssyLocaleProvider, LocaleSync } from "@/components/cmssy-locale";
 
 // Editable site chrome for the middleware-rewritten editor route. The route
 // itself is force-dynamic, so reading nothing but params here is fine - the
@@ -42,31 +40,21 @@ export default async function EditLayout({
     />
   );
 
-  // Root layout for the editor route - same reason as the public one: `lang`
-  // must be the language the preview is rendering.
+  // The document and the theme provider come from app/layout.tsx, the same as
+  // for the public route - the editor renders the same blocks and needs the
+  // same providers around them.
   return (
-    <html lang={locale || undefined} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
-      </head>
-      <body>
-        <CmssyLocaleProvider
-          value={{
-            current: locale,
-            default: locales.defaultLocale,
-            enabled: locales.locales,
-          }}
-        >
-          {/* The editor renders the same blocks as the site, so it has to offer
-              them the same providers - a header with a theme switch throws
-              without this one. */}
-          <ThemeProvider>
-            {slot("header")}
-            {children}
-            {slot("footer")}
-          </ThemeProvider>
-        </CmssyLocaleProvider>
-      </body>
-    </html>
+    <CmssyLocaleProvider
+      value={{
+        current: locale,
+        default: locales.defaultLocale,
+        enabled: locales.locales,
+      }}
+    >
+      <LocaleSync />
+      {slot("header")}
+      {children}
+      {slot("footer")}
+    </CmssyLocaleProvider>
   );
 }
