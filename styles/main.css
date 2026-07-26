@@ -206,6 +206,17 @@
   * {
     @apply border-border outline-ring/50;
   }
+  /* The document, not just the body. A route change replaces the body's
+     contents, and for a frame the browser paints its own canvas - white, and
+     very visible on the dark theme. `color-scheme` tells it the same thing
+     about scrollbars and form controls, which were light on a dark page. */
+  html {
+    @apply bg-background;
+    color-scheme: light;
+  }
+  html[data-theme="dark"] {
+    color-scheme: dark;
+  }
   body {
     @apply bg-background text-foreground;
   }
