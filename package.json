@@ -13,9 +13,9 @@
     "smoke:edit": "node smoke-edit.mjs"
   },
   "dependencies": {
-    "@cmssy/core": "^10.5.2",
-    "@cmssy/next": "^10.5.2",
-    "@cmssy/react": "^10.5.2",
+    "@cmssy/core": "^11.0.0",
+    "@cmssy/next": "^11.0.0",
+    "@cmssy/react": "^11.0.0",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@next/third-parties": "^16.2.7",
     "@radix-ui/react-accordion": "^1.2.12",
@@ -43,7 +43,7 @@
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
-    "@cmssy/eslint-plugin": "^10.1.0",
+    "@cmssy/eslint-plugin": "^11.0.0",
     "@cmssy/types": "^0.29.0",
     "@eslint/js": "^9.39.3",
     "@graphql-codegen/cli": "^7.2.0",
