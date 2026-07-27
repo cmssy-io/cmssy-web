@@ -50,7 +50,7 @@ export default function ComparisonTable({
                   <td className="px-5 py-4 font-medium text-foreground">
                     {row.label}
                   </td>
-                  <td className="bg-elektryk/6 px-5 py-4 font-semibold text-ink">
+                  <td className="bg-elektryk/6 px-5 py-4 font-semibold text-foreground">
                     {row.cmssy}
                   </td>
                   {(row.values ?? "").split("|").map((v, i) => (
