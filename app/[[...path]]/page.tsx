@@ -2,7 +2,11 @@ import { createCmssyPage } from "@cmssy/next/server";
 import { cmssy } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
 import { splitLocaleFromPath } from "@/lib/locale-path";
-import { listChildPages, type ChildPage } from "@/services/pages";
+import {
+  listChildPages,
+  publishedPaths,
+  type ChildPage,
+} from "@/services/pages";
 import { buildPageMetadata } from "@/services/seo";
 import { resolveSiteLocales } from "@/services/site";
 import { DocsShell } from "@/components/docs-shell";
@@ -22,6 +26,15 @@ import type { DocsSearchItem } from "@/components/docs-search";
 
 export const revalidate = 3600;
 export const dynamicParams = true;
+
+// Without this the `revalidate` above is decoration: a catch-all that generates
+// no params is rendered on demand on every request, which is how this site ran
+// for all of v10. `dynamicParams` covers pages published after a build - first
+// request renders, then it caches - and /api/revalidate clears both on publish,
+// so the hour is a ceiling rather than a wait.
+export function generateStaticParams() {
+  return publishedPaths();
+}
 
 /**
  * What the blocks on this page get to see beyond their own content. The page's

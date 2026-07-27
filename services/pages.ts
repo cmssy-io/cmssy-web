@@ -86,6 +86,27 @@ export async function listPublicPages(): Promise<CmssyPageSummary[]> {
   }
 }
 
+/**
+ * The paths to prerender.
+ *
+ * Deliberately not `listPublicPages`: that one degrades to an empty list, which
+ * a sitemap survives and this does not. Zero params means the catch-all is
+ * served on demand and cached by nothing - with a green build, a blank
+ * Revalidate column, and no other warning. That is how every route on this site
+ * ran uncached through all of v10. Let the build fail instead.
+ */
+export async function publishedPaths(): Promise<{ path: string[] }[]> {
+  const data = await publicRequest(
+    PublicPagesDocument,
+    { workspaceSlug: cmssy.workspaceSlug },
+    "published paths",
+  );
+
+  return data.public.page.list
+    .filter((page) => page.publishedAt)
+    .map((page) => ({ path: (page.slug ?? "").split("/").filter(Boolean) }));
+}
+
 export async function getPageById(
   pageId: string,
 ): Promise<CmssyPageData | null> {
