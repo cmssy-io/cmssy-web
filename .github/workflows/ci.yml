@@ -24,3 +24,71 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm typecheck
+
+  # This site declared `revalidate = 3600` for the whole of v10 and served
+  # `no-store` on every request: a catch-all that generates no params is
+  # rendered on demand, and the only warning was a blank Revalidate column in
+  # the build output. Nothing here read a header, so nothing noticed.
+  #
+  # No secrets: the delivery API serves published content by workspace slug.
+  cache:
+    runs-on: ubuntu-latest
+    env:
+      CMSSY_ORG_SLUG: cmssy
+      CMSSY_WORKSPACE_SLUG: cmssy
+      NEXT_PUBLIC_CMSSY_WORKSPACE_ID: 695a526b09373a29a6c4a082
+      NEXT_PUBLIC_SITE_URL: https://www.cmssy.com
+      CMSSY_DRAFT_SECRET: ci-placeholder-draft-secret
+      CMSSY_REVALIDATE_SECRET: ci-placeholder-revalidate-secret
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      - name: The pages must be prerendered and cacheable
+        run: |
+          set -euo pipefail
+          pnpm start -p 3000 &
+          npx --yes wait-on http://localhost:3000/ --timeout 90000
+
+          root=$(curl -sI http://localhost:3000/)
+          echo "$root"
+
+          if ! grep -qi "^x-nextjs-prerender: 1" <<<"$root"; then
+            echo "FAILED: / is rendered on demand. Either generateStaticParams" \
+                 "is gone, or something in the route reads a dynamic API -" \
+                 "headers(), cookies(), searchParams, or a fetch with" \
+                 "cache: \"no-store\"."
+            exit 1
+          fi
+
+          if ! grep -qiE "^cache-control:.*s-maxage=[0-9]+" <<<"$root"; then
+            echo "FAILED: / carries no s-maxage - nothing downstream caches it."
+            exit 1
+          fi
+
+          # An on-demand path: MISS then HIT. Asserting on a prerendered path
+          # proves nothing, its first request is already a HIT.
+          uncached="/ci-cache-probe-$(date +%s)"
+          first=$(curl -sI "http://localhost:3000$uncached" | grep -i "^x-nextjs-cache:" || true)
+          second=$(curl -sI "http://localhost:3000$uncached" | grep -i "^x-nextjs-cache:" || true)
+          echo "on-demand path: $first -> $second"
+
+          if ! grep -qi "MISS" <<<"$first"; then
+            echo "FAILED: expected MISS first, got '$first' - the check below" \
+                 "would pass vacuously."
+            exit 1
+          fi
+
+          if ! grep -qi "HIT" <<<"$second"; then
+            echo "FAILED: an on-demand path is re-rendered every request."
+            exit 1
+          fi
+
+          echo "Route cache check passed."
