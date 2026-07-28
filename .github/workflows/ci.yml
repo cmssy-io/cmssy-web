@@ -47,17 +47,27 @@ jobs:
       # Models go to a throwaway path on purpose. graphql/models.ts has no
       # consumer here, and gating on it would let anyone editing a model in the
       # CMS turn every open pull request red.
+      #
+      # The assertion itself is offline - the operations come from the CLI's own
+      # bundle - but the command still fetches models it discards, so it can
+      # fail on an API outage. It writes the operations first, so the file is
+      # judged before that failure is re-raised: a stale file reports itself,
+      # and an outage reports the outage. Never `|| true` here; the write is
+      # what would make that vacuous.
       - name: The vendored operations match the SDK
         env:
           CMSSY_ORG_SLUG: cmssy
           CMSSY_WORKSPACE_SLUG: cmssy
         run: |
           set -euo pipefail
-          pnpm cmssy types --out "$RUNNER_TEMP/models.ts"
+          exit_code=0
+          pnpm cmssy types --out "$RUNNER_TEMP/models.ts" || exit_code=$?
           if [ -n "$(git status --porcelain -- cmssy/operations.graphql)" ]; then
+            git diff --stat -- cmssy/operations.graphql
             echo "::error::run pnpm types and commit cmssy/operations.graphql"
             exit 1
           fi
+          exit $exit_code
 
       # The app sends the documents in graphql/generated, not the .graphql files
       # the step above compares. Without this an SDK bump rewrites

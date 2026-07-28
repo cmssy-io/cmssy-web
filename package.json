@@ -46,7 +46,7 @@
   "devDependencies": {
     "@cmssy/cli": "^11.3.2",
     "@cmssy/eslint-plugin": "^11.3.2",
-    "@cmssy/types": "^0.29.0",
+    "@cmssy/types": "^0.32.0",
     "@eslint/js": "^9.39.3",
     "@graphql-codegen/cli": "^7.2.0",
     "@graphql-codegen/client-preset": "^6.1.0",
