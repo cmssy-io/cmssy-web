@@ -2,7 +2,7 @@ import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
   schema: process.env.CODEGEN_SCHEMA || "https://api.cmssy.io/graphql",
-  documents: ["graphql/**/*.graphql"],
+  documents: ["graphql/**/*.graphql", "cmssy/**/*.graphql"],
   generates: {
     "graphql/generated/": {
       preset: "client",
