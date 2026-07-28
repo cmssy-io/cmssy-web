@@ -97,8 +97,8 @@ importers:
         specifier: ^11.3.2
         version: 11.3.2
       '@cmssy/eslint-plugin':
-        specifier: ^11.0.0
-        version: 11.0.0(eslint@9.39.5(jiti@2.7.0))
+        specifier: ^11.3.2
+        version: 11.3.2(eslint@9.39.5(jiti@2.7.0))
       '@cmssy/types':
         specifier: ^0.29.0
         version: 0.29.0
@@ -249,8 +249,8 @@ packages:
   '@cmssy/core@11.3.2':
     resolution: {integrity: sha512-cbvHrDBKY4eu75HKnD6RcQPwQIvbm31+V/AHpiMYhjKEQ1wikTrYivhzNFmOHzOjq+HB/F4mpX+ewmVDB2IJNw==}
 
-  '@cmssy/eslint-plugin@11.0.0':
-    resolution: {integrity: sha512-LvCudg1UovrTiax6y7jpwyZZKzjRYlTuLtEz1nioGldsMcpgullzIkW3cWTSJqgoehcE7PsvFR1084hd4FrDhg==}
+  '@cmssy/eslint-plugin@11.3.2':
+    resolution: {integrity: sha512-6Kc36zk69ayWdm8MX4U1WcwmQYanTwRT2jjSxpeO7iRrhw//wE+6Or0KDUspi1h/tlnAJYqXOjde9iAQ+YOalg==}
     peerDependencies:
       eslint: '>=8'
 
@@ -3219,7 +3219,7 @@ snapshots:
       '@cmssy/types': 0.32.0
       jose: 6.2.4
 
-  '@cmssy/eslint-plugin@11.0.0(eslint@9.39.5(jiti@2.7.0))':
+  '@cmssy/eslint-plugin@11.3.2(eslint@9.39.5(jiti@2.7.0))':
     dependencies:
       eslint: 9.39.5(jiti@2.7.0)
 
