@@ -1,3 +1,5 @@
+# Not replaced by the vendored PublicPage: that one hits the same resolver and
+# pulls every block, published and draft, to answer a question about an id.
 query PublicPageId(
   $workspaceSlug: String!
   $slug: String!
