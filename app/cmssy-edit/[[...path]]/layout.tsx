@@ -23,10 +23,7 @@ export default async function EditLayout({
     fetchSiteConfig(),
   ]);
   const { locale } = splitLocaleFromPath(path, locales);
-  const resolvedEditorOrigin = resolveEditorOrigin(cmssy.editorOrigin);
-  const editorOrigin = Array.isArray(resolvedEditorOrigin)
-    ? resolvedEditorOrigin[0]
-    : resolvedEditorOrigin;
+  const editorOrigin = resolveEditorOrigin(cmssy.editorOrigin);
 
   const slot = (position: "header" | "footer") => (
     <EditableLayout
