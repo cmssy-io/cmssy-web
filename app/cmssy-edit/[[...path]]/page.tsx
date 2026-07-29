@@ -38,10 +38,7 @@ export default async function EditPage({ params, searchParams }: PageProps) {
 
   if (!hasSidebar) return content;
 
-  const resolvedEditorOrigin = resolveEditorOrigin(cmssy.editorOrigin);
-  const editorOrigin = Array.isArray(resolvedEditorOrigin)
-    ? resolvedEditorOrigin[0]
-    : resolvedEditorOrigin;
+  const editorOrigin = resolveEditorOrigin(cmssy.editorOrigin);
 
   return (
     <div className="flex flex-col md:flex-row">
