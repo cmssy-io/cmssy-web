@@ -50,10 +50,10 @@ jobs:
       #
       # The assertion itself is offline - the operations come from the CLI's own
       # bundle - but the command still fetches models it discards, so it can
-      # fail on an API outage. It writes the operations first, so the file is
-      # judged before that failure is re-raised: a stale file reports itself,
-      # and an outage reports the outage. Never `|| true` here; the write is
-      # what would make that vacuous.
+      # fail on an API outage. The file is judged first so staleness reports
+      # itself either way, then the command's own failure is re-raised: `|| true`
+      # would still catch a stale file, and would silently swallow the outage and
+      # anything failing before the write, like a name collision.
       - name: The vendored operations match the SDK
         env:
           CMSSY_ORG_SLUG: cmssy
@@ -63,7 +63,9 @@ jobs:
           exit_code=0
           pnpm cmssy types --out "$RUNNER_TEMP/models.ts" || exit_code=$?
           if [ -n "$(git status --porcelain -- cmssy/operations.graphql)" ]; then
-            git diff --stat -- cmssy/operations.graphql
+            # status, not diff: diff prints nothing when the file is untracked,
+            # which is the case this check exists to survive.
+            git status --short -- cmssy/operations.graphql
             echo "::error::run pnpm types and commit cmssy/operations.graphql"
             exit 1
           fi
