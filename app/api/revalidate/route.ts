@@ -2,10 +2,13 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { NextResponse, type NextRequest } from "next/server";
 import { CONTENT_TAG } from "@/services/pages";
 
-// On-demand ISR webhook. cmssy calls this on publish to refresh cached pages.
+// On-demand ISR webhook. cmssy calls this on any content.changed.
 // Auth: shared secret via `?secret=` or `x-revalidate-secret` header.
-// Optional `path` (e.g. "/about", "/pl/about") narrows the revalidation;
-// omit it to refresh the whole site (layout scope).
+//
+// The whole site is refreshed on every call. cmssy's payload names what moved
+// (`subject.kind` / `slug` / `ids`), but narrowing by it buys nothing here: a
+// publish also reorders the nav, the sitemap and every parent listing, so the
+// tag has to be cleared regardless.
 export async function POST(request: NextRequest) {
   const secret = process.env.CMSSY_REVALIDATE_SECRET;
   const provided =
@@ -16,29 +19,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ revalidated: false }, { status: 401 });
   }
 
-  let path: string | undefined =
-    request.nextUrl.searchParams.get("path") ?? undefined;
-  if (!path) {
-    try {
-      const body = (await request.json()) as { path?: string };
-      path = body?.path;
-    } catch {
-      // no body - fall through to full revalidation
-    }
-  }
-
   // The nav, the site config and the page list are cached under one tag, so a
   // publish has to clear it too - otherwise a new page is live but missing
   // from every sidebar until the hourly window rolls over.
   // `expire: 0` - the tag is stale immediately, which is the point of a
   // publish webhook.
   revalidateTag(CONTENT_TAG, { expire: 0 });
+  revalidatePath("/", "layout");
 
-  if (path) {
-    revalidatePath(path);
-  } else {
-    revalidatePath("/", "layout");
-  }
-
-  return NextResponse.json({ revalidated: true, path: path ?? "/", now: Date.now() });
+  return NextResponse.json({ revalidated: true, now: Date.now() });
 }
