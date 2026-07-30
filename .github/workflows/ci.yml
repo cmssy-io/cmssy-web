@@ -103,7 +103,6 @@ jobs:
       NEXT_PUBLIC_CMSSY_WORKSPACE_ID: 695a526b09373a29a6c4a082
       NEXT_PUBLIC_SITE_URL: https://www.cmssy.com
       CMSSY_DRAFT_SECRET: ci-placeholder-draft-secret
-      CMSSY_REVALIDATE_SECRET: ci-placeholder-revalidate-secret
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
