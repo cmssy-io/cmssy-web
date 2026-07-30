@@ -1,21 +1,29 @@
+import { verifyCmssyWebhook } from "@cmssy/core";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { NextResponse, type NextRequest } from "next/server";
 import { CONTENT_TAG } from "@/services/pages";
 
 // On-demand ISR webhook. cmssy calls this on any content.changed.
-// Auth: shared secret via `?secret=` or `x-revalidate-secret` header.
+// Auth: the HMAC signature cmssy already sends in `x-cmssy-signature`,
+// verified against CMSSY_WEBHOOK_SECRET.
 //
 // The whole site is refreshed on every call. cmssy's payload names what moved
 // (`subject.kind` / `slug` / `ids`), but narrowing by it buys nothing here: a
 // publish also reorders the nav, the sitemap and every parent listing, so the
 // tag has to be cleared regardless.
 export async function POST(request: NextRequest) {
-  const secret = process.env.CMSSY_REVALIDATE_SECRET;
-  const provided =
-    request.nextUrl.searchParams.get("secret") ??
-    request.headers.get("x-revalidate-secret");
+  const secret = process.env.CMSSY_WEBHOOK_SECRET;
+  if (!secret) {
+    return NextResponse.json({ revalidated: false }, { status: 401 });
+  }
 
-  if (!secret || provided !== secret) {
+  try {
+    await verifyCmssyWebhook({
+      body: await request.text(),
+      signatureHeader: request.headers.get("x-cmssy-signature"),
+      secret,
+    });
+  } catch {
     return NextResponse.json({ revalidated: false }, { status: 401 });
   }
 

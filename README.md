@@ -31,7 +31,8 @@ Architecture:
   `seoTitle`/`seoDescription`/`seoKeywords`, localized).
 - `proxy.ts` - sets the locale header (`/pl/*` -> pl) and edit-mode CSP.
 - `app/api/draft` - editor draft bridge; `app/api/revalidate` - on-demand ISR
-  webhook (guarded by `CMSSY_REVALIDATE_SECRET`).
+  webhook (authenticated by cmssy's `x-cmssy-signature`, verified against
+  `CMSSY_WEBHOOK_SECRET`).
 - `app/api/graphql` + `app/api/public-graphql` - proxy the public delivery API for
   client blocks (blog-posts listing, contact form). The proxy adds the
   `x-workspace-id` header that workspace-scoped queries (e.g. `public.form.get`) need.
