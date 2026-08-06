@@ -6,7 +6,7 @@ import { print } from "graphql";
 import type { BlockProps } from "@cmssy/react";
 import { PublicPagesByTypeDocument } from "@/graphql/generated/graphql";
 import type { blogPostsProps, BlogPostsData } from "../block";
-import { getCustomField } from "./utils";
+import { customText } from "./utils";
 
 const PUBLIC_PAGES_QUERY = print(PublicPagesByTypeDocument);
 
@@ -157,7 +157,7 @@ export function useBlogPosts(
   const categories = useMemo(() => {
     const cats = new Set<string>();
     for (const item of items) {
-      const cat = getCustomField(item, "category") as string | null;
+      const cat = customText(item, "category");
       if (cat) cats.add(cat);
     }
     return Array.from(cats).sort();
@@ -166,7 +166,7 @@ export function useBlogPosts(
   const filteredItems = useMemo(() => {
     if (!activeCategory) return items;
     return items.filter(
-      (item) => getCustomField(item, "category") === activeCategory,
+      (item) => customText(item, "category") === activeCategory,
     );
   }, [items, activeCategory]);
 
