@@ -25,11 +25,21 @@ function customField(item: PageItem, key: string): unknown {
  * images disappeared. So narrow at runtime here, once, and let callers take a
  * type they can trust.
  */
-export function customText(item: PageItem, key: string): string | null {
-  const value = customField(item, key);
+function nonEmptyString(value: unknown): string | null {
   return typeof value === "string" && value !== "" ? value : null;
 }
 
+/** An empty string reads as absent, so `?? fallback` reaches the fallback. */
+export function customText(item: PageItem, key: string): string | null {
+  return nonEmptyString(customField(item, key));
+}
+
+/**
+ * The url, or null. Narrowed on the way out rather than trusted on the way in:
+ * `mediaUrl` hands back `value.url` as it found it, so a field carrying
+ * something that merely has a `url` key would otherwise escape as a non-string
+ * wearing a string's type - the same hole in a new place.
+ */
 export function customMedia(item: PageItem, key: string): string | null {
-  return mediaUrl(customField(item, key) as MediaLike);
+  return nonEmptyString(mediaUrl(customField(item, key) as MediaLike));
 }
