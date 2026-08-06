@@ -1,9 +1,8 @@
 import Image from "next/image";
-import { mediaUrl, type MediaLike } from "@cmssy/react";
 import type { PageItem } from "@cmssy/types";
 import { CmssyLink } from "@/components/cmssy-locale";
 import { formatDate } from "@/lib/utils";
-import { getCustomField, getLocalizedField } from "./utils";
+import { customMedia, customText, getLocalizedField } from "./utils";
 
 export function PlaceholderCard() {
   return (
@@ -29,15 +28,12 @@ export function PostCard({
 }) {
   const title = getLocalizedField(item.displayName, language);
   const excerpt = getLocalizedField(item.seoDescription, language);
-  const coverImage = mediaUrl(
-    getCustomField(item, "cover_image") as MediaLike,
-  );
-  const rawAuthor = getCustomField(item, "author") as string | null;
+  const coverImage = customMedia(item, "cover_image");
+  const rawAuthor = customText(item, "author");
   const author =
     rawAuthor && !/^[0-9a-f]{24}$/.test(rawAuthor) ? rawAuthor : null;
-  const category = getCustomField(item, "category") as string | null;
-  const publishDate =
-    (getCustomField(item, "publish_date") as string | null) ?? item.publishedAt;
+  const category = customText(item, "category");
+  const publishDate = customText(item, "publish_date") ?? item.publishedAt;
 
   const isList = layout === "list";
 
@@ -69,9 +65,7 @@ export function PostCard({
       )}
       <div className="p-5 flex flex-col gap-2 flex-1">
         {category && (
-          <span className="text-xs font-medium text-sky-600">
-            {category}
-          </span>
+          <span className="text-xs font-medium text-sky-600">{category}</span>
         )}
         <h3 className="text-lg font-semibold leading-snug">{title}</h3>
         {excerpt && (
