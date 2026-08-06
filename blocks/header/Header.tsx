@@ -52,6 +52,7 @@ import { CmssyMark } from "@/components/cmssy-mark";
 import { Container } from "@/components/container";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeToggle, useTheme } from "@/components/theme";
+import { mediaUrl } from "@cmssy/core";
 import type { BlockProps } from "@cmssy/react";
 import type { headerProps } from "./block";
 
@@ -331,8 +332,9 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
   // (see the layouts). A workspace without a dark variant keeps its one logo.
   const { theme } = useTheme();
   const branding = context?.app?.branding;
+  const logoUrl = mediaUrl(logo);
   const themedLogo =
-    theme === "dark" && branding?.logoDarkUrl ? branding.logoDarkUrl : logo;
+    theme === "dark" && branding?.logoDarkUrl ? branding.logoDarkUrl : logoUrl;
 
   const logoSizeClasses = {
     sm: "w-6 h-6",
@@ -397,190 +399,198 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
       <div ref={chromeRef} className="sticky top-0 z-50">
         {/* Announcement Bar */}
         {showAnnouncementBar && (
-        <div
-          className="relative w-full text-center text-sm py-2 px-4"
-          style={{
-            backgroundColor: announcementBg,
-            color: announcementTextColor,
-          }}
+          <div
+            className="relative w-full text-center text-sm py-2 px-4"
+            style={{
+              backgroundColor: announcementBg,
+              color: announcementTextColor,
+            }}
+          >
+            {announcementLink ? (
+              <CmssyLink href={announcementLink} className="hover:underline">
+                {announcementText}
+              </CmssyLink>
+            ) : (
+              <span>{announcementText}</span>
+            )}
+            {announcementDismissible && (
+              <button
+                onClick={() => setAnnouncementDismissed(true)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 hover:opacity-70"
+                aria-label="Dismiss announcement"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Main Header */}
+        <header
+          ref={headerRef}
+          className={`w-full transition-all duration-300 ${isScrolled || isMobileMenuOpen ? "bg-background/95 backdrop-blur-lg border-b shadow-sm" : "bg-background border-b"}`}
         >
-          {announcementLink ? (
-            <CmssyLink href={announcementLink} className="hover:underline">
-              {announcementText}
-            </CmssyLink>
-          ) : (
-            <span>{announcementText}</span>
-          )}
-          {announcementDismissible && (
-            <button
-              onClick={() => setAnnouncementDismissed(true)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 hover:opacity-70"
-              aria-label="Dismiss announcement"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
-        </div>
-      )}
-
-      {/* Main Header */}
-      <header
-        ref={headerRef}
-        className={`w-full transition-all duration-300 ${isScrolled || isMobileMenuOpen ? "bg-background/95 backdrop-blur-lg border-b shadow-sm" : "bg-background border-b"}`}
-      >
-        <Container as="nav">
-          <div className="relative flex items-center justify-between h-16">
-            {/* Logo */}
-            <CmssyLink href={homeHref} className="flex items-center gap-2">
-              {themedLogo ? (
-                <Image
-                  src={themedLogo}
-                  alt={logoText || ""}
-                  className={`${logoSizeClasses[logoSize]} object-contain`}
-                  width={120}
-                  height={40}
-                />
-              ) : (
-                logoText && <CmssyMark className={logoSizeClasses[logoSize]} />
-              )}
-              {logoText && (
-                <span className={`font-bold ${logoTextSizeClasses[logoSize]}`}>
-                  {logoText}
-                </span>
-              )}
-            </CmssyLink>
-
-            {/* Desktop navigation - centered */}
-            <div className="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
-              {navItems.map((item, index) =>
-                hasDropdown(item) ? (
-                  <div
-                    key={index}
-                    className="relative"
-                    onMouseEnter={() => {
-                      cancelClose();
-                      setOpenDropdown(index);
-                    }}
-                    onMouseLeave={closeDropdown}
+          <Container as="nav">
+            <div className="relative flex items-center justify-between h-16">
+              {/* Logo */}
+              <CmssyLink href={homeHref} className="flex items-center gap-2">
+                {themedLogo ? (
+                  <Image
+                    src={themedLogo}
+                    alt={logoText || ""}
+                    className={`${logoSizeClasses[logoSize]} object-contain`}
+                    width={120}
+                    height={40}
+                  />
+                ) : (
+                  logoText && (
+                    <CmssyMark className={logoSizeClasses[logoSize]} />
+                  )
+                )}
+                {logoText && (
+                  <span
+                    className={`font-bold ${logoTextSizeClasses[logoSize]}`}
                   >
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setOpenDropdown(openDropdown === index ? null : index)
-                      }
-                      className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md"
-                      aria-expanded={openDropdown === index}
-                      aria-haspopup="true"
-                    >
-                      {item.label}
-                      <ChevronDown
-                        className={`h-3.5 w-3.5 transition-transform duration-200 ${openDropdown === index ? "rotate-180" : ""}`}
-                      />
-                    </button>
+                    {logoText}
+                  </span>
+                )}
+              </CmssyLink>
 
-                    {/* Mega dropdown panel */}
-                    {openDropdown === index && (
-                      <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 z-50">
-                        <div className="rounded-xl border bg-background/95 p-5 shadow-lg backdrop-blur-lg min-w-130">
-                          <div
-                            className={`grid gap-1 ${getColumnClass(item.columns)}`}
-                          >
-                            {item.children?.map((child, childIndex) => (
-                              <MegaMenuItem key={childIndex} child={child} />
-                            ))}
+              {/* Desktop navigation - centered */}
+              <div className="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+                {navItems.map((item, index) =>
+                  hasDropdown(item) ? (
+                    <div
+                      key={index}
+                      className="relative"
+                      onMouseEnter={() => {
+                        cancelClose();
+                        setOpenDropdown(index);
+                      }}
+                      onMouseLeave={closeDropdown}
+                    >
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setOpenDropdown(openDropdown === index ? null : index)
+                        }
+                        className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md"
+                        aria-expanded={openDropdown === index}
+                        aria-haspopup="true"
+                      >
+                        {item.label}
+                        <ChevronDown
+                          className={`h-3.5 w-3.5 transition-transform duration-200 ${openDropdown === index ? "rotate-180" : ""}`}
+                        />
+                      </button>
+
+                      {/* Mega dropdown panel */}
+                      {openDropdown === index && (
+                        <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 z-50">
+                          <div className="rounded-xl border bg-background/95 p-5 shadow-lg backdrop-blur-lg min-w-130">
+                            <div
+                              className={`grid gap-1 ${getColumnClass(item.columns)}`}
+                            >
+                              {item.children?.map((child, childIndex) => (
+                                <MegaMenuItem key={childIndex} child={child} />
+                              ))}
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      )}
+                    </div>
+                  ) : (
+                    <CmssyLink
+                      key={index}
+                      href={item.url ?? "#"}
+                      target={item.openInNewTab ? "_blank" : undefined}
+                      rel={
+                        item.openInNewTab ? "noopener noreferrer" : undefined
+                      }
+                      className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md"
+                    >
+                      {item.label}
+                    </CmssyLink>
+                  ),
+                )}
+              </div>
+
+              {/* Desktop CTAs */}
+              <div className="hidden lg:flex items-center gap-4">
+                <ThemeToggle />
+                {hasLanguageSwitcher && (
+                  <LanguageSwitcher
+                    enabledLanguages={i18n.enabledLanguages}
+                    defaultLanguage={i18n.defaultLanguage}
+                    currentLanguage={i18n.currentLanguage}
+                  />
+                )}
+                {isAuthenticated && customer ? (
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                      {customer.profile?.avatarUrl ? (
+                        <Image
+                          src={customer.profile.avatarUrl}
+                          alt={getUserDisplayName()}
+                          className="w-8 h-8 rounded-full object-cover"
+                          width={32}
+                          height={32}
+                        />
+                      ) : (
+                        <span className="text-sm font-medium">
+                          {getUserInitial()}
+                        </span>
+                      )}
+                    </div>
+                    {logoutButtonText && (
+                      <button
+                        onClick={handleLogout}
+                        className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {logoutButtonText}
+                      </button>
                     )}
                   </div>
                 ) : (
-                  <CmssyLink
-                    key={index}
-                    href={item.url ?? "#"}
-                    target={item.openInNewTab ? "_blank" : undefined}
-                    rel={item.openInNewTab ? "noopener noreferrer" : undefined}
-                    className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md"
-                  >
-                    {item.label}
-                  </CmssyLink>
-                ),
-              )}
-            </div>
-
-            {/* Desktop CTAs */}
-            <div className="hidden lg:flex items-center gap-4">
-              <ThemeToggle />
-              {hasLanguageSwitcher && (
-                <LanguageSwitcher
-                  enabledLanguages={i18n.enabledLanguages}
-                  defaultLanguage={i18n.defaultLanguage}
-                  currentLanguage={i18n.currentLanguage}
-                />
-              )}
-              {isAuthenticated && customer ? (
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
-                    {customer.profile?.avatarUrl ? (
-                      <Image
-                        src={customer.profile.avatarUrl}
-                        alt={getUserDisplayName()}
-                        className="w-8 h-8 rounded-full object-cover"
-                        width={32}
-                        height={32}
-                      />
-                    ) : (
-                      <span className="text-sm font-medium">
-                        {getUserInitial()}
-                      </span>
+                  <>
+                    {showSecondaryCta &&
+                      secondaryCtaLabel &&
+                      secondaryCtaUrl && (
+                        <CmssyLink
+                          href={secondaryCtaUrl}
+                          className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 hover:bg-accent hover:text-accent-foreground transition-colors"
+                        >
+                          {secondaryCtaLabel}
+                        </CmssyLink>
+                      )}
+                    {showCta && ctaLabel && ctaUrl && (
+                      <CmssyLink
+                        href={ctaUrl}
+                        className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 bg-linear-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 text-white transition-colors"
+                      >
+                        {ctaLabel}
+                      </CmssyLink>
                     )}
-                  </div>
-                  {logoutButtonText && (
-                    <button
-                      onClick={handleLogout}
-                      className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {logoutButtonText}
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <>
-                  {showSecondaryCta && secondaryCtaLabel && secondaryCtaUrl && (
-                    <CmssyLink
-                      href={secondaryCtaUrl}
-                      className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 hover:bg-accent hover:text-accent-foreground transition-colors"
-                    >
-                      {secondaryCtaLabel}
-                    </CmssyLink>
-                  )}
-                  {showCta && ctaLabel && ctaUrl && (
-                    <CmssyLink
-                      href={ctaUrl}
-                      className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 bg-linear-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 text-white transition-colors"
-                    >
-                      {ctaLabel}
-                    </CmssyLink>
-                  )}
-                </>
-              )}
-            </div>
+                  </>
+                )}
+              </div>
 
-            {/* Mobile menu button */}
-            <button
-              className="lg:hidden p-2 -mr-2 rounded-md hover:bg-muted/50 transition-colors"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={isMobileMenuOpen}
-            >
-              {isMobileMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
-          </div>
-        </Container>
-      </header>
+              {/* Mobile menu button */}
+              <button
+                className="lg:hidden p-2 -mr-2 rounded-md hover:bg-muted/50 transition-colors"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isMobileMenuOpen}
+              >
+                {isMobileMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
+            </div>
+          </Container>
+        </header>
       </div>
 
       {/* Mobile fullscreen overlay */}
@@ -594,9 +604,9 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                 className="flex items-center gap-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                {logo ? (
+                {logoUrl ? (
                   <Image
-                    src={logo}
+                    src={logoUrl}
                     alt={logoText || ""}
                     className={`${logoSizeClasses[logoSize]} object-contain`}
                     width={120}
