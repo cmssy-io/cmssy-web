@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Github, Linkedin, Twitter } from "lucide-react";
 import { CmssyLink } from "@/components/cmssy-locale";
+import { mediaUrl } from "@cmssy/core";
 import type { BlockProps } from "@cmssy/react";
 import { CmssyMark } from "@/components/cmssy-mark";
 import { Container } from "@/components/container";
@@ -27,6 +28,7 @@ export default function Footer({
     copyrightText,
     showLanguageSwitcher = false,
   } = content;
+  const logoUrl = mediaUrl(logo);
 
   const i18n = context?.locale
     ? {
@@ -50,10 +52,13 @@ export default function Footer({
       <Container className="pt-16 pb-10">
         <div className="mb-12 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-6">
           <div className="col-span-2 sm:col-span-3 lg:col-span-2">
-            <CmssyLink href="/" className="mb-3.5 flex items-center gap-2.5 text-paper">
-              {logo ? (
+            <CmssyLink
+              href="/"
+              className="mb-3.5 flex items-center gap-2.5 text-paper"
+            >
+              {logoUrl ? (
                 <Image
-                  src={logo}
+                  src={logoUrl}
                   alt={logoText || ""}
                   width={120}
                   height={32}

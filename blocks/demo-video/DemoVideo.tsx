@@ -1,8 +1,11 @@
+import { mediaUrl } from "@cmssy/core";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "../../components/container";
 import type { demoVideoProps } from "./block";
 
-export default function DemoVideo({ content }: BlockProps<typeof demoVideoProps>) {
+export default function DemoVideo({
+  content,
+}: BlockProps<typeof demoVideoProps>) {
   const {
     badgeText,
     heading,
@@ -12,6 +15,8 @@ export default function DemoVideo({ content }: BlockProps<typeof demoVideoProps>
     poster,
     autoplay = false,
   } = content;
+  const videoSrc = mediaUrl(videoUrl);
+  const posterUrl = mediaUrl(poster);
 
   return (
     <section className="py-24 bg-slate-50/50">
@@ -37,15 +42,15 @@ export default function DemoVideo({ content }: BlockProps<typeof demoVideoProps>
           )}
         </div>
 
-        {videoUrl && (
+        {videoSrc && (
           <div className="relative max-w-5xl mx-auto">
             <div className="absolute -inset-4 bg-linear-to-r from-sky-500/20 to-blue-500/20 rounded-3xl blur-2xl" />
             <div className="relative rounded-xl shadow-2xl shadow-sky-500/10 overflow-hidden bg-background ring-1 ring-black/5">
               <div className="aspect-video relative overflow-hidden">
                 {autoplay ? (
                   <video
-                    src={videoUrl}
-                    poster={poster || undefined}
+                    src={videoSrc}
+                    poster={posterUrl || undefined}
                     autoPlay
                     muted
                     loop
@@ -56,8 +61,8 @@ export default function DemoVideo({ content }: BlockProps<typeof demoVideoProps>
                   </video>
                 ) : (
                   <video
-                    src={videoUrl}
-                    poster={poster || undefined}
+                    src={videoSrc}
+                    poster={posterUrl || undefined}
                     controls
                     playsInline
                     preload="metadata"

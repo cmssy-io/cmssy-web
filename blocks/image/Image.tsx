@@ -1,4 +1,5 @@
 import NextImage from "next/image";
+import { mediaUrl } from "@cmssy/core";
 import type { BlockProps } from "@cmssy/react";
 import type { imageProps } from "./block";
 
@@ -11,8 +12,9 @@ const widthClasses: Record<string, string> = {
 
 export default function Image({ content }: BlockProps<typeof imageProps>) {
   const { src, alt = "", caption, width = "full", rounded = true } = content;
+  const srcUrl = mediaUrl(src);
 
-  if (!src) {
+  if (!srcUrl) {
     return null;
   }
 
@@ -20,7 +22,7 @@ export default function Image({ content }: BlockProps<typeof imageProps>) {
     <figure className="py-4 px-4 sm:px-6 lg:px-8">
       <div className={`mx-auto ${widthClasses[width] || widthClasses.full}`}>
         <NextImage
-          src={src}
+          src={srcUrl}
           alt={alt}
           width={0}
           height={0}
