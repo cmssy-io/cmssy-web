@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Calendar, Clock } from "lucide-react";
 import { CmssyLink } from "@/components/cmssy-locale";
+import { mediaUrl } from "@cmssy/core";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "../../components/container";
 import { formatDate } from "@/lib/utils";
@@ -23,15 +24,17 @@ export default function BlogPostHero({
     breadcrumbLabel,
     breadcrumbUrl,
   } = content;
+  const coverImageUrl = mediaUrl(coverImage);
+  const authorAvatarUrl = mediaUrl(authorAvatar);
 
   return (
     <section className="blog-post-hero relative overflow-hidden">
       {/* Background - cover image or gradient */}
       <div className="relative min-h-[60vh] sm:min-h-[65vh] lg:min-h-[70vh] flex flex-col justify-end">
-        {coverImage ? (
+        {coverImageUrl ? (
           <>
             <Image
-              src={coverImage}
+              src={coverImageUrl}
               alt={title}
               fill
               sizes="100vw"
@@ -97,9 +100,9 @@ export default function BlogPostHero({
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/60">
             {author && (
               <div className="flex items-center gap-2.5">
-                {authorAvatar ? (
+                {authorAvatarUrl ? (
                   <Image
-                    src={authorAvatar}
+                    src={authorAvatarUrl}
                     alt={author}
                     width={28}
                     height={28}

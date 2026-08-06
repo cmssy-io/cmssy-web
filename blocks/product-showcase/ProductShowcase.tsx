@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { mediaUrl } from "@cmssy/core";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
 import type { productShowcaseProps } from "./block";
@@ -40,36 +41,39 @@ export default function ProductShowcase({
 
         {items.length > 0 && (
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((item, index) => (
-              <figure
-                key={index}
-                className="group flex flex-col rounded-xl border border-border/60 bg-background overflow-hidden shadow-sm transition-shadow hover:shadow-lg hover:shadow-sky-500/10"
-              >
-                <div className="aspect-video relative overflow-hidden bg-slate-100">
-                  {item.image ? (
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">
-                      {item.title}
-                    </div>
-                  )}
-                </div>
-                <figcaption className="flex flex-col gap-1 p-5">
-                  <span className="font-semibold">{item.title}</span>
-                  {item.caption && (
-                    <span className="text-sm text-muted-foreground">
-                      {item.caption}
-                    </span>
-                  )}
-                </figcaption>
-              </figure>
-            ))}
+            {items.map((item, index) => {
+              const imageUrl = mediaUrl(item.image);
+              return (
+                <figure
+                  key={index}
+                  className="group flex flex-col rounded-xl border border-border/60 bg-background overflow-hidden shadow-sm transition-shadow hover:shadow-lg hover:shadow-sky-500/10"
+                >
+                  <div className="aspect-video relative overflow-hidden bg-slate-100">
+                    {imageUrl ? (
+                      <Image
+                        src={imageUrl}
+                        alt={item.title}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">
+                        {item.title}
+                      </div>
+                    )}
+                  </div>
+                  <figcaption className="flex flex-col gap-1 p-5">
+                    <span className="font-semibold">{item.title}</span>
+                    {item.caption && (
+                      <span className="text-sm text-muted-foreground">
+                        {item.caption}
+                      </span>
+                    )}
+                  </figcaption>
+                </figure>
+              );
+            })}
           </div>
         )}
       </Container>

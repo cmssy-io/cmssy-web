@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import NextImage from "next/image";
 import { ZoomIn, X } from "lucide-react";
+import { mediaUrl } from "@cmssy/core";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
 import type { docsImageProps } from "./block";
@@ -20,6 +21,7 @@ export default function DocsImage({
     rounded = true,
     shadow = true,
   } = content;
+  const srcUrl = mediaUrl(src);
 
   const [isZoomed, setIsZoomed] = useState(false);
 
@@ -37,7 +39,7 @@ export default function DocsImage({
     };
   }, [isZoomed]);
 
-  if (!src) {
+  if (!srcUrl) {
     return null;
   }
 
@@ -64,7 +66,7 @@ export default function DocsImage({
         {/* Image with zoom hint */}
         <div className="relative group">
           <NextImage
-            src={src}
+            src={srcUrl}
             alt={alt}
             width={0}
             height={0}
@@ -104,7 +106,7 @@ export default function DocsImage({
             <X className="h-5 w-5" />
           </button>
           <img
-            src={src}
+            src={srcUrl}
             alt={alt}
             className="max-w-full max-h-full object-contain rounded-lg"
           />
