@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { mediaUrl, type MediaLike } from "@cmssy/react";
 import type { PageItem } from "@cmssy/types";
 import { CmssyLink } from "@/components/cmssy-locale";
 import { formatDate } from "@/lib/utils";
@@ -28,7 +29,9 @@ export function PostCard({
 }) {
   const title = getLocalizedField(item.displayName, language);
   const excerpt = getLocalizedField(item.seoDescription, language);
-  const coverImage = getCustomField(item, "cover_image") as string | null;
+  const coverImage = mediaUrl(
+    getCustomField(item, "cover_image") as MediaLike,
+  );
   const rawAuthor = getCustomField(item, "author") as string | null;
   const author =
     rawAuthor && !/^[0-9a-f]{24}$/.test(rawAuthor) ? rawAuthor : null;
