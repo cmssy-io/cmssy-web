@@ -70,7 +70,14 @@ export function useBlogPosts(
         }),
       });
       const json = await res.json();
-      return json?.data?.public?.page?.byType ?? null;
+      const byType = json?.data?.public?.page?.byType ?? null;
+      if (!byType) {
+        console.error(
+          "[BlogPosts] the delivery read returned nothing",
+          json?.errors ?? `HTTP ${res.status}`,
+        );
+      }
+      return byType;
     },
     [workspaceId, parentSlug, limit],
   );
@@ -176,12 +183,15 @@ export function useBlogPosts(
 
     try {
       const result = await fetchPages({ offset: items.length });
-      if (result) {
-        setItems((prev) => [...prev, ...result.items]);
-        setHasMore(result.hasMore);
+      if (!result || result.items.length === 0) {
+        setHasMore(false);
+        return;
       }
+      setItems((prev) => [...prev, ...result.items]);
+      setHasMore(result.hasMore);
     } catch (err) {
       console.error("[BlogPosts] Load more failed:", err);
+      setHasMore(false);
     } finally {
       setLoading(false);
     }
