@@ -7,8 +7,12 @@ import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
 import { FigEyebrow } from "@/components/fig-eyebrow";
 import type { pricingProps } from "./block";
+import { findPlan, formatUsd, type Plan } from "@/lib/plans";
 
-export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
+export default function Pricing({
+  content,
+  data,
+}: BlockProps<typeof pricingProps, { plans?: Plan[] | null }>) {
   const {
     fig = "",
     eyebrow = "",
@@ -20,6 +24,21 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
     plans = [],
   } = content;
   const [annual, setAnnual] = useState(true);
+  const served = data?.plans ?? null;
+
+  function priceOf(planId: string): string | null {
+    const plan = findPlan(served, planId);
+    if (!plan) return null;
+    if (plan.price) {
+      return annual
+        ? formatUsd(Math.round(plan.price.annual.amount / 12))
+        : formatUsd(plan.price.monthly.amount);
+    }
+    if (plan.startingPriceUsdMonth !== null) {
+      return `$${plan.startingPriceUsdMonth}+`;
+    }
+    return "$0";
+  }
 
   return (
     <section id="pricing" className="bg-muted py-24">
@@ -57,8 +76,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
 
         <div className="mx-auto mt-12 grid max-w-5xl items-stretch gap-6 lg:grid-cols-3">
           {plans.map((plan) => {
-            const price =
-              !annual && plan.priceMonthly ? plan.priceMonthly : plan.price;
+            const price = priceOf(plan.planId);
             const period =
               !annual && plan.periodMonthly ? plan.periodMonthly : plan.period;
             return (
@@ -86,10 +104,12 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                   {plan.description}
                 </p>
                 <div className="mt-6 flex items-baseline gap-2">
-                  <span className="font-heading text-4xl font-semibold">
-                    {price}
-                  </span>
-                  {period && (
+                  {price && (
+                    <span className="font-heading text-4xl font-semibold">
+                      {price}
+                    </span>
+                  )}
+                  {price && period && (
                     <span
                       className={`font-mono text-[12px] ${
                         plan.popular ? "text-paper/50" : "text-muted-foreground"
