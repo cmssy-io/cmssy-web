@@ -76,7 +76,7 @@ export default function Pricing({
 
         <div className="mx-auto mt-12 grid max-w-5xl items-stretch gap-6 lg:grid-cols-3">
           {plans.map((plan) => {
-            const price = priceOf(plan.planId);
+            const price = priceOf(plan.planId ?? "");
             const period =
               !annual && plan.periodMonthly ? plan.periodMonthly : plan.period;
             return (

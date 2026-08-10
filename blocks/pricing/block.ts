@@ -39,10 +39,10 @@ export const pricingProps = {
         label: "Plan Description",
         defaultValue: "Description of the plan.",
       }),
-      planId: fields.text({
-        label: "Plan id (free, pro, enterprise)",
-        placeholder: "Matches the served plan table; the price comes from it",
-        required: true,
+      planId: fields.select({
+        label: "Plan",
+        defaultValue: "free",
+        options: ["free", "pro", "enterprise"],
       }),
       period: fields.text({
         label: "Billing Period",

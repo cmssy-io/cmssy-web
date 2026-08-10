@@ -33,9 +33,10 @@ export const planComparisonProps = {
   columns: fields.repeater({
     label: "Plan Columns",
     itemSchema: {
-      planId: fields.text({
-        label: "Plan id (free, pro, enterprise)",
-        required: true,
+      planId: fields.select({
+        label: "Plan",
+        defaultValue: "free",
+        options: ["free", "pro", "enterprise"],
       }),
       name: fields.text({ label: "Plan Name", required: true }),
     },
@@ -44,11 +45,22 @@ export const planComparisonProps = {
     label: "Rows",
     itemSchema: {
       label: fields.text({ label: "Row Label", required: true }),
-      metric: fields.text({
+      metric: fields.select({
         label: "Metric",
-        placeholder:
-          "workspaces, members, pages, storage, upload, aiCredits, apiRequests, bandwidth, removeBranding, cart, sso",
-        required: true,
+        defaultValue: "workspaces",
+        options: [
+          "workspaces",
+          "members",
+          "pages",
+          "storage",
+          "upload",
+          "aiCredits",
+          "apiRequests",
+          "bandwidth",
+          "removeBranding",
+          "cart",
+          "sso",
+        ],
       }),
     },
   }),

@@ -1,4 +1,4 @@
-const SDK_DEFAULT_API_URL = "https://api.cmssy.io/graphql";
+import { resolveApiUrl } from "@/services/gateway";
 
 export type PlanId = "free" | "pro" | "enterprise";
 
@@ -29,10 +29,7 @@ export interface Plan {
 }
 
 export async function fetchPlans(): Promise<Plan[] | null> {
-  const base = (process.env.CMSSY_API_URL ?? SDK_DEFAULT_API_URL).replace(
-    /\/graphql\/?$/,
-    "",
-  );
+  const base = resolveApiUrl().replace(/\/graphql\/?$/, "");
   try {
     const response = await fetch(`${base}/public/plans`, {
       next: { revalidate: 600 },

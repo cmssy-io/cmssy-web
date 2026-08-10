@@ -10,9 +10,13 @@ interface Labels {
   excluded: string;
 }
 
+function trim(value: number): string {
+  return String(Number(value.toFixed(1)));
+}
+
 function formatCount(value: number): string {
-  if (value >= 1_000_000) return `${value / 1_000_000}M`;
-  if (value >= 1_000) return `${value / 1_000}K`;
+  if (value >= 1_000_000) return `${trim(value / 1_000_000)}M`;
+  if (value >= 1_000) return `${trim(value / 1_000)}K`;
   return String(value);
 }
 
@@ -76,7 +80,7 @@ export default function PlanComparison({
 
   const served = data?.plans ?? null;
   const shown = columns
-    .map((column) => ({ ...column, plan: findPlan(served, column.planId) }))
+    .map((column) => ({ ...column, plan: findPlan(served, column.planId ?? "") }))
     .filter((column): column is typeof column & { plan: Plan } =>
       Boolean(column.plan),
     );
@@ -128,7 +132,8 @@ export default function PlanComparison({
                       key={column.planId}
                       className="py-3 pr-4 text-sm tabular-nums text-foreground"
                     >
-                      {cell(column.plan.limits, row.metric, labels) ?? "—"}
+                      {cell(column.plan.limits, row.metric ?? "", labels) ??
+                        labels.excluded}
                     </td>
                   ))}
                 </tr>
