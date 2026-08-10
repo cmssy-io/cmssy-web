@@ -1,5 +1,3 @@
-import { resolveApiUrl } from "@/services/gateway";
-
 export type PlanId = "free" | "pro" | "enterprise";
 
 export interface PlanPrice {
@@ -26,26 +24,6 @@ export interface Plan {
   limits: PlanLimits;
   price: { monthly: PlanPrice; annual: PlanPrice } | null;
   startingPriceUsdMonth: number | null;
-}
-
-export async function fetchPlans(): Promise<Plan[] | null> {
-  const base = resolveApiUrl().replace(/\/graphql\/?$/, "");
-  try {
-    const response = await fetch(`${base}/public/plans`, {
-      next: { revalidate: 600 },
-    });
-    if (!response.ok) {
-      console.error(
-        `[plans] ${base}/public/plans responded ${response.status}`,
-      );
-      return null;
-    }
-    const json = (await response.json()) as { plans?: Plan[] };
-    return json.plans ?? null;
-  } catch (error) {
-    console.error("[plans] failed to load the plan table", error);
-    return null;
-  }
 }
 
 export function findPlan(plans: Plan[] | null, id: string): Plan | null {
