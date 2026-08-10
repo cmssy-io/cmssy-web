@@ -7,7 +7,7 @@ export const faqProps = {
   "heading": fields.text({ label: "Heading", defaultValue: "Heading", required: true }),
   "headingHighlight": fields.text({ label: "Heading Highlight", defaultValue: "Highlight" }),
   "description": fields.textarea({ label: "Description", defaultValue: "Description", placeholder: "Enter description" }),
-  "faqs": fields.relation({ label: "FAQs", model: "faq-item", mode: "all", sort: "order_asc" })
+  "faqs": fields.relation({ label: "FAQs", model: "faq-item", mode: "picked", multiple: true, sort: "order_asc" })
 };
 
 export const faqBlock = defineBlock({
