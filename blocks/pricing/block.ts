@@ -1,5 +1,6 @@
 import { defineBlock, fields } from "@cmssy/react";
 import Pricing from "./Pricing";
+import { fetchPlans, type Plan } from "@/lib/plans";
 
 export const pricingProps = {
   fig: fields.text({ label: "Fig Number", defaultValue: "FIG 6.0" }),
@@ -38,14 +39,10 @@ export const pricingProps = {
         label: "Plan Description",
         defaultValue: "Description of the plan.",
       }),
-      price: fields.text({
-        label: "Price (annual billing)",
-        defaultValue: "$0",
-        required: true,
-      }),
-      priceMonthly: fields.text({
-        label: "Price (monthly billing)",
-        placeholder: "Leave empty when same as annual",
+      planId: fields.select({
+        label: "Plan",
+        defaultValue: "free",
+        options: ["free", "pro", "enterprise"],
       }),
       period: fields.text({
         label: "Billing Period",
@@ -84,4 +81,7 @@ export const pricingBlock = defineBlock({
     "Pricing plans with a monthly/annual toggle and a highlighted popular tier; spec-sheet styling with a FIG eyebrow.",
   component: Pricing,
   props: pricingProps,
+  loader: async (): Promise<{ plans: Plan[] | null }> => ({
+    plans: await fetchPlans(),
+  }),
 });
