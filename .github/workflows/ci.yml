@@ -156,3 +156,13 @@ jobs:
           fi
 
           echo "Route cache check passed."
+
+      # The editor mounts in the browser: on the edit route the served HTML
+      # carries no blocks at all, so checkCmssyEditMode - which reads the
+      # response body - passed while #152 sat blank in production. Only a
+      # browser can tell the two apart.
+      - name: The editor mounts in a browser
+        run: |
+          set -euo pipefail
+          npx playwright install --with-deps chromium
+          SMOKE_BASE_URL=http://localhost:3000 pnpm smoke:editor
