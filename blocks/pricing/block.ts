@@ -1,6 +1,6 @@
 import { defineBlock, fields } from "@cmssy/react";
 import Pricing from "./Pricing";
-import { fetchPlans, type Plan } from "@/lib/plans";
+import type { Plan } from "@/lib/plans";
 
 export const pricingProps = {
   fig: fields.text({ label: "Fig Number", defaultValue: "FIG 6.0" }),
@@ -81,7 +81,8 @@ export const pricingBlock = defineBlock({
     "Pricing plans with a monthly/annual toggle and a highlighted popular tier; spec-sheet styling with a FIG eyebrow.",
   component: Pricing,
   props: pricingProps,
-  loader: async (): Promise<{ plans: Plan[] | null }> => ({
-    plans: await fetchPlans(),
-  }),
+  loader: async (): Promise<{ plans: Plan[] | null }> => {
+    const { fetchPlans } = await import("@/lib/plans-server");
+    return { plans: await fetchPlans() };
+  },
 });

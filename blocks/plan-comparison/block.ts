@@ -1,6 +1,6 @@
 import { defineBlock, fields } from "@cmssy/react";
 import PlanComparison from "./PlanComparison";
-import { fetchPlans, type Plan } from "@/lib/plans";
+import type { Plan } from "@/lib/plans";
 
 export const planComparisonProps = {
   fig: fields.text({ label: "Fig Number", defaultValue: "FIG 6.1" }),
@@ -78,7 +78,8 @@ export const planComparisonBlock = defineBlock({
     "Full plan-by-plan limit table; the numbers are served from the API that enforces them, so the page cannot disagree with the product.",
   component: PlanComparison,
   props: planComparisonProps,
-  loader: async (): Promise<{ plans: Plan[] | null }> => ({
-    plans: await fetchPlans(),
-  }),
+  loader: async (): Promise<{ plans: Plan[] | null }> => {
+    const { fetchPlans } = await import("@/lib/plans-server");
+    return { plans: await fetchPlans() };
+  },
 });

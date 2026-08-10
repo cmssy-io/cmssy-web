@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
+    "check:blocks": "node scripts/check-block-graph.mjs",
     "codegen": "graphql-codegen --config codegen.ts",
     "smoke:edit": "node smoke-edit.mjs",
     "types": "cmssy types --out graphql/models.ts"

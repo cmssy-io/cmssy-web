@@ -24,6 +24,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm typecheck
+      - run: pnpm check:blocks
 
       # The vendored operations come from the CLI, the app's reads come from the
       # runtime packages. Nothing ties their versions together - the CLI carries
