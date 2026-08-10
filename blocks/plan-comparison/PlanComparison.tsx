@@ -124,7 +124,10 @@ export default function PlanComparison({
             <tbody>
               {rows.map((row) => (
                 <tr key={row.metric} className="border-b border-border/60">
-                  <th className="py-3 pr-4 text-sm font-normal text-muted-foreground">
+                  <th
+                    scope="row"
+                    className="py-3 pr-4 text-sm font-normal text-muted-foreground"
+                  >
                     {row.label}
                   </th>
                   {shown.map((column) => (

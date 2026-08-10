@@ -37,7 +37,7 @@ export default function Pricing({
     if (plan.startingPriceUsdMonth !== null) {
       return `$${plan.startingPriceUsdMonth}+`;
     }
-    return "$0";
+    return plan.id === "free" ? "$0" : null;
   }
 
   return (
@@ -52,25 +52,25 @@ export default function Pricing({
             <p className="mt-4 text-lg text-muted-foreground">{description}</p>
           )}
           {annualDiscountLabel && (
-          <div className="mt-8 inline-flex rounded-full border border-border bg-card p-1">
-            {[
-              { label: "Monthly", value: false },
-              { label: annualDiscountLabel, value: true },
-            ].map((opt) => (
-              <button
-                key={opt.label}
-                type="button"
-                onClick={() => setAnnual(opt.value)}
-                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                  annual === opt.value
-                    ? "bg-ink text-paper"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
+            <div className="mt-8 inline-flex rounded-full border border-border bg-card p-1">
+              {[
+                { label: "Monthly", value: false },
+                { label: annualDiscountLabel, value: true },
+              ].map((opt) => (
+                <button
+                  key={opt.label}
+                  type="button"
+                  onClick={() => setAnnual(opt.value)}
+                  className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                    annual === opt.value
+                      ? "bg-ink text-paper"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
           )}
         </div>
 
