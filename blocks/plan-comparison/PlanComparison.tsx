@@ -21,7 +21,7 @@ function formatCount(value: number): string {
 }
 
 function formatStorage(mb: number): string {
-  return mb >= 1024 ? `${Math.round(mb / 1024)} GB` : `${mb} MB`;
+  return mb >= 1024 && mb % 1024 === 0 ? `${mb / 1024} GB` : `${mb} MB`;
 }
 
 function cell(
