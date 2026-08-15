@@ -72,7 +72,8 @@ export default function Cta({ content }: BlockProps<typeof ctaProps>) {
   } = content;
 
   return (
-    <section className="dot-grid-dark bg-ink py-section">
+    <section className="atmos-spot bg-ink py-section">
+      <div className="atmos-lattice" />
       <Container className="max-w-3xl text-center">
         <Reveal>
           <DockingMark />
