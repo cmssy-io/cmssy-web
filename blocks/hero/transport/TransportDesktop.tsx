@@ -48,7 +48,7 @@ const PUB_LEAD = GATE_Y + 42;
 const PUB_LABEL = PUB_LEAD + 62;
 
 /** the fan annotation rides above the topmost track, mid-plateau */
-const FAN_X = 580;
+const FAN_X = 616;
 const FAN_TOP = trackYAt(FAN_X, TRACK_OFFSETS[0]);
 
 const RAIL_WIDTHS = [0.5, 0.82, 0.36, 0.62];
@@ -351,7 +351,7 @@ export function TransportDesktop({ seq, reduced, coarse, labels }: Props) {
         <text
           x={FAN_X}
           y={FAN_TOP - 48}
-          textAnchor="middle"
+          textAnchor="start"
           className="tp-label"
           fill={fanning ? EL3 : LABEL}
         >
@@ -360,7 +360,7 @@ export function TransportDesktop({ seq, reduced, coarse, labels }: Props) {
         <m.text
           x={FAN_X}
           y={FAN_TOP - 66}
-          textAnchor="middle"
+          textAnchor="start"
           className="tp-sub"
           fill={DIM}
           animate={{ opacity: fanning ? 1 : 0 }}
