@@ -43,11 +43,166 @@
   --spacing-section-tight: clamp(2.5rem, 5vw, 4rem);
 }
 
-@utility dot-grid-dark {
-  background-image: radial-gradient(
+:root {
+  --lattice-dark: radial-gradient(
     rgba(250, 250, 248, 0.07) 1px,
     transparent 1px
   );
+}
+
+@utility dot-grid-dark {
+  background-image: var(--lattice-dark);
+  background-size: 24px 24px;
+}
+
+/*
+   Atmosphere for the ink band.
+
+   The page spends darkness as punctuation - three ink sections out of nine, on
+   the open, the argument and the close - so the light belongs to the band and
+   not to any one block. Both utilities carry the lattice themselves, on top of
+   the light rather than under it: a blurred gradient with no texture beneath
+   reads as a smudge, while the same gradient over the lattice reads as light
+   describing a space. Sections that take one of these drop `dot-grid-dark`.
+
+   Everything here is two pseudo-elements and nothing else. No canvas, no
+   client component, no library: only `background-position` and `transform`
+   animate, so there is no layout work and no rAF, and the whole treatment
+   renders on the server.
+*/
+
+@utility atmos-aurora {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  /* light: two shallow repeating gradients - one carries the colour, one the
+     ground it sits on - slid sideways forever and blurred until the repeat
+     stops reading as stripes. The mask is what keeps it atmosphere. */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -25%;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      repeating-linear-gradient(
+        100deg,
+        transparent 0 11%,
+        rgba(0, 168, 240, 0.22) 14%,
+        rgba(91, 198, 247, 0.13) 19%,
+        rgba(0, 119, 182, 0.26) 25%,
+        transparent 30% 42%
+      ),
+      repeating-linear-gradient(
+        100deg,
+        #0b0e15 0 13%,
+        #101d2b 18%,
+        #0b1622 25%,
+        #0b0e15 32%
+      );
+    background-size:
+      220% 200%,
+      160% 160%;
+    background-position:
+      50% 50%,
+      50% 50%;
+    filter: blur(52px);
+    opacity: 0.85;
+    /* biased left, where the argument is set: the plate on the right reads
+       better against ink than against light, and the eye should start on the
+       heading anyway */
+    mask-image: radial-gradient(
+      ellipse 88% 72% at 38% -2%,
+      #000 30%,
+      transparent 78%
+    );
+    animation: atmos-aurora 46s linear infinite;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-image: var(--lattice-dark);
+    background-size: 24px 24px;
+  }
+
+  & > * {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+@utility atmos-spot {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* the floor the beams land on, as an inset shadow so it never has to fight
+     the lattice for `background-image` */
+  box-shadow: inset 0 -14rem 12rem -9rem rgba(0, 119, 182, 0.28);
+
+  /* Two raked ellipses, one per top corner. The swing is deliberately wide:
+     blurred this hard the beam has no edge left to read a small drift
+     against, so what the eye picks up is the travel of the far end and the
+     rise and fall of intensity - and the two run on coprime-ish clocks so the
+     light crosses the band instead of pulsing at it. The static transform is
+     the mid-point, which is where reduced motion parks them. */
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: -60%;
+    z-index: 0;
+    width: 46rem;
+    height: 78rem;
+    pointer-events: none;
+    filter: blur(14px);
+  }
+
+  &::before {
+    left: -14rem;
+    transform-origin: top left;
+    transform: rotate(-31deg);
+    background: radial-gradient(
+      closest-side,
+      rgba(0, 168, 240, 0.2),
+      rgba(0, 168, 240, 0.06) 52%,
+      transparent 76%
+    );
+    animation: atmos-beam-l 13s ease-in-out infinite alternate;
+  }
+
+  &::after {
+    right: -18rem;
+    transform-origin: top right;
+    transform: rotate(27deg);
+    background: radial-gradient(
+      closest-side,
+      rgba(91, 198, 247, 0.13),
+      rgba(0, 119, 182, 0.07) 50%,
+      transparent 74%
+    );
+    animation: atmos-beam-r 19s ease-in-out infinite alternate;
+  }
+
+  /* the lattice layer sets its own position and sits below the content, so it
+     must not be swept up by the blanket raise */
+  & > *:not(.atmos-lattice) {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+/* the lattice rides above the beams, so it needs a layer of its own */
+@utility atmos-lattice {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: var(--lattice-dark);
   background-size: 24px 24px;
 }
 
@@ -74,6 +229,41 @@
     transparent 1px
   );
   background-size: 24px 24px;
+}
+
+@keyframes atmos-aurora {
+  from {
+    background-position:
+      50% 50%,
+      50% 50%;
+  }
+  to {
+    background-position:
+      350% 50%,
+      350% 50%;
+  }
+}
+
+@keyframes atmos-beam-l {
+  from {
+    transform: rotate(-40deg) translate(-8rem, -3rem);
+    opacity: 0.5;
+  }
+  to {
+    transform: rotate(-23deg) translate(7rem, 3rem);
+    opacity: 1;
+  }
+}
+
+@keyframes atmos-beam-r {
+  from {
+    transform: rotate(36deg) translate(6rem, 2rem);
+    opacity: 1;
+  }
+  to {
+    transform: rotate(19deg) translate(-9rem, -3rem);
+    opacity: 0.45;
+  }
 }
 
 @keyframes hero-blink {
@@ -130,6 +320,14 @@
 
 @media (prefers-reduced-motion: reduce) {
   .cta-anim {
+    animation: none !important;
+  }
+
+  /* the beams keep their static mid-point transform, so stopping the clock
+     leaves a composed still rather than a collapsed one */
+  .atmos-aurora::before,
+  .atmos-spot::before,
+  .atmos-spot::after {
     animation: none !important;
   }
 }

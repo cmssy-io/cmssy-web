@@ -25,7 +25,7 @@ export default function AiDifferentiator({
   } = content;
 
   return (
-    <section className="dot-grid-dark bg-ink py-section">
+    <section className="atmos-aurora bg-ink py-section">
       <Container>
         <div className="grid items-center gap-14 lg:grid-cols-2">
           <div>
