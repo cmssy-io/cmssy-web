@@ -614,6 +614,30 @@ html[data-theme="dark"] {
   min-height: clamp(40rem, calc(100svh - 6.5rem), 52rem);
 }
 
+.hero-transport::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      38rem 22rem at 40% 84%,
+      rgba(0, 168, 240, 0.16),
+      transparent 68%
+    ),
+    radial-gradient(
+      30rem 20rem at 90% 42%,
+      rgba(91, 198, 247, 0.1),
+      transparent 70%
+    ),
+    radial-gradient(
+      34rem 18rem at 6% 80%,
+      rgba(0, 119, 182, 0.15),
+      transparent 72%
+    );
+}
+
 .hero-transport__stage {
   position: absolute;
   inset: 0;
