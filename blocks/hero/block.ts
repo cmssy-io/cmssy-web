@@ -9,16 +9,16 @@ export const heroProps = {
   }),
   headlineLead: fields.text({
     label: "Heading (before accent)",
-    defaultValue: "This is what one content",
+    defaultValue: "Change the page.",
     required: true,
   }),
   headlineAccent: fields.text({
     label: "Heading Accent Word",
-    defaultValue: "change",
+    defaultValue: "Deploy",
   }),
   headlineTail: fields.text({
     label: "Heading (after accent)",
-    defaultValue: "does.",
+    defaultValue: "nothing.",
   }),
   subLines: fields.repeater({
     label: "Subheading Lines (3 short lines)",

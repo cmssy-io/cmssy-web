@@ -12,9 +12,9 @@ import type { heroProps } from "./block";
 const FALLBACK = {
   fig: "FIG 0.1",
   eyebrow: "AI-NATIVE HEADLESS CMS",
-  lead: "This is what one content",
-  accent: "change",
-  tail: "does.",
+  lead: "Change the page.",
+  accent: "Deploy",
+  tail: "nothing.",
   trust: "@cmssy/next · 80+ MCP tools · No card needed",
   primary: "Try it free →",
   primaryUrl: "https://cmssy.io/login",
@@ -23,9 +23,9 @@ const FALLBACK = {
 };
 
 const FALLBACK_SUB = [
-  "Claude writes one field through MCP.",
-  "cmssy keys it to five locales and publishes.",
-  "Your Next.js app revalidates.",
+  "Claude edits structured content through MCP.",
+  "One page carries all five locales.",
+  "Your Next.js app revalidates in place.",
 ];
 
 export default function Hero({ content }: BlockProps<typeof heroProps>) {
