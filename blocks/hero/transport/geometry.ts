@@ -1,25 +1,44 @@
 export const WORLD = { left: -620, right: 1200, height: 860 };
 
-/** the transport sits in the lower two thirds; the type owns everything above */
+/** where the flat approach sits before the route starts to climb */
 export const AXIS_BASE = 610;
 
 export const X_START = -170;
-export const X_MCP = 112;
-export const X_BLK = 272;
-export const F_A = 400;
-export const F_B = 470;
-export const F_C = 720;
-export const F_D = 850;
-export const X_BUS = 902;
-export const X_GATE = 940;
+export const X_MCP = 160;
+export const X_BLK = 316;
+export const F_A = 412;
+export const F_B = 500;
+export const F_C = 716;
+export const F_D = 872;
+export const X_BUS = 912;
+export const X_GATE = 936;
 export const X_TERM = 990;
 
-export const TERM = { x: 990, y: 598, w: 190, h: 146 };
-export const TRACK_OFFSETS = [-96, -48, 0, 48, 96] as const;
-export const TRACK_LAG = [44, 20, 0, 20, 44] as const;
+export const TERM = { x: 990, y: 268, w: 190, h: 146 };
+/** the fan opens upward off the climbing axis, so the spread is not symmetric */
+export const TRACK_OFFSETS = [-192, -128, -64, 0, 88] as const;
+export const TRACK_LAG = [46, 30, 15, 0, 21] as const;
 
-export const axisY = (x: number) => AXIS_BASE + 0.055 * x;
-export const trackY = (offset: number) => axisY(595) + offset;
+const GROUND = 0.055;
+const CLIMB = -0.5058;
+const RUN = -0.48;
+const Y_FORK = AXIS_BASE + GROUND * F_A;
+const Y_MERGE = Y_FORK + CLIMB * (F_D - F_A);
+
+/**
+ * Flat under the headline as far as the fork, then one long ascent through the
+ * fan and a shallower run out to the terminus. The three segments meet without
+ * a corner break in value, only in slope.
+ */
+export const axisY = (x: number) =>
+  x <= F_A
+    ? AXIS_BASE + GROUND * x
+    : x <= F_D
+      ? Y_FORK + CLIMB * (x - F_A)
+      : Y_MERGE + RUN * (x - F_D);
+
+/** the angle of the run out of the gate, for anything that has to sit square to it */
+export const RUN_ANGLE = (Math.atan(RUN) * 180) / Math.PI;
 
 const SPAN = X_TERM - X_START;
 
@@ -48,12 +67,11 @@ export function fanBlend(x: number) {
   return smooth((F_D - x) / (F_D - F_C));
 }
 
+/** tracks run parallel to the climbing axis, offset across it, not pinned to a row */
 export function trackYAt(x: number, offset: number) {
   const base = axisY(x);
   if (offset === 0 || x <= F_A || x >= F_D) return base;
-  const target = trackY(offset);
-  const k = fanBlend(x);
-  return base + (target - base) * k;
+  return base + offset * fanBlend(x);
 }
 
 function thirds(x0: number, x1: number) {
@@ -66,29 +84,31 @@ export function trunkPath() {
 }
 
 export function busPath() {
-  return `M${F_D},${axisY(F_D)} L${X_TERM + 26},${axisY(X_TERM + 26)}`;
+  return `M${F_D},${axisY(F_D)} L${X_TERM},${axisY(X_TERM)}`;
 }
 
+/**
+ * A cubic whose x-controls sit at the thirds has x linear in t, so its y is
+ * exactly base + offset * smooth(t) once the controls carry both the axis
+ * slope and the offset. Solving the Bernstein form for that gives the thirds
+ * below; the drawn curve then matches trackYAt to the pixel.
+ */
 export function trackPath(offset: number) {
-  if (offset === 0) {
-    return `M${F_A},${axisY(F_A)} L${F_D},${axisY(F_D)}`;
-  }
-  const y0 = axisY(F_A);
-  const yb = trackY(offset);
-  const y1 = axisY(F_D);
+  const yA = axisY(F_A);
+  const yB = axisY(F_B);
+  const yC = axisY(F_C);
+  const yD = axisY(F_D);
+  if (offset === 0) return `M${F_A},${yA} L${F_D},${yD}`;
   const [a1, a2] = thirds(F_A, F_B);
   const [c1, c2] = thirds(F_C, F_D);
+  const up = (yB - yA) / 3;
+  const down = (yD - yC) / 3;
   return [
-    `M${F_A},${y0}`,
-    `C${a1},${y0} ${a2},${yb} ${F_B},${yb}`,
-    `L${F_C},${yb}`,
-    `C${c1},${yb} ${c2},${y1} ${F_D},${y1}`,
+    `M${F_A},${yA}`,
+    `C${a1},${yA + up} ${a2},${yA + 2 * up + offset} ${F_B},${yB + offset}`,
+    `L${F_C},${yC + offset}`,
+    `C${c1},${yC + offset + down} ${c2},${yC + 2 * down} ${F_D},${yD}`,
   ].join(" ");
-}
-
-/** The whole journey as one path, used for the trunk payload and the trail. */
-export function spinePath() {
-  return `M${X_START},${axisY(X_START)} L${X_TERM + 26},${axisY(X_TERM + 26)}`;
 }
 
 export interface Track {
@@ -142,14 +162,6 @@ export function trackXAt(x: number, index: number) {
   const lag = TRACK_LAG[index] * fanBlend(x);
   return Math.max(F_A, x - lag);
 }
-
-export const SPINE_LENGTH = Math.hypot(
-  X_TERM + 26 - X_START,
-  axisY(X_TERM + 26) - axisY(X_START),
-);
-
-export const spineS = (x: number) =>
-  clamp01((x - X_START) / (X_TERM + 26 - X_START));
 
 /* ---------------------------------------------------------------- mobile */
 

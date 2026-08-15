@@ -17,7 +17,7 @@ const BEND_SIGMA = 95;
 const BEND_AMP = 9;
 const RING_BAND = 46;
 const RING_AMP = 13;
-const RING_MAX = 330;
+const RING_MAX = 224;
 /** beyond this the bend is under a tenth of a pixel, so the line is untouched */
 const BEND_REACH = 265;
 

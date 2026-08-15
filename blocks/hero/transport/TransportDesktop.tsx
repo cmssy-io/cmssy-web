@@ -17,6 +17,7 @@ import {
   F_A,
   F_C,
   F_D,
+  RUN_ANGLE,
   TERM,
   TRACKS,
   TRACK_OFFSETS,
@@ -36,8 +37,19 @@ import {
 import type { Sequence, StationKey } from "./useTransportSequence";
 import type { TransportLabels } from "./labels";
 
-const TRUNK_LEN = F_A - WORLD.left;
-const BUS_LEN = X_TERM + 26 - F_D;
+const TRUNK_LEN = Math.hypot(F_A - WORLD.left, axisY(F_A) - axisY(WORLD.left));
+const BUS_LEN = Math.hypot(X_TERM - F_D, axisY(X_TERM) - axisY(F_D));
+
+const GATE_Y = axisY(X_GATE);
+/** the gate sits square to the run, which is no longer horizontal */
+const GATE_TILT = `rotate(${RUN_ANGLE.toFixed(2)} ${X_GATE} ${GATE_Y})`;
+/** the publish annotation hangs below the climbing route, not above it */
+const PUB_LEAD = GATE_Y + 42;
+const PUB_LABEL = PUB_LEAD + 62;
+
+/** the fan annotation rides above the topmost track, mid-plateau */
+const FAN_X = 580;
+const FAN_TOP = trackYAt(FAN_X, TRACK_OFFSETS[0]);
 
 const RAIL_WIDTHS = [0.5, 0.82, 0.36, 0.62];
 const WRITTEN_RAIL = 1;
@@ -66,9 +78,9 @@ export function TransportDesktop({ seq, reduced, coarse, labels }: Props) {
 
   /* the ripple stays inside the diagram band: a pressure release at the gate,
      not a circle drawn across the page */
-  const waveR = useTransform(wave, [0, 1], [10, 330]);
+  const waveR = useTransform(wave, [0, 1], [10, 224]);
   const waveO = useTransform(wave, [0, 0.12, 0.62, 1], [0, 0.5, 0.16, 0]);
-  const waveR2 = useTransform(wave, [0, 1], [10, 394]);
+  const waveR2 = useTransform(wave, [0, 1], [10, 268]);
   const waveO2 = useTransform(wave, [0, 0.18, 0.7, 1], [0, 0.17, 0.06, 0]);
   const busO = useTransform(settle, [0, 1], [1, 0.42]);
 
@@ -302,9 +314,9 @@ export function TransportDesktop({ seq, reduced, coarse, labels }: Props) {
       <g {...station("fan")}>
         <rect
           x={F_A - 20}
-          y={462}
-          width={F_D - F_A + 90}
-          height={300}
+          y={FAN_TOP - 40}
+          width={F_D - F_A + 80}
+          height={axisY(F_A) - FAN_TOP + 70}
           rx={16}
           fill="transparent"
         />
@@ -329,16 +341,16 @@ export function TransportDesktop({ seq, reduced, coarse, labels }: Props) {
           />
         ))}
         <line
-          x1={595}
-          y1={trackYAt(F_C, TRACK_OFFSETS[0]) - 12}
-          x2={595}
-          y2={500}
+          x1={FAN_X}
+          y1={FAN_TOP - 12}
+          x2={FAN_X}
+          y2={FAN_TOP - 40}
           stroke={fanning ? "rgba(0,168,240,.45)" : "rgba(250,250,248,.06)"}
           strokeWidth={1}
         />
         <text
-          x={595}
-          y={492}
+          x={FAN_X}
+          y={FAN_TOP - 48}
           textAnchor="middle"
           className="tp-label"
           fill={fanning ? EL3 : LABEL}
@@ -346,8 +358,8 @@ export function TransportDesktop({ seq, reduced, coarse, labels }: Props) {
           {labels.fan}
         </text>
         <m.text
-          x={595}
-          y={474}
+          x={FAN_X}
+          y={FAN_TOP - 66}
           textAnchor="middle"
           className="tp-sub"
           fill={DIM}
@@ -362,48 +374,56 @@ export function TransportDesktop({ seq, reduced, coarse, labels }: Props) {
       <g {...station("publish")}>
         <rect
           x={X_GATE - 34}
-          y={axisY(X_GATE) - 44}
+          y={GATE_Y - 44}
           width={68}
           height={88}
           rx={10}
           fill="transparent"
         />
-        <m.line
-          x1={X_GATE}
-          x2={X_GATE}
-          y1={axisY(X_GATE) - 34}
-          y2={axisY(X_GATE) - 3}
-          stroke={gateOpen ? EL : FAINT}
-          strokeWidth={3}
-          strokeLinecap="round"
-          initial={{ y2: axisY(X_GATE) - 3 }}
-          animate={{ y2: axisY(X_GATE) - (gateOpen ? 17 : 3) }}
-          transition={SETTLE}
-        />
-        <m.line
-          x1={X_GATE}
-          x2={X_GATE}
-          y2={axisY(X_GATE) + 34}
-          y1={axisY(X_GATE) + 3}
-          stroke={gateOpen ? EL : FAINT}
-          strokeWidth={3}
-          strokeLinecap="round"
-          initial={{ y1: axisY(X_GATE) + 3 }}
-          animate={{ y1: axisY(X_GATE) + (gateOpen ? 17 : 3) }}
-          transition={SETTLE}
-        />
+        <g transform={GATE_TILT}>
+          <m.line
+            x1={X_GATE}
+            x2={X_GATE}
+            y1={GATE_Y - 34}
+            y2={GATE_Y - 3}
+            stroke={gateOpen ? EL : FAINT}
+            strokeWidth={3}
+            strokeLinecap="round"
+            initial={{ y2: GATE_Y - 3 }}
+            animate={{ y2: GATE_Y - (gateOpen ? 17 : 3) }}
+            transition={SETTLE}
+          />
+          <m.line
+            x1={X_GATE}
+            x2={X_GATE}
+            y2={GATE_Y + 34}
+            y1={GATE_Y + 3}
+            stroke={gateOpen ? EL : FAINT}
+            strokeWidth={3}
+            strokeLinecap="round"
+            initial={{ y1: GATE_Y + 3 }}
+            animate={{ y1: GATE_Y + (gateOpen ? 17 : 3) }}
+            transition={SETTLE}
+          />
+        </g>
         <line
           x1={X_GATE}
-          y1={axisY(X_GATE) - 40}
+          y1={PUB_LEAD}
           x2={X_GATE}
-          y2={536}
+          y2={PUB_LABEL - 12}
           stroke={gateOpen ? "rgba(0,168,240,.45)" : "rgba(250,250,248,.06)"}
           strokeWidth={1}
         />
-        <rect x={X_GATE - 54} y={516} width={108} height={20} fill="#10141c" />
+        <rect
+          x={X_GATE - 54}
+          y={PUB_LABEL - 12}
+          width={108}
+          height={20}
+          fill="#10141c"
+        />
         <text
           x={X_GATE}
-          y={528}
+          y={PUB_LABEL}
           textAnchor="middle"
           className="tp-label"
           fill={gateOpen ? EL3 : LABEL}
@@ -413,14 +433,14 @@ export function TransportDesktop({ seq, reduced, coarse, labels }: Props) {
         <m.g animate={{ opacity: gateOpen ? 1 : 0 }} transition={RESPONSE}>
           <rect
             x={X_GATE - 110}
-            y={498}
+            y={PUB_LABEL + 6}
             width={220}
             height={19}
             fill="#10141c"
           />
           <text
             x={X_GATE}
-            y={510}
+            y={PUB_LABEL + 18}
             textAnchor="middle"
             className="tp-sub"
             fill={DIM}
