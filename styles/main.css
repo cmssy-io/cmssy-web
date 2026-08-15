@@ -658,6 +658,33 @@ html[data-theme="dark"] {
   text-align: center;
 }
 
+/* Stacked, the type has the full column to itself and centring is right. Once
+   the figure moves back behind it the type is one half of a two-part
+   composition, so it returns to the left edge at its own measure - centred, it
+   walks straight into the fan. */
+@media (min-width: 1024px) {
+  .hero-transport__type {
+    margin-inline: 0;
+    text-align: left;
+  }
+
+  .hero-transport__type > h1 {
+    margin-inline: 0;
+    max-width: 13ch;
+    font-size: clamp(2.35rem, 4.75vw, 3.5rem);
+  }
+
+  .hero-transport__type > p {
+    margin-inline: 0;
+    max-width: 36ch;
+    font-size: 0.94rem;
+  }
+
+  .hero-transport__actions {
+    justify-content: flex-start;
+  }
+}
+
 /* The world is 1820 x 792. Let the stage span an ultrawide monitor and the box
    it has to fit turns into a letterbox, so the fitter buys the width back out
    of height - at 2560 it was showing 591 of the 792 units and guillotining the
