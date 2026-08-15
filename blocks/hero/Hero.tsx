@@ -12,8 +12,6 @@ import type { heroProps } from "./block";
 
 const WORD_HOLD_MS = 2400;
 
-// Short enough that the outgoing and incoming words never read as two words at
-// once - the failure the spring version had.
 const WORD_SWAP = { ...RESPONSE, duration: 0.14 };
 
 const FALLBACK_TOOL_CALLS = [
@@ -22,14 +20,6 @@ const FALLBACK_TOOL_CALLS = [
   "publish_page · /",
 ];
 
-/**
- * The rotating word, without the delete phase.
- *
- * Backspacing a word costs half a second per cycle to un-say something, and it
- * is the single most template-looking gesture on the page. The word crosses
- * over instead. The slot reserves the width of the longest candidate so the
- * headline can never reflow mid-sentence.
- */
 function RotatingWord({ words }: { words: string[] }) {
   const reduced = useReducedMotion();
   const [index, setIndex] = useState(0);
@@ -46,8 +36,6 @@ function RotatingWord({ words }: { words: string[] }) {
   const longest = words.reduce((a, b) => (b.length > a.length ? b : a), "");
   const current = words[index] ?? "";
 
-  // The sizer reserves the longest word's width; the animating words are taken
-  // out of flow on top of it, so a crossfade can never move the line.
   return (
     <span className="relative inline-block align-bottom">
       <span aria-hidden className="invisible whitespace-pre">
@@ -113,7 +101,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
   const toolCalls = mockupToolCalls.map((t) => t.call).filter(Boolean);
 
   return (
-    <section className="dot-grid-dark relative overflow-hidden bg-ink pt-section pb-0 xl:pb-section">
+    <section className="dot-grid-dark relative overflow-hidden bg-ink pt-section pb-0 xl:pb-section-tight">
       <div
         className="pointer-events-none absolute -top-40 right-0 h-[480px] w-[480px] rounded-full"
         style={{
@@ -122,81 +110,77 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
         }}
       />
       <Container>
-        {/* Below xl the headline runs full width and the plate is cropped by
-            the fold. From xl the plate earns its own column, because the beat
-            is the argument and a beat nobody scrolls to is not one. */}
-        <div className="grid items-center gap-14 xl:grid-cols-[minmax(0,28rem)_minmax(0,1fr)]">
-        <div className="max-w-[52rem]">
-          <FigEyebrow fig={fig} label={eyebrow} dark pill />
-          <h1 className="mt-6 font-heading text-display font-semibold text-paper xl:text-[clamp(2.25rem,2.9vw,3.25rem)]">
-            <span className="block">{headingPre}</span>
-            {words.length > 0 ? (
-              <span className="block">
-                <RotatingWord words={words} />
-                {headingPost ? <> {headingPost}</> : null}
-              </span>
+        <div className="grid items-center gap-14 xl:grid-cols-[minmax(0,26rem)_minmax(0,1fr)]">
+          <div className="max-w-[52rem]">
+            <FigEyebrow fig={fig} label={eyebrow} dark pill />
+            <h1 className="mt-6 font-heading text-display font-semibold text-paper xl:text-[clamp(2.25rem,2.9vw,3.25rem)]">
+              <span className="block">{headingPre}</span>
+              {words.length > 0 ? (
+                <span className="block">
+                  <RotatingWord words={words} />
+                  {headingPost ? <> {headingPost}</> : null}
+                </span>
+              ) : null}
+              {headingLine2 ? (
+                <span className="block">{headingLine2}</span>
+              ) : null}
+            </h1>
+            {subheading ? (
+              <p className="mt-6 max-w-[58ch] text-lead text-paper/60">
+                {subheading}
+              </p>
             ) : null}
-            {headingLine2 ? <span className="block">{headingLine2}</span> : null}
-          </h1>
-          {subheading ? (
-            <p className="mt-6 max-w-[58ch] text-lead text-paper/60">
-              {subheading}
-            </p>
-          ) : null}
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            {primaryButtonText ? (
-              <CmssyLink
-                href={primaryButtonUrl || "#"}
-                className="rounded-lg bg-elektryk px-6 py-3 text-base font-semibold text-ink transition-colors hover:bg-elektryk/85"
-              >
-                {primaryButtonText}
-              </CmssyLink>
-            ) : null}
-            {secondaryButtonText ? (
-              <CmssyLink
-                href={secondaryButtonUrl || "#"}
-                className="rounded-lg border border-paper/20 px-6 py-3 text-base font-medium text-paper/85 transition-colors hover:border-paper/40"
-              >
-                {secondaryButtonText}
-              </CmssyLink>
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              {primaryButtonText ? (
+                <CmssyLink
+                  href={primaryButtonUrl || "#"}
+                  className="rounded-lg bg-elektryk px-6 py-3 text-base font-semibold text-ink transition-colors hover:bg-elektryk/85"
+                >
+                  {primaryButtonText}
+                </CmssyLink>
+              ) : null}
+              {secondaryButtonText ? (
+                <CmssyLink
+                  href={secondaryButtonUrl || "#"}
+                  className="rounded-lg border border-paper/20 px-6 py-3 text-base font-medium text-paper/85 transition-colors hover:border-paper/40"
+                >
+                  {secondaryButtonText}
+                </CmssyLink>
+              ) : null}
+            </div>
+            {trustLine ? (
+              <div className="mt-8 font-mono text-[13px] text-paper/40">
+                {trustLine}
+              </div>
             ) : null}
           </div>
-          {trustLine ? (
-            <div className="mt-8 font-mono text-[13px] text-paper/40">
-              {trustLine}
-            </div>
-          ) : null}
-        </div>
 
-        {/* Deliberately cropped by the fold: the figure runs out of the
-            viewport, which is what invites the scroll and leaves no dead
-            space under the headline. */}
-        <div className="-mb-24 lg:-mb-32 xl:mb-0">
-          <HeroChassis
-            chatPrompt={chatPrompt}
-            chatStatus={chatStatus}
-            title={mockupTitle}
-            badge={mockupBadge}
-            badgeDraft={mockupBadgeDraft || "Draft changes"}
-            meta={mockupMeta}
-            pages={mockupPages}
-            toolCalls={toolCalls.length > 0 ? toolCalls : FALLBACK_TOOL_CALLS}
-            dockLabel={mockupDockLabel}
-            dockTag={mockupDockTag}
-            dockSub={mockupDockSub}
-            inspectorTitle={inspectorTitle}
-            inspectorSubtitle={inspectorSubtitle}
-            inspectorFooter={inspectorFooter}
-            codeLine={
-              codeLine || "export default createCmssyPage(cmssy, blocks);"
-            }
-            codeDataLabel={codeDataLabel || "page.blocks[]"}
-            caption={plateCaption || "the cmssy editor, editing this page"}
-            captionDone={
-              plateCaptionDone || "content-only change · no redeploy"
-            }
-          />
-        </div>
+          <div className="-mb-24 lg:-mb-32 xl:mb-0">
+            <HeroChassis
+              chatPrompt={chatPrompt}
+              chatStatus={chatStatus}
+              title={mockupTitle}
+              badge={mockupBadge}
+              badgeDraft={mockupBadgeDraft || "Draft changes"}
+              meta={mockupMeta}
+              pages={mockupPages}
+              toolCalls={toolCalls.length > 0 ? toolCalls : FALLBACK_TOOL_CALLS}
+              dockLabel={mockupDockLabel}
+              dockTag={mockupDockTag}
+              dockSub={mockupDockSub}
+              inspectorTitle={inspectorTitle}
+              inspectorSubtitle={inspectorSubtitle}
+              inspectorFooter={inspectorFooter}
+              codeLine={
+                codeLine || "export default createCmssyPage(cmssy, blocks);"
+              }
+              codeDataLabel={codeDataLabel || "page.blocks[]"}
+              caption={plateCaption || "the cmssy editor, editing this page"}
+              captionDone={
+                plateCaptionDone || "content-only change · no redeploy"
+              }
+            />
+          </div>
         </div>
       </Container>
     </section>

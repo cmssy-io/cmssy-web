@@ -1,5 +1,5 @@
-import { Container } from "@/components/container";
-import { FigEyebrow } from "@/components/fig-eyebrow";
+import { Reveal } from "@/components/motion/reveal";
+import { Section } from "@/components/section";
 import type { BlockProps } from "@cmssy/react";
 import type { featuresProps } from "./block";
 
@@ -16,48 +16,47 @@ export default function Features({
   } = content;
 
   return (
-    <section className="bg-muted py-24">
-      <Container>
-        <div className="max-w-3xl">
-          <FigEyebrow fig={fig} label={eyebrow} />
-          <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-foreground text-balance">
-            {heading}
-            {headingHighlight && (
-              <>
-                {" "}
-                <span className="text-elektryk-700">{headingHighlight}</span>
-              </>
-            )}
-          </h2>
-          {description && (
-            <p className="mt-4 text-lg text-muted-foreground">{description}</p>
-          )}
-        </div>
-
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => (
-            <div
-              key={feature.title}
-              className="group rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:shadow-[-.35rem_.35rem_0_rgba(0,168,240,.12)]"
-            >
+    <Section
+      band="wash"
+      fig={fig}
+      eyebrow={eyebrow}
+      heading={
+        <>
+          {heading}
+          {headingHighlight ? (
+            <>
+              {" "}
+              <span className="text-elektryk-700">{headingHighlight}</span>
+            </>
+          ) : null}
+        </>
+      }
+      lead={description}
+    >
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {features.map((feature, i) => (
+          <Reveal key={feature.title} index={i}>
+            <div className="group h-full rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:shadow-[-.35rem_.35rem_0_rgba(0,168,240,.12)]">
               <div className="flex gap-1.5">
                 <span className="size-2.5 rounded-[3px] bg-ink" />
                 <span className="size-2.5 rounded-[3px] bg-ink" />
                 <span className="size-2.5 rounded-[3px] bg-elektryk" />
               </div>
-              <h3 className="font-heading mt-4 text-lg font-semibold text-foreground">
+              <h3 className="mt-4 font-heading text-lg font-semibold text-foreground">
                 {feature.title}
               </h3>
-              <p className="mt-2 text-sm text-muted-foreground">{feature.description}</p>
-              {feature.stat && (
+              <p className="mt-2 text-sm text-muted-foreground">
+                {feature.description}
+              </p>
+              {feature.stat ? (
                 <div className="mt-4 font-mono text-[12px] font-medium text-elektryk-700">
                   {feature.stat}
                 </div>
-              )}
+              ) : null}
             </div>
-          ))}
-        </div>
-      </Container>
-    </section>
+          </Reveal>
+        ))}
+      </div>
+    </Section>
   );
 }

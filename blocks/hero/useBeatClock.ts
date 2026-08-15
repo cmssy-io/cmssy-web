@@ -10,18 +10,8 @@ import {
   type Step,
 } from "./beat";
 
-/** Below this the chassis cannot hold three surfaces, so it tells a shorter story. */
 const COMPACT_QUERY = "(max-width: 639px)";
 
-/**
- * The single clock. One timer owns the whole sequence; every surface is a pure
- * function of the stage it returns.
- *
- * It stops when the hero is off-screen (nobody is watching, and a paused RAF
- * is a paused battery) and never starts at all under `prefers-reduced-motion`,
- * where it reports the finished state instead - the last frame of the beat is
- * also its most legible one.
- */
 export function useBeatClock<T extends HTMLElement>() {
   const ref = useRef<T>(null);
   const inView = useInView(ref, { amount: 0.35 });
@@ -70,11 +60,6 @@ export function useBeatClock<T extends HTMLElement>() {
   return { ref, stage, reduced: Boolean(reduced), compact };
 }
 
-/**
- * Character-by-character reveal, driven by the same stage as everything else.
- * Returns the whole string immediately once the stage has moved past it, so a
- * visitor arriving mid-beat never sees a half-typed instruction.
- */
 export function useTyped(
   text: string,
   active: boolean,

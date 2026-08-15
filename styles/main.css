@@ -22,9 +22,6 @@
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono), ui-monospace, "SF Mono", Menlo, monospace;
 
-  /* One fluid ramp for the whole site, so a block never invents its own
-     `text-[clamp(...)]` again. Each step is sized to land inside the container
-     at 375 without hyphenation and to stop growing before 1920. */
   --text-display: clamp(2rem, 5.2vw, 5.5rem);
   --text-display--line-height: 1.04;
   --text-display--letter-spacing: -0.03em;
@@ -37,8 +34,6 @@
   --text-lead: clamp(1.0625rem, 1.2vw, 1.25rem);
   --text-lead--line-height: 1.6;
 
-  /* Vertical rhythm: replaces the py-24 / py-20 lg:py-28 / py-16 lg:py-24
-     drift. Bands set their padding from this, never from a literal. */
   --spacing-section: clamp(4rem, 8vw, 7rem);
   --spacing-section-tight: clamp(2.5rem, 5vw, 4rem);
 }
@@ -51,12 +46,40 @@
   background-size: 24px 24px;
 }
 
+@utility code-scroll {
+  scrollbar-width: thin;
+
+  &[data-overflow="true"] {
+    mask-image: linear-gradient(
+      to right,
+      #000 0,
+      #000 calc(100% - 2.5rem),
+      transparent 100%
+    );
+  }
+
+  &[data-overflow="end"] {
+    mask-image: none;
+  }
+}
+
 @utility dot-grid-light {
   background-image: radial-gradient(
     rgba(16, 20, 28, 0.08) 1px,
     transparent 1px
   );
   background-size: 24px 24px;
+}
+
+@keyframes hero-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
 }
 
 @keyframes cta-dock {
@@ -106,6 +129,11 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  [style*="hero-blink"] {
+    animation: none !important;
+  }
+}
 
 @utility container {
   max-width: 80rem;

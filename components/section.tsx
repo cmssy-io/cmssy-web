@@ -7,18 +7,10 @@ type Align = "left" | "center";
 
 const BAND: Record<Band, string> = {
   paper: "bg-background text-foreground",
-  wash: "bg-wash text-foreground",
+  wash: "bg-muted text-foreground",
   ink: "dot-grid-dark bg-ink text-paper",
 };
 
-/**
- * One component owns band colour, vertical rhythm, the FIG plate, the heading
- * and the lead.
- *
- * Left is the only default alignment. Centring is a deliberate exception - the
- * closing CTA - not a per-block preference, which is how the page drifted into
- * alternating alignment in the first place.
- */
 export function Section({
   fig,
   eyebrow,
@@ -66,7 +58,7 @@ export function Section({
             ) : null}
             {heading ? (
               <Reveal index={1}>
-                <h2 className="max-w-[22ch] font-heading text-h2 font-semibold text-balance">
+                <h2 className="max-w-[24ch] font-heading text-h2 font-semibold text-balance">
                   {heading}
                 </h2>
               </Reveal>
@@ -84,7 +76,9 @@ export function Section({
             ) : null}
           </div>
         ) : null}
-        {children ? <div className={hasHeader ? "mt-12" : ""}>{children}</div> : null}
+        {children ? (
+          <div className={hasHeader ? "mt-12" : ""}>{children}</div>
+        ) : null}
       </Container>
     </section>
   );

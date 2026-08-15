@@ -13,7 +13,7 @@ import {
   Undo2,
   Users,
 } from "lucide-react";
-import { m } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import { CmssyMark } from "@/components/cmssy-mark";
 import { RESPONSE, SEQUENCE_STEP, SETTLE } from "@/components/motion/presets";
 import { Stage } from "./beat";
@@ -40,7 +40,6 @@ export type ChassisProps = {
   captionDone: string;
 };
 
-/** A hairline that fills in the direction the value is travelling. */
 function Signal({
   on,
   className,
@@ -81,17 +80,6 @@ function FieldBox({ children }: { children: React.ReactNode }) {
   );
 }
 
-/**
- * Three surfaces, one content.
- *
- * The editor canvas, the code that renders it and the MCP conversation are
- * panels of a single chassis rather than floating cards - that constraint is
- * the only thing standing between this composition and generic SaaS.
- *
- * Which panels are present is decided by the chassis's own width, not the
- * viewport's, so the same component is correct inside a narrow column and
- * across a 1920 page.
- */
 export function HeroChassis(props: ChassisProps) {
   const { ref, stage, reduced } = useBeatClock<HTMLDivElement>();
 
@@ -117,7 +105,6 @@ export function HeroChassis(props: ChassisProps) {
   return (
     <div ref={ref} className="@container">
       <div className="overflow-hidden rounded-2xl border border-paper/10 bg-[#14161b] shadow-2xl shadow-black/40">
-        {/* Title bar */}
         <div className="flex items-center gap-3 border-b border-paper/10 px-4 py-2.5">
           <span className="grid size-6 place-items-center rounded-md bg-card">
             <CmssyMark className="h-3 w-auto text-foreground" />
@@ -169,7 +156,6 @@ export function HeroChassis(props: ChassisProps) {
         </div>
 
         <div className="flex">
-          {/* Rail */}
           <div className="hidden w-9 shrink-0 flex-col items-center gap-3 border-r border-paper/10 py-3 @xl:flex">
             <Home className="size-3.5 text-paper/35" />
             <FileText className="size-3.5 text-elektryk" />
@@ -178,7 +164,6 @@ export function HeroChassis(props: ChassisProps) {
             <Users className="size-3.5 text-paper/35" />
           </div>
 
-          {/* Pages */}
           {props.pages.length > 0 ? (
             <div className="hidden w-40 shrink-0 border-r border-paper/10 p-3 @4xl:block">
               <div className="flex items-center gap-1 rounded-md bg-background/6 p-0.5 font-mono text-[10px]">
@@ -213,7 +198,6 @@ export function HeroChassis(props: ChassisProps) {
             </div>
           ) : null}
 
-          {/* Canvas */}
           <div className="dot-grid-light relative flex min-h-[clamp(19rem,34vw,24rem)] flex-1 flex-col bg-background p-4">
             <Signal
               on={stage >= Stage.SIGNAL_CANVAS && stage < Stage.SIGNAL_CODE}
@@ -255,36 +239,35 @@ export function HeroChassis(props: ChassisProps) {
               </span>
             </div>
 
-            {/* The block the instruction creates. It docks; it does not spin. */}
-            {props.dockLabel ? (
-              <m.div
-                className="mt-2 mb-3 flex items-center gap-2.5 rounded-md bg-elektryk px-3 py-2"
-                initial={false}
-                animate={{
-                  opacity: docked ? 1 : 0,
-                  y: docked ? 0 : 12,
-                }}
-                transition={SETTLE}
-              >
-                {props.dockTag ? (
-                  <span className="grid size-6 shrink-0 place-items-center rounded bg-muted font-mono text-[9px] font-semibold text-foreground">
-                    {props.dockTag}
-                  </span>
-                ) : null}
-                <span className="min-w-0 leading-tight">
-                  <span className="block truncate text-[11px] font-semibold text-foreground">
-                    {props.dockLabel}
-                  </span>
-                  {props.dockSub ? (
-                    <span className="block truncate font-mono text-[9px] text-ink/65">
-                      {props.dockSub}
+            <AnimatePresence initial={false}>
+              {docked && props.dockLabel ? (
+                <m.div
+                  key="dock"
+                  className="mt-2 mb-3 flex items-center gap-2.5 rounded-md bg-elektryk px-3 py-2"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={SETTLE}
+                >
+                  {props.dockTag ? (
+                    <span className="grid size-6 shrink-0 place-items-center rounded bg-muted font-mono text-[9px] font-semibold text-foreground">
+                      {props.dockTag}
                     </span>
                   ) : null}
-                </span>
-              </m.div>
-            ) : null}
+                  <span className="min-w-0 leading-tight">
+                    <span className="block truncate text-[11px] font-semibold text-foreground">
+                      {props.dockLabel}
+                    </span>
+                    {props.dockSub ? (
+                      <span className="block truncate font-mono text-[9px] text-ink/65">
+                        {props.dockSub}
+                      </span>
+                    ) : null}
+                  </span>
+                </m.div>
+              ) : null}
+            </AnimatePresence>
 
-            {/* The AI surface, docked to the chassis rather than floating over it. */}
             {props.chatPrompt || props.chatStatus ? (
               <div className="mt-auto rounded-lg bg-ink p-3 shadow-xl">
                 <div className="flex items-start gap-2.5">
@@ -298,45 +281,52 @@ export function HeroChassis(props: ChassisProps) {
                         <span className="ml-px inline-block h-[1em] w-[0.45em] translate-y-[0.15em] bg-elektryk" />
                       ) : null}
                     </span>
-                    {props.chatStatus ? (
-                      <m.span
-                        className="mt-0.5 block truncate font-mono text-[10px] text-paper/45"
-                        initial={false}
-                        animate={{ opacity: done ? 1 : 0 }}
-                        transition={RESPONSE}
-                      >
-                        {props.chatStatus}
-                      </m.span>
-                    ) : null}
+                    <AnimatePresence initial={false}>
+                      {done && props.chatStatus ? (
+                        <m.span
+                          key="status"
+                          className="mt-0.5 block truncate font-mono text-[10px] text-paper/45"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={RESPONSE}
+                        >
+                          {props.chatStatus}
+                        </m.span>
+                      ) : null}
+                    </AnimatePresence>
                   </span>
                 </div>
 
-                {/* The tool calls. Real names, real order, verified against a live workspace. */}
-                <div className="mt-2 hidden flex-col gap-1 border-t border-paper/10 pt-2 @xl:flex">
-                  {props.toolCalls.map((call, i) => (
-                    <m.span
-                      key={call}
-                      className="flex items-center gap-1.5 font-mono text-[10px] text-paper/55"
-                      initial={false}
-                      animate={{
-                        opacity: stage >= Stage.TOOLS ? 1 : 0,
-                        x: stage >= Stage.TOOLS ? 0 : -6,
-                      }}
-                      transition={{
-                        ...SEQUENCE_STEP,
-                        delay: stage >= Stage.TOOLS ? i * 0.22 : 0,
-                      }}
+                <AnimatePresence initial={false}>
+                  {stage >= Stage.TOOLS ? (
+                    <m.div
+                      key="tools"
+                      className="mt-2 hidden flex-col gap-1 border-t border-paper/10 pt-2 @xl:flex"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={RESPONSE}
                     >
-                      <span className="text-emerald-400">✓</span>
-                      <span className="truncate">{call}</span>
-                    </m.span>
-                  ))}
-                </div>
+                      {props.toolCalls.map((call, i) => (
+                        <m.span
+                          key={call}
+                          className="flex items-center gap-1.5 font-mono text-[10px] text-paper/55"
+                          initial={{ opacity: 0, x: -6 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ ...SEQUENCE_STEP, delay: i * 0.22 }}
+                        >
+                          <span className="text-emerald-400">✓</span>
+                          <span className="truncate">{call}</span>
+                        </m.span>
+                      ))}
+                    </m.div>
+                  ) : null}
+                </AnimatePresence>
               </div>
             ) : null}
           </div>
 
-          {/* Inspector */}
           <div className="hidden w-44 shrink-0 border-l border-paper/10 p-3 @2xl:block">
             <div className="truncate text-[12px] font-semibold text-paper/90">
               {inspecting ? props.dockLabel : props.inspectorTitle}
@@ -418,7 +408,6 @@ export function HeroChassis(props: ChassisProps) {
           </div>
         </div>
 
-        {/* The code strip. This is the argument: the data below changes, the line above never does. */}
         <div className="relative flex items-center gap-3 border-t border-paper/10 px-4 py-2">
           <Signal
             on={coded}
@@ -443,7 +432,6 @@ export function HeroChassis(props: ChassisProps) {
         </div>
       </div>
 
-      {/* Plate caption */}
       <div className="mt-3 flex items-center gap-2 font-mono text-[11px] tracking-[0.04em] text-paper/40">
         <span className="inline-block size-1.5 shrink-0 rounded-[2px] bg-elektryk" />
         <m.span

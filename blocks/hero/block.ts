@@ -82,10 +82,6 @@ export const heroProps = {
       tag: fields.text({ label: "Tag", placeholder: "e.g. Draft" }),
     },
   }),
-  // The beat depicts a real, executed MCP sequence. Every value here maps to a
-  // block type and tool that exist in the workspace today - a mockup that
-  // promises an action the product cannot perform is a lie with a loading
-  // animation on it.
   mockupToolCalls: fields.repeater({
     label: "Mockup: MCP Tool Calls",
     itemSchema: {

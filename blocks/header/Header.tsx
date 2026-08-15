@@ -397,30 +397,34 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
   return (
     <>
       <div ref={chromeRef} className="sticky top-0 z-50">
-        {/* Announcement Bar */}
         {showAnnouncementBar && (
           <div
-            className="relative w-full text-center text-sm py-2 px-4"
+            className="grid w-full grid-cols-[1.25rem_minmax(0,1fr)_1.25rem] items-center gap-2 px-4 py-2 text-center text-sm"
             style={{
               backgroundColor: announcementBg,
               color: announcementTextColor,
             }}
           >
-            {announcementLink ? (
-              <CmssyLink href={announcementLink} className="hover:underline">
-                {announcementText}
-              </CmssyLink>
-            ) : (
-              <span>{announcementText}</span>
-            )}
-            {announcementDismissible && (
+            <span aria-hidden />
+            <span className="min-w-0 text-balance">
+              {announcementLink ? (
+                <CmssyLink href={announcementLink} className="hover:underline">
+                  {announcementText}
+                </CmssyLink>
+              ) : (
+                announcementText
+              )}
+            </span>
+            {announcementDismissible ? (
               <button
                 onClick={() => setAnnouncementDismissed(true)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 hover:opacity-70"
+                className="justify-self-end hover:opacity-70"
                 aria-label="Dismiss announcement"
               >
                 <X className="w-4 h-4" />
               </button>
+            ) : (
+              <span aria-hidden />
             )}
           </div>
         )}

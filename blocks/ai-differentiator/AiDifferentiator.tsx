@@ -3,6 +3,7 @@ import type { BlockProps } from "@cmssy/react";
 import { CmssyMark } from "@/components/cmssy-mark";
 import { Container } from "@/components/container";
 import { FigEyebrow } from "@/components/fig-eyebrow";
+import { Reveal } from "@/components/motion/reveal";
 import type { aiDifferentiatorProps } from "./block";
 
 export default function AiDifferentiator({
@@ -23,16 +24,22 @@ export default function AiDifferentiator({
   } = content;
 
   return (
-    <section className="dot-grid-dark bg-ink py-24">
+    <section className="dot-grid-dark bg-ink py-section">
       <Container>
         <div className="grid items-center gap-14 lg:grid-cols-2">
           <div>
-            <FigEyebrow fig={fig} label={eyebrow} dark />
-            <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-paper text-balance">
-              {heading}
-            </h2>
+            <Reveal>
+              <FigEyebrow fig={fig} label={eyebrow} dark />
+            </Reveal>
+            <Reveal index={1}>
+              <h2 className="mt-5 font-heading text-h2 font-semibold text-paper text-balance">
+                {heading}
+              </h2>
+            </Reveal>
             {description && (
-              <p className="mt-4 text-lg text-paper/60">{description}</p>
+              <Reveal index={2}>
+                <p className="mt-4 text-lead text-paper/60">{description}</p>
+              </Reveal>
             )}
             <ul className="mt-8 space-y-4">
               {bullets.map((b, i) => (
@@ -61,7 +68,7 @@ export default function AiDifferentiator({
             )}
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-paper/10 bg-ink-deep shadow-2xl">
+          <Reveal className="overflow-hidden rounded-2xl border border-paper/10 bg-ink-deep shadow-2xl">
             <div className="flex items-center gap-2.5 border-b border-paper/10 px-4 py-3 font-mono text-[12px] text-paper/40">
               <CmssyMark className="h-3.5 w-auto text-paper" />
               claude · cmssy mcp
@@ -99,7 +106,7 @@ export default function AiDifferentiator({
                 </div>
               )}
             </div>
-          </div>
+          </Reveal>
         </div>
       </Container>
     </section>
