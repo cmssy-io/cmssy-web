@@ -40,6 +40,37 @@ async function open(browser, url) {
   return { context, page, response, consoleErrors, pageErrors };
 }
 
+async function revealsStuckAfterScroll(page) {
+  return page.evaluate(async () => {
+    const reveals = () => [...document.querySelectorAll("[data-reveal]")];
+    const height = document.documentElement.scrollHeight;
+    for (let y = 0; y < height; y += 500) {
+      window.scrollTo(0, y);
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    }
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const stuck = reveals().filter(
+      (node) => Number.parseFloat(getComputedStyle(node).opacity) < 0.99,
+    );
+    return { total: reveals().length, stuck: stuck.length };
+  });
+}
+
+async function checkReveals(page, label, failures) {
+  const { total, stuck } = await revealsStuckAfterScroll(page);
+  if (total === 0) {
+    failures.push(
+      `${label}: no [data-reveal] node on the page - either the reveal was renamed, or this check now asserts nothing`,
+    );
+    return;
+  }
+  if (stuck > 0) {
+    failures.push(
+      `${label}: ${stuck}/${total} Reveal wrappers are still transparent after scrolling to the bottom - the content is mounted and invisible`,
+    );
+  }
+}
+
 async function probe(browser) {
   const failures = [];
   let blocks = 0;
@@ -71,6 +102,8 @@ async function probe(browser) {
     );
   }
 
+  if (blocks > 0) await checkReveals(edit.page, `edit ${path}`, failures);
+
   for (const error of edit.consoleErrors) failures.push(`console: ${error}`);
   for (const error of edit.pageErrors) failures.push(`uncaught: ${error}`);
   await edit.context.close();
@@ -81,6 +114,7 @@ async function probe(browser) {
       `public ${path}: the editor is mounted without a secret (CMS-948)`,
     );
   }
+  await checkReveals(pub.page, `public ${path}`, failures);
   await pub.context.close();
 
   return { failures, blocks };

@@ -8,7 +8,6 @@ import { fetchChromeLayouts } from "@/services/layout";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 import { CmssyLocaleProvider, LocaleSync } from "@/components/cmssy-locale";
 import { DraftPreviewBanner } from "@/components/draft-preview-banner";
-import { MotionProvider } from "@/components/motion/provider";
 
 // The document itself is in app/layout.tsx, which never remounts. This layout
 // carries what depends on the path: the locale, the header and the footer.
@@ -62,13 +61,11 @@ export default async function SiteLayout({
       <LocaleSync />
       {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
       {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
-      <MotionProvider>
-        <div className="contents [&>[data-block-type]]:contents">
-          {slot("header")}
-        </div>
-        {children}
-        {slot("footer")}
-      </MotionProvider>
+      <div className="contents [&>[data-block-type]]:contents">
+        {slot("header")}
+      </div>
+      {children}
+      {slot("footer")}
       <DraftPreviewBanner path={path} />
     </CmssyLocaleProvider>
   );

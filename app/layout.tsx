@@ -1,11 +1,13 @@
 import "@/styles/main.css";
 import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { resolveSiteLocales } from "@/services/site";
+import { MotionProvider } from "@/components/motion/provider";
 import { ThemeProvider } from "@/components/theme";
 import { themeInitScript } from "@/lib/theme-script";
 
 /**
- * The real root layout: the document, the fonts, the theme.
+ * The real root layout: the document, the fonts, the theme, the motion
+ * features.
  *
  * It lives here rather than inside `[[...path]]` because a layout inside a
  * dynamic segment remounts whenever the segment's params change - that is,
@@ -62,7 +64,9 @@ export default async function RootLayout({
         />
       </head>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <MotionProvider>{children}</MotionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
