@@ -36,9 +36,7 @@ export default function Faq({ content }: BlockProps<typeof faqProps>) {
                   {headingHighlight ? (
                     <>
                       {" "}
-                      <span className="text-elektryk-700">
-                        {headingHighlight}
-                      </span>
+                      <span className="text-primary">{headingHighlight}</span>
                     </>
                   ) : null}
                 </h2>

@@ -30,7 +30,7 @@ export default function Image({ content }: BlockProps<typeof imageProps>) {
           className={`w-full h-auto ${rounded ? "rounded-lg" : ""}`}
         />
         {caption && (
-          <figcaption className="mt-2 text-center text-sm text-neutral-500">
+          <figcaption className="mt-2 text-center text-sm text-muted-foreground">
             {caption}
           </figcaption>
         )}

@@ -48,7 +48,7 @@ export default function ProductShowcase({
                   key={index}
                   className="group flex flex-col rounded-xl border border-border/60 bg-background overflow-hidden shadow-sm transition-shadow hover:shadow-lg hover:shadow-sky-500/10"
                 >
-                  <div className="aspect-video relative overflow-hidden bg-slate-100">
+                  <div className="aspect-video relative overflow-hidden bg-muted">
                     {imageUrl ? (
                       <Image
                         src={imageUrl}
