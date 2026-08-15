@@ -165,4 +165,7 @@ jobs:
         run: |
           set -euo pipefail
           npx playwright install --with-deps chromium
-          SMOKE_BASE_URL=http://localhost:3000 pnpm smoke:editor
+          for smoke_path in /pricing /; do
+            SMOKE_BASE_URL=http://localhost:3000 SMOKE_PATH="$smoke_path" \
+              pnpm smoke:editor
+          done
