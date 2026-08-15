@@ -22,11 +22,13 @@ export const STATIONS = [
 
 export type StationKey = (typeof STATIONS)[number]["key"];
 
-const DURATION = 4.85;
+const DURATION = 8.1;
 
 const KEYS = [0, 0, P_MCP, P_BLK, P_BLK, P_FORK, P_MERGE, P_MERGE, P_GATE, 1];
 
-const TIMES = [0, 1.1, 1.45, 2.15, 2.55, 2.9, 3.9, 4.1, 4.35, 4.85].map(
+/* the short hops used to be the ones that stung - entering the trunk and
+   clearing the gate - so they take the largest share of the extra time */
+const TIMES = [0, 0.8, 1.65, 2.9, 3.6, 4.3, 6.1, 6.5, 7.1, 8.1].map(
   (t) => t / DURATION,
 );
 
@@ -44,6 +46,9 @@ const EASE = [
 
 /** ms of stillness after arrival before anything ambient is allowed to start */
 const STILLNESS_MS = 1350;
+
+/** how long the finished route is left alone before the run begins again */
+const HOLD_MS = 4200;
 
 export interface Sequence {
   progress: ReturnType<typeof useMotionValue<number>>;
@@ -70,17 +75,31 @@ export function useTransportSequence(active: boolean): Sequence {
   const [stage, setStage] = useState(0);
   const [ambient, setAmbient] = useState(false);
   const [scrubbing, setScrubbing] = useState<StationKey | null>(null);
+  /* bumped on every arrival, purely so the scheduling effect re-runs */
+  const [cycle, setCycle] = useState(0);
 
   const main = useRef<AnimationPlaybackControls | null>(null);
   const scrub = useRef<AnimationPlaybackControls | null>(null);
   const played = useRef(false);
   const waveFired = useRef(false);
   const cooled = useRef(false);
+  const hold = useRef<number | null>(null);
+  /* true only while the hero is in frame and nobody is holding a station */
+  const live = useRef(false);
+  /* a run is mid-flight and must be left to finish */
+  const busy = useRef(false);
+  /* rewinding to 0 reads as one enormous backwards velocity, which would
+     paint a full-length trail for a frame; this swallows it */
+  const rewinding = useRef(false);
 
   /* velocity, in progress-per-second, becomes a trailing length in world px */
   useMotionValueEvent(velocity, "change", (v) => {
+    if (rewinding.current) {
+      streak.jump(0);
+      return;
+    }
     const speed = Math.abs(v);
-    streak.set(Math.min(215, speed * 235));
+    streak.set(Math.min(215, speed * 392));
   });
 
   useMotionValueEvent(progress, "change", (p) => {
@@ -115,9 +134,29 @@ export function useTransportSequence(active: boolean): Sequence {
     }
   });
 
-  const start = useCallback(() => {
-    if (played.current || reduced) return;
-    played.current = true;
+  const clearHold = useCallback(() => {
+    if (hold.current != null) {
+      window.clearTimeout(hold.current);
+      hold.current = null;
+    }
+  }, []);
+
+  const run = useCallback(() => {
+    clearHold();
+    main.current?.stop();
+
+    busy.current = true;
+    rewinding.current = true;
+    waveFired.current = false;
+    cooled.current = false;
+    wave.set(0);
+    settle.set(0);
+    progress.set(0);
+    streak.jump(0);
+    window.setTimeout(() => {
+      rewinding.current = false;
+    }, 40);
+
     main.current = animate(progress, KEYS, {
       duration: DURATION,
       times: TIMES,
@@ -127,14 +166,24 @@ export function useTransportSequence(active: boolean): Sequence {
         /* the route stays legible but stops shouting, so the terminus and its
            counter are the last thing left holding light */
         animate(settle, 1, {
-          duration: 1.3,
-          delay: 0.35,
+          duration: 1.5,
+          delay: 0.4,
           ease: [0.33, 0, 0.2, 1],
         });
         window.setTimeout(() => setAmbient(true), STILLNESS_MS);
+        busy.current = false;
+        /* arriving is what schedules the next departure, by way of the effect
+           below - the run cannot name itself */
+        setCycle((c) => c + 1);
       },
     });
-  }, [progress, settle, reduced]);
+  }, [progress, settle, wave, streak, clearHold]);
+
+  const start = useCallback(() => {
+    if (reduced) return;
+    played.current = true;
+    run();
+  }, [reduced, run]);
 
   useEffect(() => {
     if (reduced) {
@@ -145,10 +194,47 @@ export function useTransportSequence(active: boolean): Sequence {
       setStage(5);
       return;
     }
-    if (active) start();
-  }, [active, reduced, start, progress, wave, settle, streak]);
+    /* scrolling away parks the loop rather than letting it burn frames the
+       reader cannot see; a held station does the same */
+    live.current = active && scrubbing == null;
+    if (!live.current) {
+      clearHold();
+      if (!active) {
+        main.current?.stop();
+        busy.current = false;
+      }
+      return;
+    }
+    if (!played.current) {
+      start();
+      return;
+    }
+    if (busy.current) return;
+    clearHold();
+    hold.current = window.setTimeout(() => {
+      if (live.current) run();
+    }, HOLD_MS);
+  }, [
+    active,
+    scrubbing,
+    cycle,
+    reduced,
+    start,
+    run,
+    clearHold,
+    progress,
+    wave,
+    settle,
+    streak,
+  ]);
 
-  useEffect(() => () => main.current?.stop(), []);
+  useEffect(
+    () => () => {
+      main.current?.stop();
+      if (hold.current != null) window.clearTimeout(hold.current);
+    },
+    [],
+  );
 
   const scrubTo = useCallback(
     (key: StationKey | null) => {
@@ -170,6 +256,8 @@ export function useTransportSequence(active: boolean): Sequence {
       const target = STATIONS.find((s) => s.key === key);
       if (!target) return;
       main.current?.stop();
+      /* the run is abandoned, not paused, so letting go starts a fresh one */
+      busy.current = false;
       scrub.current = animate(progress, target.p, {
         type: "spring",
         stiffness: 190,

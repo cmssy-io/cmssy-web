@@ -21,7 +21,8 @@ const MIN_WORLD_W = 1115;
 export function Transport({ labels }: { labels: TransportLabels }) {
   const host = useRef<HTMLDivElement>(null);
   const reduced = Boolean(useReducedMotion());
-  const inView = useInView(host, { amount: 0.4, once: true });
+  /* not `once`: the loop parks itself whenever the hero leaves the frame */
+  const inView = useInView(host, { amount: 0.4 });
 
   const [mobile, setMobile] = useState(false);
   /* the server cannot know which scene applies, so the stacked layout stays
