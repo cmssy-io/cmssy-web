@@ -34,6 +34,7 @@ import {
   trunkPath,
   xAt,
 } from "./geometry";
+import { DOT_D, useMorph } from "./useMorph";
 import type { Sequence, StationKey } from "./useTransportSequence";
 import type { TransportLabels } from "./labels";
 
@@ -75,6 +76,8 @@ export function TransportDesktop({ seq, reduced, coarse, labels }: Props) {
   const trunkVisible = useTransform(progress, (p) =>
     xAt(p) <= F_A + 4 || xAt(p) >= F_D - 4 ? 1 : 0,
   );
+  /* with motion stripped there is no run to morph along, so the payload stays a dot */
+  const morph = useMorph(progress, !reduced);
 
   /* the ripple stays inside the diagram band: a pressure release at the gate,
      not a circle drawn across the page */
@@ -517,13 +520,18 @@ export function TransportDesktop({ seq, reduced, coarse, labels }: Props) {
 
       {/* -------------------------------------------------------- payloads */}
       <m.g style={{ opacity: trunkVisible }} aria-hidden>
-        <m.circle
-          cx={payX}
-          cy={payY}
-          r={5.5}
-          fill={EL}
-          filter="url(#tp-glow)"
-        />
+        <m.g style={{ x: payX, y: payY }}>
+          <path
+            ref={morph}
+            d={DOT_D}
+            fill={EL}
+            fillOpacity={1}
+            stroke={EL}
+            strokeOpacity={0}
+            strokeWidth={1.5}
+            filter="url(#tp-glow)"
+          />
+        </m.g>
       </m.g>
       {TRACK_OFFSETS.map((off, i) => (
         <TrackPayload key={off} progress={progress} index={i} offset={off} />
