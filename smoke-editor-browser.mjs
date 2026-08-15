@@ -43,11 +43,13 @@ async function open(browser, url) {
 async function revealsStuckAfterScroll(page) {
   return page.evaluate(async () => {
     const reveals = () => [...document.querySelectorAll("[data-reveal]")];
-    const height = document.documentElement.scrollHeight;
-    for (let y = 0; y < height; y += 500) {
+    const bottom = () =>
+      document.documentElement.scrollHeight - window.innerHeight;
+    for (let y = 0; y < bottom(); y += 500) {
       window.scrollTo(0, y);
       await new Promise((resolve) => setTimeout(resolve, 200));
     }
+    window.scrollTo(0, bottom());
     await new Promise((resolve) => setTimeout(resolve, 1500));
     const stuck = reveals().filter(
       (node) => Number.parseFloat(getComputedStyle(node).opacity) < 0.99,
