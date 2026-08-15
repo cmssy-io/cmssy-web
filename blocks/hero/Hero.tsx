@@ -63,57 +63,57 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
       <div className="hero-transport__typewrap">
         <Container>
           <div className="hero-transport__type">
-          <FigEyebrow
-            fig={fig || FALLBACK.fig}
-            label={eyebrow || FALLBACK.eyebrow}
-            dark
-            pill
-          />
-          <h1 className="mt-6 max-w-[13ch] font-heading text-[clamp(2.35rem,4.75vw,3.5rem)] leading-[1.04] font-bold tracking-[-0.035em] text-paper">
-            {lead}
-            {accent ? (
-              <>
-                {" "}
-                <span className="text-elektryk">{accent}</span>
-              </>
-            ) : null}
-            {tail ? ` ${tail}` : null}
-          </h1>
+            <FigEyebrow
+              fig={fig || FALLBACK.fig}
+              label={eyebrow || FALLBACK.eyebrow}
+              dark
+              pill
+            />
+            <h1 className="mx-auto mt-7 max-w-[15ch] font-heading text-[clamp(2.6rem,5.6vw,4.25rem)] leading-[1.03] font-bold tracking-[-0.035em] text-paper">
+              {lead}
+              {accent ? (
+                <>
+                  {" "}
+                  <span className="text-elektryk">{accent}</span>
+                </>
+              ) : null}
+              {tail ? ` ${tail}` : null}
+            </h1>
 
-          {sub.length > 0 ? (
-            <p className="mt-5 max-w-[36ch] text-[0.94rem] leading-[1.7] text-paper/55">
-              {sub.map((line, i) => (
-                <span key={i} className="block">
-                  {line}
-                </span>
-              ))}
-            </p>
-          ) : null}
-
-          <div className="mt-6 flex flex-wrap items-center gap-3.5">
-            {primary ? (
-              <CmssyLink
-                href={primaryButtonUrl || FALLBACK.primaryUrl}
-                className="rounded-lg bg-elektryk px-5 py-2.5 text-[0.95rem] font-semibold text-ink transition-colors hover:bg-elektryk/85"
-              >
-                {primary}
-              </CmssyLink>
+            {sub.length > 0 ? (
+              <p className="mx-auto mt-6 max-w-[42ch] text-[1.05rem] leading-[1.75] text-paper/60">
+                {sub.map((line, i) => (
+                  <span key={i} className="block">
+                    {line}
+                  </span>
+                ))}
+              </p>
             ) : null}
-            {secondary ? (
-              <CmssyLink
-                href={secondaryButtonUrl || FALLBACK.secondaryUrl}
-                className="rounded-lg border border-paper/20 px-5 py-2.5 text-[0.95rem] font-medium text-paper/85 transition-colors hover:border-paper/40"
-              >
-                {secondary}
-              </CmssyLink>
-            ) : null}
-          </div>
 
-          {trust ? (
-            <div className="mt-5 font-mono text-[12px] text-paper/40">
-              {trust}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
+              {primary ? (
+                <CmssyLink
+                  href={primaryButtonUrl || FALLBACK.primaryUrl}
+                  className="rounded-lg bg-elektryk px-6 py-3 text-[1rem] font-semibold text-ink transition-colors hover:bg-elektryk/85"
+                >
+                  {primary}
+                </CmssyLink>
+              ) : null}
+              {secondary ? (
+                <CmssyLink
+                  href={secondaryButtonUrl || FALLBACK.secondaryUrl}
+                  className="rounded-lg border border-paper/20 px-6 py-3 text-[1rem] font-medium text-paper/85 transition-colors hover:border-paper/40"
+                >
+                  {secondary}
+                </CmssyLink>
+              ) : null}
             </div>
-          ) : null}
+
+            {trust ? (
+              <div className="mt-5 font-mono text-[12px] text-paper/40">
+                {trust}
+              </div>
+            ) : null}
           </div>
         </Container>
       </div>

@@ -629,7 +629,9 @@ html[data-theme="dark"] {
 }
 
 .hero-transport__type {
-  max-width: 40rem;
+  max-width: 48rem;
+  margin-inline: auto;
+  text-align: center;
 }
 
 /* The world is 1820 x 792. Let the stage span an ultrawide monitor and the box
