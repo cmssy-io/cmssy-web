@@ -336,6 +336,6 @@ Each batch: implement → run the site → browser check across the §7 matrix �
 4. **Should a `testimonials` block actually get built?** The demo wanting it is a signal. If it existed, the original story would become true — but that is a code change, not this plan.
 5. **Hero copy** — keep the rotating word (crossfade, no delete) or commit to one fixed headline?
 6. **W11 (missing prices, live)** — should I fix it on this branch, or is it the other agent's?
-4. **`DESIGN.md`** — rewrite in place, or new file and delete the old?
-5. **Motion MCP / 21st.dev** — add to `.mcp.json` before Phase 3, or proceed on Context7 alone?
-6. **New copy** for the hero beat's plate caption and code strip: I write it as CMS field defaults, or you supply it?
+7. **`DESIGN.md`** — rewrite in place, or new file and delete the old?
+8. **Motion MCP / 21st.dev** — add to `.mcp.json` before Phase 3, or proceed on Context7 alone?
+9. **New copy** for the hero beat's plate caption and code strip: I write it as CMS field defaults, or you supply it?
