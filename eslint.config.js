@@ -16,6 +16,7 @@ export default tseslint.config(
       // A client component that reaches the cmssy config drags server env into
       // the browser bundle: the page dies at runtime and no build catches it.
       "cmssy/no-server-config-in-client": "error",
+      "cmssy/edit-route-provider-parity": "error",
       "react-hooks/set-state-in-effect": "off",
       "react-hooks/preserve-manual-memoization": "off",
       "@typescript-eslint/no-unused-vars": [
