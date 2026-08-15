@@ -218,6 +218,14 @@ html[data-theme="dark"] .prose {
   --tw-prose-hr: #222c3a;
   --tw-prose-th-borders: #222c3a;
   --tw-prose-td-borders: #1a2432;
+  /* Anything left unset here keeps the plugin's light-theme value, which on
+     this ground is near-invisible: the kbd default is #101828 against a
+     #0b0f16 page, a ratio of 1.07:1. The shadow variable carries its own
+     alpha and draws the keycap's ring and lip, so it is lifted well past the
+     light theme's 10% - a white ring that faint reads as nothing. */
+  --tw-prose-kbd: #e7edf3;
+  --tw-prose-kbd-shadows: #e7edf336;
+  --tw-prose-captions: #8b98a6;
 }
 
 html[data-theme="dark"] .prose :not(pre) > code {
