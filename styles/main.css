@@ -4,6 +4,11 @@
 @source "../components";
 @plugin "@tailwindcss/typography";
 
+/* The theme is an attribute the toggle writes, not the OS preference, so `dark:`
+   has to be pointed at it - left alone it compiles to `prefers-color-scheme` and
+   ignores the switch entirely. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 /* Brand colours, literal and theme-independent: `ink` is dark and `paper` is
    light in both themes, because the inverted bands (a dark hero on a light
    page) are a design decision, not a consequence of the theme. Everything that

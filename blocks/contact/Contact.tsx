@@ -30,15 +30,15 @@ export default function Contact({
   return (
     <section className="relative min-h-screen py-24 lg:py-32">
       {/* Background */}
-      <div className="absolute inset-0 bg-linear-to-br from-sky-50 via-background to-blue-50" />
-      <div className="absolute top-0 right-0 w-125 h-125 bg-sky-400/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-100 h-100 bg-blue-400/20 rounded-full blur-3xl" />
+      <div className="absolute inset-0 bg-linear-to-br from-sky-50 via-background to-blue-50 dark:from-sky-950/50 dark:to-blue-950/50" />
+      <div className="absolute top-0 right-0 w-125 h-125 bg-sky-400/20 dark:bg-sky-500/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-100 h-100 bg-blue-400/20 dark:bg-blue-500/10 rounded-full blur-3xl" />
 
       <Container className="relative">
         {/* Header */}
         <div className="text-center mb-16">
           {badgeText && (
-            <span className="inline-block px-4 py-1.5 rounded-full bg-sky-100 text-sky-700 text-sm font-medium mb-6">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300 text-sm font-medium mb-6">
               {badgeText}
             </span>
           )}
@@ -84,12 +84,12 @@ export default function Contact({
             {/* Quote */}
             {hasQuote && (
               <div className="hidden lg:block pt-8">
-                <div className="p-6 rounded-2xl bg-linear-to-br from-sky-100 to-blue-100 border border-sky-200/50">
+                <div className="p-6 rounded-2xl bg-linear-to-br from-sky-100 to-blue-100 border border-sky-200/50 dark:from-sky-500/10 dark:to-blue-500/10 dark:border-sky-400/20">
                   <p className="text-sm text-muted-foreground italic">
                     &ldquo;{quoteText}&rdquo;
                   </p>
                   {quoteAuthor && (
-                    <p className="text-sm font-medium mt-2 bg-linear-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
+                    <p className="text-sm font-medium mt-2 bg-linear-to-r from-sky-600 to-blue-600 dark:from-sky-300 dark:to-blue-300 bg-clip-text text-transparent">
                       - {quoteAuthor}
                     </p>
                   )}

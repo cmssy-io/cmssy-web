@@ -11,30 +11,33 @@ import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
 import type { roadmapProps } from "./block";
 
+/* The tints are the palette's lightest step, so on the dark theme they turn into
+   near-white pills carrying near-white text. Dark gets the same hue as a wash
+   over the page instead, which keeps the four columns telling each other apart. */
 const statusConfig = {
   completed: {
     icon: CircleCheck,
-    color: "text-emerald-600",
-    bgColor: "bg-emerald-50",
-    borderColor: "border-emerald-200",
+    color: "text-emerald-600 dark:text-emerald-400",
+    bgColor: "bg-emerald-50 dark:bg-emerald-500/10",
+    borderColor: "border-emerald-200 dark:border-emerald-500/25",
   },
   in_progress: {
     icon: Clock,
-    color: "text-sky-600",
-    bgColor: "bg-sky-50",
-    borderColor: "border-sky-200",
+    color: "text-sky-600 dark:text-sky-400",
+    bgColor: "bg-sky-50 dark:bg-sky-500/10",
+    borderColor: "border-sky-200 dark:border-sky-500/25",
   },
   planned: {
     icon: Lightbulb,
-    color: "text-amber-600",
-    bgColor: "bg-amber-50",
-    borderColor: "border-amber-200",
+    color: "text-amber-600 dark:text-amber-400",
+    bgColor: "bg-amber-50 dark:bg-amber-500/10",
+    borderColor: "border-amber-200 dark:border-amber-500/25",
   },
   considering: {
     icon: CircleHelp,
-    color: "text-slate-600",
-    bgColor: "bg-slate-50",
-    borderColor: "border-slate-200",
+    color: "text-slate-600 dark:text-slate-300",
+    bgColor: "bg-slate-50 dark:bg-slate-400/10",
+    borderColor: "border-slate-200 dark:border-slate-400/25",
   },
 };
 
@@ -58,7 +61,7 @@ export default function Roadmap({ content }: BlockProps<typeof roadmapProps>) {
         {/* Header */}
         <div className="text-center mb-16">
           {badge && (
-            <span className="inline-block px-4 py-1.5 rounded-full bg-sky-100 text-sky-700 text-sm font-medium mb-4">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300 text-sm font-medium mb-4">
               {badge}
             </span>
           )}
@@ -110,7 +113,7 @@ export default function Roadmap({ content }: BlockProps<typeof roadmapProps>) {
                       <div className="flex items-start justify-between gap-2 mb-2">
                         <h4 className="font-medium text-sm">{item.title}</h4>
                         {item.badge && (
-                          <span className="px-2 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 rounded-full whitespace-nowrap">
+                          <span className="px-2 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300 rounded-full whitespace-nowrap">
                             {item.badge}
                           </span>
                         )}
@@ -142,7 +145,7 @@ export default function Roadmap({ content }: BlockProps<typeof roadmapProps>) {
               {ctaButtonText && ctaButtonUrl && (
                 <CmssyLink
                   href={ctaButtonUrl}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-card text-sky-600 font-medium rounded-lg hover:bg-sky-50 transition-colors"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-paper text-sky-700 font-medium rounded-lg hover:bg-wash transition-colors"
                 >
                   {ctaButtonText}
                   <ArrowRight className="size-4" />
