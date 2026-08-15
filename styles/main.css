@@ -390,3 +390,134 @@ html[data-theme="dark"] {
   --input: #222c3a;
   --ring: #35b4ef;
 }
+
+/* ------------------------------------------------------------------ hero
+   The transport hero. One full-bleed SVG world sits behind the type: the
+   substrate runs the whole height, the transport occupies the lower two
+   thirds, and the world is anchored to its right edge so the terminus stays
+   put while the trunk is what gets cropped on wide screens. */
+
+.hero-transport {
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(40rem, calc(100svh - 6.5rem), 52rem);
+}
+
+.hero-transport__stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-transport__typewrap {
+  position: absolute;
+  inset-inline: 0;
+  top: clamp(2rem, 4.5vh, 3.5rem);
+  z-index: 10;
+}
+
+.hero-transport__type {
+  max-width: 40rem;
+}
+
+.tp-host {
+  width: 100%;
+  height: 100%;
+}
+
+.tp-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* the stations are the only interactive part of the world */
+.tp-hit {
+  pointer-events: auto;
+  cursor: default;
+  outline: none;
+}
+
+.tp-hit:focus-visible {
+  outline: 2px solid var(--color-elektryk-300);
+  outline-offset: 4px;
+  border-radius: 10px;
+}
+
+.tp-label,
+.tp-sub,
+.tp-locale,
+.tp-code,
+.tp-count {
+  font-family: var(--font-mono);
+}
+
+.tp-label {
+  font-size: 11px;
+  letter-spacing: 0.13em;
+}
+
+.tp-sub {
+  font-size: 10.5px;
+  letter-spacing: 0.07em;
+}
+
+.tp-locale {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.tp-code {
+  font-size: 10px;
+  letter-spacing: 0.01em;
+}
+
+.tp-count {
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 1023px) {
+  /* stacked, and the type has to come first: the stage is first in the DOM so
+     the diagram can sit behind it on desktop */
+  .hero-transport {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding-block: clamp(2.5rem, 7vw, 3.5rem) 0;
+  }
+
+  .hero-transport__stage {
+    order: 2;
+    position: static;
+    height: auto;
+    margin-top: clamp(3.5rem, 13vw, 5rem);
+  }
+
+  .hero-transport__typewrap {
+    order: 1;
+    position: static;
+  }
+
+  /* the box is reserved from the mobile world's own ratio, so nothing shifts
+     when the stacked scene takes over from the server-rendered one */
+  .tp-host {
+    width: 100%;
+    max-width: 24rem;
+    margin-inline: auto;
+    aspect-ratio: 390 / 692;
+    height: auto;
+  }
+
+  /* stacked, the world has real neighbours above it, so the spine that starts
+     off-frame has to actually be cropped rather than painted over the type */
+  .tp-svg {
+    overflow: hidden;
+  }
+
+  .tp-svg[data-ready="0"] {
+    visibility: hidden;
+  }
+}
