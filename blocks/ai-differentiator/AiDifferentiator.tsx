@@ -3,6 +3,7 @@ import type { BlockProps } from "@cmssy/react";
 import { CmssyMark } from "@/components/cmssy-mark";
 import { Container } from "@/components/container";
 import { FigEyebrow } from "@/components/fig-eyebrow";
+import { FigurePlate, plateNumber } from "@/components/figure-plate";
 import { Reveal } from "@/components/motion/reveal";
 import type { aiDifferentiatorProps } from "./block";
 
@@ -68,44 +69,46 @@ export default function AiDifferentiator({
             )}
           </div>
 
-          <Reveal className="overflow-hidden rounded-2xl border border-paper/10 bg-ink-deep shadow-2xl">
-            <div className="flex items-center gap-2.5 border-b border-paper/10 px-4 py-3 font-mono text-[12px] text-paper/40">
-              <CmssyMark className="h-3.5 w-auto text-paper" />
-              claude · cmssy mcp
-            </div>
-            <div className="flex flex-col gap-4 p-5">
-              <div className="max-w-[80%] self-end rounded-[12px] rounded-br-[3px] bg-elektryk px-[15px] py-[11px] text-[14px] leading-normal font-medium text-ink">
-                {chatUser}
+          <Reveal>
+            <FigurePlate dark fig={plateNumber(fig, 0)}>
+              <div className="flex items-center gap-2.5 border-b border-paper/10 px-4 py-3 font-mono text-[12px] text-paper/40">
+                <CmssyMark className="h-3.5 w-auto text-paper" />
+                claude · cmssy mcp
               </div>
-              <div className="max-w-[88%] self-start rounded-[12px] rounded-bl-[3px] border border-white/8 bg-[#161b26] px-[15px] py-[13px] text-[14px] leading-snug text-[#d7dae0]">
-                {chatReply}
-                {chatTools.length > 0 && (
-                  <div className="mt-3 flex flex-col gap-[7px] font-mono text-[12px] leading-normal">
-                    {chatTools.map((t) => {
-                      const [name, ...rest] = t.call.split(" · ");
-                      return (
-                        <span
-                          key={t.call}
-                          className="flex items-center gap-2 text-[#9aa1ad]"
-                        >
-                          <span className="text-[#6ee7b7]">✓</span> {name}
-                          {rest.length > 0 && (
-                            <span className="opacity-60">
-                              · {rest.join(" · ")}
-                            </span>
-                          )}
-                        </span>
-                      );
-                    })}
+              <div className="flex flex-col gap-4 p-5">
+                <div className="max-w-[80%] self-end rounded-[12px] rounded-br-[3px] bg-elektryk px-[15px] py-[11px] text-[14px] leading-normal font-medium text-ink">
+                  {chatUser}
+                </div>
+                <div className="max-w-[88%] self-start rounded-[12px] rounded-bl-[3px] border border-white/8 bg-[#161b26] px-[15px] py-[13px] text-[14px] leading-snug text-[#d7dae0]">
+                  {chatReply}
+                  {chatTools.length > 0 && (
+                    <div className="mt-3 flex flex-col gap-[7px] font-mono text-[12px] leading-normal">
+                      {chatTools.map((t) => {
+                        const [name, ...rest] = t.call.split(" · ");
+                        return (
+                          <span
+                            key={t.call}
+                            className="flex items-center gap-2 text-[#9aa1ad]"
+                          >
+                            <span className="text-[#6ee7b7]">✓</span> {name}
+                            {rest.length > 0 && (
+                              <span className="opacity-60">
+                                · {rest.join(" · ")}
+                              </span>
+                            )}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+                {chatBadge && (
+                  <div className="inline-flex items-center self-start rounded-lg border border-elektryk/30 bg-elektryk/12 px-3 py-2 font-mono text-[12px] text-elektryk-300">
+                    {chatBadge}
                   </div>
                 )}
               </div>
-              {chatBadge && (
-                <div className="inline-flex items-center self-start rounded-lg border border-elektryk/30 bg-elektryk/12 px-3 py-2 font-mono text-[12px] text-elektryk-300">
-                  {chatBadge}
-                </div>
-              )}
-            </div>
+            </FigurePlate>
           </Reveal>
         </div>
       </Container>

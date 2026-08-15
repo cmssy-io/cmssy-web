@@ -1,18 +1,15 @@
 import type { BlockProps } from "@cmssy/react";
 import { CodeSnippet } from "@/components/code-snippet";
+import { FigurePlate, plateNumber } from "@/components/figure-plate";
 import { Reveal } from "@/components/motion/reveal";
 import { ScrollHint } from "@/components/scroll-hint";
 import { Section } from "@/components/section";
 import type { twoAudiencesProps } from "./block";
 
-function EditorWireframe({ caption }: { caption: string }) {
+function EditorWireframe({ fig, caption }: { fig: string; caption: string }) {
   return (
-    <div className="mt-8 rounded-xl border border-border bg-card p-4 shadow-sm">
-      <div className="flex items-center gap-2 border-b border-border pb-3 font-mono text-[11px] text-muted-foreground">
-        <span className="size-2 rounded-full bg-muted" />
-        {caption}
-      </div>
-      <div className="mt-3 space-y-2">
+    <FigurePlate fig={fig} caption={caption} className="mt-8">
+      <div className="space-y-2 p-4">
         <div className="rounded-md border-2 border-elektryk/60 bg-elektryk/5 px-3 py-2">
           <div className="h-3 w-2/3 rounded bg-muted" />
         </div>
@@ -28,7 +25,7 @@ function EditorWireframe({ caption }: { caption: string }) {
           <div className="h-10 rounded-md border border-border bg-muted" />
         </div>
       </div>
-    </div>
+    </FigurePlate>
   );
 }
 
@@ -81,21 +78,24 @@ export default function TwoAudiences({
               {card.description}
             </p>
             {card.code ? (
-              <div className="mt-8 overflow-hidden rounded-[11px] border border-white/10 bg-ink-deep lg:mt-auto">
-                {card.codeLabel ? (
-                  <div className="flex h-[34px] items-center border-b border-white/8 px-3 font-mono text-[11px] font-medium text-[#9aa1ad]">
-                    {card.codeLabel}
-                  </div>
-                ) : null}
+              <FigurePlate
+                dark
+                fig={plateNumber(fig, i)}
+                caption={card.codeLabel ?? ""}
+                className="mt-8 lg:mt-auto"
+              >
                 <ScrollHint className="p-4">
                   <CodeSnippet
                     code={card.code}
                     className="text-[12.5px] leading-[1.7]"
                   />
                 </ScrollHint>
-              </div>
+              </FigurePlate>
             ) : (
-              <EditorWireframe caption={card.wireframeCaption ?? ""} />
+              <EditorWireframe
+                fig={plateNumber(fig, i)}
+                caption={card.wireframeCaption ?? ""}
+              />
             )}
           </Reveal>
         ))}
