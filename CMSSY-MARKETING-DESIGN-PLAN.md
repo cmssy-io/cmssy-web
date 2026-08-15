@@ -38,6 +38,7 @@ What is wrong is **execution and choreography**, not direction.
 | **W9** | **Mobile defects at 375**: the announcement-bar text collides with its own close button ("…MCP Server✕"); the code block overflows horizontally with no scroll affordance or fade. | captures `w375-00`, `w375-01` |
 | **W10** | **`prefers-reduced-motion` is handled bluntly.** Two CSS rules kill `.hero-anim` / `.cta-anim` outright. It works, but it is not a motion *system* — new work would need a third, fourth rule. | `styles/main.css:173-186` |
 | **W11 — not design, but live** | **Prices are missing from the homepage pricing block in production.** Markup renders `<div class="mt-6 flex items-baseline gap-2"></div>` — empty. The stored content also has a doubled `"price":"$$0"`. Fallout from the CMS-1213 "price only from the API table" work. | `curl https://www.cmssy.com/` |
+| **W14 — truthfulness** | **The hero demonstrates a capability the product does not have.** The mockup shows *"add a testimonials section in German"* docking a "Kundenstimmen" block, captioned "no redeploy". **There is no `testimonials` block type** — adding one requires writing and deploying code. Live on cmssy.com now. Full verification and the fix in §5.0. | `list_block_types` (36 types, no testimonials); hero block content |
 | **W12 — hygiene** | **`DESIGN.md` documents a design system that no longer exists** — 700 lines describing a violet/purple gradient identity with no web font. The real system is ink/elektryk with Space Grotesk. Anyone (human or AI) extending the site from this file will build the wrong thing. | `DESIGN.md` vs `styles/main.css` |
 | **W13 — hygiene** | `framer-motion@12` is a dependency and **is imported nowhere**. Zero bundle cost today, but the current package name is `motion` (`motion/react`). | `package.json`, repo-wide grep |
 
@@ -128,6 +129,41 @@ Constraints for all three: real React/DOM (no video rendering readable UI), all 
 
 ---
 
+### 5.0 Capability verification — what the hero is allowed to show
+
+Checked against the live `cmssy.com` workspace (MCP), the block registry, the rendering route and the webhook log. Nothing below is inferred from the marketing copy.
+
+| Claim in the beat | Verdict | Evidence |
+|---|---|---|
+| `add_block_to_page` exists, adds a block to a page draft, takes language-keyed content, supports insert position | ✅ **Real** | Live tool schema. Validates against the workspace block manifest and returns `blockWarnings` on an unknown type or field. |
+| `update_block_content` exists and writes a **single locale** by merge | ✅ **Real** | Live tool schema: `content` is `{ de: { … } }`, `mode: "merge"` default. |
+| `publish_page` exists as a **separate step** after the draft edit | ✅ **Real** | Live tool schema. So the page genuinely sits in a modified-draft state between the two calls — the chip flip in the beat is accurate, not dramatised. |
+| German localization | ✅ **Real** | `get_site_config`: `enabledLanguages: [en, pl, de, fr, es]`, default `en`. The homepage already stores full `de` content for every block. |
+| "Content-only change, the AI never touches your frontend code" | ✅ **Real** | No MCP tool writes repo files. The block manifest is the enforced boundary: the AI can only instantiate types the deployed code already exposes. |
+| "No redeploy" — the change is live without a build | ✅ **Real, and stronger than claimed** | `app/[[...path]]/page.tsx` sets `revalidate = 3600` + `generateStaticParams`; `app/api/revalidate/route.ts` clears the content tag on `content.changed`. The workspace has that webhook **enabled and healthy**: `https://www.cmssy.com/api/revalidate`, last 8 deliveries all `success / 200`, sub-second. A publish is live in seconds, no build, no deploy. |
+| The inspector shows real, typed fields for the selected block | ✅ **Real — and the current mockup is already accurate** | The mockup's inspector renders `Logo Text`, `Navigation Items · 5 items`, `Dropdown Columns · none/1/2/3 → 3`. Those are verbatim the `header` block's real schema (`logoText`, `navigation` repeater, `columns` select). Someone did their homework here; preserve it. |
+| **"add a testimonials section"** | ❌ **NOT real** | **There is no `testimonials` block type.** `list_block_types` returns exactly 36 types and none is testimonials/quote/review/logo-wall. The instruction shown in the live hero today would fail with `blockWarnings: unknown block type`, or would first require a developer to write `blocks/testimonials/`, register it, and **deploy** — the precise opposite of the "content-only, no redeploy" caption sitting next to it. |
+
+**This is the one thing the current hero gets wrong, and it is the worst possible thing to get wrong** — the mockup's single most prominent claim ("Kundenstimmen · testimonials · de" docking in with "no redeploy") demonstrates the one action that *does* need a redeploy. It is live on cmssy.com right now (`chatPrompt`, `mockupDockLabel`, `mockupDockTag`, `mockupDockSub` in the hero block's content). Fixing it is content-only.
+
+**The fix: the beat uses `features`.**
+
+Selection criteria and why the alternatives lose:
+
+- **`features` ✅ chosen** — exists; 6 fields, **no relation fields**, so the whole block including its German copy is created by the two calls the beat shows; renders as a small card grid, which reads instantly as "a section appeared" at plate scale; and "add a features section" is a plausible marketing request.
+- **`faq` ❌** — exists, but its `faqs` field is a `relation` to `model:faq-item` with `relationMode: "picked"`. Adding it would also mean creating and translating model records. The beat would be understating the work, which is its own kind of dishonesty.
+- **`pricing` ⚠️** — exists and is relation-free, but `ai-differentiator` already uses it for the identical demo further down the page, and it is the block currently rendering empty prices in production (W11). Reserved.
+- **`cta` ⚠️** — clean fallback if `features` proves visually too busy at plate scale; renders as a single slab.
+
+Two smaller accuracy fixes while we are here:
+
+- The mockup's pages panel tags **Pricing as `Draft`**, but `/pricing` is published. Either drop the tag or move it to a page that is genuinely unpublished (`/careers` and `/newsletter` are).
+- The plate caption must say **"content-only change"** only for the block-instance case. If we ever demo a *new block type*, the honest caption is different — CMSSY has a real answer for it (`update_block_content` with `target: "devDraft"` → `promote_dev_draft`, an overlay explicitly "for block types not deployed yet"), but that story ends in a deploy and must never carry the "no redeploy" line.
+
+**Standing rule for Phase 3: every string and every action in the hero must resolve to a real block type, a real MCP tool name and a real field key.** Before implementation the beat gets a live dry run — actually execute `add_block_to_page · features` + `update_block_content · de` + `publish_page` against a scratch page, confirm it succeeds without `blockWarnings`, then delete the scratch page. If the sequence does not run for real, it does not go in the hero.
+
+---
+
 ### Concept A — "The Plate" *(restrained)*
 
 **Core idea.** One oversized headline, one big honest product plate. Delete everything else.
@@ -158,18 +194,19 @@ Constraints for all three: real React/DOM (no video rendering readable UI), all 
 
 **Story.** Website → visual editing → content change → developer/code → AI/MCP → result — told once, in six seconds, without a word of narration. Precisely the story the brief asks for, and precisely the thesis the page currently splits across three sections.
 
-**The beat** (single timeline, ~7s, one loop then rest until re-entered):
+**The beat** (single timeline, ~7s, one loop then rest until re-entered). Every step below was verified against the live workspace and the SDK — see §5.0.
 
 | t | What happens | Which surface |
 |---|---|---|
-| 0.0s | The plate is at rest, showing this page's real hero content. | all |
-| 0.6s | An MCP instruction types in: *"add a testimonials section in German"*. | AI |
-| 1.9s | Three tool calls tick in sequence: `add_block_to_page` → `update_block_content` → `publish_page`. | AI |
+| 0.0s | The plate is at rest, showing this page's real hero content. Status chip: `Published`. | all |
+| 0.6s | An MCP instruction types in: *"add a features section in German"*. | AI |
+| 1.9s | Three tool calls tick in sequence: `add_block_to_page · features` → `update_block_content · locale de` → `publish_page · /`. | AI |
+| 2.2s | The status chip flips `Published → Draft changes`. | plate |
 | 2.4s | The signal line travels from the AI panel to the editor canvas. | connective |
-| 2.7s | A real block **docks** into the canvas — slides up 12px and settles. No spin. | editor |
-| 3.2s | The inspector's field list gains the new block's fields; one field value writes itself in. | editor |
+| 2.7s | A `features` block **docks** into the canvas — slides up 12px and settles. No spin. | editor |
+| 3.2s | The inspector's field list gains that block's real fields (`heading`, `description`, `features[]`); one German value writes itself in. | editor |
 | 3.9s | The signal line travels to the code strip; a `page.blocks[]` entry appears — **the code does not change, only the data**. | code |
-| 4.6s | The status chip flips `Draft → Published`, and the caption under the plate updates: *"content-only change · no redeploy"*. | plate |
+| 4.6s | The chip flips `Draft changes → Published`, and the plate caption updates: *"content-only change · no redeploy"*. | plate |
 | 5.4–7s | Hold on the finished state. | — |
 
 The 3.9s beat is the whole argument: the *code stays still* while the *content moves*. That is "content-only writes, the AI never touches your frontend code" — shown, not claimed.
@@ -249,6 +286,8 @@ Each item exists to fix a diagnosed weakness. Nothing here is redesign-for-its-o
 | **`DESIGN.md` rewrite** | W12 | Replace the stale violet document with the real ink/elektryk system plus the motion language in §3. Cheap, and it is what stops the next contributor — human or model — from rebuilding a purple SaaS template. |
 | **`motion` migration** | W13 | `framer-motion` → `motion`, `LazyMotion` provider in the marketing layout. |
 
+**Shippable before any redesign:** **W14, the testimonials claim.** It is a content-only fix to the live hero block (`chatPrompt`, `mockupDockLabel`, `mockupDockTag`, `mockupDockSub`, ×5 locales) via MCP — no deploy, no branch. It can land today, independently of everything else in this plan, and it should.
+
 **Not in scope, flagged for you:** **W11, the missing prices in production.** The homepage pricing block renders an empty price container and the stored content has a doubled `"price":"$$0"`. That is live, it is on the conversion path, and it belongs to the CMS-1213 pricing-from-API work another agent is holding. I have not touched it.
 
 ---
@@ -292,8 +331,11 @@ Each batch: implement → run the site → browser check across the §7 matrix �
 ## Unresolved questions
 
 1. **Concept B approved, or A / C?**
-2. **Hero copy** — keep the rotating word (crossfade, no delete) or commit to one fixed headline?
-3. **W11 (missing prices, live)** — should I fix it on this branch, or is it the other agent's?
+2. **W14 (testimonials claim, live and false)** — fix the live hero content now via MCP, or wait and fold it into the redesign? Recommend now.
+3. **Beat subject** — `features`, or prefer `cta` (simpler visual) / `pricing` (matches `ai-differentiator`)?
+4. **Should a `testimonials` block actually get built?** The demo wanting it is a signal. If it existed, the original story would become true — but that is a code change, not this plan.
+5. **Hero copy** — keep the rotating word (crossfade, no delete) or commit to one fixed headline?
+6. **W11 (missing prices, live)** — should I fix it on this branch, or is it the other agent's?
 4. **`DESIGN.md`** — rewrite in place, or new file and delete the old?
 5. **Motion MCP / 21st.dev** — add to `.mcp.json` before Phase 3, or proceed on Context7 alone?
 6. **New copy** for the hero beat's plate caption and code strip: I write it as CMS field defaults, or you supply it?
