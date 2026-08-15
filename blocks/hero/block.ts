@@ -53,7 +53,7 @@ export const heroProps = {
   }),
   chatPrompt: fields.text({
     label: "Mockup: Chat Prompt",
-    defaultValue: "add a testimonials section in German",
+    defaultValue: "add a features section in German",
   }),
   chatStatus: fields.text({
     label: "Mockup: Chat Status",
@@ -67,6 +67,10 @@ export const heroProps = {
     label: "Mockup: Status Badge",
     defaultValue: "Published",
   }),
+  mockupBadgeDraft: fields.text({
+    label: "Mockup: Status Badge (unpublished changes)",
+    defaultValue: "Draft changes",
+  }),
   mockupMeta: fields.text({
     label: "Mockup: Meta (right side)",
     defaultValue: "EN",
@@ -78,9 +82,19 @@ export const heroProps = {
       tag: fields.text({ label: "Tag", placeholder: "e.g. Draft" }),
     },
   }),
+  // The beat depicts a real, executed MCP sequence. Every value here maps to a
+  // block type and tool that exist in the workspace today - a mockup that
+  // promises an action the product cannot perform is a lie with a loading
+  // animation on it.
+  mockupToolCalls: fields.repeater({
+    label: "Mockup: MCP Tool Calls",
+    itemSchema: {
+      call: fields.text({ label: "Tool Call", required: true }),
+    },
+  }),
   mockupDockLabel: fields.text({
     label: "Mockup: Docking Block Label",
-    defaultValue: "Kundenstimmen",
+    defaultValue: "Funktionen",
   }),
   mockupDockTag: fields.text({
     label: "Mockup: Docking Block Tag",
@@ -88,7 +102,23 @@ export const heroProps = {
   }),
   mockupDockSub: fields.text({
     label: "Mockup: Docking Block Subtitle",
-    defaultValue: "testimonials · de",
+    defaultValue: "features · de",
+  }),
+  codeLine: fields.text({
+    label: "Mockup: Code Strip Line",
+    defaultValue: "export default createCmssyPage(cmssy, blocks);",
+  }),
+  codeDataLabel: fields.text({
+    label: "Mockup: Code Strip Data Label",
+    defaultValue: "page.blocks[]",
+  }),
+  plateCaption: fields.text({
+    label: "Plate Caption",
+    defaultValue: "the cmssy editor, editing this page",
+  }),
+  plateCaptionDone: fields.text({
+    label: "Plate Caption (after publish)",
+    defaultValue: "content-only change · no redeploy",
   }),
   inspectorTitle: fields.text({
     label: "Mockup: Inspector Title",
