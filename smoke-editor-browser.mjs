@@ -40,9 +40,55 @@ async function open(browser, url) {
   return { context, page, response, consoleErrors, pageErrors };
 }
 
+async function revealsStuckAfterScroll(page) {
+  return page.evaluate(async () => {
+    const reveals = () => [...document.querySelectorAll("[data-reveal]")];
+    const bottom = () =>
+      document.documentElement.scrollHeight - window.innerHeight;
+    for (let y = 0; y < bottom(); y += 500) {
+      window.scrollTo(0, y);
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    }
+    window.scrollTo(0, bottom());
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const stuck = reveals().filter(
+      (node) => Number.parseFloat(getComputedStyle(node).opacity) < 0.99,
+    );
+    return { total: reveals().length, stuck: stuck.length };
+  });
+}
+
+function reportStuck(label, { total, stuck }, failures) {
+  if (stuck > 0) {
+    failures.push(
+      `${label}: ${stuck}/${total} Reveal wrappers are still transparent after scrolling to the bottom - the content is mounted and invisible`,
+    );
+  }
+}
+
 async function probe(browser) {
   const failures = [];
   let blocks = 0;
+
+  // The public page first: it says how many reveals this path is supposed to
+  // have, which is what makes the edit assertion below non-vacuous without a
+  // hardcoded list of animated pages.
+  const pub = await open(browser, publicUrl);
+  if ((await pub.page.locator("[data-cmssy-editor]").count()) > 0) {
+    failures.push(
+      `public ${path}: the editor is mounted without a secret (CMS-948)`,
+    );
+  }
+  const publicBlocks = await pub.page.locator("[data-block-id]").count();
+  const publicReveals = await revealsStuckAfterScroll(pub.page);
+  reportStuck(`public ${path}`, publicReveals, failures);
+  await pub.context.close();
+
+  if (publicReveals.total === 0) {
+    console.warn(
+      `note: ${path} has no [data-reveal] node, so this run does not exercise the editor's motion providers`,
+    );
+  }
 
   const edit = await open(browser, editUrl);
   if (edit.response?.status() !== 200) {
@@ -71,17 +117,23 @@ async function probe(browser) {
     );
   }
 
+  if (blocks > 0) {
+    const editReveals = await revealsStuckAfterScroll(edit.page);
+    reportStuck(`edit ${path}`, editReveals, failures);
+    if (blocks < publicBlocks) {
+      console.warn(
+        `note: edit ${path} mounted ${blocks} of the public page's ${publicBlocks} blocks - the draft read returned no page, so this run does not exercise the editor's motion providers`,
+      );
+    } else if (publicReveals.total > 0 && editReveals.total === 0) {
+      failures.push(
+        `edit ${path}: the public page has ${publicReveals.total} Reveal wrappers and the editor has none - the editor is not rendering the same tree`,
+      );
+    }
+  }
+
   for (const error of edit.consoleErrors) failures.push(`console: ${error}`);
   for (const error of edit.pageErrors) failures.push(`uncaught: ${error}`);
   await edit.context.close();
-
-  const pub = await open(browser, publicUrl);
-  if ((await pub.page.locator("[data-cmssy-editor]").count()) > 0) {
-    failures.push(
-      `public ${path}: the editor is mounted without a secret (CMS-948)`,
-    );
-  }
-  await pub.context.close();
 
   return { failures, blocks };
 }
