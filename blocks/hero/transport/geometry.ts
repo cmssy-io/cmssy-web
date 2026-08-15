@@ -7,7 +7,11 @@ export const X_START = -170;
 export const X_MCP = 160;
 export const X_BLK = 316;
 export const F_A = 412;
-export const F_B = 500;
+/* The splay used to happen in 88 units while the outer track moved 192 across,
+   so five glowing strokes left the fork almost vertically and inside one
+   another - a bundle, not a fan. Giving the ramp the same length as the merge
+   on the far side lets them separate at a readable angle. */
+export const F_B = 596;
 export const F_C = 716;
 export const F_D = 872;
 export const X_BUS = 912;
@@ -244,5 +248,4 @@ export function mSpinePath() {
 
 export const mSpineS = (y: number) => clamp01((y - M.yStart) / M_SPAN);
 
-export const mTrackS = (y: number) =>
-  clamp01((y - M.fanA) / (M.fanD - M.fanA));
+export const mTrackS = (y: number) => clamp01((y - M.fanA) / (M.fanD - M.fanA));

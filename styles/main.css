@@ -632,9 +632,16 @@ html[data-theme="dark"] {
   max-width: 40rem;
 }
 
+/* The world is 1820 x 792. Let the stage span an ultrawide monitor and the box
+   it has to fit turns into a letterbox, so the fitter buys the width back out
+   of height - at 2560 it was showing 591 of the 792 units and guillotining the
+   top. Capping the stage keeps the figure near its own proportions, and the
+   trunk still reaches the screen edge because the svg does not clip. */
 .tp-host {
   width: 100%;
   height: 100%;
+  max-width: 112rem;
+  margin-inline: auto;
 }
 
 .tp-svg {
@@ -642,6 +649,14 @@ html[data-theme="dark"] {
   width: 100%;
   height: 100%;
   overflow: visible;
+  transition: opacity 420ms ease-out;
+}
+
+/* The server cannot know the viewport, so its box is a guess the client then
+   corrects - painting the guess first is the load-time lurch. The world stays
+   dark until the measured box is in, then fades up. */
+.tp-svg[data-ready="0"] {
+  opacity: 0;
 }
 
 /* the stations are the only interactive part of the world */
@@ -726,9 +741,5 @@ html[data-theme="dark"] {
      off-frame has to actually be cropped rather than painted over the type */
   .tp-svg {
     overflow: hidden;
-  }
-
-  .tp-svg[data-ready="0"] {
-    visibility: hidden;
   }
 }
