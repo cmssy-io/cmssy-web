@@ -53,15 +53,15 @@ export default function About({ content }: BlockProps<typeof aboutProps>) {
   return (
     <section className="relative min-h-screen py-24 lg:py-32">
       {/* Background */}
-      <div className="absolute inset-0 bg-linear-to-br from-sky-50 via-background to-blue-50" />
-      <div className="absolute top-0 right-0 w-125 h-125 bg-sky-400/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-100 h-100 bg-blue-400/20 rounded-full blur-3xl" />
+      <div className="absolute inset-0 bg-linear-to-br from-sky-50 via-background to-blue-50 dark:from-sky-950/50 dark:to-blue-950/50" />
+      <div className="absolute top-0 right-0 w-125 h-125 bg-sky-400/20 dark:bg-sky-500/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-100 h-100 bg-blue-400/20 dark:bg-blue-500/10 rounded-full blur-3xl" />
 
       <Container className="relative">
         {/* Header */}
         <div className="text-center mb-16">
           {badgeText && (
-            <span className="inline-block px-4 py-1.5 rounded-full bg-sky-100 text-sky-700 text-sm font-medium mb-6">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300 text-sm font-medium mb-6">
               {badgeText}
             </span>
           )}
@@ -147,7 +147,7 @@ export default function About({ content }: BlockProps<typeof aboutProps>) {
                 {(techStack as TechItem[]).map((tech, index) => (
                   <div
                     key={index}
-                    className="text-center p-4 rounded-xl bg-sky-50 border border-sky-100"
+                    className="text-center p-4 rounded-xl bg-sky-50 border border-sky-100 dark:bg-sky-500/10 dark:border-sky-400/20"
                   >
                     <p className="font-semibold text-sm">{tech.name}</p>
                     {tech.category && (
