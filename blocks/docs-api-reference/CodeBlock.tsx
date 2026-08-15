@@ -18,7 +18,7 @@ export function CodeBlock({
       <div className="flex items-center justify-between px-4 py-2 border-b border-zinc-800">
         <div className="flex items-center gap-2">
           <span className="text-xs font-mono text-zinc-400">{label}</span>
-          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-600 bg-zinc-800 px-1.5 py-0.5 rounded">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 bg-zinc-800 px-1.5 py-0.5 rounded">
             {language}
           </span>
         </div>

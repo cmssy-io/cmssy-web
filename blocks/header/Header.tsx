@@ -218,7 +218,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
   const {
     logoSize = "md",
     announcementBg = "#00A8F0",
-    announcementTextColor = "#ffffff",
+    announcementTextColor = "#10141C",
   } = style;
 
   const [isScrolled, setIsScrolled] = useState(false);

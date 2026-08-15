@@ -108,7 +108,11 @@ export const headerProps = {
     }),
     announcementTextColor: fields.color({
       label: "Announcement Text Color",
-      defaultValue: "#ffffff",
+      /* White on the brand blue is 2.67:1 - the bar is the first line on the
+         page and it was the least readable thing on it. Ink reads 6.99:1 on
+         the same blue, which is what every other elektryk surface already
+         uses for its text. */
+      defaultValue: "#10141C",
       tab: "style",
     }),
     announcementDismissible: fields.boolean({

@@ -26,7 +26,7 @@ export default function Features({
           {headingHighlight ? (
             <>
               {" "}
-              <span className="text-elektryk-700">{headingHighlight}</span>
+              <span className="text-primary">{headingHighlight}</span>
             </>
           ) : null}
         </>
@@ -49,7 +49,7 @@ export default function Features({
                 {feature.description}
               </p>
               {feature.stat ? (
-                <div className="mt-4 font-mono text-[12px] font-medium text-elektryk-700">
+                <div className="mt-4 font-mono text-[12px] font-medium text-primary">
                   {feature.stat}
                 </div>
               ) : null}

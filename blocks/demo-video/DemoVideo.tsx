@@ -19,11 +19,11 @@ export default function DemoVideo({
   const posterUrl = mediaUrl(poster);
 
   return (
-    <section className="py-24 bg-slate-50/50">
+    <section className="py-24 bg-muted">
       <Container>
         <div className="text-center max-w-3xl mx-auto mb-12">
           {badgeText && (
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-100 text-sky-700 text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-elektryk/10 text-primary text-sm font-medium mb-6">
               {badgeText}
             </div>
           )}
@@ -45,7 +45,7 @@ export default function DemoVideo({
         {videoSrc && (
           <div className="relative max-w-5xl mx-auto">
             <div className="absolute -inset-4 bg-linear-to-r from-sky-500/20 to-blue-500/20 rounded-3xl blur-2xl" />
-            <div className="relative rounded-xl shadow-2xl shadow-sky-500/10 overflow-hidden bg-background ring-1 ring-black/5">
+            <div className="relative rounded-xl shadow-2xl shadow-sky-500/10 overflow-hidden bg-background ring-1 ring-border">
               <div className="aspect-video relative overflow-hidden">
                 {autoplay ? (
                   <video
