@@ -1,6 +1,19 @@
 import { mediaUrl, type MediaLike } from "@cmssy/react";
 import type { PageItem } from "@cmssy/types";
 
+function slugOf(value: unknown): string | undefined {
+  if (typeof value === "string") return value || undefined;
+  if (value && typeof value === "object" && "slug" in value) {
+    const { slug } = value as { slug?: unknown };
+    return typeof slug === "string" && slug ? slug : undefined;
+  }
+  return undefined;
+}
+
+export function pageSelectorSlug(value: unknown): string | undefined {
+  return Array.isArray(value) ? slugOf(value[0]) : slugOf(value);
+}
+
 export function getLocalizedField(
   field: Record<string, string> | null | undefined,
   language: string | undefined,

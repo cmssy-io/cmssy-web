@@ -33,8 +33,15 @@ export async function loadPosts(
       } | null;
     }>(PUBLIC_PAGES_QUERY, vars);
     const r = data?.public?.page?.byType;
-    return r ? { items: r.items ?? [], hasMore: !!r.hasMore } : null;
-  } catch {
+    if (!r) {
+      console.error(
+        "[cmssy-web] loadPosts: the delivery read returned nothing",
+      );
+      return null;
+    }
+    return { items: r.items ?? [], hasMore: !!r.hasMore };
+  } catch (err) {
+    console.error("[cmssy-web] loadPosts failed", err);
     return null;
   }
 }
