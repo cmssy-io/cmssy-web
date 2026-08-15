@@ -1,6 +1,7 @@
 import type { PageItem } from "@cmssy/types";
 import { defineBlock, fields } from "@cmssy/react";
 import Component from "./src/BlogPosts";
+import { pageSelectorSlug } from "./src/utils";
 
 export interface BlogPostsData {
   items: PageItem[];
@@ -55,12 +56,7 @@ export const blogPostsBlock = defineBlock({
     "Grid or list of blog post previews; for a blog index or a 'latest posts' section.",
   component: Component,
   loader: async ({ content }): Promise<BlogPostsData | null> => {
-    const parentPage = content.parentPage;
-    const parentSlug = Array.isArray(parentPage)
-      ? (parentPage[0] as { slug?: string } | undefined)?.slug
-      : typeof parentPage === "string"
-        ? parentPage
-        : undefined;
+    const parentSlug = pageSelectorSlug(content.parentPage);
     if (!parentSlug) return null;
 
     const limit = Number(content.postsPerPage) || 9;

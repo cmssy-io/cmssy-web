@@ -6,7 +6,7 @@ import { print } from "graphql";
 import type { BlockProps } from "@cmssy/react";
 import { PublicPagesByTypeDocument } from "@/graphql/generated/graphql";
 import type { blogPostsProps, BlogPostsData } from "../block";
-import { customText } from "./utils";
+import { customText, pageSelectorSlug } from "./utils";
 
 const PUBLIC_PAGES_QUERY = print(PublicPagesByTypeDocument);
 
@@ -22,11 +22,7 @@ export function useBlogPosts(
   const { parentPage, postsPerPage } = content;
   const { layout = "grid", columns = "3" } = style;
 
-  const parentSlug = Array.isArray(parentPage)
-    ? parentPage[0]?.slug
-    : typeof parentPage === "string"
-      ? parentPage
-      : undefined;
+  const parentSlug = pageSelectorSlug(parentPage);
 
   const language = context?.locale?.current;
   const pagesCollection = context?.pages?._default;
