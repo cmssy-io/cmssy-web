@@ -90,7 +90,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
               </p>
             ) : null}
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
+            <div className="hero-transport__actions mt-8 flex flex-wrap items-center justify-center gap-3.5">
               {primary ? (
                 <CmssyLink
                   href={primaryButtonUrl || FALLBACK.primaryUrl}
