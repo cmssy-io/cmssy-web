@@ -1,6 +1,7 @@
 import type { BlockProps } from "@cmssy/react";
-import { Container } from "@/components/container";
-import { FigEyebrow } from "@/components/fig-eyebrow";
+import { Reveal } from "@/components/motion/reveal";
+import { ScrollHint } from "@/components/scroll-hint";
+import { Section } from "@/components/section";
 import type { comparisonTableProps } from "./block";
 
 export default function ComparisonTable({
@@ -17,19 +18,9 @@ export default function ComparisonTable({
   } = content;
 
   return (
-    <section className="bg-background py-24">
-      <Container>
-        <div className="max-w-3xl">
-          <FigEyebrow fig={fig} label={eyebrow} />
-          <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-foreground text-balance">
-            {heading}
-          </h2>
-          {description && (
-            <p className="mt-4 text-lg text-muted-foreground">{description}</p>
-          )}
-        </div>
-
-        <div className="mt-12 overflow-x-auto rounded-2xl border border-border">
+    <Section fig={fig} eyebrow={eyebrow} heading={heading} lead={description}>
+      <Reveal>
+        <ScrollHint tone="light" className="rounded-2xl border border-border">
           <table className="w-full min-w-[760px] border-collapse bg-card text-left text-[15px]">
             <thead>
               <tr className="bg-ink text-paper">
@@ -62,13 +53,13 @@ export default function ComparisonTable({
               ))}
             </tbody>
           </table>
-        </div>
-        {footnote && (
-          <p className="mt-4 text-center font-mono text-[12px] text-muted-foreground">
-            {footnote}
-          </p>
-        )}
-      </Container>
-    </section>
+        </ScrollHint>
+      </Reveal>
+      {footnote && (
+        <p className="mt-4 font-mono text-[12px] text-muted-foreground">
+          {footnote}
+        </p>
+      )}
+    </Section>
   );
 }

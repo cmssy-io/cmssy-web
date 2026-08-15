@@ -1,17 +1,15 @@
 import type { BlockProps } from "@cmssy/react";
 import { CodeSnippet } from "@/components/code-snippet";
-import { Container } from "@/components/container";
-import { FigEyebrow } from "@/components/fig-eyebrow";
+import { FigurePlate, plateNumber } from "@/components/figure-plate";
+import { Reveal } from "@/components/motion/reveal";
+import { ScrollHint } from "@/components/scroll-hint";
+import { Section } from "@/components/section";
 import type { twoAudiencesProps } from "./block";
 
-function EditorWireframe({ caption }: { caption: string }) {
+function EditorWireframe({ fig, caption }: { fig: string; caption: string }) {
   return (
-    <div className="mt-8 rounded-xl border border-border bg-card p-4 shadow-sm">
-      <div className="flex items-center gap-2 border-b border-border pb-3 font-mono text-[11px] text-muted-foreground">
-        <span className="size-2 rounded-full bg-muted" />
-        {caption}
-      </div>
-      <div className="mt-3 space-y-2">
+    <FigurePlate fig={fig} caption={caption} className="mt-8">
+      <div className="space-y-2 p-4">
         <div className="rounded-md border-2 border-elektryk/60 bg-elektryk/5 px-3 py-2">
           <div className="h-3 w-2/3 rounded bg-muted" />
         </div>
@@ -27,7 +25,7 @@ function EditorWireframe({ caption }: { caption: string }) {
           <div className="h-10 rounded-md border border-border bg-muted" />
         </div>
       </div>
-    </div>
+    </FigurePlate>
   );
 }
 
@@ -43,65 +41,65 @@ export default function TwoAudiences({
   } = content;
 
   return (
-    <section id="product" className="bg-background py-24">
-      <Container>
-        <div className="max-w-3xl">
-          <FigEyebrow fig={fig} label={eyebrow} />
-          <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-foreground text-balance">
-            {heading}
-          </h2>
-          {description && (
-            <p className="mt-4 text-lg text-muted-foreground">{description}</p>
-          )}
-        </div>
-
-        <div className="mt-12 grid gap-6 lg:grid-cols-2">
-          {cards.map((card) => (
-            <div
-              key={card.title}
-              className={`flex flex-col rounded-2xl p-[30px] ${
-                card.dark
-                  ? "bg-ink text-paper"
-                  : "border border-border bg-card text-foreground"
+    <Section
+      id="product"
+      fig={fig}
+      eyebrow={eyebrow}
+      heading={heading}
+      lead={description}
+    >
+      <div className="grid gap-6 lg:grid-cols-2">
+        {cards.map((card, i) => (
+          <Reveal
+            key={card.title}
+            index={i}
+            className={`flex min-w-0 flex-col rounded-2xl p-6 sm:p-[30px] ${
+              card.dark
+                ? "bg-ink text-paper"
+                : "border border-border bg-card text-foreground"
+            }`}
+          >
+            <span
+              className={`flex items-center gap-2.5 font-mono text-[13px] font-semibold ${
+                card.dark ? "text-[#9aa1ad]" : "text-muted-foreground"
               }`}
             >
-              <span
-                className={`flex items-center gap-2.5 font-mono text-[13px] font-semibold ${
-                  card.dark ? "text-[#9aa1ad]" : "text-muted-foreground"
-                }`}
+              <span className="inline-block size-2.5 rounded-[3px] bg-elektryk" />
+              {card.kicker}
+            </span>
+            <h3 className="mt-2 font-heading text-h3 font-semibold">
+              {card.title}
+            </h3>
+            <p
+              className={`mt-2.5 text-[15px] leading-relaxed ${
+                card.dark ? "text-[#9aa1ad]" : "text-muted-foreground"
+              }`}
+            >
+              {card.description}
+            </p>
+            {card.code ? (
+              <FigurePlate
+                dark
+                fig={plateNumber(fig, i)}
+                caption={card.codeLabel ?? ""}
+                className="mt-8 lg:mt-auto"
               >
-                <span className="inline-block size-2.5 rounded-[3px] bg-elektryk" />
-                {card.kicker}
-              </span>
-              <h3 className="font-heading mt-2 text-2xl font-semibold tracking-tight">
-                {card.title}
-              </h3>
-              <p
-                className={`mt-2.5 text-[15px] leading-relaxed ${
-                  card.dark ? "text-[#9aa1ad]" : "text-muted-foreground"
-                }`}
-              >
-                {card.description}
-              </p>
-              {card.code ? (
-                <div className="mt-auto overflow-hidden rounded-[11px] border border-white/10 bg-ink-deep pt-0">
-                  <div className="flex h-[34px] items-center border-b border-white/8 px-3 font-mono text-[11px] font-medium text-[#9aa1ad]">
-                    {card.codeLabel ?? ""}
-                  </div>
-                  <div className="overflow-x-auto p-4">
-                    <CodeSnippet
-                      code={card.code}
-                      className="text-[12.5px] leading-[1.7]"
-                    />
-                  </div>
-                </div>
-              ) : (
-                <EditorWireframe caption={card.wireframeCaption ?? ""} />
-              )}
-            </div>
-          ))}
-        </div>
-      </Container>
-    </section>
+                <ScrollHint className="p-4">
+                  <CodeSnippet
+                    code={card.code}
+                    className="text-[12.5px] leading-[1.7]"
+                  />
+                </ScrollHint>
+              </FigurePlate>
+            ) : (
+              <EditorWireframe
+                fig={plateNumber(fig, i)}
+                caption={card.wireframeCaption ?? ""}
+              />
+            )}
+          </Reveal>
+        ))}
+      </div>
+    </Section>
   );
 }

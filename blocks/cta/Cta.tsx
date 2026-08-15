@@ -1,6 +1,7 @@
 import { CmssyLink } from "@/components/cmssy-locale";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
+import { Reveal } from "@/components/motion/reveal";
 import type { ctaProps } from "./block";
 
 function DockingMark() {
@@ -71,29 +72,40 @@ export default function Cta({ content }: BlockProps<typeof ctaProps>) {
   } = content;
 
   return (
-    <section className="dot-grid-dark bg-ink py-24">
+    <section className="dot-grid-dark bg-ink py-section">
       <Container className="max-w-3xl text-center">
-        <DockingMark />
+        <Reveal>
+          <DockingMark />
+        </Reveal>
         {badgeText && (
-          <div className="mt-8 inline-block rounded-full border border-paper/15 px-3 py-1 font-mono text-[11px] tracking-[0.14em] text-paper/60 uppercase">
-            {badgeText}
-          </div>
+          <Reveal index={1}>
+            <span className="mt-8 inline-block rounded-full border border-paper/15 px-3 py-1 font-mono text-[11px] tracking-[0.14em] text-paper/60 uppercase">
+              {badgeText}
+            </span>
+          </Reveal>
         )}
-        <h2 className="font-heading mt-5 text-4xl font-semibold tracking-tight text-paper text-balance lg:text-5xl">
-          {heading}
-          {headingLine2 && (
-            <>
-              {" "}
-              <span className="text-elektryk">{headingLine2}</span>
-            </>
-          )}
-        </h2>
+        <Reveal index={2}>
+          <h2 className="mt-5 font-heading text-h2 font-semibold text-paper text-balance">
+            {heading}
+            {headingLine2 && (
+              <>
+                {" "}
+                <span className="text-elektryk">{headingLine2}</span>
+              </>
+            )}
+          </h2>
+        </Reveal>
         {description && (
-          <p className="mx-auto mt-5 max-w-xl text-lg text-paper/60">
-            {description}
-          </p>
+          <Reveal index={3}>
+            <p className="mx-auto mt-5 max-w-xl text-lead text-paper/60">
+              {description}
+            </p>
+          </Reveal>
         )}
-        <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
+        <Reveal
+          index={4}
+          className="mt-9 flex flex-wrap items-center justify-center gap-4"
+        >
           {primaryButtonText && (
             <CmssyLink
               href={primaryButtonUrl || "#"}
@@ -110,7 +122,7 @@ export default function Cta({ content }: BlockProps<typeof ctaProps>) {
               {secondaryButtonText}
             </CmssyLink>
           )}
-        </div>
+        </Reveal>
       </Container>
     </section>
   );

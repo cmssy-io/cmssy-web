@@ -1,143 +1,122 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { CmssyLink } from "@/components/cmssy-locale";
 import type { BlockProps } from "@cmssy/react";
+import { CmssyLink } from "@/components/cmssy-locale";
 import { Container } from "@/components/container";
 import { FigEyebrow } from "@/components/fig-eyebrow";
-import { EditorMockup } from "./EditorMockup";
+import { Transport } from "./transport/Transport";
+import { buildLabels } from "./transport/labels";
 import type { heroProps } from "./block";
+
+/* Stored blocks keep whatever fields they were saved with, so schema defaults
+   do not backfill an existing page. Every value the hero needs to read
+   correctly is therefore also defaulted here. */
+const FALLBACK = {
+  fig: "FIG 0.1",
+  eyebrow: "AI-NATIVE HEADLESS CMS",
+  lead: "Change the page.",
+  accent: "Deploy",
+  tail: "nothing.",
+  trust: "@cmssy/next · 80+ MCP tools · No card needed",
+  primary: "Try it free →",
+  primaryUrl: "https://cmssy.io/login",
+  secondary: "See how it works",
+  secondaryUrl: "#code",
+};
+
+const FALLBACK_SUB = [
+  "Claude edits structured content through MCP.",
+  "One page carries all five locales.",
+  "Your Next.js app revalidates in place.",
+];
 
 export default function Hero({ content }: BlockProps<typeof heroProps>) {
   const {
     fig = "",
     eyebrow = "",
-    headingPre = "",
-    rotatingWords = [],
-    headingPost = "",
-    headingLine2 = "",
-    subheading = "",
+    headlineLead = "",
+    headlineAccent = "",
+    headlineTail = "",
+    subLines = [],
     primaryButtonText = "",
     primaryButtonUrl = "",
     secondaryButtonText = "",
     secondaryButtonUrl = "",
-    trustLine = "",
-    chatPrompt = "",
-    chatStatus = "",
-    mockupTitle = "",
-    mockupBadge = "",
-    mockupMeta = "",
-    mockupPages = [],
-    mockupDockLabel = "",
-    mockupDockTag = "",
-    mockupDockSub = "",
-    inspectorTitle = "",
-    inspectorSubtitle = "",
-    inspectorFooter = "",
+    trustNote = "",
   } = content;
 
-  const words = rotatingWords.map((w) => w.word).filter(Boolean);
-  const [index, setIndex] = useState(0);
-  const [typed, setTyped] = useState(words[0] ?? "");
-  const [deleting, setDeleting] = useState(false);
+  const labels = buildLabels(content);
+  const authored = subLines.map((l) => l.line).filter(Boolean);
+  const sub = authored.length > 0 ? authored : FALLBACK_SUB;
 
-  useEffect(() => {
-    if (words.length < 2) return;
-    const word = words[index] ?? "";
-    if (!deleting && typed === word) {
-      const id = setTimeout(() => setDeleting(true), 1800);
-      return () => clearTimeout(id);
-    }
-    if (deleting && typed === "") {
-      setDeleting(false);
-      setIndex((i) => (i + 1) % words.length);
-      return;
-    }
-    const id = setTimeout(
-      () =>
-        setTyped(
-          deleting
-            ? word.slice(0, typed.length - 1)
-            : word.slice(0, typed.length + 1),
-        ),
-      deleting ? 45 : 85,
-    );
-    return () => clearTimeout(id);
-  }, [words, index, typed, deleting]);
-
-  const display = words.length > 1 ? typed : (words[0] ?? "");
+  const lead = headlineLead || FALLBACK.lead;
+  const accent = headlineAccent || FALLBACK.accent;
+  const tail = headlineTail || FALLBACK.tail;
+  const trust = trustNote || FALLBACK.trust;
+  const primary = primaryButtonText || FALLBACK.primary;
+  const secondary = secondaryButtonText || FALLBACK.secondary;
 
   return (
-    <section className="dot-grid-dark relative overflow-hidden bg-ink py-20 lg:py-28">
-      <div
-        className="pointer-events-none absolute -top-40 right-0 h-[480px] w-[480px] rounded-full"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(0,168,240,.16) 0%, transparent 65%)",
-        }}
-      />
-      <Container>
-        <div className="grid items-center gap-14 lg:grid-cols-[0.95fr_1.15fr]">
-          <div>
-            <FigEyebrow fig={fig} label={eyebrow} dark pill />
-            <h1 className="font-heading mt-6 text-[clamp(1.75rem,6.5vw,3.4rem)] leading-[1.1] font-semibold tracking-tight text-paper">
-              <span className="block">{headingPre}</span>
-              <span className="block whitespace-nowrap">
-                <span className="whitespace-pre text-elektryk">{display}</span>
-                <span
-                  className="ml-1 inline-block h-[0.85em] w-[0.42em] translate-y-[0.12em] bg-elektryk"
-                  style={{ animation: "hero-blink 1.1s step-end infinite" }}
-                />
-                {headingPost && <> {headingPost}</>}
-              </span>
-              {headingLine2 && <span className="block">{headingLine2}</span>}
-            </h1>
-            {subheading && (
-              <p className="mt-5 max-w-xl text-lg text-paper/60">
-                {subheading}
-              </p>
-            )}
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              {primaryButtonText && (
-                <CmssyLink
-                  href={primaryButtonUrl || "#"}
-                  className="rounded-lg bg-elektryk px-6 py-3 text-base font-semibold text-ink transition-colors hover:bg-elektryk/85"
-                >
-                  {primaryButtonText}
-                </CmssyLink>
-              )}
-              {secondaryButtonText && (
-                <CmssyLink
-                  href={secondaryButtonUrl || "#"}
-                  className="rounded-lg border border-paper/20 px-6 py-3 text-base font-medium text-paper/85 transition-colors hover:border-paper/40"
-                >
-                  {secondaryButtonText}
-                </CmssyLink>
-              )}
-            </div>
-            {trustLine && (
-              <div className="mt-8 font-mono text-[13px] text-paper/40">
-                {trustLine}
-              </div>
-            )}
+    <section className="hero-transport relative overflow-hidden bg-ink">
+      <div className="hero-transport__stage">
+        <Transport labels={labels} />
+      </div>
+
+      <div className="hero-transport__typewrap">
+        <Container>
+          <div className="hero-transport__type">
+          <FigEyebrow
+            fig={fig || FALLBACK.fig}
+            label={eyebrow || FALLBACK.eyebrow}
+            dark
+            pill
+          />
+          <h1 className="mt-6 max-w-[13ch] font-heading text-[clamp(2.35rem,4.75vw,3.5rem)] leading-[1.04] font-bold tracking-[-0.035em] text-paper">
+            {lead}
+            {accent ? (
+              <>
+                {" "}
+                <span className="text-elektryk">{accent}</span>
+              </>
+            ) : null}
+            {tail ? ` ${tail}` : null}
+          </h1>
+
+          {sub.length > 0 ? (
+            <p className="mt-5 max-w-[36ch] text-[0.94rem] leading-[1.7] text-paper/55">
+              {sub.map((line, i) => (
+                <span key={i} className="block">
+                  {line}
+                </span>
+              ))}
+            </p>
+          ) : null}
+
+          <div className="mt-6 flex flex-wrap items-center gap-3.5">
+            {primary ? (
+              <CmssyLink
+                href={primaryButtonUrl || FALLBACK.primaryUrl}
+                className="rounded-lg bg-elektryk px-5 py-2.5 text-[0.95rem] font-semibold text-ink transition-colors hover:bg-elektryk/85"
+              >
+                {primary}
+              </CmssyLink>
+            ) : null}
+            {secondary ? (
+              <CmssyLink
+                href={secondaryButtonUrl || FALLBACK.secondaryUrl}
+                className="rounded-lg border border-paper/20 px-5 py-2.5 text-[0.95rem] font-medium text-paper/85 transition-colors hover:border-paper/40"
+              >
+                {secondary}
+              </CmssyLink>
+            ) : null}
           </div>
 
-          <EditorMockup
-            chatPrompt={chatPrompt}
-            chatStatus={chatStatus}
-            title={mockupTitle}
-            badge={mockupBadge}
-            meta={mockupMeta}
-            pages={mockupPages}
-            dockLabel={mockupDockLabel}
-            dockTag={mockupDockTag}
-            dockSub={mockupDockSub}
-            inspectorTitle={inspectorTitle}
-            inspectorSubtitle={inspectorSubtitle}
-            inspectorFooter={inspectorFooter}
-          />
-        </div>
-      </Container>
+          {trust ? (
+            <div className="mt-5 font-mono text-[12px] text-paper/40">
+              {trust}
+            </div>
+          ) : null}
+          </div>
+        </Container>
+      </div>
     </section>
   );
 }

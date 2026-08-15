@@ -30,6 +30,14 @@ export const codeTabsProps = {
         placeholder: "// app/page.tsx — you own this file",
       }),
       code: fields.textarea({ label: "Code", required: true }),
+      resultLabel: fields.text({
+        label: "Result Label",
+        placeholder: "e.g. response",
+      }),
+      result: fields.textarea({
+        label: "Result",
+        placeholder: "What this snippet actually produces",
+      }),
     },
   }),
 };

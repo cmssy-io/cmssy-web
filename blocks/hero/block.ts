@@ -7,29 +7,24 @@ export const heroProps = {
     label: "Eyebrow",
     defaultValue: "AI-NATIVE HEADLESS CMS",
   }),
-  headingPre: fields.text({
-    label: "Heading Before Word",
-    defaultValue: "Content",
+  headlineLead: fields.text({
+    label: "Heading (before accent)",
+    defaultValue: "Change the page.",
     required: true,
   }),
-  rotatingWords: fields.repeater({
-    label: "Rotating Words",
+  headlineAccent: fields.text({
+    label: "Heading Accent Word",
+    defaultValue: "Deploy",
+  }),
+  headlineTail: fields.text({
+    label: "Heading (after accent)",
+    defaultValue: "nothing.",
+  }),
+  subLines: fields.repeater({
+    label: "Subheading Lines (3 short lines)",
     itemSchema: {
-      word: fields.text({ label: "Word", required: true }),
+      line: fields.text({ label: "Line", required: true }),
     },
-  }),
-  headingPost: fields.text({
-    label: "Heading After Word (same line)",
-    defaultValue: "edits.",
-  }),
-  headingLine2: fields.text({
-    label: "Heading Line 2",
-    defaultValue: "A frontend you own.",
-  }),
-  subheading: fields.textarea({
-    label: "Subheading",
-    defaultValue:
-      "The structured content model and visual editor your team actually uses — plus Claude editing content through MCP. Delivered to any Next.js site you own and deploy. No tickets, no redeploys.",
   }),
   primaryButtonText: fields.text({
     label: "Primary Button Text",
@@ -47,60 +42,63 @@ export const heroProps = {
     label: "Secondary Button URL",
     defaultValue: "#code",
   }),
-  trustLine: fields.text({
+  trustNote: fields.text({
     label: "Trust Line (mono)",
-    defaultValue: "@cmssy/next · 70+ MCP tools · No card needed",
+    defaultValue: "@cmssy/next · 80+ MCP tools · No card needed",
   }),
-  chatPrompt: fields.text({
-    label: "Mockup: Chat Prompt",
-    defaultValue: "add a testimonials section in German",
+
+  mcpLabel: fields.text({ label: "Diagram: Inlet Label", defaultValue: "MCP" }),
+  mcpTool: fields.text({
+    label: "Diagram: Inlet Tool",
+    defaultValue: "update_block_content",
   }),
-  chatStatus: fields.text({
-    label: "Mockup: Chat Status",
-    defaultValue: "via MCP · block created, page published",
+  blockLabel: fields.text({
+    label: "Diagram: Block Label",
+    defaultValue: "BLOCK · HERO",
   }),
-  mockupTitle: fields.text({
-    label: "Mockup: Title Bar",
-    defaultValue: "Cmssy · Homepage",
+  blockFields: fields.text({
+    label: "Diagram: Block Fields",
+    defaultValue: "heading · text",
   }),
-  mockupBadge: fields.text({
-    label: "Mockup: Status Badge",
-    defaultValue: "Published",
+  fanLabel: fields.text({
+    label: "Diagram: Fan Label",
+    defaultValue: "LOCALE FAN",
   }),
-  mockupMeta: fields.text({
-    label: "Mockup: Meta (right side)",
-    defaultValue: "EN",
+  fanNote: fields.text({
+    label: "Diagram: Fan Note",
+    defaultValue: "one field, five values",
   }),
-  mockupPages: fields.repeater({
-    label: "Mockup: Pages Panel",
+  locales: fields.repeater({
+    label: "Diagram: Locales (exactly 5)",
     itemSchema: {
-      name: fields.text({ label: "Page Name", required: true }),
-      tag: fields.text({ label: "Tag", placeholder: "e.g. Draft" }),
+      code: fields.text({ label: "Locale Code", required: true }),
     },
   }),
-  mockupDockLabel: fields.text({
-    label: "Mockup: Docking Block Label",
-    defaultValue: "Kundenstimmen",
+  publishLabel: fields.text({
+    label: "Diagram: Publish Label",
+    defaultValue: "PUBLISH",
   }),
-  mockupDockTag: fields.text({
-    label: "Mockup: Docking Block Tag",
-    defaultValue: "DE",
+  publishTool: fields.text({
+    label: "Diagram: Publish Tool",
+    defaultValue: "publish_page · hmac",
   }),
-  mockupDockSub: fields.text({
-    label: "Mockup: Docking Block Subtitle",
-    defaultValue: "testimonials · de",
+  frontendLabel: fields.text({
+    label: "Diagram: Terminus Label",
+    defaultValue: "YOUR FRONTEND",
   }),
-  inspectorTitle: fields.text({
-    label: "Mockup: Inspector Title",
-    defaultValue: "Header Navigation",
+  codeLines: fields.repeater({
+    label: "Diagram: Terminus Code (max 3 lines)",
+    itemSchema: {
+      line: fields.text({ label: "Line", required: true }),
+    },
   }),
-  inspectorSubtitle: fields.text({
-    label: "Mockup: Inspector Subtitle",
-    defaultValue: "Edit this block's content",
+  revalidatedLabel: fields.text({
+    label: "Diagram: Revalidated Counter Label",
+    defaultValue: "REVALIDATED",
   }),
-  inspectorFooter: fields.text({
-    label: "Mockup: Inspector Footer",
-    defaultValue: "typed fields",
+  deploysLabel: fields.text({
+    label: "Diagram: Deploys Counter Label",
+    defaultValue: "DEPLOYS",
   }),
 };
 
@@ -109,7 +107,7 @@ export const heroBlock = defineBlock({
   category: "Marketing",
   label: "Hero",
   description:
-    "Homepage hero: rotating-word headline, CTAs, mono trust line and an animated editor mockup with a Claude-over-MCP demo loop.",
+    "Homepage hero: headline beside an animated transport diagram that follows one content change from MCP through the block and locale fan to publish, while the frontend code stays unchanged.",
   component: Hero,
   props: heroProps,
 });
