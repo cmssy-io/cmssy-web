@@ -2,7 +2,6 @@
 
 import { m, useTransform } from "motion/react";
 import { RESPONSE, SETTLE } from "@/components/motion/presets";
-import { Substrate } from "./Substrate";
 import {
   DIM,
   EL,
@@ -58,11 +57,10 @@ const WRITTEN_RAIL = 1;
 interface Props {
   seq: Sequence;
   reduced: boolean;
-  coarse: boolean;
   labels: TransportLabels;
 }
 
-export function TransportDesktop({ seq, reduced, coarse, labels }: Props) {
+export function TransportDesktop({ seq, reduced, labels }: Props) {
   const { progress, streak, wave, settle, stage, scrubTo, scrubbing } = seq;
 
   const inletOn = stage >= 1;
@@ -104,14 +102,6 @@ export function TransportDesktop({ seq, reduced, coarse, labels }: Props) {
   return (
     <>
       <TransportDefs />
-
-      <Substrate
-        progress={progress}
-        wave={wave}
-        ambient={seq.ambient}
-        reduced={reduced}
-        coarse={coarse}
-      />
 
       {/* ---------------------------------------------------- dormant bed */}
       <g aria-hidden>
