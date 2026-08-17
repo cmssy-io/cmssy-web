@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       '@cmssy/core':
-        specifier: ^12.9.0
-        version: 12.9.0
+        specifier: ^12.12.0
+        version: 12.12.0
       '@cmssy/next':
-        specifier: ^12.9.0
-        version: 12.9.0(@cmssy/react@12.9.0(react@19.2.7))(next@16.2.10(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        specifier: ^12.12.0
+        version: 12.12.0(@cmssy/react@12.12.0(react@19.2.7))(next@16.2.10(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@cmssy/react':
-        specifier: ^12.9.0
-        version: 12.9.0(react@19.2.7)
+        specifier: ^12.12.0
+        version: 12.12.0(react@19.2.7)
       '@graphql-typed-document-node/core':
         specifier: ^3.2.0
         version: 3.2.0(graphql@17.0.2)
@@ -97,11 +97,11 @@ importers:
         version: 5.1.0
     devDependencies:
       '@cmssy/cli':
-        specifier: ^12.9.0
-        version: 12.9.0
+        specifier: ^12.12.0
+        version: 12.12.0
       '@cmssy/eslint-plugin':
-        specifier: ^12.9.0
-        version: 12.9.0(eslint@9.39.5(jiti@2.7.0))
+        specifier: ^12.12.0
+        version: 12.12.0(eslint@9.39.5(jiti@2.7.0))
       '@cmssy/types':
         specifier: ^0.35.0
         version: 0.35.0
@@ -251,28 +251,28 @@ packages:
     resolution: {integrity: sha512-4zBIxpPzowiZpusoFkyGVwakdRJUyuH5PxQ/PrqghfdFWWasvnCdPfQXHrenDai+gyLARulZjZowCOj6fjT4pA==}
     engines: {node: '>=6.9.0'}
 
-  '@cmssy/cli@12.9.0':
-    resolution: {integrity: sha512-/cJym7jmSa++uuztitF4rmu/at++nm9Pd3qc+EMsPb4BJBxz7993sWBlo9ZKzHquhkeGH9N059rlZF0IjflGIg==}
+  '@cmssy/cli@12.12.0':
+    resolution: {integrity: sha512-WK4SWzMO0W9W7+hdO+mS/UGpRg8JrtFRrquHOEunfmIH1ztyE+omEPA3q+5ao8RMyIrR5nraVMB7ZMMDDGGm0A==}
     hasBin: true
 
-  '@cmssy/core@12.9.0':
-    resolution: {integrity: sha512-w5RjllRTfRCHcXuwegAAB6RnU5+Xa8I+vs0xzFyPixFNsPnbM9g8uqcfgB9WPYwobsC8HdBHHwjwI9lrDNkmyA==}
+  '@cmssy/core@12.12.0':
+    resolution: {integrity: sha512-VcQfhAdY9iM4RBV0oeHfAw5hzHlsV/X+2CIF0uPVF1U6pdout40wQRLf8URFBoFqcCu9tC5mLhTuEAoYYjB+MA==}
 
-  '@cmssy/eslint-plugin@12.9.0':
-    resolution: {integrity: sha512-M68A8rxeWPxDNKCVG6MG1SO6iz0GY6lqgnrimYcRqPQzVbH6RCtNOtP/mruHjGASjRRXnoi1P3/7YWO+6j5CLQ==}
+  '@cmssy/eslint-plugin@12.12.0':
+    resolution: {integrity: sha512-D7g/hMBon5YuXReM6LJk5YFzy1+irypBA/BJIS5TVl+wo1cCkcGW8GH2TUrF/s4GegdeKG0QejzPyPwF/wYe+Q==}
     peerDependencies:
       eslint: '>=8'
 
-  '@cmssy/next@12.9.0':
-    resolution: {integrity: sha512-CJLmjOgjcP1HiPVjTVJugyoLEysiWW2sqonnTQD98f1nqg5qKi7BFCuzA/B9M5pTwsSRMSzrTYNO9fSdpOVPmg==}
+  '@cmssy/next@12.12.0':
+    resolution: {integrity: sha512-6BniIBZyzx6YlaF7eqPvOUCM08rh51Ms79WuC07xawK8nosGU1yW9a/3mgNQ/Efx7Y5q8uarU44x9XKW9+qXuQ==}
     peerDependencies:
-      '@cmssy/react': ^12.9.0
+      '@cmssy/react': ^12.12.0
       next: '>=15'
       react: ^18.2.0 || ^19.0.0
       react-dom: ^18.2.0 || ^19.0.0
 
-  '@cmssy/react@12.9.0':
-    resolution: {integrity: sha512-OeH46TcKh12D2vmWNVWdUuQcrJnokfcHezGsEbcewRnpS8XZe0Oevu4OdEuSGzRFMqUJi8r2ql/G+9wSm4AByw==}
+  '@cmssy/react@12.12.0':
+    resolution: {integrity: sha512-4ZZ+rcqKy3NC7M+yKm13dQpvjUDzCqWQlcrS8dV3tUPWo3Io16BCGhkqub2LO8pCJO/53Y6KUfKb/aCb4fwlxw==}
     peerDependencies:
       react: ^18.2.0 || ^19.0.0
 
@@ -3598,32 +3598,32 @@ snapshots:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
 
-  '@cmssy/cli@12.9.0':
+  '@cmssy/cli@12.12.0':
     dependencies:
-      '@cmssy/core': 12.9.0
+      '@cmssy/core': 12.12.0
 
-  '@cmssy/core@12.9.0':
+  '@cmssy/core@12.12.0':
     dependencies:
       '@cmssy/types': 0.35.0
       jose: 6.2.4
 
-  '@cmssy/eslint-plugin@12.9.0(eslint@9.39.5(jiti@2.7.0))':
+  '@cmssy/eslint-plugin@12.12.0(eslint@9.39.5(jiti@2.7.0))':
     dependencies:
       eslint: 9.39.5(jiti@2.7.0)
 
-  '@cmssy/next@12.9.0(@cmssy/react@12.9.0(react@19.2.7))(next@16.2.10(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+  '@cmssy/next@12.12.0(@cmssy/react@12.12.0(react@19.2.7))(next@16.2.10(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
-      '@cmssy/core': 12.9.0
-      '@cmssy/react': 12.9.0(react@19.2.7)
+      '@cmssy/core': 12.12.0
+      '@cmssy/react': 12.12.0(react@19.2.7)
       '@cmssy/types': 0.35.0
       next: 16.2.10(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
       server-only: 0.0.1
 
-  '@cmssy/react@12.9.0(react@19.2.7)':
+  '@cmssy/react@12.12.0(react@19.2.7)':
     dependencies:
-      '@cmssy/core': 12.9.0
+      '@cmssy/core': 12.12.0
       '@cmssy/types': 0.35.0
       react: 19.2.7
 
