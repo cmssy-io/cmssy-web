@@ -1,9 +1,8 @@
 import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { print } from "graphql";
 import { DEFAULT_CMSSY_API_URL, graphqlRequest } from "@cmssy/core";
+import { nextRetryMode } from "@cmssy/next";
 import { cmssy } from "@/cmssy/config";
-
-const RETRY = { maxRetries: 4 };
 
 export function publicRequest<Result, Variables>(
   document: TypedDocumentNode<Result, Variables>,
@@ -14,7 +13,7 @@ export function publicRequest<Result, Variables>(
     cmssy,
     print(document),
     variables as Record<string, unknown>,
-    { public: true, retry: RETRY },
+    { public: true, retry: nextRetryMode() },
     label,
   );
 }

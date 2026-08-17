@@ -46,7 +46,7 @@ export async function proxyGraphql(request: NextRequest) {
       cmssy,
       body.query,
       body.variables,
-      { public: true, retry: {} },
+      { public: true, retry: "interactive" },
       "browser-proxy",
     );
     return NextResponse.json({ data });
