@@ -1,11 +1,11 @@
 import { draftMode } from "next/headers";
-import { CmssyServerLayout } from "@cmssy/react";
+import { CmssyLayoutSlot } from "@cmssy/next/server";
 import type { CmssyRegion } from "@cmssy/next";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { blocks } from "@/cmssy/blocks";
 import { cmssy, type layout } from "@/cmssy/config";
+import { EditableLayout } from "@/cmssy/editable-layout";
 import { splitLocaleFromPath } from "@/lib/locale-path";
-import { fetchChromeLayouts } from "@/services/layout";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 import { CmssyLocaleProvider, LocaleSync } from "@/components/cmssy-locale";
 import { DraftPreviewBanner } from "@/components/draft-preview-banner";
@@ -28,23 +28,26 @@ export default async function SiteLayout({
 }) {
   const { path } = await params;
   const { isEnabled: draft } = await draftMode();
-  const [locales, groups, siteConfig] = await Promise.all([
+  const [locales, siteConfig] = await Promise.all([
     resolveSiteLocales(),
-    fetchChromeLayouts("/", draft ? cmssy.draftSecret : undefined),
     fetchSiteConfig(),
   ]);
   const { locale } = splitLocaleFromPath(path, locales);
   const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim();
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim();
 
+  // Site chrome comes from the root page's layouts, whatever route is open;
+  // `path` only says which language to render it in.
   const slot = (position: CmssyRegion<typeof layout>) => (
-    <CmssyServerLayout
-      groups={groups}
+    <CmssyLayoutSlot
+      config={cmssy}
       blocks={blocks}
       position={position}
-      locale={locale}
-      defaultLocale={locales.defaultLocale}
-      enabledLocales={locales.locales}
+      page="/"
+      path={path ?? []}
+      editMode={false}
+      preview={draft}
+      editable={EditableLayout}
       // The header picks its mark by theme, and only the workspace knows
       // whether it has a dark one.
       appContext={{ branding: siteConfig?.branding ?? null }}

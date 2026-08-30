@@ -1,7 +1,8 @@
-import { resolveEditorOrigin, type CmssyRegion } from "@cmssy/next";
+import { CmssyLayoutSlot } from "@cmssy/next/server";
+import type { CmssyRegion } from "@cmssy/next";
+import { blocks } from "@/cmssy/blocks";
 import { cmssy, type layout } from "@/cmssy/config";
 import { splitLocaleFromPath } from "@/lib/locale-path";
-import { fetchChromeLayouts } from "@/services/layout";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 import { EditableLayout } from "@/cmssy/editable-layout";
 import { CmssyLocaleProvider, LocaleSync } from "@/components/cmssy-locale";
@@ -17,22 +18,21 @@ export default async function EditLayout({
   params: Promise<{ path?: string[] }>;
 }) {
   const { path } = await params;
-  const [locales, groups, siteConfig] = await Promise.all([
+  const [locales, siteConfig] = await Promise.all([
     resolveSiteLocales(),
-    fetchChromeLayouts("/", cmssy.draftSecret),
     fetchSiteConfig(),
   ]);
   const { locale } = splitLocaleFromPath(path, locales);
-  const editorOrigin = resolveEditorOrigin(cmssy.editorOrigin);
 
   const slot = (position: CmssyRegion<typeof layout>) => (
-    <EditableLayout
-      groups={groups}
+    <CmssyLayoutSlot
+      config={cmssy}
+      blocks={blocks}
       position={position}
-      locale={locale}
-      defaultLocale={locales.defaultLocale}
-      enabledLocales={locales.locales}
-      edit={{ editorOrigin }}
+      page="/"
+      path={path ?? []}
+      editMode
+      editable={EditableLayout}
       appContext={{ branding: siteConfig?.branding ?? null }}
     />
   );
