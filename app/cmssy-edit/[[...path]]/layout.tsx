@@ -1,5 +1,5 @@
-import { resolveEditorOrigin } from "@cmssy/next";
-import { cmssy } from "@/cmssy/config";
+import { resolveEditorOrigin, type CmssyRegion } from "@cmssy/next";
+import { cmssy, type layout } from "@/cmssy/config";
 import { splitLocaleFromPath } from "@/lib/locale-path";
 import { fetchChromeLayouts } from "@/services/layout";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
@@ -25,7 +25,7 @@ export default async function EditLayout({
   const { locale } = splitLocaleFromPath(path, locales);
   const editorOrigin = resolveEditorOrigin(cmssy.editorOrigin);
 
-  const slot = (position: "header" | "footer") => (
+  const slot = (position: CmssyRegion<typeof layout>) => (
     <EditableLayout
       groups={groups}
       position={position}
