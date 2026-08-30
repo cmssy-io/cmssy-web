@@ -1,8 +1,9 @@
 import { draftMode } from "next/headers";
 import { CmssyServerLayout } from "@cmssy/react";
+import type { CmssyRegion } from "@cmssy/next";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { blocks } from "@/cmssy/blocks";
-import { cmssy } from "@/cmssy/config";
+import { cmssy, type layout } from "@/cmssy/config";
 import { splitLocaleFromPath } from "@/lib/locale-path";
 import { fetchChromeLayouts } from "@/services/layout";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
@@ -36,7 +37,7 @@ export default async function SiteLayout({
   const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim();
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim();
 
-  const slot = (position: "header" | "footer") => (
+  const slot = (position: CmssyRegion<typeof layout>) => (
     <CmssyServerLayout
       groups={groups}
       blocks={blocks}

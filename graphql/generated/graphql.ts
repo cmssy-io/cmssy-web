@@ -29,14 +29,6 @@ export type LayoutMobileBehavior =
   | 'collapse'
   | 'keep';
 
-export type LayoutPosition =
-  | 'bottom'
-  | 'footer'
-  | 'header'
-  | 'sidebar_left'
-  | 'sidebar_right'
-  | 'top';
-
 export type PageSortBy =
   | 'order_asc'
   | 'publishedAt_desc';
@@ -92,7 +84,7 @@ export type PublicPageLayoutsQueryVariables = Exact<{
 }>;
 
 
-export type PublicPageLayoutsQuery = { public: { page: { layouts: Array<{ position: LayoutPosition, blocks: Array<{ id: string, type: string, content: Record<string, unknown>, style: Record<string, unknown> | null, advanced: Record<string, unknown> | null, order: number, isActive: boolean }>, settings: { desktopWidth: number | null, mobileBehavior: LayoutMobileBehavior } | null }> } } };
+export type PublicPageLayoutsQuery = { public: { page: { layouts: Array<{ position: string, blocks: Array<{ id: string, type: string, content: Record<string, unknown>, style: Record<string, unknown> | null, advanced: Record<string, unknown> | null, order: number, isActive: boolean }>, settings: { desktopWidth: number | null, mobileBehavior: LayoutMobileBehavior } | null }> } } };
 
 export type PublicModelRecordsQueryVariables = Exact<{
   workspaceId: string;
