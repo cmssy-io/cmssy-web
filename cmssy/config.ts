@@ -3,6 +3,7 @@ import { defineCmssyConfig, defineCmssyLayout } from "@cmssy/next";
 export const layout = defineCmssyLayout({
   regions: [
     { id: "header", label: "Header" },
+    { id: "sidebar_left", label: "Sidebar" },
     { id: "footer", label: "Footer" },
   ],
 });
