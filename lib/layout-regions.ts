@@ -4,11 +4,11 @@ import type { layout } from "@/cmssy/config";
 
 export function regionHasBlocks(
   groups: CmssyLayoutGroup[],
-  position: CmssyRegion<typeof layout>,
+  region: CmssyRegion<typeof layout>,
 ): boolean {
   return groups.some(
     (group) =>
-      group.position === position &&
+      group.region === region &&
       group.blocks.some((block) => block.isActive),
   );
 }

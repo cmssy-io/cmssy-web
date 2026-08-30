@@ -91,7 +91,7 @@ query PublicPageLayouts($workspaceSlug: String!, $pageSlug: String!, $previewSec
   public {
     page {
       layouts(workspaceSlug: $workspaceSlug, pageSlug: $pageSlug, previewSecret: $previewSecret) {
-        position
+        region
         blocks { id type content style advanced order isActive }
         settings
       }

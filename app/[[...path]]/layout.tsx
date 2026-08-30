@@ -38,11 +38,11 @@ export default async function SiteLayout({
 
   // Site chrome comes from the root page's layouts, whatever route is open;
   // `path` only says which language to render it in.
-  const slot = (position: CmssyRegion<typeof layout>) => (
+  const slot = (region: CmssyRegion<typeof layout>) => (
     <CmssyLayoutSlot
       config={cmssy}
       blocks={blocks}
-      position={position}
+      region={region}
       page="/"
       path={path ?? []}
       editMode={false}

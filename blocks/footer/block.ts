@@ -27,7 +27,7 @@ export const footerBlock = defineBlock({
   category: "Layout",
   label: "Footer",
   description: "Site footer with links and legal (layout block); bottom of every page.",
-  layoutPositions: ["footer"],
+  layoutRegions: ["footer"],
   component: Footer,
   props: footerProps,
 });

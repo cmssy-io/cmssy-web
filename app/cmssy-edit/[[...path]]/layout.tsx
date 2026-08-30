@@ -24,11 +24,11 @@ export default async function EditLayout({
   ]);
   const { locale } = splitLocaleFromPath(path, locales);
 
-  const slot = (position: CmssyRegion<typeof layout>) => (
+  const slot = (region: CmssyRegion<typeof layout>) => (
     <CmssyLayoutSlot
       config={cmssy}
       blocks={blocks}
-      position={position}
+      region={region}
       page="/"
       path={path ?? []}
       editMode
