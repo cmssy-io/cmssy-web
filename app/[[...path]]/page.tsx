@@ -57,7 +57,7 @@ export default async function Page({ params }: PageProps) {
   ]);
 
   const sidebar = groups.find((group) => group.position === "sidebar_left");
-  if (!sidebar || sidebar.blocks.length === 0) return content;
+  if (!sidebar?.blocks.some((block) => block.isActive)) return content;
 
   const section = await loadDocsSection(
     segments,

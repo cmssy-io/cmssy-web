@@ -1,6 +1,7 @@
 import nextDynamic from "next/dynamic";
 import { createCmssyEditPage } from "@cmssy/next/server";
 import { resolveEditorOrigin } from "@cmssy/next";
+import { resolveEditorLayoutBlockData } from "@cmssy/react";
 import { cmssy } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
 import { EditableLayout } from "@/cmssy/editable-layout";
@@ -35,8 +36,21 @@ export default async function EditPage({ params, searchParams }: PageProps) {
     renderEditPage({ params: Promise.resolve({ path }), searchParams }),
   ]);
   const sidebar = groups.find((group) => group.position === "sidebar_left");
-  if (!sidebar || sidebar.blocks.length === 0) return content;
+  if (!sidebar?.blocks.some((block) => block.isActive)) return content;
 
+  const { data, content: resolvedContent } = await resolveEditorLayoutBlockData(
+    {
+      groups,
+      blocks,
+      position: "sidebar_left",
+      locale,
+      defaultLocale: locales.defaultLocale,
+      enabledLocales: locales.locales,
+      isPreview: true,
+      config: cmssy,
+      appContext: { path: segments },
+    },
+  );
   const editorOrigin = resolveEditorOrigin(cmssy.editorOrigin);
 
   return (
@@ -49,6 +63,8 @@ export default async function EditPage({ params, searchParams }: PageProps) {
           defaultLocale={locales.defaultLocale}
           enabledLocales={locales.locales}
           edit={{ editorOrigin }}
+          data={data}
+          resolvedContent={resolvedContent}
           appContext={{ path: segments }}
         />
       </aside>
