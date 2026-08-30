@@ -10,11 +10,10 @@ export const docsSidebarBlock = defineBlock({
     "Section navigation built from the page tree the block is placed on; add it to a section root's layout and every page below inherits it.",
   layoutPositions: ["sidebar_left"],
   loader: async ({ context }): Promise<DocsSection | null> => {
-    const app = context?.app as { path?: string[] } | undefined;
-    if (!context || !app?.path) return null;
+    if (!context?.page) return null;
     const { loadDocsSection } = await import("@/lib/docs-section");
     return loadDocsSection(
-      app.path,
+      context.page.path,
       context.locale.current,
       context.locale.default,
     );

@@ -86,19 +86,6 @@ query PublicPageMeta($workspaceSlug: String!, $slug: String!) {
   }
 }
 
-# Header, footer and the other layout positions for a page.
-query PublicPageLayouts($workspaceSlug: String!, $pageSlug: String!, $previewSecret: String) {
-  public {
-    page {
-      layouts(workspaceSlug: $workspaceSlug, pageSlug: $pageSlug, previewSecret: $previewSecret) {
-        position
-        blocks { id type content style advanced order isActive }
-        settings
-      }
-    }
-  }
-}
-
 # Records of one model - the typed half of `cmssy types`.
 query PublicModelRecords($workspaceId: String!, $modelSlug: String!, $filter: JSON, $sort: String, $locale: String, $limit: Int, $offset: Int, $populate: [String!]) {
   public {
