@@ -51,7 +51,8 @@ export default async function Page({ params }: PageProps) {
       position: "sidebar_left",
       blocks,
       path: path ?? [],
-      editMode: draft,
+      editMode: false,
+      preview: draft,
       editable: EditableLayout,
     }),
   ]);

@@ -45,7 +45,8 @@ export default async function SiteLayout({
       position={position}
       page="/"
       path={path ?? []}
-      editMode={draft}
+      editMode={false}
+      preview={draft}
       editable={EditableLayout}
       // The header picks its mark by theme, and only the workspace knows
       // whether it has a dark one.

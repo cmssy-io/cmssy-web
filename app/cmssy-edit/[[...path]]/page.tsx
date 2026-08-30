@@ -1,5 +1,5 @@
 import nextDynamic from "next/dynamic";
-import { CmssyLayoutSlot, createCmssyEditPage } from "@cmssy/next/server";
+import { createCmssyEditPage, resolveCmssyLayout } from "@cmssy/next/server";
 import { cmssy } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
 import { EditableLayout } from "@/cmssy/editable-layout";
@@ -22,32 +22,25 @@ type PageProps = {
 
 export default async function EditPage({ params, searchParams }: PageProps) {
   const { path } = await params;
-  const content = await renderEditPage({
-    params: Promise.resolve({ path }),
-    searchParams,
-  });
+  const [content, sidebar] = await Promise.all([
+    renderEditPage({ params: Promise.resolve({ path }), searchParams }),
+    resolveCmssyLayout(cmssy, {
+      position: "sidebar_left",
+      blocks,
+      path: path ?? [],
+      editMode: true,
+      editable: EditableLayout,
+    }),
+  ]);
+
+  if (!regionHasBlocks(sidebar.groups, "sidebar_left")) return content;
 
   return (
-    <CmssyLayoutSlot
-      config={cmssy}
-      blocks={blocks}
-      position="sidebar_left"
-      path={path ?? []}
-      editMode
-      editable={EditableLayout}
-    >
-      {({ groups, element }) =>
-        regionHasBlocks(groups, "sidebar_left") ? (
-          <div className="mx-auto flex w-full max-w-320 flex-col md:flex-row">
-            <aside className="sticky top-[var(--site-chrome,4rem)] z-30 md:h-[calc(100dvh-var(--site-chrome,4rem))] md:w-64 md:shrink-0 md:overflow-y-auto md:overscroll-contain md:border-r md:border-border">
-              {element}
-            </aside>
-            <main className="min-w-0 flex-1">{content}</main>
-          </div>
-        ) : (
-          content
-        )
-      }
-    </CmssyLayoutSlot>
+    <div className="mx-auto flex w-full max-w-320 flex-col md:flex-row">
+      <aside className="sticky top-[var(--site-chrome,4rem)] z-30 md:h-[calc(100dvh-var(--site-chrome,4rem))] md:w-64 md:shrink-0 md:overflow-y-auto md:overscroll-contain md:border-r md:border-border">
+        {sidebar.element}
+      </aside>
+      <main className="min-w-0 flex-1">{content}</main>
+    </div>
   );
 }
