@@ -25,7 +25,7 @@ export default async function EditPage({ params, searchParams }: PageProps) {
   const [content, sidebar] = await Promise.all([
     renderEditPage({ params: Promise.resolve({ path }), searchParams }),
     resolveCmssyLayout(cmssy, {
-      position: "sidebar_left",
+      region: "sidebar_left",
       blocks,
       path: path ?? [],
       editMode: true,

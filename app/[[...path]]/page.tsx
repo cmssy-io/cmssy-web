@@ -48,7 +48,7 @@ export default async function Page({ params }: PageProps) {
   const [content, sidebar] = await Promise.all([
     renderPage({ params: Promise.resolve({ path }) }),
     resolveCmssyLayout(cmssy, {
-      position: "sidebar_left",
+      region: "sidebar_left",
       blocks,
       path: path ?? [],
       editMode: false,

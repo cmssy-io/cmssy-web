@@ -8,7 +8,7 @@ export const docsSidebarBlock = defineBlock({
   label: "Docs Sidebar",
   description:
     "Section navigation built from the page tree the block is placed on; add it to a section root's layout and every page below inherits it.",
-  layoutPositions: ["sidebar_left"],
+  layoutRegions: ["sidebar_left"],
   loader: async ({ context }): Promise<DocsSection | null> => {
     if (!context?.page) return null;
     const { loadDocsSection } = await import("@/lib/docs-section");

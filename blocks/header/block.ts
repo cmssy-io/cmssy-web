@@ -127,7 +127,7 @@ export const headerBlock = defineBlock({
   label: "Header Navigation",
   description:
     "Site header and navigation bar (layout block); top of every page.",
-  layoutPositions: ["header"],
+  layoutRegions: ["header"],
   // The header is a layout block whose component reads a custom platform
   // context (auth/customer/logout) that differs from the SDK's block context,
   // so the component is cast; its content shape is still derived from the
