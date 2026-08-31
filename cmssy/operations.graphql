@@ -86,7 +86,7 @@ query PublicPageMeta($workspaceSlug: String!, $slug: String!) {
   }
 }
 
-# Header, footer and the other layout positions for a page.
+# Header, footer and the other layout regions for a page.
 query PublicPageLayouts($workspaceSlug: String!, $pageSlug: String!, $previewSecret: String) {
   public {
     page {
