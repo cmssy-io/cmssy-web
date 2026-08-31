@@ -2,6 +2,7 @@ import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
 import { FigEyebrow } from "@/components/fig-eyebrow";
 import { findPlan, type Plan, type PlanLimits } from "@/lib/plans";
+import type { DeliveryLimits } from "@/lib/limits";
 import type { planComparisonProps } from "./block";
 
 interface Labels {
@@ -64,7 +65,10 @@ function cell(
 export default function PlanComparison({
   content,
   data,
-}: BlockProps<typeof planComparisonProps, { plans?: Plan[] | null }>) {
+}: BlockProps<
+  typeof planComparisonProps,
+  { plans?: Plan[] | null; delivery?: DeliveryLimits | null }
+>) {
   const {
     fig = "",
     eyebrow = "",
@@ -76,11 +80,18 @@ export default function PlanComparison({
     columns = [],
     rows = [],
     footnote = "",
+    rateLimitLabel = "",
+    rateLimitUnit = "",
+    rateLimitNote = "",
   } = content;
 
   const served = data?.plans ?? null;
+  const delivery = data?.delivery ?? null;
   const shown = columns
-    .map((column) => ({ ...column, plan: findPlan(served, column.planId ?? "") }))
+    .map((column) => ({
+      ...column,
+      plan: findPlan(served, column.planId ?? ""),
+    }))
     .filter((column): column is typeof column & { plan: Plan } =>
       Boolean(column.plan),
     );
@@ -144,6 +155,19 @@ export default function PlanComparison({
             </tbody>
           </table>
         </div>
+
+        {delivery && rateLimitLabel && (
+          <p className="mx-auto mt-6 max-w-5xl text-center text-sm text-muted-foreground">
+            <span className="font-semibold text-foreground">
+              {rateLimitLabel}:
+            </span>{" "}
+            <span className="tabular-nums">
+              {delivery.perWorkspacePerMinute.toLocaleString("en-US")}
+            </span>{" "}
+            {rateLimitUnit}
+            {rateLimitNote && <> · {rateLimitNote}</>}
+          </p>
+        )}
 
         {footnote && (
           <p className="mx-auto mt-6 max-w-5xl text-center font-mono text-[11px] text-muted-foreground">
