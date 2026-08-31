@@ -1,6 +1,7 @@
 import { defineBlock, fields } from "@cmssy/react";
 import PlanComparison from "./PlanComparison";
 import type { Plan } from "@/lib/plans";
+import type { DeliveryLimits } from "@/lib/limits";
 
 export const planComparisonProps = {
   fig: fields.text({ label: "Fig Number", defaultValue: "FIG 6.1" }),
@@ -68,6 +69,18 @@ export const planComparisonProps = {
     label: "Footnote",
     placeholder: "Optional line under the table",
   }),
+  rateLimitLabel: fields.text({
+    label: "Delivery rate limit label",
+    placeholder: "e.g., Delivery rate limit (all plans)",
+  }),
+  rateLimitUnit: fields.text({
+    label: "Delivery rate limit unit",
+    placeholder: "e.g., requests / minute per workspace",
+  }),
+  rateLimitNote: fields.text({
+    label: "Delivery rate limit note",
+    placeholder: "e.g., Every read counts, cached or not",
+  }),
 };
 
 export const planComparisonBlock = defineBlock({
@@ -78,8 +91,16 @@ export const planComparisonBlock = defineBlock({
     "Full plan-by-plan limit table; the numbers are served from the API that enforces them, so the page cannot disagree with the product.",
   component: PlanComparison,
   props: planComparisonProps,
-  loader: async (): Promise<{ plans: Plan[] | null }> => {
+  loader: async (): Promise<{
+    plans: Plan[] | null;
+    delivery: DeliveryLimits | null;
+  }> => {
     const { fetchPlans } = await import("@/lib/plans-server");
-    return { plans: await fetchPlans() };
+    const { fetchDeliveryLimits } = await import("@/lib/limits-server");
+    const [plans, delivery] = await Promise.all([
+      fetchPlans(),
+      fetchDeliveryLimits(),
+    ]);
+    return { plans, delivery };
   },
 });

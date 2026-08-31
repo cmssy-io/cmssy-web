@@ -19,6 +19,7 @@ import { docsFileTreeBlock } from "@/blocks/docs-file-tree/block";
 import { docsHeroBlock } from "@/blocks/docs-hero/block";
 import { docsImageBlock } from "@/blocks/docs-image/block";
 import { docsPropsTableBlock } from "@/blocks/docs-props-table/block";
+import { docsRateLimitsBlock } from "@/blocks/docs-rate-limits/block";
 import { docsSidebarBlock } from "@/blocks/docs-sidebar/block";
 import { docsStepsBlock } from "@/blocks/docs-steps/block";
 import { docsTabsBlock } from "@/blocks/docs-tabs/block";
@@ -59,6 +60,7 @@ export const blocks = [
   docsHeroBlock,
   docsImageBlock,
   docsPropsTableBlock,
+  docsRateLimitsBlock,
   docsSidebarBlock,
   docsStepsBlock,
   docsTabsBlock,
