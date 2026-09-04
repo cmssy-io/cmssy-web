@@ -18,9 +18,9 @@
     "types": "cmssy types --out graphql/models.ts"
   },
   "dependencies": {
-    "@cmssy/core": "^16.0.0",
-    "@cmssy/next": "^16.0.0",
-    "@cmssy/react": "^16.0.0",
+    "@cmssy/core": "^16.1.0",
+    "@cmssy/next": "^16.1.0",
+    "@cmssy/react": "^16.1.0",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@next/third-parties": "^16.2.7",
     "@radix-ui/react-accordion": "^1.2.12",
@@ -49,8 +49,8 @@
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
-    "@cmssy/cli": "^16.0.0",
-    "@cmssy/eslint-plugin": "^16.0.0",
+    "@cmssy/cli": "^16.1.0",
+    "@cmssy/eslint-plugin": "^16.1.0",
     "@cmssy/types": "^0.41.0",
     "@eslint/js": "^9.39.3",
     "@graphql-codegen/cli": "^7.2.0",

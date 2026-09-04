@@ -6,6 +6,7 @@ import { blocks } from "@/cmssy/blocks";
 import { cmssy, type layout } from "@/cmssy/config";
 import { EditableLayout } from "@/cmssy/editable-layout";
 import { splitLocaleFromPath } from "@/lib/locale-path";
+import { CONTENT_CACHE } from "@/services/pages";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 import { CmssyLocaleProvider, LocaleSync } from "@/components/cmssy-locale";
 import { DraftPreviewBanner } from "@/components/draft-preview-banner";
@@ -48,6 +49,7 @@ export default async function SiteLayout({
       editMode={false}
       preview={draft}
       editable={EditableLayout}
+      cache={CONTENT_CACHE}
       // The header picks its mark by theme, and only the workspace knows
       // whether it has a dark one.
       appContext={{ branding: siteConfig?.branding ?? null }}

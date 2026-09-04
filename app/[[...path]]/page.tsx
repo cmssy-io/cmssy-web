@@ -3,7 +3,11 @@ import { createCmssyPage, resolveCmssyLayout } from "@cmssy/next/server";
 import { cmssy } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
 import { EditableLayout } from "@/cmssy/editable-layout";
-import { listChildPages, publishedPaths } from "@/services/pages";
+import {
+  CONTENT_CACHE,
+  listChildPages,
+  publishedPaths,
+} from "@/services/pages";
 import { buildPageMetadata } from "@/services/seo";
 import { DocsShell } from "@/components/docs-shell";
 import { DocsPrevNext } from "@/components/docs-prev-next";
@@ -30,6 +34,7 @@ async function appContextFor(slug: string): Promise<Record<string, unknown>> {
 
 const renderPage = createCmssyPage(cmssy, blocks, {
   appContext: ({ page }) => appContextFor(page.slug ?? "/"),
+  cache: CONTENT_CACHE,
 });
 
 type PageProps = {
@@ -54,6 +59,7 @@ export default async function Page({ params }: PageProps) {
       editMode: false,
       preview: draft,
       editable: EditableLayout,
+      cache: CONTENT_CACHE,
     }),
   ]);
 
