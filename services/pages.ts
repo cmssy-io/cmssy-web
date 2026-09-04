@@ -3,6 +3,7 @@ import { unstable_cache } from "next/cache";
 import { print } from "graphql";
 import { createCmssyClient } from "@cmssy/react";
 import type { CmssyPageData, CmssyPageSummary } from "@cmssy/react";
+import type { CmssyDataCacheOptions } from "@cmssy/next";
 import { cmssy } from "@/cmssy/config";
 import {
   PublicPageByIdDocument,
@@ -28,6 +29,12 @@ const PAGES_BY_TYPE_QUERY = print(PublicPagesByTypeDocument);
 
 /** One tag for everything the CMS can change; the publish webhook clears it. */
 export const CONTENT_TAG = "cmssy-content";
+
+/**
+ * The SDK's own reads (page, layouts, site locales, forms) join the data cache
+ * under the same tag, so the webhook expires them with everything else.
+ */
+export const CONTENT_CACHE: CmssyDataCacheOptions = { revalidate: 3600 };
 
 /**
  * Direct children of a slug, ordered as in the page tree. `queryScoped` fills
