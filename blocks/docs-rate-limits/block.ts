@@ -52,9 +52,9 @@ export const docsRateLimitsProps = {
     defaultValue: "adjustable",
   }),
   caveat: fields.textarea({
-    label: "Caveat",
+    label: "Caveat under every family",
     defaultValue:
-      "Every delivery read counts toward the limit, cached or not - a CDN in front of your site does not stretch the budget.",
+      "Each number is the budget for one window; a call past it is refused with 429 and a Retry-After header.",
   }),
 };
 
