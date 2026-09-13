@@ -1,4 +1,5 @@
 import { resolveApiUrl } from "@/services/gateway";
+import { publishedLimits } from "./limits";
 import type { DeliveryLimits, PublishedLimits } from "./limits";
 
 async function fetchPublicLimits(): Promise<PublishedLimits | null> {
@@ -13,12 +14,13 @@ async function fetchPublicLimits(): Promise<PublishedLimits | null> {
       );
       return null;
     }
-    const json = (await response.json()) as Partial<PublishedLimits>;
-    return {
-      delivery: json.delivery ?? null,
-      groups: json.groups ?? [],
-      protection: json.protection ?? [],
-    };
+    const limits = publishedLimits(await response.json());
+    if (limits.protection.length === 0) {
+      console.error(
+        `[limits] ${base}/public/limits published no protection table`,
+      );
+    }
+    return limits;
   } catch (error) {
     console.error("[limits] failed to load the published limits", error);
     return null;

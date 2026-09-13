@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { limitGroups, wordFor, type PublishedLimits } from "./limits";
+import {
+  limitGroups,
+  publishedLimits,
+  wordFor,
+  type PublishedLimits,
+} from "./limits";
 
 function limit(
   name: string,
@@ -95,5 +100,61 @@ describe("limitGroups", () => {
     expect(limitGroups(null, [{ key: "delivery", label: "Delivery" }])).toEqual(
       [],
     );
+  });
+});
+
+describe("publishedLimits", () => {
+  it("keeps a well-formed payload whole", () => {
+    expect(
+      publishedLimits({
+        delivery: { perWorkspacePerMinute: 1200, perIpPerMinute: 600 },
+        groups: ["delivery"],
+        protection: [limit("deliveryPerIp", "delivery", { configurable: true })],
+      }),
+    ).toEqual({
+      delivery: { perWorkspacePerMinute: 1200, perIpPerMinute: 600 },
+      groups: ["delivery"],
+      protection: [limit("deliveryPerIp", "delivery", { configurable: true })],
+    });
+  });
+
+  it("drops a row without a number, which would throw while rendering", () => {
+    const rows = publishedLimits({
+      protection: [
+        { ...limit("ok", "delivery") },
+        { ...limit("noValue", "delivery"), value: null },
+        { ...limit("stringValue", "delivery"), value: "600" },
+        { ...limit("infinite", "delivery"), value: Number.POSITIVE_INFINITY },
+        { ...limit("noScope", "delivery"), scope: "" },
+        null,
+        "row",
+      ],
+    }).protection;
+
+    expect(rows.map((row) => row.name)).toEqual(["ok"]);
+  });
+
+  it("survives a payload whose shape is nothing like the contract", () => {
+    expect(publishedLimits({ groups: "delivery", protection: {} })).toEqual({
+      delivery: null,
+      groups: [],
+      protection: [],
+    });
+    expect(publishedLimits(null)).toEqual({
+      delivery: null,
+      groups: [],
+      protection: [],
+    });
+    expect(publishedLimits({ delivery: { perIpPerMinute: 600 } }).delivery).toBe(
+      null,
+    );
+  });
+
+  it("treats a configurable flag that is not true as not configurable", () => {
+    const [row] = publishedLimits({
+      protection: [{ ...limit("x", "delivery"), configurable: "yes" }],
+    }).protection;
+
+    expect(row?.configurable).toBe(false);
   });
 });
