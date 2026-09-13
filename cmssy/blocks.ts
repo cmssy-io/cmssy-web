@@ -24,6 +24,7 @@ import { docsSidebarBlock } from "@/blocks/docs-sidebar/block";
 import { docsStepsBlock } from "@/blocks/docs-steps/block";
 import { docsTabsBlock } from "@/blocks/docs-tabs/block";
 import { docsTerminalBlock } from "@/blocks/docs-terminal/block";
+import { docsToolCatalogueBlock } from "@/blocks/docs-tool-catalogue/block";
 import { faqBlock } from "@/blocks/faq/block";
 import { featuresBlock } from "@/blocks/features/block";
 import { footerBlock } from "@/blocks/footer/block";
@@ -65,6 +66,7 @@ export const blocks = [
   docsStepsBlock,
   docsTabsBlock,
   docsTerminalBlock,
+  docsToolCatalogueBlock,
   faqBlock,
   featuresBlock,
   footerBlock,
