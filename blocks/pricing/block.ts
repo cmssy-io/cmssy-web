@@ -17,7 +17,7 @@ export const pricingProps = {
   trialNotice: fields.text({
     label: "Trial Notice",
     defaultValue:
-      "Every paid plan starts with a 14-day free trial. No card needed.",
+      "Every paid plan starts with a 7-day free trial. You add a card up front and nothing is charged until it ends.",
   }),
   popularBadgeText: fields.text({
     label: "Popular Badge Text",
