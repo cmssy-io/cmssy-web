@@ -7,12 +7,8 @@ import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
 import { FigEyebrow } from "@/components/fig-eyebrow";
 import type { pricingProps } from "./block";
-import { findPlan, formatUsd, type Plan } from "@/lib/plans";
 
-export default function Pricing({
-  content,
-  data,
-}: BlockProps<typeof pricingProps, { plans?: Plan[] | null }>) {
+export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
   const {
     fig = "",
     eyebrow = "",
@@ -24,21 +20,6 @@ export default function Pricing({
     plans = [],
   } = content;
   const [annual, setAnnual] = useState(true);
-  const served = data?.plans ?? null;
-
-  function priceOf(planId: string): string | null {
-    const plan = findPlan(served, planId);
-    if (!plan) return null;
-    if (plan.price) {
-      return annual
-        ? formatUsd(Math.round(plan.price.annual.amount / 12))
-        : formatUsd(plan.price.monthly.amount);
-    }
-    if (plan.startingPriceUsdMonth !== null) {
-      return `$${plan.startingPriceUsdMonth}+`;
-    }
-    return plan.id === "free" ? "$0" : null;
-  }
 
   return (
     <section id="pricing" className="bg-muted py-24">
@@ -76,7 +57,8 @@ export default function Pricing({
 
         <div className="mx-auto mt-12 grid max-w-5xl items-stretch gap-6 lg:grid-cols-3">
           {plans.map((plan) => {
-            const price = priceOf(plan.planId ?? "");
+            const price =
+              !annual && plan.priceMonthly ? plan.priceMonthly : plan.price;
             const period =
               !annual && plan.periodMonthly ? plan.periodMonthly : plan.period;
             return (
