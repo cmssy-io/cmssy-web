@@ -28,7 +28,3 @@ export interface Plan {
 export function findPlan(plans: Plan[] | null, id: string): Plan | null {
   return plans?.find((plan) => plan.id === id) ?? null;
 }
-
-export function formatUsd(cents: number): string {
-  return cents % 100 === 0 ? `$${cents / 100}` : `$${(cents / 100).toFixed(2)}`;
-}
