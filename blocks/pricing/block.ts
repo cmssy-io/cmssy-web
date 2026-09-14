@@ -25,7 +25,7 @@ export const pricingProps = {
   }),
   annualDiscountLabel: fields.text({
     label: "Annual Toggle Label",
-    defaultValue: "Annual −20%",
+    defaultValue: "Annual · 2 months free",
   }),
   plans: fields.repeater({
     label: "Plans",
