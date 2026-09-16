@@ -26,8 +26,8 @@ export default function CookieConsent({
       event.preventDefault();
       setReopened(true);
     }
-    document.addEventListener("click", onClick);
-    return () => document.removeEventListener("click", onClick);
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
   }, []);
 
   const open = inEditor || reopened || consent === "unset";
