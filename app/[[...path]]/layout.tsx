@@ -1,7 +1,6 @@
 import { draftMode } from "next/headers";
 import { CmssyLayoutSlot } from "@cmssy/next/server";
 import type { CmssyRegion } from "@cmssy/next";
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { blocks } from "@/cmssy/blocks";
 import { cmssy, type layout } from "@/cmssy/config";
 import { EditableLayout } from "@/cmssy/editable-layout";
@@ -10,6 +9,7 @@ import { CONTENT_CACHE } from "@/services/pages";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 import { CmssyLocaleProvider, LocaleSync } from "@/components/cmssy-locale";
 import { DraftPreviewBanner } from "@/components/draft-preview-banner";
+import { Analytics } from "@/components/analytics";
 
 // The document itself is in app/layout.tsx, which never remounts. This layout
 // carries what depends on the path: the locale, the header and the footer.
@@ -65,8 +65,7 @@ export default async function SiteLayout({
       }}
     >
       <LocaleSync />
-      {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
-      {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
+      <Analytics gaId={gaId} gtmId={gtmId} />
       <div className="contents [&>[data-block-type]]:contents">
         {slot("header")}
       </div>

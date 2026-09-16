@@ -4,6 +4,7 @@ import { resolveSiteLocales } from "@/services/site";
 import { MotionProvider } from "@/components/motion/provider";
 import { ThemeProvider } from "@/components/theme";
 import { themeInitScript } from "@/lib/theme-script";
+import { consentModeInitScript } from "@/lib/consent";
 
 /**
  * The real root layout: the document, the fonts, the theme, the motion
@@ -61,6 +62,9 @@ export default async function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{ __html: themeInitScript(locales) }}
+        />
+        <script
+          dangerouslySetInnerHTML={{ __html: consentModeInitScript() }}
         />
       </head>
       <body>
