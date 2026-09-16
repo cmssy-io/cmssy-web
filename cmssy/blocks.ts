@@ -7,6 +7,7 @@ import { changelogBlock } from "@/blocks/changelog/block";
 import { codeTabsBlock } from "@/blocks/code-tabs/block";
 import { comparisonTableBlock } from "@/blocks/comparison-table/block";
 import { contactBlock } from "@/blocks/contact/block";
+import { cookieConsentBlock } from "@/blocks/cookie-consent/block";
 import { ctaBlock } from "@/blocks/cta/block";
 import { demoVideoBlock } from "@/blocks/demo-video/block";
 import { docsApiReferenceBlock } from "@/blocks/docs-api-reference/block";
@@ -49,6 +50,7 @@ export const blocks = [
   blogPostsBlock,
   changelogBlock,
   contactBlock,
+  cookieConsentBlock,
   ctaBlock,
   demoVideoBlock,
   docsApiReferenceBlock,
