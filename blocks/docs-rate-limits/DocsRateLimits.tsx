@@ -5,6 +5,7 @@ import type { docsRateLimitsProps } from "./block";
 
 export default function DocsRateLimits({
   content,
+  context,
   data,
 }: BlockProps<
   typeof docsRateLimitsProps,
@@ -77,7 +78,7 @@ export default function DocsRateLimits({
                       </td>
                       <td className="px-4 py-3 align-top">
                         <code className="text-[13px] font-mono font-semibold text-primary">
-                          {limit.value.toLocaleString("en-US")}
+                          {limit.value.toLocaleString(context?.locale.current)}
                         </code>{" "}
                         <span className="text-muted-foreground">
                           {wordFor(vocabulary, limit.unit)} /{" "}
