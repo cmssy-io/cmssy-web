@@ -12,7 +12,7 @@ export function PostHogAnalytics({ appUrl }: { appUrl: string }) {
     if (!posthog.__loaded || consent === "pending") return;
     const optedOut = posthog.has_opted_out_capturing();
     if (consent === "granted" && optedOut) {
-      posthog.opt_in_capturing({ captureEventName: "$pageview" });
+      posthog.opt_in_capturing();
     } else if (consent !== "granted" && !optedOut) {
       posthog.opt_out_capturing();
     }
