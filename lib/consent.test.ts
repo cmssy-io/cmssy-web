@@ -48,7 +48,7 @@ describe("analyticsCookieExpiries", () => {
   it("expires every GA cookie on the host and each parent domain", () => {
     expect(
       analyticsCookieExpiries(
-        "_ga=GA1.1.1; _ga_ABC123=GS1; cmssy_consent=denied; _gid=x; _gallery=keep; _gatx",
+        "_ga=GA1.1.1; _ga_ABC123=GS1; cmssy_consent=denied; _gid=x; _gallery=keep; _gatx; ph_phc_x_posthog=%7B%7D; __ph_opt_in_out_phc_x=0; graph=keep",
         "www.cmssy.com",
       ),
     ).toEqual([
@@ -61,6 +61,9 @@ describe("analyticsCookieExpiries", () => {
       "_gid=; Path=/; Max-Age=0",
       "_gid=; Path=/; Domain=www.cmssy.com; Max-Age=0",
       "_gid=; Path=/; Domain=cmssy.com; Max-Age=0",
+      "ph_phc_x_posthog=; Path=/; Max-Age=0",
+      "ph_phc_x_posthog=; Path=/; Domain=www.cmssy.com; Max-Age=0",
+      "ph_phc_x_posthog=; Path=/; Domain=cmssy.com; Max-Age=0",
     ]);
   });
 

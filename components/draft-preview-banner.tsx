@@ -1,10 +1,10 @@
 import { draftMode } from "next/headers";
 import { cmssy } from "@/cmssy/config";
+import { ADMIN_URL } from "@/lib/admin-url";
 import { splitLocaleFromPath } from "@/lib/locale-path";
 import { getPageId } from "@/services/pages";
 import { resolveSiteLocales } from "@/services/site";
 
-const ADMIN_URL = process.env.CMSSY_ADMIN_URL?.trim() || "https://cmssy.io";
 
 export async function DraftPreviewBanner({ path }: { path?: string[] }) {
   const { isEnabled } = await draftMode();

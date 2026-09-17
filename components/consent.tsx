@@ -6,6 +6,7 @@ import {
   type ConsentState,
   analyticsCookieExpiries,
   consentUpdate,
+  isAnalyticsCookie,
   parseConsent,
   serializeConsent,
 } from "@/lib/consent";
@@ -47,6 +48,9 @@ export function setConsent(choice: ConsentChoice) {
       location.hostname,
     )) {
       document.cookie = expiry;
+    }
+    for (const key of Object.keys(localStorage).filter(isAnalyticsCookie)) {
+      localStorage.removeItem(key);
     }
   }
   window.gtag?.("consent", "update", consentUpdate(choice));

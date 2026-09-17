@@ -10,6 +10,7 @@ import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 import { CmssyLocaleProvider, LocaleSync } from "@/components/cmssy-locale";
 import { DraftPreviewBanner } from "@/components/draft-preview-banner";
 import { Analytics } from "@/components/analytics";
+import { ADMIN_URL } from "@/lib/admin-url";
 
 // The document itself is in app/layout.tsx, which never remounts. This layout
 // carries what depends on the path: the locale, the header and the footer.
@@ -65,7 +66,13 @@ export default async function SiteLayout({
       }}
     >
       <LocaleSync />
-      <Analytics gaId={gaId} gtmId={gtmId} />
+      <Analytics
+        gaId={gaId}
+        gtmId={gtmId}
+        posthogToken={process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN?.trim()}
+        posthogHost={process.env.NEXT_PUBLIC_POSTHOG_HOST?.trim()}
+        appUrl={ADMIN_URL}
+      />
       <div className="contents [&>[data-block-type]]:contents">
         {slot("header")}
       </div>
