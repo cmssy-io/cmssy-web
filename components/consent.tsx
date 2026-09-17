@@ -40,6 +40,16 @@ export function useConsent(): ConsentSnapshot {
   return useSyncExternalStore(subscribe, readConsent, pendingConsent);
 }
 
+function clearAnalyticsStorage() {
+  try {
+    for (const key of Object.keys(localStorage).filter(isAnalyticsCookie)) {
+      localStorage.removeItem(key);
+    }
+  } catch {
+    return;
+  }
+}
+
 export function setConsent(choice: ConsentChoice) {
   document.cookie = serializeConsent(choice, location.protocol === "https:");
   if (choice === "denied") {
@@ -49,9 +59,7 @@ export function setConsent(choice: ConsentChoice) {
     )) {
       document.cookie = expiry;
     }
-    for (const key of Object.keys(localStorage).filter(isAnalyticsCookie)) {
-      localStorage.removeItem(key);
-    }
+    clearAnalyticsStorage();
   }
   window.gtag?.("consent", "update", consentUpdate(choice));
   for (const listener of listeners) listener();

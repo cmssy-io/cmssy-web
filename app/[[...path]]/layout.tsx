@@ -66,13 +66,7 @@ export default async function SiteLayout({
       }}
     >
       <LocaleSync />
-      <Analytics
-        gaId={gaId}
-        gtmId={gtmId}
-        posthogToken={process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN?.trim()}
-        posthogHost={process.env.NEXT_PUBLIC_POSTHOG_HOST?.trim()}
-        appUrl={ADMIN_URL}
-      />
+      <Analytics gaId={gaId} gtmId={gtmId} appUrl={ADMIN_URL} />
       <div className="contents [&>[data-block-type]]:contents">
         {slot("header")}
       </div>
