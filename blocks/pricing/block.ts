@@ -1,6 +1,5 @@
 import { defineBlock, fields } from "@cmssy/react";
 import Pricing from "./Pricing";
-import type { Plan } from "@/lib/plans";
 
 export const pricingProps = {
   fig: fields.text({ label: "Fig Number", defaultValue: "FIG 6.0" }),
@@ -17,7 +16,8 @@ export const pricingProps = {
   }),
   trialNotice: fields.text({
     label: "Trial Notice",
-    defaultValue: "Every paid plan starts with a 14-day free trial. No card needed.",
+    defaultValue:
+      "Every paid plan starts with a 7-day free trial. You add a card up front and nothing is charged until it ends.",
   }),
   popularBadgeText: fields.text({
     label: "Popular Badge Text",
@@ -25,7 +25,7 @@ export const pricingProps = {
   }),
   annualDiscountLabel: fields.text({
     label: "Annual Toggle Label",
-    defaultValue: "Annual −20%",
+    defaultValue: "Annual · 2 months free",
   }),
   plans: fields.repeater({
     label: "Plans",
@@ -39,10 +39,14 @@ export const pricingProps = {
         label: "Plan Description",
         defaultValue: "Description of the plan.",
       }),
-      planId: fields.select({
-        label: "Plan",
-        defaultValue: "free",
-        options: ["free", "pro", "enterprise"],
+      price: fields.text({
+        label: "Price",
+        defaultValue: "$0",
+        required: true,
+      }),
+      priceMonthly: fields.text({
+        label: "Price (monthly)",
+        placeholder: "$15",
       }),
       period: fields.text({
         label: "Billing Period",
@@ -81,8 +85,4 @@ export const pricingBlock = defineBlock({
     "Pricing plans with a monthly/annual toggle and a highlighted popular tier; spec-sheet styling with a FIG eyebrow.",
   component: Pricing,
   props: pricingProps,
-  loader: async (): Promise<{ plans: Plan[] | null }> => {
-    const { fetchPlans } = await import("@/lib/plans-server");
-    return { plans: await fetchPlans() };
-  },
 });

@@ -7,6 +7,7 @@ import { changelogBlock } from "@/blocks/changelog/block";
 import { codeTabsBlock } from "@/blocks/code-tabs/block";
 import { comparisonTableBlock } from "@/blocks/comparison-table/block";
 import { contactBlock } from "@/blocks/contact/block";
+import { cookieConsentBlock } from "@/blocks/cookie-consent/block";
 import { ctaBlock } from "@/blocks/cta/block";
 import { demoVideoBlock } from "@/blocks/demo-video/block";
 import { docsApiReferenceBlock } from "@/blocks/docs-api-reference/block";
@@ -24,6 +25,7 @@ import { docsSidebarBlock } from "@/blocks/docs-sidebar/block";
 import { docsStepsBlock } from "@/blocks/docs-steps/block";
 import { docsTabsBlock } from "@/blocks/docs-tabs/block";
 import { docsTerminalBlock } from "@/blocks/docs-terminal/block";
+import { docsToolCatalogueBlock } from "@/blocks/docs-tool-catalogue/block";
 import { faqBlock } from "@/blocks/faq/block";
 import { featuresBlock } from "@/blocks/features/block";
 import { footerBlock } from "@/blocks/footer/block";
@@ -48,6 +50,7 @@ export const blocks = [
   blogPostsBlock,
   changelogBlock,
   contactBlock,
+  cookieConsentBlock,
   ctaBlock,
   demoVideoBlock,
   docsApiReferenceBlock,
@@ -65,6 +68,7 @@ export const blocks = [
   docsStepsBlock,
   docsTabsBlock,
   docsTerminalBlock,
+  docsToolCatalogueBlock,
   faqBlock,
   featuresBlock,
   footerBlock,

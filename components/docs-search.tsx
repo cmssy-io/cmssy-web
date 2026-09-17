@@ -6,34 +6,63 @@ import { Search } from "lucide-react";
 import { useCmssyLocale } from "@/components/cmssy-locale";
 import { localizeHref } from "@cmssy/core";
 import type { DocsUi } from "@/lib/docs-ui";
+import {
+  rankMatches,
+  type DocsSearchBody,
+  type DocsSearchItem,
+} from "@/lib/docs-search-rank";
 
 export const DOCS_SEARCH_EVENT = "cmssy:docs-search";
 
-export type DocsSearchItem = {
-  slug: string;
-  label: string;
-  section: string;
-  description?: string;
-};
+export type { DocsSearchItem } from "@/lib/docs-search-rank";
 
-/** Every field a reader might type against, lowercased once. */
-function haystack(item: DocsSearchItem): string {
-  return `${item.label} ${item.section} ${item.slug} ${item.description ?? ""}`.toLowerCase();
+type BodyIndex = Map<string, string>;
+
+const EMPTY_BODIES: BodyIndex = new Map();
+
+const inFlight = new Map<string, Promise<BodyIndex>>();
+
+function fetchBodyIndex(locale: string | undefined): Promise<BodyIndex> {
+  const key = locale ?? "";
+  const started = inFlight.get(key);
+  if (started) return started;
+
+  const url = locale
+    ? `/api/docs-search?locale=${encodeURIComponent(locale)}`
+    : "/api/docs-search";
+
+  const request = fetch(url)
+    .then((response) => (response.ok ? response.json() : null))
+    .then((payload: { entries?: DocsSearchBody[] } | null) =>
+      payload?.entries
+        ? new Map(payload.entries.map((entry) => [entry.slug, entry.body]))
+        : EMPTY_BODIES,
+    )
+    .catch((error) => {
+      console.error("[cmssy-web] docs search index unavailable", error);
+      inFlight.delete(key);
+      return EMPTY_BODIES;
+    });
+
+  inFlight.set(key, request);
+  return request;
 }
 
-function useMatches(items: DocsSearchItem[], query: string): DocsSearchItem[] {
-  const indexed = useMemo(
-    () => items.map((item) => ({ item, text: haystack(item) })),
-    [items],
-  );
-  return useMemo(() => {
-    const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
-    if (terms.length === 0) return [];
-    return indexed
-      .filter(({ text }) => terms.every((term) => text.includes(term)))
-      .slice(0, 12)
-      .map(({ item }) => item);
-  }, [indexed, query]);
+function useBodyIndex(open: boolean, locale: string | undefined): BodyIndex {
+  const [bodies, setBodies] = useState<BodyIndex>(EMPTY_BODIES);
+
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    fetchBodyIndex(locale).then((index) => {
+      if (!cancelled) setBodies(index);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [open, locale]);
+
+  return bodies;
 }
 
 /**
@@ -57,7 +86,11 @@ export function DocsSearch({
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const locale = useCmssyLocale();
-  const matches = useMatches(items, query);
+  const bodies = useBodyIndex(open, locale?.current);
+  const matches = useMemo(
+    () => rankMatches(items, bodies, query),
+    [items, bodies, query],
+  );
 
   const go = useCallback(
     (slug: string) => {
@@ -182,6 +215,11 @@ export function DocsSearch({
                         {item.section}
                         {item.description ? ` - ${item.description}` : ""}
                       </span>
+                      {item.snippet && (
+                        <span className="line-clamp-2 text-xs text-muted-foreground/80">
+                          {item.snippet}
+                        </span>
+                      )}
                     </button>
                   </li>
                 ))}

@@ -1,7 +1,8 @@
 import { resolveApiUrl } from "@/services/gateway";
-import type { DeliveryLimits } from "./limits";
+import { publishedLimits } from "./limits";
+import type { DeliveryLimits, PublishedLimits } from "./limits";
 
-export async function fetchDeliveryLimits(): Promise<DeliveryLimits | null> {
+async function fetchPublicLimits(): Promise<PublishedLimits | null> {
   const base = resolveApiUrl().replace(/\/graphql\/?$/, "");
   try {
     const response = await fetch(`${base}/public/limits`, {
@@ -13,12 +14,23 @@ export async function fetchDeliveryLimits(): Promise<DeliveryLimits | null> {
       );
       return null;
     }
-    const json = (await response.json()) as {
-      delivery?: DeliveryLimits;
-    };
-    return json.delivery ?? null;
+    const limits = publishedLimits(await response.json());
+    if (limits.protection.length === 0) {
+      console.error(
+        `[limits] ${base}/public/limits published no protection table`,
+      );
+    }
+    return limits;
   } catch (error) {
-    console.error("[limits] failed to load the delivery limits", error);
+    console.error("[limits] failed to load the published limits", error);
     return null;
   }
+}
+
+export async function fetchDeliveryLimits(): Promise<DeliveryLimits | null> {
+  return (await fetchPublicLimits())?.delivery ?? null;
+}
+
+export async function fetchPublishedLimits(): Promise<PublishedLimits | null> {
+  return fetchPublicLimits();
 }

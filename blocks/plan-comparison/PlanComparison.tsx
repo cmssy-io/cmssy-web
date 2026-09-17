@@ -9,6 +9,7 @@ import { cell, type Labels } from "./cells";
 
 export default function PlanComparison({
   content,
+  context,
   data,
 }: BlockProps<
   typeof planComparisonProps,
@@ -107,7 +108,9 @@ export default function PlanComparison({
               {rateLimitLabel}:
             </span>{" "}
             <span className="tabular-nums">
-              {delivery.perWorkspacePerMinute.toLocaleString("en-US")}
+              {delivery.perWorkspacePerMinute.toLocaleString(
+                context?.locale.current,
+              )}
             </span>{" "}
             {rateLimitUnit}
             {rateLimitNote && <> · {rateLimitNote}</>}

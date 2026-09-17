@@ -1,32 +1,22 @@
 import { defineBlock, fields } from "@cmssy/react";
 import DocsRateLimits from "./DocsRateLimits";
-import type { DeliveryLimits } from "@/lib/limits";
+import type { PublishedLimits } from "@/lib/limits";
 
 export const docsRateLimitsProps = {
-  title: fields.text({ label: "Title", defaultValue: "Delivery rate limits" }),
+  title: fields.text({ label: "Title", defaultValue: "Protection limits" }),
   description: fields.textarea({
     label: "Description",
     defaultValue:
-      "The public delivery API is budgeted per workspace, with a wider per-IP net against abuse. The numbers below are read from the limiter that enforces them.",
+      "Every number below is read from the limiter that enforces it, family by family.",
   }),
-  perWorkspaceLabel: fields.text({
-    label: "Per-workspace row label",
-    defaultValue: "Per workspace",
-    required: true,
-  }),
-  perIpLabel: fields.text({
-    label: "Per-IP row label",
-    defaultValue: "Per IP address",
-    required: true,
-  }),
-  unitLabel: fields.text({
-    label: "Unit",
-    defaultValue: "requests / minute",
+  resourceHeader: fields.text({
+    label: "Resource column header",
+    defaultValue: "Endpoint",
     required: true,
   }),
   scopeHeader: fields.text({
     label: "Scope column header",
-    defaultValue: "Scope",
+    defaultValue: "Counted per",
     required: true,
   }),
   limitHeader: fields.text({
@@ -34,10 +24,37 @@ export const docsRateLimitsProps = {
     defaultValue: "Limit",
     required: true,
   }),
+  groups: fields.repeater({
+    label: "Families",
+    itemSchema: {
+      key: fields.text({
+        label: "Family key from the API",
+        required: true,
+        localized: false,
+      }),
+      label: fields.text({ label: "Heading", required: true }),
+      description: fields.textarea({ label: "Intro line" }),
+    },
+  }),
+  vocabulary: fields.repeater({
+    label: "Words for the API's keys",
+    itemSchema: {
+      key: fields.text({
+        label: "Key from the API",
+        required: true,
+        localized: false,
+      }),
+      label: fields.text({ label: "Word", required: true }),
+    },
+  }),
+  adjustableLabel: fields.text({
+    label: "Badge on a limit an operator can move",
+    defaultValue: "adjustable",
+  }),
   caveat: fields.textarea({
-    label: "Caveat",
+    label: "Caveat under every family",
     defaultValue:
-      "Every delivery read counts toward the limit, cached or not - a CDN in front of your site does not stretch the budget.",
+      "Each number is the budget for one window; a call past it is refused with 429 and a Retry-After header.",
   }),
 };
 
@@ -46,11 +63,11 @@ export const docsRateLimitsBlock = defineBlock({
   category: "Docs",
   label: "Docs Rate Limits",
   description:
-    "Delivery rate-limit table served from the API that enforces the limits, so the docs cannot disagree with the product.",
+    "Protection-limit tables served from the API that enforces the limits, so the docs cannot disagree with the product.",
   component: DocsRateLimits,
   props: docsRateLimitsProps,
-  loader: async (): Promise<{ delivery: DeliveryLimits | null }> => {
-    const { fetchDeliveryLimits } = await import("@/lib/limits-server");
-    return { delivery: await fetchDeliveryLimits() };
+  loader: async (): Promise<{ published: PublishedLimits | null }> => {
+    const { fetchPublishedLimits } = await import("@/lib/limits-server");
+    return { published: await fetchPublishedLimits() };
   },
 });
