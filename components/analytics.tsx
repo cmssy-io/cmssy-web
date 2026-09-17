@@ -2,13 +2,23 @@
 
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { useConsent } from "@/components/consent";
+import { PostHogAnalytics } from "@/components/posthog-analytics";
 
-export function Analytics({ gaId, gtmId }: { gaId?: string; gtmId?: string }) {
-  if (useConsent() !== "granted") return null;
+export function Analytics({
+  gaId,
+  gtmId,
+  appUrl,
+}: {
+  gaId?: string;
+  gtmId?: string;
+  appUrl: string;
+}) {
+  const granted = useConsent() === "granted";
   return (
     <>
-      {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
-      {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
+      <PostHogAnalytics appUrl={appUrl} />
+      {granted && gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
+      {granted && gaId ? <GoogleAnalytics gaId={gaId} /> : null}
     </>
   );
 }
