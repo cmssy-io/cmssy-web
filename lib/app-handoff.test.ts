@@ -75,6 +75,36 @@ describe("handoffHref", () => {
     }
   });
 
+  it("treats another port on the same host as another app", () => {
+    expect(
+      handoffHref(
+        "http://localhost:4000/signup",
+        "http://localhost:3001/",
+        "http://localhost:3000",
+        "a",
+      ),
+    ).toBeNull();
+    expect(
+      handoffHref(
+        "http://localhost:3000/signup",
+        "http://localhost:3001/",
+        "http://localhost:3000",
+        "a",
+      ),
+    ).toBe("http://localhost:3000/signup?ph_distinct_id=a");
+  });
+
+  it("strips a visitor id the link already carries when there is no consent", () => {
+    expect(
+      handoffHref(
+        "https://cmssy.io/signup?ph_distinct_id=stale&plan=pro",
+        "https://www.cmssy.com/",
+        APP,
+        null,
+      ),
+    ).toBe("https://cmssy.io/signup?plan=pro");
+  });
+
   it("refuses to act on an unparseable app URL", () => {
     expect(
       handoffHref(

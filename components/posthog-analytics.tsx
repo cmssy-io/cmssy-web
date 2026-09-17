@@ -8,8 +8,20 @@ import { handoffHref } from "@/lib/app-handoff";
 let loading: Promise<PostHog> | null = null;
 let ready: PostHog | null = null;
 
-function loadPostHog(token: string, host: string): Promise<PostHog> {
-  loading ??= import("posthog-js").then(({ default: posthog }) => {
+function importPostHog(): Promise<PostHog> {
+  loading ??= import("posthog-js").then(({ default: posthog }) => posthog);
+  return loading;
+}
+
+function stopCapturing() {
+  ready?.opt_out_capturing();
+  ready?.set_config({ disable_persistence: true });
+}
+
+function startCapturing(posthog: PostHog, token: string, host: string) {
+  if (ready) {
+    ready.set_config({ disable_persistence: false });
+  } else {
     posthog.init(token, {
       api_host: host,
       defaults: "2026-01-30",
@@ -18,9 +30,10 @@ function loadPostHog(token: string, host: string): Promise<PostHog> {
       disable_surveys: true,
     });
     ready = posthog;
-    return posthog;
-  });
-  return loading;
+  }
+  if (posthog.has_opted_out_capturing()) {
+    posthog.opt_in_capturing({ captureEventName: false });
+  }
 }
 
 export function PostHogAnalytics({
@@ -36,11 +49,15 @@ export function PostHogAnalytics({
 
   useEffect(() => {
     if (!token || !host) return;
-    if (consent === "granted") {
-      loadPostHog(token, host).then((posthog) => posthog.opt_in_capturing());
-    } else if (consent === "denied") {
-      ready?.opt_out_capturing();
-    }
+    if (consent === "denied") stopCapturing();
+    if (consent !== "granted") return;
+    let current = true;
+    importPostHog().then((posthog) => {
+      if (current) startCapturing(posthog, token, host);
+    });
+    return () => {
+      current = false;
+    };
   }, [consent, token, host]);
 
   useEffect(() => {
