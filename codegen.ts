@@ -11,6 +11,7 @@ const config: CodegenConfig = {
       },
       config: {
         avoidOptionals: true,
+        strictScalars: true,
         scalars: {
           JSON: "Record<string, unknown>",
           DateTime: "string",
