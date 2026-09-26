@@ -101,8 +101,7 @@ export function ContactForm({
         const placeholder = getLocalized(field.placeholder);
         const helpText = getLocalized(field.helpText);
         const isRequired = validation?.required ?? false;
-        const isTextarea =
-          field.fieldType === "textarea" || field.fieldType === "multiLine";
+        const isTextarea = field.fieldType === "textarea";
         const inputType =
           field.fieldType === "email"
             ? "email"
