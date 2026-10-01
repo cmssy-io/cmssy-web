@@ -6,6 +6,7 @@ const EXIT_CHECK_ITSELF_FAILED = 2;
 
 const LOCKED = /'?@cmssy\/([a-z-]+)@(\d+)\.(\d+)\.(\d+)/g;
 const PINNED_BY_THE_SDK_NOT_BY_US = new Set(["types"]);
+const RUNTIME_SDK_CMSSY_WEB_MUST_USE = ["core", "next", "react"];
 const asJson = process.argv.includes("--json");
 
 function seriesOf(version) {
@@ -25,6 +26,17 @@ async function latestOf(name) {
   const { version } = await res.json();
   if (!version) throw new Error(`npm returned no version for @cmssy/${name}`);
   return version;
+}
+
+function declaredByUs() {
+  const manifest = JSON.parse(readFileSync("package.json", "utf8"));
+  const names = new Set();
+  for (const field of ["dependencies", "devDependencies"]) {
+    for (const name of Object.keys(manifest[field] ?? {})) {
+      if (name.startsWith("@cmssy/")) names.add(name.slice("@cmssy/".length));
+    }
+  }
+  return names;
 }
 
 function lockedVersions(lock) {
@@ -60,6 +72,19 @@ async function findProblems() {
     throw new Error("no @cmssy package found in the lockfile");
 
   const problems = [];
+  const declared = declaredByUs();
+
+  for (const name of RUNTIME_SDK_CMSSY_WEB_MUST_USE) {
+    if (!declared.has(name)) {
+      problems.push({
+        kind: "undogfooded",
+        package: `@cmssy/${name}`,
+        detail:
+          "cmssy-web no longer declares it, so the lockfile entry comes from " +
+          "something else and proves nothing about what this site exercises",
+      });
+    }
+  }
 
   for (const [name, versions] of locked) {
     if (versions.size > 1) {
@@ -70,6 +95,7 @@ async function findProblems() {
       });
     }
     if (PINNED_BY_THE_SDK_NOT_BY_US.has(name)) continue;
+    if (!declared.has(name)) continue;
 
     const newest = [...versions].sort(compare).at(-1);
     const published = await latestOf(name);
@@ -121,10 +147,11 @@ if (asJson) {
   console.log(JSON.stringify(problems, null, 2));
 } else if (problems.length === 0) {
   console.log(
-    "cmssy-web is on the current @cmssy minor, with one @cmssy/types.",
+    "cmssy-web declares the runtime SDK, is on its current minor, and " +
+      "resolves one @cmssy/types.",
   );
 } else {
-  console.error("cmssy-web is no longer dogfooding the current SDK:\n");
+  console.error("cmssy-web is out of alignment with the published @cmssy SDK:\n");
   for (const p of problems) {
     console.error(`  ${p.kind}: ${p.package} - ${p.detail}`);
   }

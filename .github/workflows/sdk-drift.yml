@@ -39,22 +39,23 @@ jobs:
             echo "DRIFT_EOF"
           } >> "$GITHUB_OUTPUT"
           case "$status" in
-            0) echo "behind=false" >> "$GITHUB_OUTPUT" ;;
-            1) echo "behind=true" >> "$GITHUB_OUTPUT" ;;
-            *) echo "::error::the drift check itself failed - not reporting drift"; exit "$status" ;;
+            0) echo "misaligned=false" >> "$GITHUB_OUTPUT" ;;
+            1) echo "misaligned=true" >> "$GITHUB_OUTPUT" ;;
+            *) echo "::error::the check itself failed - reporting nothing about alignment"; exit "$status" ;;
           esac
 
-      - if: steps.check.outputs.behind == 'true'
+      - if: steps.check.outputs.misaligned == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           REPORT: ${{ steps.check.outputs.report }}
-          TITLE: "cmssy-web is behind the published @cmssy SDK"
+          TITLE: "cmssy-web is out of alignment with the published @cmssy SDK"
         run: |
           set -euo pipefail
-          body=$(printf '%s\n\n```\n%s\n```\n\n%s\n' \
-            "cmssy-web is the only place the SDK is dogfooded, so a lag here means a shipped SDK surface is exercised by nothing." \
+          body=$(printf '%s\n\n```\n%s\n```\n\n%s\n\n%s\n' \
+            "cmssy-web is the only place the SDK is dogfooded, so anything here means a shipped SDK surface is exercised by less than it looks." \
             "$REPORT" \
-            "Raised by \`.github/workflows/sdk-drift.yml\` (run $GITHUB_RUN_ID). Closing this without upgrading will reopen it next Monday.")
+            "Each line names which kind it is. **drift** is a minor or major behind npm. **split** is \`@cmssy/types\` resolving twice or disagreeing with the version \`@cmssy/core\` pins - the SDK can be current and still be split. **undogfooded** is cmssy-web no longer declaring a runtime package, so its lockfile entry came from somewhere else and proves nothing." \
+            "Raised by \`.github/workflows/sdk-drift.yml\` (run $GITHUB_RUN_ID). Closing this without resolving it will reopen it next Monday.")
           existing=$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number // empty')
           if [ -n "$existing" ]; then
             gh issue comment "$existing" --body "$body"
