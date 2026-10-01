@@ -1,5 +1,5 @@
 import { mediaUrl, type MediaLike } from "@cmssy/react";
-import type { PageItem } from "@cmssy/types";
+import type { PageItem, ResolvedMedia } from "@cmssy/types";
 
 function slugOf(value: unknown): string | undefined {
   if (typeof value === "string") return value || undefined;
@@ -47,12 +47,13 @@ export function customText(item: PageItem, key: string): string | null {
   return nonEmptyString(customField(item, key));
 }
 
-/**
- * The url, or null. Narrowed on the way out rather than trusted on the way in:
- * `mediaUrl` hands back `value.url` as it found it, so a field carrying
- * something that merely has a `url` key would otherwise escape as a non-string
- * wearing a string's type - the same hole in a new place.
- */
+function asMediaLike(value: unknown): MediaLike {
+  if (typeof value === "string") return value;
+  if (!value || typeof value !== "object") return null;
+  const { url } = value as Partial<Pick<ResolvedMedia, "url">>;
+  return typeof url === "string" ? url : null;
+}
+
 export function customMedia(item: PageItem, key: string): string | null {
-  return nonEmptyString(mediaUrl(customField(item, key) as MediaLike));
+  return nonEmptyString(mediaUrl(asMediaLike(customField(item, key))));
 }

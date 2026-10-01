@@ -1,0 +1,63 @@
+name: sdk-drift
+
+on:
+  schedule:
+    - cron: "30 6 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: sdk-drift
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # `shell: bash {0}` drops -e so a non-zero exit reaches the case below
+      # instead of ending the step. Exit 1 is drift, which this workflow exists
+      # to report; exit 2 is the check failing, which must not be reported as
+      # drift - that is how an npm outage turns into a false alarm.
+      - id: check
+        shell: bash {0}
+        run: |
+          set -uo pipefail
+          node scripts/check-sdk-drift.mjs 2>&1 | tee /tmp/drift.txt
+          status="${PIPESTATUS[0]}"
+          {
+            echo "report<<DRIFT_EOF"
+            cat /tmp/drift.txt
+            echo "DRIFT_EOF"
+          } >> "$GITHUB_OUTPUT"
+          case "$status" in
+            0) echo "behind=false" >> "$GITHUB_OUTPUT" ;;
+            1) echo "behind=true" >> "$GITHUB_OUTPUT" ;;
+            *) echo "::error::the drift check itself failed - not reporting drift"; exit "$status" ;;
+          esac
+
+      - if: steps.check.outputs.behind == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPORT: ${{ steps.check.outputs.report }}
+          TITLE: "cmssy-web is behind the published @cmssy SDK"
+        run: |
+          set -euo pipefail
+          body=$(printf '%s\n\n```\n%s\n```\n\n%s\n' \
+            "cmssy-web is the only place the SDK is dogfooded, so a lag here means a shipped SDK surface is exercised by nothing." \
+            "$REPORT" \
+            "Raised by \`.github/workflows/sdk-drift.yml\` (run $GITHUB_RUN_ID). Closing this without upgrading will reopen it next Monday.")
+          existing=$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "$TITLE" --body "$body"
+          fi
