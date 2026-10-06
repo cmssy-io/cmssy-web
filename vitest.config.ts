@@ -17,6 +17,7 @@ export default defineConfig({
       "blocks/**/*.test.ts",
       "lib/**/*.test.ts",
       "services/**/*.test.ts",
+      "scripts/**/*.test.ts",
     ],
   },
 });

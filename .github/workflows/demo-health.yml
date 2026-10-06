@@ -1,0 +1,64 @@
+name: demo-health
+
+on:
+  schedule:
+    - cron: "15 7 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: demo-health
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  demos:
+    name: Every demo the gallery lists still renders
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - id: check
+        shell: bash {0}
+        env:
+          CMSSY_ORG_SLUG: cmssy
+          CMSSY_WORKSPACE_SLUG: cmssy
+        run: |
+          set -uo pipefail
+          node scripts/check-demos.mjs 2>&1 | tee /tmp/demos.txt
+          status="${PIPESTATUS[0]}"
+          {
+            echo "report<<DEMOS_EOF"
+            cat /tmp/demos.txt
+            echo "DEMOS_EOF"
+          } >> "$GITHUB_OUTPUT"
+          case "$status" in
+            0) echo "dead=false" >> "$GITHUB_OUTPUT" ;;
+            1) echo "dead=true" >> "$GITHUB_OUTPUT" ;;
+            *) echo "::error::the check itself failed - reporting nothing about the demos"; exit "$status" ;;
+          esac
+
+      - if: steps.check.outputs.dead == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPORT: ${{ steps.check.outputs.report }}
+          TITLE: "A demo linked from cmssy.com/demos has stopped rendering"
+        run: |
+          set -euo pipefail
+          body=$(printf '%s\n\n```\n%s\n```\n\n%s\n\n%s\n' \
+            "The gallery at https://www.cmssy.com/demos is the page that proves the product renders anywhere, and it is linked from the homepage and the main navigation. A demo listed there that no longer renders is a broken promise on a page campaign traffic lands on." \
+            "$REPORT" \
+            "The URLs are read from the published page over the delivery API, not from this repository, so this list follows whatever the gallery currently lists. A demo answers for itself: fix the example and redeploy it, or take the card off the gallery page in the CMS." \
+            "Raised by \`.github/workflows/demo-health.yml\` (run $GITHUB_RUN_ID). Closing this without resolving it will reopen it tomorrow.")
+          existing=$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "$TITLE" --body "$body"
+          fi
