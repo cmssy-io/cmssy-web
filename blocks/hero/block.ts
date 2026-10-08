@@ -44,7 +44,7 @@ export const heroProps = {
   }),
   trustNote: fields.text({
     label: "Trust Line (mono)",
-    defaultValue: "@cmssy/next · 80+ MCP tools · No card needed",
+    defaultValue: "@cmssy/next · 90+ MCP tools · No card needed",
   }),
 
   mcpLabel: fields.text({ label: "Diagram: Inlet Label", defaultValue: "MCP" }),
