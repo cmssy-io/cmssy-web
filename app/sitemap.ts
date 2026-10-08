@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { localizedPath } from "@/lib/locale-path";
-import { siteUrl } from "@/services/seo";
+import { siteUrl } from "@/lib/site-url";
 import { listPublicPages } from "@/services/pages";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 

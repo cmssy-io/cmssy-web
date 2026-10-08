@@ -4,13 +4,15 @@ import type { CmssyRegion } from "@cmssy/next";
 import { blocks } from "@/cmssy/blocks";
 import { cmssy, type layout } from "@/cmssy/config";
 import { EditableLayout } from "@/cmssy/editable-layout";
-import { splitLocaleFromPath } from "@/lib/locale-path";
+import { pickLocalized, splitLocaleFromPath } from "@/lib/locale-path";
 import { CONTENT_CACHE } from "@/services/pages";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 import { CmssyLocaleProvider, LocaleSync } from "@/components/cmssy-locale";
 import { DraftPreviewBanner } from "@/components/draft-preview-banner";
 import { Analytics } from "@/components/analytics";
 import { ADMIN_URL } from "@/lib/admin-url";
+import { siteUrl } from "@/lib/site-url";
+import { JsonLd } from "@/components/json-ld";
 
 // The document itself is in app/layout.tsx, which never remounts. This layout
 // carries what depends on the path: the locale, the header and the footer.
@@ -35,6 +37,12 @@ export default async function SiteLayout({
     fetchSiteConfig(),
   ]);
   const { locale } = splitLocaleFromPath(path, locales);
+  const base = siteUrl();
+  const brandName =
+    pickLocalized(siteConfig?.siteName, locale, locales.defaultLocale) ||
+    siteConfig?.branding?.brandName ||
+    "";
+  const logoUrl = siteConfig?.branding?.logoUrl;
   const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim();
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim();
 
@@ -66,6 +74,29 @@ export default async function SiteLayout({
       }}
     >
       <LocaleSync />
+      {brandName && base ? (
+        <>
+          <JsonLd
+            data={{
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: brandName,
+              url: base,
+              ...(logoUrl ? { logo: logoUrl } : {}),
+            }}
+          />
+          <JsonLd
+            data={{
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              name: brandName,
+              url: base,
+              applicationCategory: "DeveloperApplication",
+              operatingSystem: "Web",
+            }}
+          />
+        </>
+      ) : null}
       <Analytics gaId={gaId} gtmId={gtmId} appUrl={ADMIN_URL} />
       <div className="contents [&>[data-block-type]]:contents">
         {slot("header")}

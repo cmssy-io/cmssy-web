@@ -1,7 +1,7 @@
 import { labelForPage } from "@/lib/docs-nav";
 import { localizedPath } from "@/lib/locale-path";
 import { listChildPages, type ChildPage } from "@/services/pages";
-import { siteUrl } from "@/services/seo";
+import { siteUrl } from "@/lib/site-url";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 
 // Reads the live page tree, so it must not be frozen at build time.
