@@ -1,7 +1,8 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import type { CmssyFormDefinition } from "@cmssy/react";
+import { isFormFieldRequired, visibleFormFields } from "@cmssy/react";
 import { submitContact } from "./actions";
 import type { ContactState } from "./types";
 import { SuccessMessage } from "./SuccessMessage";
@@ -46,6 +47,7 @@ export function ContactForm({
     submitContact.bind(null, formId),
     INITIAL_STATE,
   );
+  const [fieldValues, setFieldValues] = useState<Record<string, unknown>>({});
 
   const submitButtonText = getLocalized(
     formDef.settings?.submitButtonLabel,
@@ -71,12 +73,21 @@ export function ContactForm({
       "Something went wrong. Please try again.",
     );
 
-  const sortedFields = [...formDef.fields].sort(
-    (a, b) => (a.order ?? 0) - (b.order ?? 0),
+  const sortedFields = visibleFormFields(
+    [...formDef.fields].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
+    fieldValues,
   );
 
   return (
-    <form action={formAction} className="space-y-6">
+    <form
+      action={formAction}
+      className="space-y-6"
+      onChange={(event) =>
+        setFieldValues(
+          Object.fromEntries(new FormData(event.currentTarget).entries()),
+        )
+      }
+    >
       <input
         type="text"
         name="website"
@@ -100,7 +111,7 @@ export function ContactForm({
         const label = getLocalized(field.label, field.name);
         const placeholder = getLocalized(field.placeholder);
         const helpText = getLocalized(field.helpText);
-        const isRequired = validation?.required ?? false;
+        const isRequired = isFormFieldRequired(field, fieldValues);
         const isTextarea = field.fieldType === "textarea";
         const inputType =
           field.fieldType === "email"
