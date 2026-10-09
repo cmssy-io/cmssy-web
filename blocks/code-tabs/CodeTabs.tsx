@@ -27,8 +27,8 @@ revalidate            ISR + webhook`,
     label: "response",
     body: `"name": "Homepage",
 "seoTitle": {
-  "en": "Cmssy - The AI-native Headless CMS",
-  "pl": "Cmssy - Headless CMS z AI"
+  "en": "Cmssy - Headless CMS and commerce your AI agent can run",
+  "pl": "Cmssy - treści i sklep w rękach twojego agenta AI"
 },
 "publishedBlocks": [ ... ]`,
   },

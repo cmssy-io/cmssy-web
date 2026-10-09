@@ -7,16 +7,19 @@ import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 // Reads the live page tree, so it must not be frozen at build time.
 export const dynamic = "force-dynamic";
 
-const INTRO = `> cmssy is an AI-native headless CMS. You model structured content and edit it
-> visually or through Claude (via the cmssy MCP server); your own frontend
-> renders it with the @cmssy/next SDK. cmssy never hosts your site.
+const INTRO = `> cmssy is a headless CMS with native commerce that an AI agent can run. You
+> model structured content and products, and edit them visually or through any
+> MCP client (Claude, Cursor, ...) via the cmssy MCP server; your own frontend
+> renders them with the cmssy SDK (Next.js, Astro, Remix, React). cmssy never
+> hosts your site.
 
 ## Key facts
 
 - Content is composed from typed blocks; block schemas live in your frontend code.
 - Data collections are models with records, delivered over a typed GraphQL API.
-- Claude connects through the cmssy MCP server and edits content directly - never your code.
-- Built-in commerce: products, carts, orders, discounts, order pipelines.
+- Any MCP client connects through the cmssy MCP server and edits content, products and orders directly - never your code.
+- Refunds, order cancellations and page deletes over MCP wait for a human confirmation.
+- Built-in commerce: products, carts, orders, discounts, order pipelines. cmssy records payments; your payment provider processes them.
 - Every field is multilingual by default.`;
 
 function line(page: ChildPage, locale: string, base: string): string {
