@@ -4,11 +4,12 @@ import { useState } from "react";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
 import { getLucideIcon } from "@/components/get-lucide-icon";
-import type { docsTabsProps } from "./block";
+import type { docsTabsProps, DocsTabsData } from "./block";
 
 export default function DocsTabs({
   content,
-}: BlockProps<typeof docsTabsProps>) {
+  data,
+}: BlockProps<typeof docsTabsProps, DocsTabsData>) {
   const { tabs = [], defaultTab = 0, variant = "underline" } = content;
 
   const [activeTab, setActiveTab] = useState(
@@ -23,7 +24,8 @@ export default function DocsTabs({
     );
   }
 
-  const activeContent = tabs[activeTab]?.content || "";
+  const activeContent =
+    data?.tabsHtml?.[activeTab] ?? tabs[activeTab]?.content ?? "";
 
   return (
     <Container className="py-6">
