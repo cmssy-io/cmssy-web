@@ -70,4 +70,19 @@ describe("blog-posts loader", () => {
       offset: 0,
     });
   });
+
+  it("passes the configured custom-field sort to the delivery read", async () => {
+    await runLoader(
+      { slug: "/blog" },
+      { sortPageType: "post", sortField: "publish_date" },
+    );
+
+    expect(loadPosts).toHaveBeenCalledWith({
+      parentSlug: "/blog",
+      limit: 9,
+      offset: 0,
+      pageType: "post",
+      customFieldSort: { fieldKey: "publish_date", direction: "desc" },
+    });
+  });
 });

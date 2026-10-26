@@ -3,11 +3,12 @@ import { createCmssyClient } from "@cmssy/react";
 import type { PageItem } from "@cmssy/types";
 import { cmssy } from "@/cmssy/config";
 import { PublicPagesByTypeDocument } from "@/graphql/generated/graphql";
+import type { PostsSortVars } from "./src/utils";
 
 const client = createCmssyClient(cmssy);
 const PUBLIC_PAGES_QUERY = print(PublicPagesByTypeDocument);
 
-export type LoadPostsVars = {
+export type LoadPostsVars = PostsSortVars & {
   parentSlug: string;
   limit: number;
   offset?: number;

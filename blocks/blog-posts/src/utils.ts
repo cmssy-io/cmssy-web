@@ -14,6 +14,21 @@ export function pageSelectorSlug(value: unknown): string | undefined {
   return Array.isArray(value) ? slugOf(value[0]) : slugOf(value);
 }
 
+export type PostsSortVars = {
+  pageType?: string;
+  customFieldSort?: { fieldKey: string; direction: "desc" };
+};
+
+export function postsSortVars(content: {
+  sortPageType?: string;
+  sortField?: string;
+}): PostsSortVars {
+  const pageType = content.sortPageType?.trim();
+  const fieldKey = content.sortField?.trim();
+  if (!pageType || !fieldKey) return {};
+  return { pageType, customFieldSort: { fieldKey, direction: "desc" } };
+}
+
 export function getLocalizedField(
   field: Record<string, string> | null | undefined,
   language: string | undefined,

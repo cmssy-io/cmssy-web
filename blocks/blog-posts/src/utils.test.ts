@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { PageItem } from "@cmssy/types";
-import { customMedia, pageSelectorSlug } from "./utils";
+import { customMedia, pageSelectorSlug, postsSortVars } from "./utils";
 
 describe("pageSelectorSlug", () => {
   it("reads the slug a single page selector now hands over as a bare object", () => {
@@ -98,5 +98,21 @@ describe("customMedia", () => {
 
   it("reads an absent field as unset rather than throwing", () => {
     expect(customMedia(itemWith("https://x/y.jpg"), "banner")).toBeNull();
+  });
+});
+
+describe("postsSortVars", () => {
+  it("sorts newest first by the configured field of the configured page type", () => {
+    expect(
+      postsSortVars({ sortPageType: " post ", sortField: " publish_date " }),
+    ).toEqual({
+      pageType: "post",
+      customFieldSort: { fieldKey: "publish_date", direction: "desc" },
+    });
+  });
+
+  it("keeps the delivery default when either setting is missing", () => {
+    expect(postsSortVars({ sortField: "publish_date" })).toEqual({});
+    expect(postsSortVars({ sortPageType: "post", sortField: "  " })).toEqual({});
   });
 });

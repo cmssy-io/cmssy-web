@@ -6,7 +6,7 @@ import { print } from "graphql";
 import type { BlockProps } from "@cmssy/react";
 import { PublicPagesByTypeDocument } from "@/graphql/generated/graphql";
 import type { blogPostsProps, BlogPostsData } from "../block";
-import { customText, pageSelectorSlug } from "./utils";
+import { customText, pageSelectorSlug, postsSortVars } from "./utils";
 
 const PUBLIC_PAGES_QUERY = print(PublicPagesByTypeDocument);
 
@@ -23,6 +23,8 @@ export function useBlogPosts(
   const { layout = "grid", columns = "3" } = style;
 
   const parentSlug = pageSelectorSlug(parentPage);
+  const { pageType, customFieldSort } = postsSortVars(content);
+  const sortFieldKey = customFieldSort?.fieldKey;
 
   const language = context?.locale?.current;
   const pagesCollection = context?.pages?._default;
@@ -62,6 +64,10 @@ export function useBlogPosts(
             search: opts.search || undefined,
             limit: opts.limit ?? limit,
             offset: opts.offset ?? 0,
+            pageType,
+            customFieldSort: sortFieldKey
+              ? { fieldKey: sortFieldKey, direction: "desc" }
+              : undefined,
           },
         }),
       });
@@ -75,7 +81,7 @@ export function useBlogPosts(
       }
       return byType;
     },
-    [workspaceId, parentSlug, limit],
+    [workspaceId, parentSlug, limit, pageType, sortFieldKey],
   );
 
   useEffect(() => {
