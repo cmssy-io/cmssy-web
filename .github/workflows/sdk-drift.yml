@@ -56,7 +56,7 @@ jobs:
             "$REPORT" \
             "Each line names which kind it is. **drift** is a minor or major behind npm. **split** is \`@cmssy/types\` resolving twice or disagreeing with the version \`@cmssy/core\` pins - the SDK can be current and still be split. **undogfooded** is cmssy-web no longer declaring a runtime package, so its lockfile entry came from somewhere else and proves nothing." \
             "Raised by \`.github/workflows/sdk-drift.yml\` (run $GITHUB_RUN_ID). Closing this without resolving it will reopen it next Monday.")
-          existing=$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number // empty')
+          existing=$(gh issue list --state open --limit 500 --json number,title | TITLE="$TITLE" jq -r 'map(select(.title == env.TITLE)) | .[0].number // empty')
           if [ -n "$existing" ]; then
             gh issue comment "$existing" --body "$body"
           else
