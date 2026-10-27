@@ -16,6 +16,13 @@ export const docsTabsProps = {
     },
   }),
   defaultTab: fields.number({ label: "Default Tab Index", defaultValue: 0 }),
+  syncKey: fields.text({
+    label: "Sync Group",
+    placeholder: "e.g., framework",
+    localized: false,
+    helperText:
+      "Tab blocks with the same group switch together and remember the reader's choice, matched by tab label.",
+  }),
   variant: fields.select({
     label: "Tab Style",
     defaultValue: "underline",
