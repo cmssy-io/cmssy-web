@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { hasCode, resolveTabIndex, tabSyncStorageKey } from "./docs-tab-sync";
+import {
+  createTabChoiceStore,
+  hasCode,
+  resolveTabIndex,
+  tabSyncStorageKey,
+} from "./docs-tab-sync";
 
 const frameworks = ["Next.js", "Astro", "React Router"];
 
@@ -14,6 +19,10 @@ describe("resolveTabIndex", () => {
 
   it("falls back to its own tab before anything was chosen", () => {
     expect(resolveTabIndex(frameworks, null, 2)).toBe(2);
+  });
+
+  it("keeps the clicked tab when another tab shares its label", () => {
+    expect(resolveTabIndex(["Example", "Example"], "Example", 1)).toBe(1);
   });
 
   it("clamps an index outside the tabs it has", () => {
@@ -43,5 +52,71 @@ describe("hasCode", () => {
     expect(hasCode("<p>Run <code>npx</code></p><preview></preview>")).toBe(
       false,
     );
+  });
+});
+
+function memoryStorage() {
+  const items = new Map<string, string>();
+  return {
+    getItem: (key: string) => items.get(key) ?? null,
+    setItem: (key: string, value: string) => void items.set(key, value),
+  };
+}
+
+function brokenStorage() {
+  return {
+    getItem: (): string | null => {
+      throw new Error("blocked");
+    },
+    setItem: () => {
+      throw new Error("blocked");
+    },
+  };
+}
+
+describe("createTabChoiceStore", () => {
+  it("saves a choice and tells every block in the page", () => {
+    const storage = memoryStorage();
+    const store = createTabChoiceStore(() => storage);
+    const heard: string[] = [];
+    store.subscribe(() => heard.push("first"));
+    store.subscribe(() => heard.push("second"));
+
+    store.choose("k", "Astro");
+
+    expect(store.read("k")).toBe("Astro");
+    expect(storage.getItem("k")).toBe("Astro");
+    expect(heard).toEqual(["first", "second"]);
+  });
+
+  it("stops telling a block that unsubscribed", () => {
+    const store = createTabChoiceStore(memoryStorage);
+    let heard = 0;
+    const unsubscribe = store.subscribe(() => heard++);
+    unsubscribe();
+
+    store.choose("k", "Astro");
+
+    expect(heard).toBe(0);
+  });
+
+  it("keeps the choice for this page when storage is blocked", () => {
+    const store = createTabChoiceStore(brokenStorage);
+    let heard = 0;
+    store.subscribe(() => heard++);
+
+    expect(store.read("k")).toBeNull();
+    store.choose("k", "Astro");
+
+    expect(store.read("k")).toBe("Astro");
+    expect(heard).toBe(1);
+  });
+
+  it("reads a choice another browser tab saved", () => {
+    const storage = memoryStorage();
+    const store = createTabChoiceStore(() => storage);
+    storage.setItem("k", "React Router");
+
+    expect(store.read("k")).toBe("React Router");
   });
 });

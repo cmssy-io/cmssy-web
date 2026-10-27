@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { Check, Copy } from "lucide-react";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
@@ -19,7 +19,11 @@ export default function DocsTabs({
   const [localTab, setLocalTab] = useState(defaultTab);
   const { chosen, choose } = useSyncedTab(syncKey || undefined);
   const { copied, copy } = useCopyToClipboard();
+  const [copiedTab, setCopiedTab] = useState<number | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const baseId = useId();
+  const tabId = (index: number) => `${baseId}-tab-${index}`;
+  const panelId = `${baseId}-panel`;
 
   const activeTab = resolveTabIndex(
     tabs.map((tab) => tab.label),
@@ -38,6 +42,19 @@ export default function DocsTabs({
   const activeContent =
     data?.tabsHtml?.[activeTab] ?? tabs[activeTab]?.content ?? "";
 
+  const selectTab = (index: number) => {
+    setLocalTab(index);
+    choose(tabs[index].label);
+  };
+
+  const copyActiveCode = async () => {
+    const code = Array.from(
+      panelRef.current?.querySelectorAll("pre") ?? [],
+      (pre) => pre.textContent ?? "",
+    ).join("\n\n");
+    if (await copy(code)) setCopiedTab(activeTab);
+  };
+
   return (
     <Container className="py-6">
       <div
@@ -46,7 +63,7 @@ export default function DocsTabs({
         }
       >
         <div
-          className={`flex items-center justify-between gap-2 ${
+          className={`flex min-w-0 items-center justify-between gap-2 ${
             variant === "underline"
               ? "border-b"
               : variant === "pills"
@@ -55,19 +72,18 @@ export default function DocsTabs({
           }`}
         >
           <div
-            className={`flex gap-0 ${
-              variant === "pills"
-                ? "gap-1 p-1 rounded-lg bg-muted/50 inline-flex"
-                : ""
+            className={`flex min-w-0 gap-0 overflow-x-auto ${
+              variant === "pills" ? "gap-1 p-1 rounded-lg bg-muted/50" : ""
             }`}
             role="tablist"
+            aria-orientation="horizontal"
           >
             {tabs.map((tab, index) => {
               const isActive = index === activeTab;
               const Icon = getLucideIcon(tab.icon);
 
               const baseClasses =
-                "flex items-center gap-2 px-4 py-2.5 text-sm font-medium transition-all cursor-pointer outline-hidden";
+                "flex shrink-0 items-center gap-2 px-4 py-2.5 text-sm font-medium transition-all cursor-pointer outline-hidden";
 
               const variantClasses = {
                 underline: isActive
@@ -86,11 +102,24 @@ export default function DocsTabs({
                   key={index}
                   role="tab"
                   type="button"
+                  id={tabId(index)}
+                  aria-controls={panelId}
                   aria-selected={isActive}
-                  onClick={() => {
-                    setLocalTab(index);
-                    choose(tab.label);
+                  tabIndex={isActive ? 0 : -1}
+                  onKeyDown={(event) => {
+                    const step =
+                      event.key === "ArrowRight"
+                        ? 1
+                        : event.key === "ArrowLeft"
+                          ? -1
+                          : 0;
+                    if (!step) return;
+                    event.preventDefault();
+                    const next = (activeTab + step + tabs.length) % tabs.length;
+                    selectTab(next);
+                    document.getElementById(tabId(next))?.focus();
                   }}
+                  onClick={() => selectTab(index)}
                   className={`${baseClasses} ${variantClasses[variant]}`}
                 >
                   {Icon && <Icon className="h-4 w-4" />}
@@ -102,17 +131,10 @@ export default function DocsTabs({
           {hasCode(activeContent) && (
             <button
               type="button"
-              onClick={() =>
-                copy(
-                  Array.from(
-                    panelRef.current?.querySelectorAll("pre") ?? [],
-                    (pre) => pre.textContent ?? "",
-                  ).join("\n\n"),
-                )
-              }
-              className="mr-2 flex items-center gap-1.5 rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              onClick={copyActiveCode}
+              className="mr-2 flex shrink-0 items-center gap-1.5 rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
-              {copied ? (
+              {copied && copiedTab === activeTab ? (
                 <>
                   <Check className="h-3.5 w-3.5 text-primary" />
                   <span className="text-primary">Copied!</span>
@@ -128,7 +150,9 @@ export default function DocsTabs({
         </div>
 
         <div
+          id={panelId}
           role="tabpanel"
+          aria-labelledby={tabId(activeTab)}
           className={variant === "bordered" ? "p-6" : "pt-4"}
         >
           <div

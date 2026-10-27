@@ -1,27 +1,17 @@
 "use client";
 
 import { useCallback, useSyncExternalStore } from "react";
-import { tabSyncStorageKey } from "./docs-tab-sync";
+import { createTabChoiceStore, tabSyncStorageKey } from "./docs-tab-sync";
 
-const listeners = new Set<() => void>();
-const unsaved = new Map<string, string>();
+const store = createTabChoiceStore(() => window.localStorage);
 
 function subscribe(listener: () => void) {
-  listeners.add(listener);
-  window.addEventListener("storage", listener);
+  const unsubscribe = store.subscribe(listener);
+  window.addEventListener("storage", store.notify);
   return () => {
-    listeners.delete(listener);
-    window.removeEventListener("storage", listener);
+    unsubscribe();
+    window.removeEventListener("storage", store.notify);
   };
-}
-
-function read(key: string): string | null {
-  if (unsaved.has(key)) return unsaved.get(key) ?? null;
-  try {
-    return localStorage.getItem(key);
-  } catch {
-    return null;
-  }
 }
 
 export function useSyncedTab(syncKey: string | undefined) {
@@ -29,20 +19,13 @@ export function useSyncedTab(syncKey: string | undefined) {
 
   const chosen = useSyncExternalStore(
     subscribe,
-    () => (key ? read(key) : null),
+    () => (key ? store.read(key) : null),
     () => null,
   );
 
   const choose = useCallback(
     (label: string) => {
-      if (!key) return;
-      try {
-        localStorage.setItem(key, label);
-        unsaved.delete(key);
-      } catch {
-        unsaved.set(key, label);
-      }
-      for (const listener of listeners) listener();
+      if (key) store.choose(key, label);
     },
     [key],
   );
