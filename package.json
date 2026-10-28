@@ -4,7 +4,7 @@
   "type": "module",
   "packageManager": "pnpm@11.1.2",
   "scripts": {
-    "build": "next build",
+    "build": "next build && sh -c '[ \"$VERCEL_ENV\" != production ] || cmssy sync-manifest --config cmssy/config.ts'",
     "check:blocks": "node scripts/check-block-graph.mjs",
     "codegen": "graphql-codegen --config codegen.ts",
     "dev": "next dev",
