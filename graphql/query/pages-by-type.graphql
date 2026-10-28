@@ -5,6 +5,8 @@ query PublicPagesByType(
   $limit: Int
   $offset: Int
   $sortBy: PageSortBy
+  $pageType: String
+  $customFieldSort: PageCustomFieldSortInput
 ) {
   public {
     page {
@@ -15,6 +17,8 @@ query PublicPagesByType(
         limit: $limit
         offset: $offset
         sortBy: $sortBy
+        pageType: $pageType
+        customFieldSort: $customFieldSort
       ) {
         items {
           id

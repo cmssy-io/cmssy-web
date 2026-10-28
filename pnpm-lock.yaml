@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       '@cmssy/core':
-        specifier: ^16.6.0
-        version: 16.6.0
+        specifier: 19.26.0
+        version: 19.26.0
       '@cmssy/next':
-        specifier: ^16.6.0
-        version: 16.6.0(@cmssy/react@16.6.0(react@19.2.7))(next@16.2.10(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        specifier: 19.26.0
+        version: 19.26.0(@cmssy/react@19.26.0(react@19.2.7))(next@16.2.10(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@cmssy/react':
-        specifier: ^16.6.0
-        version: 16.6.0(react@19.2.7)
+        specifier: 19.26.0
+        version: 19.26.0(react@19.2.7)
       '@graphql-typed-document-node/core':
         specifier: ^3.2.0
         version: 3.2.0(graphql@17.0.2)
@@ -62,6 +62,9 @@ importers:
       next:
         specifier: ^16.0.10
         version: 16.2.10(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      posthog-js:
+        specifier: ^1.433.7
+        version: 1.433.7(@types/react@19.2.17)(react@19.2.7)
       react:
         specifier: ^19.2.0
         version: 19.2.7
@@ -97,14 +100,14 @@ importers:
         version: 5.1.0
     devDependencies:
       '@cmssy/cli':
-        specifier: ^16.6.0
-        version: 16.6.0
+        specifier: 19.26.0
+        version: 19.26.0
       '@cmssy/eslint-plugin':
-        specifier: ^16.6.0
-        version: 16.6.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
+        specifier: 19.26.0
+        version: 19.26.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
       '@cmssy/types':
-        specifier: ^0.49.0
-        version: 0.49.0
+        specifier: 0.72.0
+        version: 0.72.0
       '@eslint/js':
         specifier: ^9.39.3
         version: 9.39.5
@@ -251,33 +254,33 @@ packages:
     resolution: {integrity: sha512-4zBIxpPzowiZpusoFkyGVwakdRJUyuH5PxQ/PrqghfdFWWasvnCdPfQXHrenDai+gyLARulZjZowCOj6fjT4pA==}
     engines: {node: '>=6.9.0'}
 
-  '@cmssy/cli@16.6.0':
-    resolution: {integrity: sha512-1DCUCGmXoO0v26AM5fhW1kKCXHdhKWBOJ/EG9vQ5bL8Ag5kzD80wdXmZ/euONj+8WM8JF2JxU5Y8hafWRvdCYw==}
+  '@cmssy/cli@19.26.0':
+    resolution: {integrity: sha512-fl7CP2+2otYAEbQd+CpuMj7QFIQ/AUqe7iwbL8P8FKK70G8o8FzOzVlsWR2COMqqQQgow97VPO/fH/MvsJ+KKw==}
     hasBin: true
 
-  '@cmssy/core@16.6.0':
-    resolution: {integrity: sha512-JNnYFp38yCbiDRfouGsNpmKeqhimrry6y+VdSqZQ4HA9kbPlTUj/2LezAUk3q8lUQ6PBq/PA7IB00DzaX/8X+w==}
+  '@cmssy/core@19.26.0':
+    resolution: {integrity: sha512-+pyg+V8J+nUPkIRzTC3qCxIor0Pe4CMF36RhS7NDwbI4tU0+PxSv/wOuQ8xPtevYcrkWu0+EhzM4FCt4FRRZjA==}
 
-  '@cmssy/eslint-plugin@16.6.0':
-    resolution: {integrity: sha512-pc90UFKR+09hIGYANlxYzI0XUKhKfU2+MK0cB3goHEezyogPbRl3pMV4CBiNeVCftmmYPQHORTYkw72rX0YJFQ==}
+  '@cmssy/eslint-plugin@19.26.0':
+    resolution: {integrity: sha512-D0gKu7F8VD4WAiZ3jEQvDqv2J+vK9CBisKIR0ttVR/XrcmSiZdZ4HgZHnMtipTjFubHlXsChXgsQFZUmn37+5g==}
     peerDependencies:
       eslint: '>=8'
 
-  '@cmssy/next@16.6.0':
-    resolution: {integrity: sha512-xuQFOnH+ETNVFbVx4oyYvyIge07VuNdH31EMOPcEBIWVaMe7zbRUHjd/lBxZFCjJvpAwAt6ONwbKOs2lyoJKQw==}
+  '@cmssy/next@19.26.0':
+    resolution: {integrity: sha512-aDO4UONQNxG16F6uFSERod7kdH31M+/7y1lg8uln0vtkVav08ghkMois21rGtnuNME0kpFIXZ5paX/CvDc0dqg==}
     peerDependencies:
-      '@cmssy/react': ^16.6.0
+      '@cmssy/react': ^19.26.0
       next: '>=15'
       react: ^18.2.0 || ^19.0.0
       react-dom: ^18.2.0 || ^19.0.0
 
-  '@cmssy/react@16.6.0':
-    resolution: {integrity: sha512-kK1uuxeM7ohq3GX2zs7Fo65upZlDUXpYCI3V34Sj8aYQQgqoeHabwkdDFPDuFNaWiuu9fZToeMvMZwcpcIzv3A==}
+  '@cmssy/react@19.26.0':
+    resolution: {integrity: sha512-6pAZ5Z8ZPlxCHYynCxsmqEXXiwVOAZ1kH7bOvyZDIw1oZBapRdV7AWawotXjI/8yDFvlZKbRl20TQGSACKIzEQ==}
     peerDependencies:
       react: ^18.2.0 || ^19.0.0
 
-  '@cmssy/types@0.49.0':
-    resolution: {integrity: sha512-4agm9gmKA2b5+skLlQ4QblVQDfcJCttesvb3BUJEgE7D7e987gCGyjS2Dxc58nEbnQR9M4vwUB+2FXAWm8aZJQ==}
+  '@cmssy/types@0.72.0':
+    resolution: {integrity: sha512-z140dISQ9vhpqphyX+Ge+8LVPLn8Gt+OS5bk7xKCmTMaaQ18gygDQ7mOwzw0x5ArHtDOMKwoevIfwjuoAjo47A==}
 
   '@emnapi/runtime@1.11.2':
     resolution: {integrity: sha512-kyOl3X0DuTiT1h2ft8r2fYO8JYtU9a9Xis/zBSiGArNaagCOWx90N1k2wxp18czFDH+OgcWGb5ZP/XMt3dcyPA==}
@@ -1137,6 +1140,15 @@ packages:
   '@oxc-project/types@0.144.0':
     resolution: {integrity: sha512-nuhZIOLuI6TFQ32I/WnUx+SCPY7SdSKwgnFHydAuoS1+Z4BRcaP+RRJmGzl9lw+0OFF7UmaESf7KQRXaNLHypg==}
 
+  '@posthog/browser-common@0.9.0':
+    resolution: {integrity: sha512-EWoVzs1vVY7ihpn8yOjj3jyjriHUEEMVSBNL/TW3hk09fTriWRe76vJXrRg0G0yjTYxHmtlSkNn4mOV24ZEzzA==}
+
+  '@posthog/core@1.54.2':
+    resolution: {integrity: sha512-p0NuMjiZkploKG/aASj4nw4QDuhF87SIFWkelaFRrr3G0Myb7KWWUZot2hm5qXpPx7zKozVZJrJkGzC2kGBqbg==}
+
+  '@posthog/types@1.412.1':
+    resolution: {integrity: sha512-FxXsb9YOOME8bJI5K09qKeSvLjnZQ2dPV7wZpI7a8sERQtXkAuhBcPB/balCnVE7TYwhgtHj5NQss9BgQ5bAfQ==}
+
   '@radix-ui/primitive@1.1.5':
     resolution: {integrity: sha512-d86WIWFYNtGA0H/d8exstrTRTp7eWJYlYJbtNofxr/3ljupZYn6EFDG/Qgu/0Kc8v7yMUxySagqJsL1+PdYjWg==}
 
@@ -1691,6 +1703,9 @@ packages:
   '@types/sanitize-html@2.16.1':
     resolution: {integrity: sha512-n9wjs8bCOTyN/ynwD8s/nTcTreIHB1vf31vhLMGqUPNHaweKC4/fAl4Dj+hUlCTKYgm4P3k83fmiFfzkZ6sgMA==}
 
+  '@types/trusted-types@2.0.7':
+    resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
+
   '@types/unist@3.0.3':
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
 
@@ -1986,6 +2001,9 @@ packages:
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
 
+  core-js@3.50.0:
+    resolution: {integrity: sha512-BRWgOLKkFeCgRudR6zrs8p9XJZcE14grzKMMssoYrk6krtuEZ7MTKPIY5RzOnqsEKIR9kst7wNzphttraT+Yqw==}
+
   cosmiconfig@8.3.6:
     resolution: {integrity: sha512-kcZ6+W5QzcJ3P1Mt+83OUv/oHFqZHIx8DuxG6eZ5RGMERoLqp4BuGjhHLYGK+Kf5XVkQvqBSmAy/nGWN3qDgEA==}
     engines: {node: '>=14'}
@@ -2097,6 +2115,9 @@ packages:
   domhandler@6.0.1:
     resolution: {integrity: sha512-gYzvtM72ZtxQO0T048kd6HWSbbGCNOUwcnfQ01cqIJ4X2IYKFFHZ5mKvrQETcFXxsRObZulDaKmy//R7TPtsBg==}
     engines: {node: '>=20.19.0'}
+
+  dompurify@3.4.15:
+    resolution: {integrity: sha512-EUBjM+B+lkDE41iE82DDSCfkoPGfXx8IxFxPMjNzm/Uk4xDet77rTN9wqlxlVg71kK7XGuUMv6wUxJUwwv+Xyw==}
 
   domutils@3.2.2:
     resolution: {integrity: sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==}
@@ -2264,6 +2285,9 @@ packages:
   fetch-blob@3.2.0:
     resolution: {integrity: sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==}
     engines: {node: ^12.20 || >= 14.13}
+
+  fflate@0.4.9:
+    resolution: {integrity: sha512-zdxgIEddhfsyCaWpJ2SdXEP8ZMrKJ6+5jl4OupODcywU0IhRk6gdXuVGcPICyfx2H97hVK7xmJtRLPjkxAX8Vw==}
 
   file-entry-cache@8.0.0:
     resolution: {integrity: sha512-XXTUwCvisa5oacNGRP9SfNtYBNAMi+RPwBFmblZEF7N7swHYQS6/Zfk7SRwx4D5j3CH211YNRco1DEMNVfZCnQ==}
@@ -3042,6 +3066,25 @@ packages:
     resolution: {integrity: sha512-u82N74LFzG8ca+dD8puPnplTXoGH4fTPpVGuIbt36G3qvNlkvfD0lEAZSxaly3KX8TS/L1A1gsCEmvKmBcVbkQ==}
     engines: {node: ^10 || ^12 || >=14}
 
+  posthog-js@1.433.7:
+    resolution: {integrity: sha512-AUZWqx85NtrRoFZUZzdU5eBsHdC7swcZq/Vd+NH9yZL1jaKJlfxbdJyHXrRZXFFd0c3bzvc5w9YbmqGrESWoIw==}
+    peerDependencies:
+      '@types/react': '>=16.8.0'
+      react: '>=16.8.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+
+  preact@10.29.8:
+    resolution: {integrity: sha512-ej2aVZ+vZ8WO7tvlQWRM9N63A0KzF9q4mWJfDUHgYaIofWY9hu74QdnQrjoPMmZi2/nZ5gN0bJCQF49xQqx09Q==}
+    peerDependencies:
+      preact-render-to-string: '>=5'
+    peerDependenciesMeta:
+      preact-render-to-string:
+        optional: true
+
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
@@ -3056,6 +3099,9 @@ packages:
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
+
+  query-selector-shadow-dom@1.0.1:
+    resolution: {integrity: sha512-lT5yCqEBgfoMYpf3F2xQRK7zEr1rhIIZuceDK6+xRkJQ4NMbHTwXqk4NkwDwQMNqXgG9r9fyHnzwNVs6zV5KRw==}
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
@@ -3550,6 +3596,12 @@ packages:
     resolution: {integrity: sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw==}
     engines: {node: '>= 8'}
 
+  web-vitals@6.2.1:
+    resolution: {integrity: sha512-rLcLXA2sx6+9dE88NHFubwTtGxpK4yYBLj6qHPdFoCaLr0cXGb4efOqtKLlm4loGA4OEKHIQKMKzZkKyOh5ctw==}
+
+  web-vitals@6.2.2:
+    resolution: {integrity: sha512-oto5x6dLEgrRqfcWed+pZEUb2q6ikbFmqF54CRDhI/QGbn+qxC49b4C4OkbH+kb9C3a8shpFD3SgR9kRcs80ZQ==}
+
   whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
     engines: {node: '>=18'}
@@ -3760,17 +3812,17 @@ snapshots:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
 
-  '@cmssy/cli@16.6.0':
+  '@cmssy/cli@19.26.0':
     dependencies:
-      '@cmssy/core': 16.6.0
+      '@cmssy/core': 19.26.0
       esbuild: 0.27.7
 
-  '@cmssy/core@16.6.0':
+  '@cmssy/core@19.26.0':
     dependencies:
-      '@cmssy/types': 0.49.0
+      '@cmssy/types': 0.72.0
       jose: 6.2.4
 
-  '@cmssy/eslint-plugin@16.6.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)':
+  '@cmssy/eslint-plugin@19.26.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/parser': 8.64.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
       eslint: 9.39.5(jiti@2.7.0)
@@ -3778,23 +3830,23 @@ snapshots:
       - supports-color
       - typescript
 
-  '@cmssy/next@16.6.0(@cmssy/react@16.6.0(react@19.2.7))(next@16.2.10(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+  '@cmssy/next@19.26.0(@cmssy/react@19.26.0(react@19.2.7))(next@16.2.10(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
-      '@cmssy/core': 16.6.0
-      '@cmssy/react': 16.6.0(react@19.2.7)
-      '@cmssy/types': 0.49.0
+      '@cmssy/core': 19.26.0
+      '@cmssy/react': 19.26.0(react@19.2.7)
+      '@cmssy/types': 0.72.0
       next: 16.2.10(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
       server-only: 0.0.1
 
-  '@cmssy/react@16.6.0(react@19.2.7)':
+  '@cmssy/react@19.26.0(react@19.2.7)':
     dependencies:
-      '@cmssy/core': 16.6.0
-      '@cmssy/types': 0.49.0
+      '@cmssy/core': 19.26.0
+      '@cmssy/types': 0.72.0
       react: 19.2.7
 
-  '@cmssy/types@0.49.0': {}
+  '@cmssy/types@0.72.0': {}
 
   '@emnapi/runtime@1.11.2':
     dependencies:
@@ -4649,6 +4701,17 @@ snapshots:
 
   '@oxc-project/types@0.144.0': {}
 
+  '@posthog/browser-common@0.9.0':
+    dependencies:
+      '@posthog/core': 1.54.2
+      '@posthog/types': 1.412.1
+
+  '@posthog/core@1.54.2':
+    dependencies:
+      '@posthog/types': 1.412.1
+
+  '@posthog/types@1.412.1': {}
+
   '@radix-ui/primitive@1.1.5': {}
 
   '@radix-ui/react-accordion@1.2.16(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
@@ -5123,6 +5186,9 @@ snapshots:
     dependencies:
       htmlparser2: 10.1.0
 
+  '@types/trusted-types@2.0.7':
+    optional: true
+
   '@types/unist@3.0.3': {}
 
   '@types/ws@8.18.1':
@@ -5446,6 +5512,8 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
+  core-js@3.50.0: {}
+
   cosmiconfig@8.3.6(typescript@5.9.3):
     dependencies:
       import-fresh: 3.3.1
@@ -5535,6 +5603,10 @@ snapshots:
   domhandler@6.0.1:
     dependencies:
       domelementtype: 3.0.0
+
+  dompurify@3.4.15:
+    optionalDependencies:
+      '@types/trusted-types': 2.0.7
 
   domutils@3.2.2:
     dependencies:
@@ -5737,6 +5809,8 @@ snapshots:
     dependencies:
       node-domexception: 1.0.0
       web-streams-polyfill: 3.3.3
+
+  fflate@0.4.9: {}
 
   file-entry-cache@8.0.0:
     dependencies:
@@ -6455,6 +6529,26 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
+  posthog-js@1.433.7(@types/react@19.2.17)(react@19.2.7):
+    dependencies:
+      '@posthog/browser-common': 0.9.0
+      '@posthog/core': 1.54.2
+      '@posthog/types': 1.412.1
+      core-js: 3.50.0
+      dompurify: 3.4.15
+      fflate: 0.4.9
+      preact: 10.29.8
+      query-selector-shadow-dom: 1.0.1
+      web-vitals: 6.2.2
+      web-vitals-soft-navs: web-vitals@6.2.1
+    optionalDependencies:
+      '@types/react': 19.2.17
+      react: 19.2.7
+    transitivePeerDependencies:
+      - preact-render-to-string
+
+  preact@10.29.8: {}
+
   prelude-ls@1.2.1: {}
 
   pretty-hrtime@1.0.3: {}
@@ -6462,6 +6556,8 @@ snapshots:
   property-information@7.2.0: {}
 
   punycode@2.3.1: {}
+
+  query-selector-shadow-dom@1.0.1: {}
 
   queue-microtask@1.2.3: {}
 
@@ -6929,6 +7025,10 @@ snapshots:
   web-namespaces@2.0.1: {}
 
   web-streams-polyfill@3.3.3: {}
+
+  web-vitals@6.2.1: {}
+
+  web-vitals@6.2.2: {}
 
   whatwg-mimetype@4.0.0: {}
 

@@ -1,6 +1,8 @@
 import { defineBlock, fields } from "@cmssy/react";
 import DocsTabs from "./DocsTabs";
 
+export type DocsTabsData = { tabsHtml: string[] };
+
 export const docsTabsProps = {
   tabs: fields.repeater({
     label: "Tabs",
@@ -14,6 +16,13 @@ export const docsTabsProps = {
     },
   }),
   defaultTab: fields.number({ label: "Default Tab Index", defaultValue: 0 }),
+  syncKey: fields.text({
+    label: "Sync Group",
+    placeholder: "e.g., framework",
+    localized: false,
+    helperText:
+      "Tab blocks with the same group switch together and remember the reader's choice, matched by tab label.",
+  }),
   variant: fields.select({
     label: "Tab Style",
     defaultValue: "underline",
@@ -29,5 +38,22 @@ export const docsTabsBlock = defineBlock({
   description:
     "Tabbed content switcher (e.g. code per language); inline within documentation.",
   component: DocsTabs,
+  // Server-side: syntax-highlight code blocks inside each tab's richText (shiki),
+  // same as docs-article. shiki is heavy and async so it stays off the client;
+  // the component falls back to raw tab content when the loader hasn't run.
+  loader: async ({ content }): Promise<DocsTabsData> => {
+    const tabs = Array.isArray(content.tabs) ? content.tabs : [];
+    const { highlightRichTextCode } = await import("@/lib/highlight-html");
+    const tabsHtml = await Promise.all(
+      tabs.map((tab) => {
+        const raw =
+          tab && typeof (tab as { content?: unknown }).content === "string"
+            ? (tab as { content: string }).content
+            : "";
+        return highlightRichTextCode(raw);
+      }),
+    );
+    return { tabsHtml };
+  },
   props: docsTabsProps,
 });

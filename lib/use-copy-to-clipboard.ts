@@ -11,9 +11,14 @@ export function useCopyToClipboard(resetMs = 2000) {
 
   const copy = useCallback(
     async (text: string) => {
-      await navigator.clipboard.writeText(text);
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        return false;
+      }
       setCopied(true);
       setTimeout(() => setCopied(false), resetMs);
+      return true;
     },
     [resetMs],
   );

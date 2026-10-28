@@ -5,6 +5,8 @@ import { mediaUrl } from "@cmssy/core";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "../../components/container";
 import { formatDate } from "@/lib/utils";
+import { siteUrl } from "@/lib/site-url";
+import { JsonLd } from "@/components/json-ld";
 import type { blogPostHeroProps } from "./block";
 
 export default function BlogPostHero({
@@ -29,6 +31,38 @@ export default function BlogPostHero({
 
   return (
     <section className="blog-post-hero relative overflow-hidden">
+      {title ? (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: title,
+            ...(excerpt ? { description: excerpt } : {}),
+            ...(coverImageUrl ? { image: [coverImageUrl] } : {}),
+            ...(author ? { author: { "@type": "Person", name: author } } : {}),
+            ...(date ? { datePublished: date } : {}),
+          }}
+        />
+      ) : null}
+      {title && breadcrumbLabel && breadcrumbUrl ? (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: breadcrumbLabel,
+                item: breadcrumbUrl.startsWith("/")
+                  ? `${siteUrl()}${breadcrumbUrl}`
+                  : breadcrumbUrl,
+              },
+              { "@type": "ListItem", position: 2, name: title },
+            ],
+          }}
+        />
+      ) : null}
       {/* Background - cover image or gradient */}
       <div className="relative min-h-[60vh] sm:min-h-[65vh] lg:min-h-[70vh] flex flex-col justify-end">
         {coverImageUrl ? (

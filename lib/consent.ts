@@ -51,7 +51,7 @@ export function consentUpdate(
 }
 
 export function isAnalyticsCookie(name: string): boolean {
-  return /^_ga(_|$)|^_gid$|^_gat(_|$)/.test(name);
+  return /^_ga(_|$)|^_gid$|^_gat(_|$)|^ph_/.test(name);
 }
 
 export function cookieDomains(hostname: string): string[] {

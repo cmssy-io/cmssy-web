@@ -1,7 +1,7 @@
 import type { PageItem } from "@cmssy/types";
 import { defineBlock, fields } from "@cmssy/react";
 import Component from "./src/BlogPosts";
-import { pageSelectorSlug } from "./src/utils";
+import { pageSelectorSlug, postsSortVars } from "./src/utils";
 
 export interface BlogPostsData {
   items: PageItem[];
@@ -21,6 +21,8 @@ export const blogPostsProps = {
     defaultValue: "9",
     options: ["3", "6", "9", "12"],
   }),
+  sortPageType: fields.text({ label: "Sort: post page type" }),
+  sortField: fields.text({ label: "Sort: date field, newest first" }),
   showSearch: fields.boolean({ label: "Show Search", defaultValue: true }),
   layout: fields.select({
     label: "Layout",
@@ -61,7 +63,12 @@ export const blogPostsBlock = defineBlock({
 
     const limit = Number(content.postsPerPage) || 9;
     const { loadPosts } = await import("./load-posts");
-    return loadPosts({ parentSlug, limit, offset: 0 });
+    return loadPosts({
+      parentSlug,
+      limit,
+      offset: 0,
+      ...postsSortVars(content),
+    });
   },
   props: blogPostsProps,
 });

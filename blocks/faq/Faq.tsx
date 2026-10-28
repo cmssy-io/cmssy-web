@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/accordion";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
+import { JsonLd } from "@/components/json-ld";
 import { FigEyebrow } from "@/components/fig-eyebrow";
 import { Reveal } from "@/components/motion/reveal";
 import type { faqProps } from "./block";
@@ -21,8 +22,32 @@ export default function Faq({ content }: BlockProps<typeof faqProps>) {
     faqs = [],
   } = content;
 
+  const faqEntities = faqs.flatMap((faq) =>
+    typeof faq.data.question === "string" &&
+    faq.data.question &&
+    typeof faq.data.answer === "string" &&
+    faq.data.answer
+      ? [
+          {
+            "@type": "Question",
+            name: faq.data.question,
+            acceptedAnswer: { "@type": "Answer", text: faq.data.answer },
+          },
+        ]
+      : [],
+  );
+
   return (
     <section id="faq" className="bg-background py-section">
+      {faqEntities.length > 0 ? (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqEntities,
+          }}
+        />
+      ) : null}
       <Container>
         <div className="grid gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">
