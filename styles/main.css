@@ -206,6 +206,14 @@
   background-size: 24px 24px;
 }
 
+@utility no-scrollbar {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @utility code-scroll {
   scrollbar-width: thin;
 
