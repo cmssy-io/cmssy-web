@@ -72,7 +72,7 @@ export default function DocsTabs({
           }`}
         >
           <div
-            className={`flex min-w-0 gap-0 overflow-x-auto ${
+            className={`no-scrollbar flex min-w-0 gap-0 overflow-x-auto ${
               variant === "pills" ? "gap-1 p-1 rounded-lg bg-muted/50" : ""
             }`}
             role="tablist"
