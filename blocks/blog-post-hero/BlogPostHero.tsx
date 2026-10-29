@@ -39,7 +39,16 @@ export default function BlogPostHero({
             headline: title,
             ...(excerpt ? { description: excerpt } : {}),
             ...(coverImageUrl ? { image: [coverImageUrl] } : {}),
-            ...(author ? { author: { "@type": "Person", name: author } } : {}),
+            ...(author
+              ? {
+                  author: {
+                    // "Cmssy Team" is the company, not a person.
+                    "@type": /team$/i.test(author.trim()) ? "Organization" : "Person",
+                    name: author,
+                  },
+                }
+              : {}),
+            publisher: { "@type": "Organization", name: "cmssy", url: siteUrl() },
             ...(date ? { datePublished: date } : {}),
           }}
         />
