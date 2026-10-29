@@ -17,7 +17,7 @@ function formatCount(value: number): string {
 }
 
 function formatStorage(mb: number): string {
-  return mb >= 1024 && mb % 1024 === 0 ? `${mb / 1024} GB` : `${mb} MB`;
+  return mb >= 1024 ? `${trim(mb / 1024)} GB` : `${mb} MB`;
 }
 
 export function cell(
@@ -39,21 +39,15 @@ export function cell(
     case "storage":
       return capped(limits.maxStorageMb, formatStorage);
     case "upload":
-      return formatStorage(limits.maxUploadMb);
+      return capped(limits.maxUploadMb, formatStorage);
     case "byokAi":
       return labels.included;
     case "apiRequests":
       return capped(limits.maxApiRequestsMonth, formatCount);
     case "bandwidth":
       return capped(limits.maxBandwidthGbMonth, (gb) => `${gb} GB`);
-    case "removeBranding":
-      return flag(limits.canRemoveBranding);
-    case "cart":
-      return flag(limits.canUseCart);
     case "orders":
-      return limits.canUseCart
-        ? capped(limits.maxOrdersMonth, formatCount)
-        : labels.excluded;
+      return capped(limits.maxOrdersMonth, formatCount);
     case "sso":
       return flag(limits.canUseSso);
     default:

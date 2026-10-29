@@ -17,8 +17,6 @@ const free: PlanLimits = {
   maxApiRequestsMonth: 100_000,
   maxBandwidthGbMonth: 50,
   maxOrdersMonth: 20,
-  canRemoveBranding: false,
-  canUseCart: true,
   canUseSso: false,
 };
 
@@ -28,8 +26,6 @@ const enterprise: PlanLimits = {
   maxStorageMb: null,
   maxApiRequestsMonth: null,
   maxOrdersMonth: null,
-  canRemoveBranding: true,
-  canUseCart: true,
   canUseSso: true,
 };
 
@@ -63,11 +59,22 @@ describe("plan comparison cells", () => {
     expect(cell(enterprise, "sso", labels)).toBe(labels.included);
   });
 
-  it("caps orders a month on a plan with the cart and shows none without it", () => {
+  it("caps orders a month and reads null as unlimited", () => {
     expect(cell(free, "orders", labels)).toBe("20");
     expect(cell(enterprise, "orders", labels)).toBe(labels.unlimited);
-    expect(cell({ ...free, canUseCart: false }, "orders", labels)).toBe(
-      labels.excluded,
+  });
+
+  it("no longer knows the retired cart and branding rows, which every plan includes", () => {
+    expect(cell(free, "cart", labels)).toBeNull();
+    expect(cell(free, "removeBranding", labels)).toBeNull();
+  });
+
+  it("shows the upload ceiling in whole gigabytes", () => {
+    expect(cell({ ...free, maxUploadMb: 2047 }, "upload", labels)).toBe(
+      "2 GB",
+    );
+    expect(cell({ ...free, maxUploadMb: 30_720 }, "upload", labels)).toBe(
+      "30 GB",
     );
   });
 });

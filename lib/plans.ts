@@ -10,12 +10,10 @@ export interface PlanLimits {
   maxMembers: number | null;
   maxPages: number | null;
   maxStorageMb: number | null;
-  maxUploadMb: number;
+  maxUploadMb: number | null;
   maxApiRequestsMonth: number | null;
   maxBandwidthGbMonth: number | null;
   maxOrdersMonth: number | null;
-  canRemoveBranding: boolean;
-  canUseCart: boolean;
   canUseSso: boolean;
 }
 

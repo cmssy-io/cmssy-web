@@ -58,8 +58,6 @@ export const planComparisonProps = {
           "byokAi",
           "apiRequests",
           "bandwidth",
-          "removeBranding",
-          "cart",
           "orders",
           "sso",
         ],
