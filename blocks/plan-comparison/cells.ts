@@ -50,6 +50,10 @@ export function cell(
       return flag(limits.canRemoveBranding);
     case "cart":
       return flag(limits.canUseCart);
+    case "orders":
+      return limits.canUseCart
+        ? capped(limits.maxOrdersMonth, formatCount)
+        : labels.excluded;
     case "sso":
       return flag(limits.canUseSso);
     default:

@@ -13,6 +13,7 @@ export interface PlanLimits {
   maxUploadMb: number;
   maxApiRequestsMonth: number | null;
   maxBandwidthGbMonth: number | null;
+  maxOrdersMonth: number | null;
   canRemoveBranding: boolean;
   canUseCart: boolean;
   canUseSso: boolean;

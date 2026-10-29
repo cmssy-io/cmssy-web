@@ -60,6 +60,7 @@ export const planComparisonProps = {
           "bandwidth",
           "removeBranding",
           "cart",
+          "orders",
           "sso",
         ],
       }),
