@@ -14,6 +14,19 @@ import { ADMIN_URL } from "@/lib/admin-url";
 import { siteUrl } from "@/lib/site-url";
 import { JsonLd } from "@/components/json-ld";
 
+// What AI answers and search engines read as "who is cmssy". Keep it identical
+// to the fact sheet one-liner and to every public profile.
+const ORG_DESCRIPTION =
+  "Headless CMS with built-in commerce that an AI agent can run. Your own Next.js, Astro or Remix app renders the content; cmssy never hosts your site.";
+// Public profiles of the same entity.
+const SAME_AS = [
+  "https://x.com/cmssy_io",
+  "https://www.linkedin.com/company/cmssy/",
+  "https://www.youtube.com/@cmssy",
+  "https://github.com/cmssy-io",
+  "https://www.npmjs.com/package/@cmssy/mcp-server",
+];
+
 // The document itself is in app/layout.tsx, which never remounts. This layout
 // carries what depends on the path: the locale, the header and the footer.
 export async function generateMetadata() {
@@ -83,6 +96,9 @@ export default async function SiteLayout({
               name: brandName,
               url: base,
               ...(logoUrl ? { logo: logoUrl } : {}),
+              description: ORG_DESCRIPTION,
+              email: "contact@cmssy.com",
+              sameAs: SAME_AS,
             }}
           />
           <JsonLd
@@ -93,6 +109,10 @@ export default async function SiteLayout({
               url: base,
               applicationCategory: "DeveloperApplication",
               operatingSystem: "Web",
+              description: ORG_DESCRIPTION,
+              // The free Hobby plan; paid tiers live on /pricing and change
+              // there, so only the stable "free to start" fact is stated here.
+              offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
             }}
           />
         </>

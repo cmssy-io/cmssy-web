@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Github, Linkedin, Twitter } from "lucide-react";
+import { Github, Linkedin, Twitter, Youtube } from "lucide-react";
 import { CmssyLink } from "@/components/cmssy-locale";
 import { mediaUrl } from "@cmssy/core";
 import type { BlockProps } from "@cmssy/react";
@@ -23,6 +23,7 @@ export default function Footer({
     twitterUrl,
     githubUrl,
     linkedinUrl,
+    youtubeUrl,
     metaLine,
     builtOnText,
     copyrightText,
@@ -45,6 +46,7 @@ export default function Footer({
     { url: twitterUrl, Icon: Twitter, label: "Twitter" },
     { url: githubUrl, Icon: Github, label: "GitHub" },
     { url: linkedinUrl, Icon: Linkedin, label: "LinkedIn" },
+    { url: youtubeUrl, Icon: Youtube, label: "YouTube" },
   ].filter((s) => s.url);
 
   return (

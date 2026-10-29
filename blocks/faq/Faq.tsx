@@ -96,7 +96,10 @@ export default function Faq({ content }: BlockProps<typeof faqProps>) {
                       <span className="absolute top-0 left-1/2 h-full w-[2px] -translate-x-1/2 rounded-full bg-elektryk-700 transition-transform duration-200 group-data-[state=open]:scale-y-0" />
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="pb-5 text-muted-foreground">
+                  <AccordionContent
+                    forceMount
+                    className="pb-5 text-muted-foreground"
+                  >
                     {answer}
                   </AccordionContent>
                 </AccordionItem>
