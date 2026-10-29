@@ -1,4 +1,5 @@
 import type { BlockProps } from "@cmssy/react";
+import { CmssyLink } from "@/components/cmssy-locale";
 import { Reveal } from "@/components/motion/reveal";
 import { ScrollHint } from "@/components/scroll-hint";
 import { Section } from "@/components/section";
@@ -15,6 +16,8 @@ export default function ComparisonTable({
     competitors = [],
     rows = [],
     footnote = "",
+    linkLabel = "",
+    linkUrl = "",
   } = content;
 
   return (
@@ -30,7 +33,16 @@ export default function ComparisonTable({
                 </th>
                 {competitors.map((c) => (
                   <th key={c.name} className="px-5 py-4 font-medium">
-                    {c.name}
+                    {c.href ? (
+                      <CmssyLink
+                        href={c.href}
+                        className="underline decoration-paper/30 underline-offset-4 hover:decoration-paper"
+                      >
+                        {c.name}
+                      </CmssyLink>
+                    ) : (
+                      c.name
+                    )}
                   </th>
                 ))}
               </tr>
@@ -55,10 +67,22 @@ export default function ComparisonTable({
           </table>
         </ScrollHint>
       </Reveal>
-      {footnote && (
-        <p className="mt-4 font-mono text-[12px] text-muted-foreground">
-          {footnote}
-        </p>
+      {(footnote || (linkLabel && linkUrl)) && (
+        <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+          {footnote && (
+            <p className="font-mono text-[12px] text-muted-foreground">
+              {footnote}
+            </p>
+          )}
+          {linkLabel && linkUrl && (
+            <CmssyLink
+              href={linkUrl}
+              className="text-[15px] font-medium text-elektryk-700 hover:underline"
+            >
+              {linkLabel}
+            </CmssyLink>
+          )}
+        </div>
       )}
     </Section>
   );
