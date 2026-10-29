@@ -21,7 +21,6 @@ export interface Plan {
   id: PlanId;
   limits: PlanLimits;
   price: { monthly: PlanPrice; annual: PlanPrice } | null;
-  startingPriceUsdMonth: number | null;
 }
 
 export function findPlan(plans: Plan[] | null, id: string): Plan | null {
