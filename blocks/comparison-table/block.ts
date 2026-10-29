@@ -17,6 +17,10 @@ export const comparisonTableProps = {
     label: "Competitor Columns",
     itemSchema: {
       name: fields.text({ label: "Name", required: true }),
+      // Our own page comparing against this competitor. Links in the table
+      // head give those pages a path from the homepage, which is how search
+      // engines find and weigh them.
+      href: fields.link({ label: "Comparison page" }),
     },
   }),
   rows: fields.repeater({
@@ -31,6 +35,8 @@ export const comparisonTableProps = {
       }),
     },
   }),
+  linkLabel: fields.text({ label: "Link Label" }),
+  linkUrl: fields.link({ label: "Link URL" }),
   footnote: fields.text({
     label: "Footnote",
     defaultValue:
