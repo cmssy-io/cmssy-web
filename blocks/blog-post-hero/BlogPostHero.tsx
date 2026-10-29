@@ -48,7 +48,13 @@ export default function BlogPostHero({
                   },
                 }
               : {}),
-            publisher: { "@type": "Organization", name: "cmssy", url: siteUrl() },
+            publisher: {
+              "@type": "Organization",
+              name: "cmssy",
+              // siteUrl() is "" when NEXT_PUBLIC_SITE_URL is unset; an empty
+              // URL is invalid Schema.org, so leave it out.
+              ...(siteUrl() ? { url: siteUrl() } : {}),
+            },
             ...(date ? { datePublished: date } : {}),
           }}
         />
