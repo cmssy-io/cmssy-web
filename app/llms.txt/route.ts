@@ -18,7 +18,8 @@ const INTRO = `> cmssy is a headless CMS with native commerce that an AI agent c
 - Content is composed from typed blocks; block schemas live in your frontend code.
 - Data collections are models with records, delivered over a typed GraphQL API.
 - Any MCP client connects through the cmssy MCP server and edits content, products and orders directly - never your code.
-- Refunds, order cancellations and page deletes over MCP wait for a human confirmation.
+- Each connection is read-only or read-write; a read-only connection is refused every change on the server.
+- Destructive MCP tools (refunds, order cancellations, page deletes) carry the MCP destructiveHint annotation, so the MCP client asks before running them. The in-admin assistant holds them until a person approves.
 - Built-in commerce: products, carts, orders, discounts, order pipelines. cmssy records payments; your payment provider processes them.
 - Every field is multilingual by default.`;
 
