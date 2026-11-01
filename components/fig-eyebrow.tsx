@@ -11,7 +11,7 @@ export function FigEyebrow({
 }) {
   if (!fig && !label) return null;
   const plate = fig && !/^fig\b/i.test(fig.trim()) ? `FIG ${fig.trim()}` : fig;
-  const text = plate && label ? `${plate} — ${label}` : plate || label;
+  const text = plate && label ? `${plate} - ${label}` : plate || label;
   const tone = dark ? "text-paper/60" : "text-muted-foreground";
   if (pill) {
     return (

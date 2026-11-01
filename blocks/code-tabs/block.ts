@@ -27,7 +27,7 @@ export const codeTabsProps = {
       label: fields.text({ label: "Tab Label", required: true }),
       comment: fields.text({
         label: "Leading Comment",
-        placeholder: "// app/page.tsx — you own this file",
+        placeholder: "// app/page.tsx - you own this file",
       }),
       code: fields.textarea({ label: "Code", required: true }),
       resultLabel: fields.text({

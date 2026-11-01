@@ -17,7 +17,7 @@ export function FigurePlate({
   className?: string;
   children: React.ReactNode;
 }) {
-  const label = [fig ? `FIG ${fig}` : "", caption].filter(Boolean).join(" — ");
+  const label = [fig ? `FIG ${fig}` : "", caption].filter(Boolean).join(" - ");
 
   return (
     <figure className={className}>

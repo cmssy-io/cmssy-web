@@ -15,7 +15,7 @@ export const aiDifferentiatorProps = {
   description: fields.textarea({
     label: "Description",
     defaultValue:
-      "Connect Claude through cmssy's MCP server and it works inside your workspace — creating pages, writing copy, and translating. It edits structured content directly, so nothing lands in your repo unreviewed.",
+      "Connect Claude through cmssy's MCP server and it works inside your workspace - creating pages, writing copy, and translating. It edits structured content directly, so nothing lands in your repo unreviewed.",
   }),
   bullets: fields.repeater({
     label: "Bullets",
