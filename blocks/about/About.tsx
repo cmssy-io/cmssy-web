@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
+import { FigEyebrow } from "@/components/fig-eyebrow";
+import { Reveal } from "@/components/motion/reveal";
 import type { aboutProps } from "./block";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -51,113 +53,108 @@ export default function About({ content }: BlockProps<typeof aboutProps>) {
   } = content;
 
   return (
-    <section className="relative min-h-screen py-24 lg:py-32">
-      {/* Background */}
-      <div className="absolute inset-0 bg-linear-to-br from-sky-50 via-background to-blue-50 dark:from-sky-950/50 dark:to-blue-950/50" />
-      <div className="absolute top-0 right-0 w-125 h-125 bg-sky-400/20 dark:bg-sky-500/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-100 h-100 bg-blue-400/20 dark:bg-blue-500/10 rounded-full blur-3xl" />
-
-      <Container className="relative">
-        {/* Header */}
-        <div className="text-center mb-16">
+    <section className="bg-background py-section text-foreground">
+      <Container>
+        <div className="flex flex-col items-start gap-4">
           {badgeText && (
-            <span className="inline-block px-4 py-1.5 rounded-full bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300 text-sm font-medium mb-6">
-              {badgeText}
-            </span>
+            <Reveal>
+              <FigEyebrow fig="" label={badgeText} />
+            </Reveal>
           )}
           {(heading || headingHighlight) && (
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-              {heading}{" "}
-              {headingHighlight && (
-                <span className="bg-linear-to-r from-sky-600 via-blue-600 to-sky-600 bg-clip-text text-transparent">
-                  {headingHighlight}
-                </span>
-              )}
-            </h1>
+            <Reveal index={1}>
+              <h1 className="max-w-[20ch] font-heading text-display font-semibold text-balance">
+                {heading}{" "}
+                {headingHighlight && (
+                  <span className="text-elektryk">{headingHighlight}</span>
+                )}
+              </h1>
+            </Reveal>
           )}
           {subtitle && (
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {subtitle}
-            </p>
+            <Reveal index={2}>
+              <p className="max-w-[62ch] text-lead text-muted-foreground">
+                {subtitle}
+              </p>
+            </Reveal>
           )}
         </div>
 
-        {/* Mission Section */}
         {missionText && (
-          <div className="max-w-3xl mx-auto mb-20">
-            <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-xl shadow-sky-500/5 p-8 sm:p-12 text-center">
-              <Globe className="w-12 h-12 mx-auto mb-6 text-sky-600" />
-              {missionHeading && (
-                <h2 className="text-2xl font-bold mb-4">{missionHeading}</h2>
-              )}
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                {missionText}
-              </p>
-            </div>
-          </div>
+          <Reveal className="mt-16 grid gap-6 border-t border-border pt-10 lg:grid-cols-[1fr_2fr] lg:gap-12">
+            {missionHeading && (
+              <h2 className="font-heading text-h3 font-semibold">
+                {missionHeading}
+              </h2>
+            )}
+            <p className="max-w-[62ch] text-lead text-muted-foreground lg:col-start-2">
+              {missionText}
+            </p>
+          </Reveal>
         )}
 
-        {/* Values Grid */}
         {(values as Value[]).length > 0 && (
-          <div className="mb-20">
+          <div className="mt-16">
             {valuesHeading && (
-              <h2 className="text-2xl font-bold text-center mb-10">
+              <h2 className="font-heading text-h2 font-semibold text-balance">
                 {valuesHeading}
               </h2>
             )}
-            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <div
+              className={`grid gap-6 md:grid-cols-2 ${valuesHeading ? "mt-10" : ""}`}
+            >
               {(values as Value[]).map((value, index) => {
                 const IconComponent = iconMap[value.icon] || Sparkles;
                 return (
-                  <div
+                  <Reveal
                     key={index}
-                    className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-lg shadow-sky-500/5 p-6 hover:shadow-xl transition-shadow"
+                    index={index}
+                    className="flex min-w-0 flex-col rounded-2xl border border-border bg-card p-6 text-card-foreground sm:p-[30px]"
                   >
-                    <div className="flex items-start gap-4">
-                      <div className="shrink-0 w-12 h-12 rounded-xl bg-linear-to-br from-sky-500 to-blue-600 flex items-center justify-center shadow-lg shadow-sky-500/25">
-                        <IconComponent className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-lg mb-2">
-                          {value.title}
-                        </h3>
-                        <p className="text-muted-foreground text-sm">
-                          {value.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                    <IconComponent
+                      className="size-5 text-elektryk"
+                      aria-hidden="true"
+                    />
+                    <h3 className="mt-4 font-heading text-h3 font-semibold">
+                      {value.title}
+                    </h3>
+                    <p className="mt-2.5 text-[15px] leading-relaxed text-muted-foreground">
+                      {value.description}
+                    </p>
+                  </Reveal>
                 );
               })}
             </div>
           </div>
         )}
 
-        {/* Tech Stack */}
         {showTechStack && (techStack as TechItem[]).length > 0 && (
-          <div className="max-w-3xl mx-auto">
+          <div className="mt-16">
             {techStackHeading && (
-              <h2 className="text-2xl font-bold text-center mb-10">
-                <Code className="inline-block w-6 h-6 mr-2 text-sky-600" />
+              <h2 className="font-heading text-h2 font-semibold text-balance">
                 {techStackHeading}
               </h2>
             )}
-            <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-xl shadow-sky-500/5 p-6 sm:p-8">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                {(techStack as TechItem[]).map((tech, index) => (
-                  <div
-                    key={index}
-                    className="text-center p-4 rounded-xl bg-sky-50 border border-sky-100 dark:bg-sky-500/10 dark:border-sky-400/20"
-                  >
-                    <p className="font-semibold text-sm">{tech.name}</p>
-                    {tech.category && (
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {tech.category}
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
+            <div
+              className={`grid grid-cols-2 gap-4 sm:grid-cols-4 ${
+                techStackHeading ? "mt-10" : ""
+              }`}
+            >
+              {(techStack as TechItem[]).map((tech, index) => (
+                <div
+                  key={index}
+                  className="min-w-0 rounded-xl border border-border bg-card p-5"
+                >
+                  <p className="font-heading text-[15px] font-semibold">
+                    {tech.name}
+                  </p>
+                  {tech.category && (
+                    <p className="mt-1 font-mono text-[12px] text-muted-foreground">
+                      {tech.category}
+                    </p>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         )}

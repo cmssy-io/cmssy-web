@@ -1,10 +1,12 @@
-import { ArrowRight, Home } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { CmssyLink } from "@/components/cmssy-locale";
 import { Container } from "@/components/container";
 import type { BlockProps } from "@cmssy/react";
 import type { notFoundProps } from "./block";
 
-export default function NotFound({ content }: BlockProps<typeof notFoundProps>) {
+export default function NotFound({
+  content,
+}: BlockProps<typeof notFoundProps>) {
   const {
     heading,
     title,
@@ -16,114 +18,44 @@ export default function NotFound({ content }: BlockProps<typeof notFoundProps>) 
   } = content;
 
   return (
-    <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden">
-      {/* ── Background: dark gradient wash ── */}
-      <div className="absolute inset-0 bg-linear-to-b from-background via-sky-950/5 to-background" />
-
-      {/* ── Radar ping rings ── */}
-      <div className="nf-radar-ring" />
-      <div className="nf-radar-ring" style={{ animationDelay: "1s" }} />
-      <div className="nf-radar-ring" style={{ animationDelay: "2s" }} />
-      <div className="nf-radar-ring" style={{ animationDelay: "3s" }} />
-
-      {/* ── Floating geometric shards ── */}
-      <div
-        className="absolute left-[12%] top-[20%] h-16 w-16 rounded-2xl border border-sky-500/10 bg-sky-500/5 backdrop-blur-sm"
-        style={{ animation: "nf-drift 6s ease-in-out infinite" }}
-      />
-      <div
-        className="absolute right-[15%] top-[30%] h-10 w-10 rotate-12 rounded-lg border border-blue-500/10 bg-blue-500/5 backdrop-blur-sm"
-        style={{
-          animation: "nf-drift-reverse 7s ease-in-out infinite",
-          animationDelay: "500ms",
-        }}
-      />
-      <div
-        className="absolute bottom-[25%] left-[20%] h-12 w-12 -rotate-6 rounded-xl border border-sky-500/10 bg-sky-500/5 backdrop-blur-sm"
-        style={{
-          animation: "nf-drift 8s ease-in-out infinite",
-          animationDelay: "1.5s",
-        }}
-      />
-      <div
-        className="absolute bottom-[20%] right-[10%] h-20 w-20 rotate-45 rounded-2xl border border-blue-500/10 bg-blue-500/5 backdrop-blur-sm"
-        style={{
-          animation: "nf-drift-reverse 9s ease-in-out infinite",
-          animationDelay: "800ms",
-        }}
-      />
-      <div
-        className="absolute right-[35%] top-[15%] h-6 w-6 rounded-full border border-sky-400/15 bg-sky-400/5"
-        style={{
-          animation: "nf-drift 5s ease-in-out infinite",
-          animationDelay: "2s",
-        }}
-      />
-
-      {/* ── Scanline overlay ── */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.015]">
-        <div
-          className="h-full w-full bg-linear-to-b from-transparent via-foreground to-transparent"
-          style={{ animation: "nf-scanline 8s linear infinite" }}
-        />
-      </div>
-
-      {/* ── Content ── */}
-      <Container className="relative z-10 py-20 text-center sm:py-28">
-        {/* Giant glitching number */}
+    <section className="flex min-h-[80vh] items-center bg-background py-section">
+      <Container className="max-w-3xl text-center">
         {heading && (
-          <div className="mb-4 select-none sm:mb-6" aria-hidden="true">
-            <span
-              className="nf-glitch-text inline-block bg-linear-to-r from-sky-600 via-blue-500 to-sky-600 bg-clip-text text-[8rem] leading-none font-black tracking-tighter text-transparent sm:text-[12rem] lg:text-[16rem]"
-              data-text={heading}
-            >
+          <div className="select-none" aria-hidden="true">
+            <span className="font-mono text-[clamp(5rem,16vw,11rem)] leading-none font-semibold tracking-[-0.04em] text-foreground">
               {heading}
             </span>
           </div>
         )}
 
-        {/* Decorative crosshair divider */}
-        <div className="mb-8 flex items-center justify-center gap-3 sm:mb-10">
-          <div className="h-px w-12 bg-linear-to-r from-transparent to-sky-500/40 sm:w-20" />
-          <div className="relative h-3 w-3">
-            <div className="absolute inset-0 rounded-full bg-sky-500/60" />
-            <div className="absolute -inset-1 animate-ping rounded-full bg-sky-500/20" />
-          </div>
-          <div className="h-px w-12 bg-linear-to-l from-transparent to-sky-500/40 sm:w-20" />
-        </div>
-
-        {/* Title */}
         {title && (
-          <h1 className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
+          <h1 className="mt-6 font-heading text-h2 font-semibold text-balance">
             {title}
           </h1>
         )}
 
-        {/* Description */}
         {description && (
-          <p className="mx-auto mb-10 max-w-lg text-base text-muted-foreground sm:mb-12 sm:text-lg">
+          <p className="mx-auto mt-5 max-w-xl text-lead text-muted-foreground">
             {description}
           </p>
         )}
 
-        {/* CTA buttons */}
-        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+        <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
           {primaryButtonText && primaryButtonUrl && (
             <CmssyLink
               href={primaryButtonUrl}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-linear-to-r from-sky-600 to-blue-600 px-6 py-3 text-base font-medium text-white shadow-lg shadow-sky-500/20 transition-all hover:from-sky-700 hover:to-blue-700 hover:shadow-sky-500/30 sm:px-8 sm:py-3.5 sm:text-lg"
+              className="rounded-lg bg-elektryk px-6 py-3 font-semibold text-ink transition-colors hover:bg-elektryk/85"
             >
-              <Home className="h-4 w-4 sm:h-5 sm:w-5" />
               {primaryButtonText}
             </CmssyLink>
           )}
           {secondaryButtonText && secondaryButtonUrl && (
             <CmssyLink
               href={secondaryButtonUrl}
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-input bg-background px-6 py-3 text-base font-medium transition-colors hover:bg-accent hover:text-accent-foreground sm:px-8 sm:py-3.5 sm:text-lg"
+              className="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 font-medium text-foreground transition-colors hover:border-foreground/30"
             >
               {secondaryButtonText}
-              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
+              <ArrowRight className="size-4" />
             </CmssyLink>
           )}
         </div>
