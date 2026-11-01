@@ -8,7 +8,7 @@ import type { ContactState } from "./types";
 import { SuccessMessage } from "./SuccessMessage";
 
 const inputClassName =
-  "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
+  "flex h-11 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm transition-colors ring-offset-background placeholder:text-muted-foreground focus-visible:border-elektryk focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-elektryk/30";
 
 const INITIAL_STATE: ContactState = { status: "idle", message: null };
 
@@ -22,8 +22,6 @@ function getLocalized(field: unknown, fallback = ""): string {
   if (!field) return fallback;
   if (typeof field === "string") return field;
   if (typeof field === "object") {
-    // No language is privileged here: the block context carries the active one,
-    // and anything else is just the first translation that exists.
     const o = field as Record<string, string>;
     return Object.values(o)[0] || fallback;
   }
@@ -100,7 +98,7 @@ export function ContactForm({
       {state.status === "error" && (
         <div
           role="alert"
-          className="rounded-md bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive"
+          className="rounded-lg border border-destructive/20 bg-destructive/10 p-3 text-sm text-destructive"
         >
           {errorMessage}
         </div>
@@ -177,7 +175,7 @@ export function ContactForm({
       <button
         type="submit"
         disabled={isPending}
-        className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 w-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-50 transition-colors"
+        className="inline-flex w-full items-center justify-center rounded-lg bg-elektryk px-6 py-3 font-semibold text-ink transition-colors hover:bg-elektryk/85 disabled:pointer-events-none disabled:opacity-50"
       >
         {isPending ? submitLoadingText : submitButtonText}
       </button>

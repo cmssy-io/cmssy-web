@@ -7,6 +7,8 @@ import {
 } from "@/components/ui/accordion";
 import { CmssyLink } from "@/components/cmssy-locale";
 import { Container } from "@/components/container";
+import { FigEyebrow } from "@/components/fig-eyebrow";
+import { Reveal } from "@/components/motion/reveal";
 import type { BlockProps } from "@cmssy/react";
 import type { legalProps } from "./block";
 
@@ -35,55 +37,58 @@ export default function Legal({
   } = content;
 
   return (
-    <section className="py-24">
+    <section className="bg-background py-section text-foreground">
       <Container>
-        {/* Header */}
-        <div className="text-center mb-16">
-          {badge && (
-            <span className="inline-block px-4 py-1.5 rounded-full bg-sky-100 text-sky-700 text-sm font-medium mb-4">
-              {badge}
-            </span>
-          )}
-          {(heading || headingHighlight) && (
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              {heading}{" "}
-              {headingHighlight && (
-                <span className="bg-linear-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
-                  {headingHighlight}
-                </span>
-              )}
-            </h2>
-          )}
-          {description && (
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {description}
-            </p>
-          )}
-        </div>
+        <div className="mx-auto max-w-3xl">
+          <div className="flex flex-col items-start gap-4">
+            {badge && (
+              <Reveal>
+                <FigEyebrow fig="" label={badge} />
+              </Reveal>
+            )}
+            {(heading || headingHighlight) && (
+              <Reveal index={1}>
+                <h1 className="max-w-[20ch] font-heading text-display font-semibold text-balance">
+                  {heading}{" "}
+                  {headingHighlight && (
+                    <span className="text-elektryk">{headingHighlight}</span>
+                  )}
+                </h1>
+              </Reveal>
+            )}
+            {description && (
+              <Reveal index={2}>
+                <p className="max-w-[62ch] text-lead text-muted-foreground">
+                  {description}
+                </p>
+              </Reveal>
+            )}
+          </div>
 
-        <div className="max-w-3xl mx-auto">
-          {/* Summary Box */}
           {showSummary && summaryContent && (
-            <div className="bg-linear-to-br from-sky-50 to-blue-50 rounded-2xl border border-sky-200 p-6 mb-8">
+            <div className="mt-12 rounded-2xl border border-border bg-muted p-6">
               {summaryTitle && (
-                <h3 className="font-semibold mb-2 text-lg">{summaryTitle}</h3>
+                <h2 className="font-heading text-lg font-semibold">
+                  {summaryTitle}
+                </h2>
               )}
-              <p className="text-muted-foreground">{summaryContent}</p>
+              <p className="mt-2 max-w-[70ch] leading-relaxed text-muted-foreground">
+                {summaryContent}
+              </p>
             </div>
           )}
 
-          {/* Accordion Sections */}
-          <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-xl shadow-sky-500/5 p-6 sm:p-8">
+          <div className="mt-8 rounded-2xl border border-border bg-card px-6 sm:px-8">
             <Accordion type="single" collapsible className="w-full">
               {sections.map((section, index) => {
                 const safeHtml = data?.sections?.[index];
                 return (
                   <AccordionItem key={index} value={`section-${index}`}>
-                    <AccordionTrigger className="text-left font-semibold py-3">
+                    <AccordionTrigger className="py-4 text-left font-heading font-semibold">
                       {section.title}
                     </AccordionTrigger>
                     <AccordionContent>
-                      <div className="prose prose-sm max-w-none text-muted-foreground">
+                      <div className="prose prose-sm max-w-[70ch] text-muted-foreground">
                         {safeHtml !== undefined ? (
                           <div dangerouslySetInnerHTML={{ __html: safeHtml }} />
                         ) : (
@@ -99,8 +104,7 @@ export default function Legal({
             </Accordion>
           </div>
 
-          {/* Footer */}
-          <div className="mt-8 text-center text-sm text-muted-foreground space-y-2">
+          <div className="mt-8 space-y-2 text-sm text-muted-foreground">
             {showFooterLinks && footerLinks.length > 0 && (
               <p>
                 {footerText && <>{footerText} </>}
@@ -109,7 +113,7 @@ export default function Legal({
                     {index > 0 && " and "}
                     <CmssyLink
                       href={link.url}
-                      className="text-sky-600 hover:text-sky-700 underline"
+                      className="text-foreground underline underline-offset-4 transition-colors hover:text-elektryk"
                     >
                       {link.text}
                     </CmssyLink>
@@ -118,7 +122,9 @@ export default function Legal({
                 .
               </p>
             )}
-            {lastUpdated && <p>Last updated: {lastUpdated}</p>}
+            {lastUpdated && (
+              <p className="font-mono text-xs">Last updated: {lastUpdated}</p>
+            )}
           </div>
         </div>
       </Container>

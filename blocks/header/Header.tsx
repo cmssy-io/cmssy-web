@@ -433,7 +433,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
         {/* Main Header */}
         <header
           ref={headerRef}
-          className={`w-full transition-all duration-300 ${isScrolled || isMobileMenuOpen ? "bg-background/95 backdrop-blur-lg border-b shadow-sm" : "bg-background border-b"}`}
+          className={`w-full transition-[background-color,border-color,box-shadow] duration-300 ${isScrolled || isMobileMenuOpen ? "bg-background/95 backdrop-blur-lg border-b shadow-sm" : "bg-background border-b"}`}
         >
           <Container as="nav">
             <div className="relative flex items-center justify-between h-16">
@@ -454,7 +454,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                 )}
                 {logoText && (
                   <span
-                    className={`font-bold ${logoTextSizeClasses[logoSize]}`}
+                    className={`font-heading font-semibold ${logoTextSizeClasses[logoSize]}`}
                   >
                     {logoText}
                   </span>
@@ -571,7 +571,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                     {showCta && ctaLabel && ctaUrl && (
                       <CmssyLink
                         href={ctaUrl}
-                        className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 bg-linear-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 text-white transition-colors"
+                        className="inline-flex items-center justify-center rounded-md text-sm font-semibold h-10 px-4 py-2 bg-elektryk text-ink transition-colors hover:bg-elektryk/85"
                       >
                         {ctaLabel}
                       </CmssyLink>
@@ -624,7 +624,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                 )}
                 {logoText && (
                   <span
-                    className={`font-bold ${logoTextSizeClasses[logoSize]}`}
+                    className={`font-heading font-semibold ${logoTextSizeClasses[logoSize]}`}
                   >
                     {logoText}
                   </span>
@@ -645,7 +645,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                 {navItems.map((item, index) =>
                   hasDropdown(item) ? (
                     <div key={index}>
-                      <div className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                      <div className="mb-3 font-mono text-xs text-muted-foreground">
                         {item.label}
                       </div>
                       <div className="flex flex-col gap-1">
@@ -763,7 +763,7 @@ export default function Header({ content, context, style = {} }: HeaderProps) {
                   {showCta && ctaLabel && ctaUrl && (
                     <CmssyLink
                       href={ctaUrl}
-                      className="inline-flex items-center justify-center rounded-md text-sm font-medium h-10 px-4 py-2 w-full bg-linear-to-r from-sky-600 to-blue-600 text-white transition-colors"
+                      className="inline-flex items-center justify-center rounded-md text-sm font-semibold h-10 px-4 py-2 w-full bg-elektryk text-ink transition-colors hover:bg-elektryk/85"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {ctaLabel}

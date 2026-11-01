@@ -83,7 +83,7 @@ export default function DocsTabs({
               const Icon = getLucideIcon(tab.icon);
 
               const baseClasses =
-                "flex shrink-0 items-center gap-2 px-4 py-2.5 text-sm font-medium transition-all cursor-pointer outline-hidden";
+                "flex shrink-0 items-center gap-2 px-4 py-2.5 text-sm font-medium transition-colors cursor-pointer outline-hidden";
 
               const variantClasses = {
                 underline: isActive

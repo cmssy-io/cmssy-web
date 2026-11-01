@@ -36,7 +36,7 @@ export default function Features({
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {features.map((feature, i) => (
           <Reveal key={feature.title} index={i}>
-            <div className="group h-full rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:shadow-[-.35rem_.35rem_0_rgba(0,168,240,.12)]">
+            <div className="group h-full rounded-2xl border border-border bg-card p-6 transition-colors hover:border-elektryk/40">
               <div className="flex gap-1.5">
                 <span className="size-2.5 rounded-[3px] bg-ink" />
                 <span className="size-2.5 rounded-[3px] bg-ink" />

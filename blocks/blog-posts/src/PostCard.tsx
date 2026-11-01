@@ -6,7 +6,7 @@ import { customMedia, customText, getLocalizedField } from "./utils";
 
 export function PlaceholderCard() {
   return (
-    <div className="flex flex-col rounded-2xl overflow-hidden bg-background border animate-pulse">
+    <div className="flex animate-pulse flex-col overflow-hidden rounded-2xl border border-border bg-card">
       <div className="aspect-video bg-muted" />
       <div className="p-5 flex flex-col gap-3">
         <div className="h-5 w-4/5 bg-muted rounded" />
@@ -40,7 +40,7 @@ export function PostCard({
   return (
     <CmssyLink
       href={item.fullSlug}
-      className={`group flex ${isList ? "flex-row" : "flex-col"} rounded-2xl overflow-hidden bg-background border transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 no-underline text-inherit`}
+      className={`group flex ${isList ? "flex-row" : "flex-col"} overflow-hidden rounded-2xl border border-border bg-card text-inherit no-underline transition-colors hover:border-foreground/25`}
     >
       {coverImage ? (
         <div
@@ -55,7 +55,7 @@ export function PostCard({
                 ? "256px"
                 : "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             }
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            className="object-cover"
           />
         </div>
       ) : (
@@ -65,9 +65,13 @@ export function PostCard({
       )}
       <div className="p-5 flex flex-col gap-2 flex-1">
         {category && (
-          <span className="text-xs font-medium text-sky-600">{category}</span>
+          <span className="font-mono text-[12px] text-muted-foreground">
+            {category}
+          </span>
         )}
-        <h3 className="text-lg font-semibold leading-snug">{title}</h3>
+        <h3 className="font-heading text-lg leading-snug font-semibold">
+          {title}
+        </h3>
         {excerpt && (
           <p className="text-sm text-muted-foreground line-clamp-3">
             {excerpt}

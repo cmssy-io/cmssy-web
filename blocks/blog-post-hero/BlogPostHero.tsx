@@ -78,7 +78,6 @@ export default function BlogPostHero({
           }}
         />
       ) : null}
-      {/* Background - cover image or gradient */}
       <div className="relative min-h-[60vh] sm:min-h-[65vh] lg:min-h-[70vh] flex flex-col justify-end">
         {coverImageUrl ? (
           <>
@@ -90,63 +89,52 @@ export default function BlogPostHero({
               className="object-cover"
               priority
             />
-            <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-black/20" />
+            <div className="absolute inset-0 bg-linear-to-t from-ink/90 via-ink/50 to-ink/20" />
           </>
         ) : (
-          <>
-            <div className="absolute inset-0 bg-linear-to-br from-sky-700 via-blue-800 to-indigo-900" />
-            <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
-          </>
+          <div className="dot-grid-dark absolute inset-0 bg-ink" />
         )}
 
-        {/* Content - positioned at bottom of cover */}
         <Container className="relative z-10 pb-10 sm:pb-14 pt-32">
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-sm text-white/60 mb-5">
+          <nav className="mb-5 flex items-center gap-2 text-sm text-paper/60">
             {breadcrumbLabel && breadcrumbUrl && (
               <>
                 <CmssyLink
                   href={breadcrumbUrl}
-                  className="hover:text-white transition-colors no-underline text-white/60"
+                  className="text-paper/60 no-underline transition-colors hover:text-paper"
                 >
                   {breadcrumbLabel}
                 </CmssyLink>
-                <span className="text-white/30">/</span>
+                <span className="text-paper/30">/</span>
               </>
             )}
             {title && (
-              <span className="text-white/40 truncate max-w-50 sm:max-w-none">
+              <span className="max-w-50 truncate text-paper/40 sm:max-w-none">
                 {title}
               </span>
             )}
           </nav>
 
-          {/* Category */}
           {category && (
-            <span className="inline-block text-[11px] font-bold uppercase tracking-[0.15em] text-white bg-card/15 backdrop-blur-sm px-3 py-1.5 rounded mb-5">
+            <span className="mb-5 flex items-center gap-2 font-mono text-[13px] text-paper/60">
+              <span className="inline-block size-2 rounded-[2px] bg-elektryk" />
               {category}
             </span>
           )}
 
-          {/* Title */}
           {title && (
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-white leading-[1.1] mb-4 max-w-4xl">
+            <h1 className="mb-4 max-w-4xl font-heading text-[clamp(2rem,4.4vw,3.5rem)] leading-[1.08] font-semibold tracking-[-0.025em] text-paper text-balance">
               {title}
             </h1>
           )}
 
-          {/* Excerpt */}
           {excerpt && (
-            <p className="text-base sm:text-lg text-white/75 leading-relaxed mb-7 max-w-2xl">
-              {excerpt}
-            </p>
+            <p className="mb-7 max-w-2xl text-lead text-paper/70">{excerpt}</p>
           )}
 
-          {/* Divider */}
-          <div className="w-16 h-px bg-card/25 mb-5" />
+          <div className="mb-5 h-px w-16 bg-paper/20" />
 
-          {/* Meta */}
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/60">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-paper/60">
             {author && (
               <div className="flex items-center gap-2.5">
                 {authorAvatarUrl ? (
@@ -155,14 +143,14 @@ export default function BlogPostHero({
                     alt={author}
                     width={28}
                     height={28}
-                    className="rounded-full object-cover ring-2 ring-white/20"
+                    className="rounded-full object-cover ring-2 ring-paper/20"
                   />
                 ) : (
-                  <div className="w-7 h-7 rounded-full bg-card/20 flex items-center justify-center text-white text-[11px] font-semibold">
+                  <div className="flex size-7 items-center justify-center rounded-full bg-paper/15 text-[11px] font-semibold text-paper">
                     {author.charAt(0).toUpperCase()}
                   </div>
                 )}
-                <span className="font-medium text-white/90">{author}</span>
+                <span className="font-medium text-paper/90">{author}</span>
               </div>
             )}
 
