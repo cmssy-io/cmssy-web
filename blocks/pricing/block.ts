@@ -12,7 +12,7 @@ export const pricingProps = {
   description: fields.textarea({
     label: "Description",
     defaultValue:
-      "One free project, forever. Upgrade for more workspaces, commerce and higher limits.",
+      "One free project, forever. Upgrade for more workspaces, uncapped orders and higher limits.",
   }),
   trialNotice: fields.text({
     label: "Trial Notice",
