@@ -24,7 +24,10 @@ const INTRO = `> cmssy is a headless CMS with native commerce that an AI agent c
 - Every field is multilingual by default.`;
 
 function line(page: ChildPage, locale: string, base: string): string {
-  return `- ${labelForPage(page, locale, locale)}: ${base}${localizedPath(page.fullSlug, locale, locale)}`;
+  const path = localizedPath(page.fullSlug, locale, locale);
+  // Agents read the Markdown twin of a docs page; everything else is HTML.
+  const isDocs = path === "/docs" || path.startsWith("/docs/");
+  return `- ${labelForPage(page, locale, locale)}: ${base}${path}${isDocs ? ".md" : ""}`;
 }
 
 /**
@@ -83,6 +86,8 @@ export async function GET() {
     `# ${name}`,
     "",
     INTRO,
+    "",
+    `The full documentation as one file: ${base}/llms-full.txt`,
     "",
     ...trees.flatMap(({ page, children }) => [
       `## ${labelForPage(page, locale, locale)}`,

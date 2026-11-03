@@ -8,6 +8,27 @@ export interface CatalogueRow {
   name: string;
   permission: string;
   description: string;
+  /** The first sentence: what a person scans for. */
+  summary: string;
+  /** The rest, written for the agent calling the tool. */
+  details: string;
+}
+
+const ABBREVIATION = /\b(?:e\.g|i\.e|etc|vs)\.$/i;
+
+/** Splits at the first real sentence end, not at "e.g." or inside a token. */
+export function splitDescription(
+  description: string,
+): Pick<CatalogueRow, "summary" | "details"> {
+  for (const match of description.matchAll(/\.\s+/g)) {
+    const end = match.index + 1;
+    if (ABBREVIATION.test(description.slice(0, end))) continue;
+    return {
+      summary: description.slice(0, end),
+      details: description.slice(end).trim(),
+    };
+  }
+  return { summary: description, details: "" };
 }
 
 export function catalogueRows(
@@ -19,6 +40,7 @@ export function catalogueRows(
       name: (tool.name ?? "").trim(),
       permission: tool.permission?.trim() ?? "",
       description: tool.description?.trim() ?? "",
+      ...splitDescription(tool.description?.trim() ?? ""),
     }))
     .sort((a, b) => a.name.localeCompare(b.name));
 }

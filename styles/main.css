@@ -384,13 +384,14 @@
 
   /* Code blocks styling for prose */
   .prose pre {
-    background-color: #18181b; /* zinc-900 */
-    color: #fafafa; /* zinc-50 */
+    background-color: #10141c; /* ink */
+    color: #fafaf8; /* paper */
+    border-radius: 14px;
     font-family: var(--font-mono);
   }
   .prose pre code {
     background-color: transparent;
-    color: #fafafa; /* zinc-50 - explicit for specificity */
+    color: #fafaf8; /* paper - explicit for specificity */
     padding: 0;
     font-size: inherit;
   }

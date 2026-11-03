@@ -16,6 +16,9 @@ const FIELD_KEYS = {
   uiNavOpen: "navOpen",
   uiNavClose: "navClose",
   uiNavLabel: "navLabel",
+  uiCopyPage: "copyPage",
+  uiCopied: "copied",
+  uiViewMarkdown: "viewMarkdown",
 } as const;
 
 export type DocsUi = Partial<

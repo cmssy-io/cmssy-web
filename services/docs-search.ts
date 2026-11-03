@@ -24,7 +24,7 @@ const SCHEMA_BY_TYPE = new Map<string, BlockPropsSchema>(
   ]),
 );
 
-async function docsPages(): Promise<ChildPage[]> {
+export async function docsPages(): Promise<ChildPage[]> {
   const sections = await listChildPages(DOCS_ROOT);
   const nested = await Promise.all(
     sections.map((section) => listChildPages(section.fullSlug)),
@@ -59,6 +59,11 @@ export async function mapWithLimit<T, R>(
   );
   await Promise.all(workers);
   return results;
+}
+
+/** A block's prose, for a block the Markdown serializer has no shape for. */
+export function blockPlainText(type: string, content: unknown): string {
+  return harvestBlockText(SCHEMA_BY_TYPE.get(type), content);
 }
 
 function bodyOfPage(
