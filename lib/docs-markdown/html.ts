@@ -7,7 +7,7 @@ import { visit } from "unist-util-visit";
 
 /** Site-relative becomes absolute; a docs page points at its Markdown twin. */
 export function markdownHref(href: string, base: string): string {
-  if (!href.startsWith("/")) return href;
+  if (!href.startsWith("/") || href.startsWith("//")) return href;
   const [path = "", suffix = ""] = href.split(/(?=[?#])/, 2);
   const isDocs = path === "/docs" || path.startsWith("/docs/");
   return `${base}${path}${isDocs ? ".md" : ""}${suffix}`;

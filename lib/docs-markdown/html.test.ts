@@ -53,5 +53,6 @@ describe("markdownHref", () => {
     expect(markdownHref("/pricing", "https://s.com")).toBe("https://s.com/pricing");
     expect(markdownHref("https://x.dev/a", "https://s.com")).toBe("https://x.dev/a");
     expect(markdownHref("#here", "https://s.com")).toBe("#here");
+    expect(markdownHref("//cdn.x.dev/a.png", "https://s.com")).toBe("//cdn.x.dev/a.png");
   });
 });
