@@ -10,8 +10,8 @@ export async function GET(
 ) {
   const { path } = await params;
   const slug = docsSlugFromParams(path);
-  const markdown = await loadDocsMarkdown(slug);
-  if (!markdown) return new Response("Not found\n", { status: 404 });
+  const markdown = slug ? await loadDocsMarkdown(slug) : null;
+  if (!slug || !markdown) return new Response("Not found\n", { status: 404 });
 
   return new Response(markdown, {
     headers: {

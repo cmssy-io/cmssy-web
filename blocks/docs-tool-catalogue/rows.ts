@@ -7,7 +7,6 @@ export interface CatalogueEntry {
 export interface CatalogueRow {
   name: string;
   permission: string;
-  description: string;
   /** The first sentence: what a person scans for. */
   summary: string;
   /** The rest, written for the agent calling the tool. */
@@ -39,7 +38,6 @@ export function catalogueRows(
     .map((tool) => ({
       name: (tool.name ?? "").trim(),
       permission: tool.permission?.trim() ?? "",
-      description: tool.description?.trim() ?? "",
       ...splitDescription(tool.description?.trim() ?? ""),
     }))
     .sort((a, b) => a.name.localeCompare(b.name));

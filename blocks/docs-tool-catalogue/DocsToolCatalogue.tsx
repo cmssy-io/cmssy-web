@@ -78,7 +78,7 @@ export default function DocsToolCatalogue({
                 <td className="px-4 py-3 align-top text-muted-foreground">
                   {row.details ? (
                     <details className="group">
-                      <summary className="cursor-pointer list-none marker:hidden">
+                      <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                         {row.summary}
                         <span
                           aria-hidden="true"

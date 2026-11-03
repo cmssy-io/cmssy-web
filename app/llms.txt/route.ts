@@ -1,3 +1,4 @@
+import { isDocsPath } from "@/lib/docs-markdown";
 import { labelForPage } from "@/lib/docs-nav";
 import { localizedPath } from "@/lib/locale-path";
 import { listChildPages, type ChildPage } from "@/services/pages";
@@ -26,8 +27,7 @@ const INTRO = `> cmssy is a headless CMS with native commerce that an AI agent c
 function line(page: ChildPage, locale: string, base: string): string {
   const path = localizedPath(page.fullSlug, locale, locale);
   // Agents read the Markdown twin of a docs page; everything else is HTML.
-  const isDocs = path === "/docs" || path.startsWith("/docs/");
-  return `- ${labelForPage(page, locale, locale)}: ${base}${path}${isDocs ? ".md" : ""}`;
+  return `- ${labelForPage(page, locale, locale)}: ${base}${path}${isDocsPath(path) ? ".md" : ""}`;
 }
 
 /**

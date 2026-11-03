@@ -14,6 +14,7 @@ import { DocsPrevNext } from "@/components/docs-prev-next";
 import { DocsBreadcrumbs } from "@/components/docs-breadcrumbs";
 import { Container } from "@/components/container";
 import { DocsPageActions } from "@/components/docs-page-actions";
+import { isDocsPath } from "@/lib/docs-markdown";
 import { docsBreadcrumbs, docsPrevNext } from "@/lib/docs-nav";
 import { loadDocsSection } from "@/lib/docs-section";
 import { customFieldText } from "@/lib/docs-ui";
@@ -85,7 +86,9 @@ export default async function Page({ params }: PageProps) {
         </aside>
         <main className="min-w-0 flex-1">
           {trail ? <DocsBreadcrumbs trail={trail} /> : null}
-          {section && sidebar.locale === sidebar.defaultLocale ? (
+          {section &&
+          isDocsPath(sidebar.page.slug) &&
+          sidebar.locale === sidebar.defaultLocale ? (
             <Container className="pt-4">
               <DocsPageActions slug={sidebar.page.slug} ui={section.ui} />
             </Container>

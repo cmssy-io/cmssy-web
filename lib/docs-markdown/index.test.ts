@@ -74,6 +74,10 @@ describe("pageToMarkdown", () => {
     expect(out).toContain("from new-one");
   });
 
+  it("renders nothing for a terminal without commands", () => {
+    expect(page("docs-terminal", { commands: [] })).not.toContain("```");
+  });
+
   it("lists MCP tools by name", () => {
     expect(
       page("docs-tool-catalogue", {
@@ -100,5 +104,9 @@ describe("docsSlugFromParams", () => {
     expect(docsSlugFromParams(undefined)).toBe("/docs");
     expect(docsSlugFromParams(["start", "env"])).toBe("/docs/start/env");
     expect(docsSlugFromParams(["start%2Fenv"])).toBe("/docs/start/env");
+  });
+
+  it("answers null, not a throw, to a malformed segment", () => {
+    expect(docsSlugFromParams(["%E0%A4%A"])).toBeNull();
   });
 });

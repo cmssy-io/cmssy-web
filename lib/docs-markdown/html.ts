@@ -5,12 +5,17 @@ import remarkStringify from "remark-stringify";
 import { unified } from "unified";
 import { visit } from "unist-util-visit";
 
+export function isDocsPath(path: string): boolean {
+  return path === "/docs" || path.startsWith("/docs/");
+}
+
 /** Site-relative becomes absolute; a docs page points at its Markdown twin. */
 export function markdownHref(href: string, base: string): string {
   if (!href.startsWith("/") || href.startsWith("//")) return href;
-  const [path = "", suffix = ""] = href.split(/(?=[?#])/, 2);
-  const isDocs = path === "/docs" || path.startsWith("/docs/");
-  return `${base}${path}${isDocs ? ".md" : ""}${suffix}`;
+  const cut = href.search(/[?#]/);
+  const path = cut === -1 ? href : href.slice(0, cut);
+  const suffix = cut === -1 ? "" : href.slice(cut);
+  return `${base}${path}${isDocsPath(path) ? ".md" : ""}${suffix}`;
 }
 
 function rewriteUrls(base: string) {

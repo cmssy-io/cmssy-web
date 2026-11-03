@@ -55,4 +55,10 @@ describe("markdownHref", () => {
     expect(markdownHref("#here", "https://s.com")).toBe("#here");
     expect(markdownHref("//cdn.x.dev/a.png", "https://s.com")).toBe("//cdn.x.dev/a.png");
   });
+
+  it("keeps both the query and the fragment", () => {
+    expect(markdownHref("/docs/a?x=1#y", "https://s.com")).toBe(
+      "https://s.com/docs/a.md?x=1#y",
+    );
+  });
 });

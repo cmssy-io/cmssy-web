@@ -5,7 +5,7 @@ import { useCopyToClipboard } from "@/lib/use-copy-to-clipboard";
 import type { DocsUi } from "@/lib/docs-ui";
 
 // The page as Markdown, for pasting into an AI assistant. The words come from
-// the CMS like the rest of the shell; without them the icons still work.
+// the CMS like the rest of the shell; a language without them gets icons only.
 export function DocsPageActions({ slug, ui }: { slug: string; ui: DocsUi }) {
   const { copied, copyLoaded } = useCopyToClipboard();
   const href = `${slug}.md`;
@@ -26,8 +26,8 @@ export function DocsPageActions({ slug, ui }: { slug: string; ui: DocsUi }) {
         type="button"
         onClick={copyPage}
         className={control}
-        aria-label={ui.copyPage ?? "Copy page as Markdown"}
-        title={ui.copyPage ?? "Copy page as Markdown"}
+        aria-label={ui.copyPage}
+        title={ui.copyPage}
       >
         {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
         {copied ? ui.copied : ui.copyPage}
@@ -35,8 +35,8 @@ export function DocsPageActions({ slug, ui }: { slug: string; ui: DocsUi }) {
       <a
         href={href}
         className={control}
-        aria-label={ui.viewMarkdown ?? "View as Markdown"}
-        title={ui.viewMarkdown ?? "View as Markdown"}
+        aria-label={ui.viewMarkdown}
+        title={ui.viewMarkdown}
       >
         <FileText className="size-3.5" />
         {ui.viewMarkdown}

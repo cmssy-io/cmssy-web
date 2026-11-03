@@ -3,7 +3,7 @@
 
 import { blockToMarkdown } from "./blocks";
 
-export { htmlToMarkdown, markdownHref } from "./html";
+export { htmlToMarkdown, isDocsPath, markdownHref } from "./html";
 
 export type MarkdownBlock = { type: string; content?: unknown };
 
@@ -48,9 +48,13 @@ export function pageToMarkdown(page: MarkdownPage, options: MarkdownOptions): st
 }
 
 /** Route params to a slug; a rewrite may hand the whole path over as one segment. */
-export function docsSlugFromParams(path: string[] | undefined): string {
-  const segments = (path ?? [])
-    .flatMap((segment) => decodeURIComponent(segment).split("/"))
-    .filter(Boolean);
-  return ["/docs", ...segments].join("/");
+export function docsSlugFromParams(path: string[] | undefined): string | null {
+  try {
+    const segments = (path ?? [])
+      .flatMap((segment) => decodeURIComponent(segment).split("/"))
+      .filter(Boolean);
+    return ["/docs", ...segments].join("/");
+  } catch {
+    return null;
+  }
 }

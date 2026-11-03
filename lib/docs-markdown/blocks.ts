@@ -1,3 +1,4 @@
+import { mediaUrl, type MediaLike } from "@cmssy/core";
 import { htmlToMarkdown, markdownHref } from "./html";
 
 type Content = Record<string, unknown>;
@@ -78,26 +79,22 @@ const renderers: Record<string, Renderer> = {
       ),
     ),
 
-  "docs-terminal": (content) =>
-    fenced(
-      records(content.commands)
-        .map((entry) =>
-          [`${text(entry.prompt) || "$"} ${text(entry.command)}`, text(entry.output)]
-            .filter(Boolean)
-            .join("\n"),
-        )
-        .join("\n"),
-      "bash",
-    ),
+  "docs-terminal": (content) => {
+    const commands = records(content.commands)
+      .filter((entry) => text(entry.command))
+      .map((entry) =>
+        [`${text(entry.prompt) || "$"} ${text(entry.command)}`, text(entry.output)]
+          .filter(Boolean)
+          .join("\n"),
+      );
+    return commands.length ? fenced(commands.join("\n"), "bash") : "";
+  },
 
   "docs-image": (content, base) => {
-    const url =
-      typeof content.src === "string"
-        ? content.src
-        : text((content.src as { url?: unknown } | null | undefined)?.url);
+    const url = mediaUrl(content.src as MediaLike)?.trim();
     if (!url) return "";
     return join(
-      `![${text(content.alt)}](${markdownHref(url.trim(), base)})`,
+      `![${text(content.alt)}](${markdownHref(url, base)})`,
       text(content.caption),
     );
   },

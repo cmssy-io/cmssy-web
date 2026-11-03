@@ -12,7 +12,6 @@ import {
 import {
   CONTENT_TAG,
   getPageById,
-  getPageId,
   listChildPages,
   type ChildPage,
 } from "@/services/pages";
@@ -51,11 +50,7 @@ async function render(page: ChildPage): Promise<string | null> {
 async function findPage(slug: string): Promise<ChildPage | null> {
   const parent = slug.slice(0, slug.lastIndexOf("/")) || "/";
   const siblings = await listChildPages(parent);
-  const found = siblings.find((page) => page.fullSlug === slug);
-  if (found) return found;
-  // The page tree lists children only; an unknown slug stops here.
-  const id = await getPageId(slug);
-  return id ? { id: id.id, fullSlug: slug } : null;
+  return siblings.find((page) => page.fullSlug === slug) ?? null;
 }
 
 /** One published docs page as Markdown, or null when there is none. */

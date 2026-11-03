@@ -25,7 +25,6 @@ describe("catalogueRows", () => {
       {
         name: "get_workspace_info",
         permission: "",
-        description: "Reads the workspace.",
         summary: "Reads the workspace.",
         details: "",
       },
@@ -52,7 +51,6 @@ describe("catalogueRows", () => {
       {
         name: "get_page",
         permission: "pages:view",
-        description: "x",
         summary: "x",
         details: "",
       },
