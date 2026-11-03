@@ -24,8 +24,8 @@ export function DocsPageActions({ slug, ui }: { slug: string; ui: DocsUi }) {
         type="button"
         onClick={copyPage}
         className={control}
-        aria-label={ui.copyPage}
-        title={ui.copyPage}
+        aria-label={ui.copyPage ?? "Copy page as Markdown"}
+        title={ui.copyPage ?? "Copy page as Markdown"}
       >
         {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
         {copied ? ui.copied : ui.copyPage}
@@ -33,8 +33,8 @@ export function DocsPageActions({ slug, ui }: { slug: string; ui: DocsUi }) {
       <a
         href={href}
         className={control}
-        aria-label={ui.viewMarkdown}
-        title={ui.viewMarkdown}
+        aria-label={ui.viewMarkdown ?? "View as Markdown"}
+        title={ui.viewMarkdown ?? "View as Markdown"}
       >
         <FileText className="size-3.5" />
         {ui.viewMarkdown}

@@ -1,10 +1,7 @@
+import { readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import {
-  docsSlugFromParams,
-  htmlToMarkdown,
-  markdownHref,
-  pageToMarkdown,
-} from "./docs-markdown";
+import { handledDocsBlocks } from "./blocks";
+import { docsSlugFromParams, pageToMarkdown } from "./index";
 
 const options = {
   base: "https://www.cmssy.com",
@@ -21,54 +18,6 @@ const page = (type: string, content: Record<string, unknown>) =>
     },
     options,
   );
-
-describe("htmlToMarkdown", () => {
-  it("keeps a code fence with its language and leaves the code literal", () => {
-    expect(
-      htmlToMarkdown(
-        '<pre><code class="language-tsx">const a = &lt;b&gt;*x*&lt;/b&gt;;\n</code></pre>',
-      ),
-    ).toBe("```tsx\nconst a = <b>*x*</b>;\n```");
-  });
-
-  it("fences code that itself holds a code fence", () => {
-    expect(htmlToMarkdown("<pre><code>```\nx\n```</code></pre>")).toBe(
-      "````\n```\nx\n```\n````",
-    );
-  });
-
-  it("renders inline marks, headings and absolute links", () => {
-    expect(
-      htmlToMarkdown(
-        '<h2 id="a">One</h2><p><strong>B</strong> and <code>c</code>, see <a href="/docs/api/mcp#x">MCP</a>.</p>',
-        "https://s.com",
-      ),
-    ).toBe("## One\n\n**B** and `c`, see [MCP](https://s.com/docs/api/mcp.md#x).");
-  });
-
-  it("renders tables and escapes a pipe in a cell", () => {
-    expect(
-      htmlToMarkdown(
-        "<table><thead><tr><th>A</th><th>B</th></tr></thead><tbody><tr><td><code>a|b</code></td><td>c</td></tr></tbody></table>",
-      ),
-    ).toBe("| A | B |\n| --- | --- |\n| `a\\|b` | c |");
-  });
-
-  it("numbers ordered lists and nests a list under its item", () => {
-    expect(htmlToMarkdown("<ol><li>One<ul><li>Sub</li></ul></li><li>Two</li></ol>")).toBe(
-      "1. One\n   - Sub\n2. Two",
-    );
-  });
-});
-
-describe("markdownHref", () => {
-  it("points docs at the Markdown twin and leaves the rest alone", () => {
-    expect(markdownHref("/docs/blocks", "https://s.com")).toBe("https://s.com/docs/blocks.md");
-    expect(markdownHref("/pricing", "https://s.com")).toBe("https://s.com/pricing");
-    expect(markdownHref("https://x.dev/a", "https://s.com")).toBe("https://x.dev/a");
-    expect(markdownHref("#here", "https://s.com")).toBe("#here");
-  });
-});
 
 describe("pageToMarkdown", () => {
   it("opens with front matter an agent can read", () => {
@@ -88,12 +37,20 @@ describe("pageToMarkdown", () => {
   });
 
   it("numbers steps and quotes a callout", () => {
-    expect(page("docs-steps", { steps: [{ title: "Go", content: "<p>Now</p>" }] })).toContain(
-      "### 1. Go\n\nNow",
-    );
-    expect(page("docs-callout", { type: "tip", title: "T", content: "<p>B</p>" })).toContain(
-      "> **TIP: T**\n> \n> B",
-    );
+    expect(
+      page("docs-steps", { steps: [{ title: "Go", content: "<p>Now</p>" }] }),
+    ).toContain("### 1. Go\n\nNow");
+    expect(
+      page("docs-callout", { type: "tip", title: "T", content: "<p>B</p>" }),
+    ).toContain("> **TIP: T**\n> \n> B");
+  });
+
+  it("keeps a link's description", () => {
+    expect(
+      page("docs-card-grid", {
+        cards: [{ title: "MCP", url: "/docs/api/mcp", description: "Connect." }],
+      }),
+    ).toContain("- [MCP](https://www.cmssy.com/docs/api/mcp.md): Connect.");
   });
 
   it("falls back to the default language", () => {
@@ -128,6 +85,13 @@ describe("pageToMarkdown", () => {
         ],
       }),
     ).toContain("- `a_tool` (none): A.\n- `z_tool` (a:b): Z.");
+  });
+});
+
+describe("docs blocks", () => {
+  it("every docs block has a decided Markdown form", () => {
+    const docsBlocks = readdirSync("blocks").filter((name) => name.startsWith("docs-"));
+    expect(docsBlocks.filter((name) => !handledDocsBlocks.has(name))).toEqual([]);
   });
 });
 

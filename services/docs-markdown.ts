@@ -74,7 +74,9 @@ export function loadDocsMarkdown(slug: string): Promise<string | null> {
 export function loadAllDocsMarkdown(): Promise<string> {
   return unstable_cache(
     async () => {
-      const pages = await docsPages();
+      // docsPages walks the children of /docs, not /docs itself.
+      const root = await findPage("/docs");
+      const pages = [...(root ? [root] : []), ...(await docsPages())];
       const documents = await mapWithLimit(pages, CONCURRENCY, render);
       return documents.filter(Boolean).join("\n");
     },

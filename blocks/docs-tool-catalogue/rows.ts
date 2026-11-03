@@ -20,7 +20,7 @@ const ABBREVIATION = /\b(?:e\.g|i\.e|etc|vs)\.$/i;
 export function splitDescription(
   description: string,
 ): Pick<CatalogueRow, "summary" | "details"> {
-  for (const match of description.matchAll(/\.\s+/g)) {
+  for (const match of description.matchAll(/[.!?]\s+/g)) {
     const end = match.index + 1;
     if (ABBREVIATION.test(description.slice(0, end))) continue;
     return {

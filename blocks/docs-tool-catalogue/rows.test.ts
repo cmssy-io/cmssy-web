@@ -73,6 +73,13 @@ describe("splitDescription", () => {
     });
   });
 
+  it("ends a sentence at a question or exclamation mark too", () => {
+    expect(splitDescription("Ready? Then go.")).toEqual({
+      summary: "Ready?",
+      details: "Then go.",
+    });
+  });
+
   it("does not split at an abbreviation or inside a token", () => {
     expect(splitDescription("Point at a host, e.g. my.site now")).toEqual({
       summary: "Point at a host, e.g. my.site now",
