@@ -67,7 +67,7 @@ export function DocsPageActions({ slug, ui }: { slug: string; ui: DocsUi }) {
           aria-label={openInLabel}
           title={openInLabel}
         >
-          {ui.openIn}
+          {openInLabel}
           <ChevronDown className="size-3.5" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="docs-shell min-w-48">

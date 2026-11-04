@@ -97,7 +97,7 @@ export function DocsSidebarNav({
               <NavLink
                 key={page.slug}
                 href={page.slug}
-                label={page.isIndex && ui.overview ? ui.overview : page.label}
+                label={page.slug === area.slug && ui.overview ? ui.overview : page.label}
                 active={path === page.slug}
                 onNavigate={() => setOpen(false)}
               />

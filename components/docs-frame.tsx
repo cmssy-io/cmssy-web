@@ -1,9 +1,6 @@
-import type { CSSProperties } from "react";
 import { DocsAreaTabs } from "./docs-area-tabs";
 import { DocsShell } from "./docs-shell";
 import type { DocsSection } from "@/lib/docs-section";
-
-const TABS_HEIGHT = { "--docs-area-tabs": "3rem" } as CSSProperties;
 
 export function DocsFrame({
   section,
@@ -18,7 +15,13 @@ export function DocsFrame({
 }) {
   return (
     <DocsShell>
-      <div style={section ? TABS_HEIGHT : undefined}>
+      <div
+        className={
+          section
+            ? "[--docs-area-tabs:3rem] max-md:has-[[data-hidden]]:[--docs-area-tabs:0px]"
+            : undefined
+        }
+      >
         {section ? (
           <DocsAreaTabs
             root={section.root}

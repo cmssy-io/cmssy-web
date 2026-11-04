@@ -2,6 +2,7 @@ import { unstable_cache } from "next/cache";
 import type { BlockPropsSchema } from "@cmssy/types";
 import { blocks } from "@/cmssy/blocks";
 import { harvestBlockText, joinPageText } from "@/lib/docs-search-text";
+import { mapWithLimit } from "@/lib/map-with-limit";
 import {
   CONTENT_TAG,
   getPageById,
@@ -46,28 +47,7 @@ export async function docsPages(): Promise<ChildPage[]> {
   return walk(DOCS_ROOT, 0);
 }
 
-export async function mapWithLimit<T, R>(
-  input: T[],
-  limit: number,
-  run: (item: T) => Promise<R>,
-): Promise<R[]> {
-  const results: R[] = new Array(input.length);
-  let cursor = 0;
-  const workers = Array.from(
-    { length: Math.min(limit, input.length) },
-    async () => {
-      while (cursor < input.length) {
-        const index = cursor;
-        cursor += 1;
-        const item = input[index];
-        if (item === undefined) continue;
-        results[index] = await run(item);
-      }
-    },
-  );
-  await Promise.all(workers);
-  return results;
-}
+export { mapWithLimit };
 
 /** A block's prose, for a block the Markdown serializer has no shape for. */
 export function blockPlainText(type: string, content: unknown): string {

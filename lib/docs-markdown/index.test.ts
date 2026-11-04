@@ -81,11 +81,19 @@ describe("pageToMarkdown", () => {
       commands: [
         { tab: "For you", runner: "npx", command: "npx x init" },
         { tab: "For you", runner: "pnpm", command: "pnpm dlx x init" },
-        { tab: "For agents", command: "claude mcp add x" },
+        {
+          tab: "For agents",
+          command: "claude mcp add x",
+          note: "Needs the CLI.",
+          noteLabel: "Install it",
+          noteUrl: "/docs/cli",
+        },
       ],
     });
     expect(out).toContain("### For you\n\n```bash\n# npx\nnpx x init\n\n# pnpm\npnpm dlx x init\n```");
-    expect(out).toContain("### For agents\n\n```bash\nclaude mcp add x\n```");
+    expect(out).toContain(
+      "### For agents\n\n```bash\nclaude mcp add x\n```\n\nNeeds the CLI. [Install it](https://www.cmssy.com/docs/cli.md)",
+    );
   });
 
   it("renders nothing for a terminal without commands", () => {

@@ -2,7 +2,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const listChildPages = vi.fn();
 
+vi.mock("next/cache", () => ({
+  unstable_cache: (fn: () => unknown) => fn,
+}));
+
 vi.mock("@/services/pages", () => ({
+  CONTENT_TAG: "cmssy-content",
   listChildPages: (...args: unknown[]) => listChildPages(...args),
 }));
 
@@ -18,6 +23,7 @@ const tree: Record<string, ReturnType<typeof page>[]> = {
   "/docs/start": [page("/docs/start/install", "Install")],
   "/docs/blocks": [page("/docs/blocks/fields", "Fields")],
   "/docs/blocks/fields": [page("/docs/blocks/fields/text", "Text")],
+  "/docs/blocks/fields/text": [page("/docs/blocks/fields/text/value", "Value")],
 };
 
 beforeEach(() => {
@@ -26,19 +32,36 @@ beforeEach(() => {
 });
 
 describe("loadDocsSection", () => {
-  it("builds one tab per area, counts the whole subtree and indexes three levels", async () => {
+  it("builds one tab per area and walks every level for counts, search and the sidebar", async () => {
     const section = await loadDocsSection(["docs", "blocks", "fields"], "en", "en");
     expect(section?.areas.map((area) => [area.slug, area.pageCount])).toEqual([
       ["/docs/start", 1],
-      ["/docs/blocks", 2],
+      ["/docs/blocks", 3],
     ]);
     expect(section?.area?.slug).toBe("/docs/blocks");
     expect(section?.searchItems.map((item) => item.slug)).toContain(
-      "/docs/blocks/fields/text",
+      "/docs/blocks/fields/text/value",
     );
     expect(
       section?.nav.flatMap((group) => group.pages.map((item) => item.slug)),
-    ).toEqual(["/docs/blocks", "/docs/blocks/fields", "/docs/blocks/fields/text"]);
+    ).toEqual([
+      "/docs/blocks",
+      "/docs/blocks/fields",
+      "/docs/blocks/fields/text",
+      "/docs/blocks/fields/text/value",
+    ]);
+  });
+
+  it("asks the delivery API once per page even when a page is listed twice", async () => {
+    const install = page("/docs/start/install", "Install");
+    listChildPages.mockImplementation(async (slug: string) =>
+      slug === "/docs/start" ? [install, install] : (tree[slug] ?? []),
+    );
+    const section = await loadDocsSection(["docs"], "en", "en");
+    expect(section?.areas[0]?.pageCount).toBe(1);
+    expect(
+      listChildPages.mock.calls.filter(([slug]) => slug === "/docs/start/install"),
+    ).toHaveLength(1);
   });
 
   it("has no area and an empty sidebar on the docs root", async () => {

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { CmssyLink } from "./cmssy-locale";
 import { DocsSearch, type DocsSearchItem } from "./docs-search";
@@ -19,9 +20,13 @@ export function DocsAreaTabs({
 }) {
   const pathname = usePathname();
   const activeSlug = areaForSlug(pathWithin(pathname, root.slug), areas)?.slug;
+  const hidden = useHideOnScrollDown(pathname);
 
   return (
-    <div className="sticky top-[var(--site-chrome,4rem)] z-40 border-b border-border bg-background">
+    <div
+      data-hidden={hidden || undefined}
+      className="sticky top-[var(--site-chrome,4rem)] z-40 border-b border-border bg-background max-md:transition-transform max-md:duration-200 max-md:data-hidden:-translate-y-full"
+    >
       <div className="container flex h-[var(--docs-area-tabs,3rem)] items-stretch gap-3 sm:gap-5">
         <CmssyLink
           href={root.slug}
@@ -58,4 +63,25 @@ export function DocsAreaTabs({
       </div>
     </div>
   );
+}
+
+function useHideOnScrollDown(resetKey: string): boolean {
+  const [hidden, setHidden] = useState(false);
+
+  useEffect(() => {
+    setHidden(false);
+    const narrow = window.matchMedia("(max-width: 767px)");
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const delta = y - last;
+      if (Math.abs(delta) < 6) return;
+      last = y;
+      setHidden(narrow.matches && delta > 0 && y > 48);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [resetKey]);
+
+  return hidden;
 }

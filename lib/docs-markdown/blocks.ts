@@ -29,13 +29,15 @@ function fenced(code: string, language: string): string {
   return `${fence}${language}\n${code}\n${fence}`;
 }
 
-function quickstart(rows: unknown): string[] {
+function quickstart(rows: unknown, base: string): string[] {
   const tabs = groupQuickstart(
     records(rows).map((row) => ({
       tab: text(row.tab),
       runner: text(row.runner),
       command: text(row.command),
       note: text(row.note),
+      noteLabel: text(row.noteLabel),
+      noteUrl: text(row.noteUrl),
     })),
   );
   return tabs.map((tab) =>
@@ -51,7 +53,9 @@ function quickstart(rows: unknown): string[] {
           .join("\n\n"),
         "bash",
       ),
-      tab.note,
+      tab.noteLabel && tab.noteUrl
+        ? `${tab.note} [${tab.noteLabel}](${markdownHref(tab.noteUrl, base)})`.trim()
+        : tab.note,
     ),
   );
 }
@@ -93,7 +97,7 @@ const renderers: Record<string, Renderer> = {
   "docs-hero": (content, base) =>
     join(
       text(content.description),
-      ...quickstart(content.commands),
+      ...quickstart(content.commands, base),
       linkList(content.quickLinks, base),
     ),
 
