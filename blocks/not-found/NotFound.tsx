@@ -22,7 +22,7 @@ export default function NotFound({
       <Container className="max-w-3xl text-center">
         {heading && (
           <div className="select-none" aria-hidden="true">
-            <span className="font-mono text-[clamp(5rem,16vw,11rem)] leading-none font-semibold tracking-[-0.04em] text-foreground">
+            <span className="font-mono text-numeral font-semibold text-foreground">
               {heading}
             </span>
           </div>

@@ -49,7 +49,7 @@ export default function Features({
                 {feature.description}
               </p>
               {feature.stat ? (
-                <div className="mt-4 font-mono text-[12px] font-medium text-primary">
+                <div className="mt-4 font-mono text-caption font-medium text-primary">
                   {feature.stat}
                 </div>
               ) : null}

@@ -62,7 +62,7 @@ export function DocsSidebarNav({
         {area.label}
       </CmssyLink>
       {count ? (
-        <span className="font-mono text-[11px] text-muted-foreground">
+        <span className="font-mono text-label text-muted-foreground">
           {count}
         </span>
       ) : null}
@@ -93,7 +93,7 @@ export function DocsSidebarNav({
             key={section.slug}
             className="mt-5 flex flex-col gap-0.5 first:mt-0"
           >
-            <span className="mb-1 px-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
+            <span className="mb-1 px-2 font-mono text-label uppercase tracking-[0.12em] text-muted-foreground">
               {section.label}
             </span>
             {section.pages.map((page) => (

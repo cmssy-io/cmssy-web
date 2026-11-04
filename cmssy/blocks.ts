@@ -31,6 +31,7 @@ import { notFoundBlock } from "@/blocks/not-found/block";
 import { planComparisonBlock } from "@/blocks/plan-comparison/block";
 import { pricingBlock } from "@/blocks/pricing/block";
 import { roadmapBlock } from "@/blocks/roadmap/block";
+import { techTickerBlock } from "@/blocks/tech-ticker/block";
 import { twoAudiencesBlock } from "@/blocks/two-audiences/block";
 
 export const blocks = [
@@ -67,4 +68,5 @@ export const blocks = [
   planComparisonBlock,
   pricingBlock,
   roadmapBlock,
+  techTickerBlock,
 ];

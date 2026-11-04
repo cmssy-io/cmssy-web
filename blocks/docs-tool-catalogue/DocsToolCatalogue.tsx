@@ -60,13 +60,13 @@ export default function DocsToolCatalogue({
                 className="border-b last:border-b-0 hover:bg-muted/30 transition-colors"
               >
                 <td className="px-4 py-3 align-top">
-                  <code className="text-[13px] font-mono font-semibold text-primary">
+                  <code className="text-small font-mono font-semibold text-primary">
                     {row.name}
                   </code>
                 </td>
                 <td className="px-4 py-3 align-top">
                   {row.permission ? (
-                    <code className="text-[13px] font-mono text-muted-foreground">
+                    <code className="text-small font-mono text-muted-foreground">
                       {row.permission}
                     </code>
                   ) : (

@@ -37,7 +37,7 @@ export function InfoCard({ icon, title, description, index }: InfoCardProps) {
         aria-hidden="true"
       />
       <div className="min-w-0">
-        <h3 className="mb-1 font-heading text-[17px] font-semibold">{title}</h3>
+        <h3 className="mb-1 font-heading text-body font-semibold">{title}</h3>
         <p className="text-sm text-muted-foreground">{description}</p>
       </div>
     </div>

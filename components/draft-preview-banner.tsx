@@ -25,11 +25,11 @@ export async function DraftPreviewBanner({ path }: { path?: string[] }) {
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-[100] flex flex-wrap items-center justify-center gap-x-4 gap-y-2 border-t border-elektryk/30 bg-ink-deep/95 px-4 py-3 backdrop-blur">
-      <span className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.14em] text-paper/70 uppercase">
+      <span className="inline-flex items-center gap-2 font-mono text-label tracking-[0.14em] text-paper/70 uppercase">
         <span className="h-2 w-2 animate-pulse rounded-full bg-elektryk" />
         Draft preview
       </span>
-      <span className="hidden text-[13px] text-paper/50 sm:inline">
+      <span className="hidden text-small text-paper/50 sm:inline">
         You are viewing unpublished content
       </span>
       <span className="flex items-center gap-3">
@@ -38,14 +38,14 @@ export async function DraftPreviewBanner({ path }: { path?: string[] }) {
             href={editHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full bg-elektryk px-4 py-1.5 text-[13px] font-medium text-ink-deep transition hover:bg-elektryk-300"
+            className="rounded-full bg-elektryk px-4 py-1.5 text-small font-medium text-ink-deep transition hover:bg-elektryk-300"
           >
             Open in editor
           </a>
         ) : null}
         <a
           href={exitHref}
-          className="text-[13px] text-paper/60 underline underline-offset-4 transition hover:text-paper"
+          className="text-small text-paper/60 underline underline-offset-4 transition hover:text-paper"
         >
           Exit preview
         </a>

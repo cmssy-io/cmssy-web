@@ -24,7 +24,7 @@ export default function ComparisonTable({
     <Section fig={fig} eyebrow={eyebrow} heading={heading} lead={description}>
       <Reveal>
         <ScrollHint tone="light" className="rounded-2xl border border-border">
-          <table className="w-full min-w-[760px] border-collapse bg-card text-left text-[15px]">
+          <table className="w-full min-w-[760px] border-collapse bg-card text-left text-copy">
             <thead>
               <tr className="bg-ink text-paper">
                 <th className="px-5 py-4 font-medium" />
@@ -70,14 +70,14 @@ export default function ComparisonTable({
       {(footnote || (linkLabel && linkUrl)) && (
         <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
           {footnote && (
-            <p className="font-mono text-[12px] text-muted-foreground">
+            <p className="font-mono text-caption text-muted-foreground">
               {footnote}
             </p>
           )}
           {linkLabel && linkUrl && (
             <CmssyLink
               href={linkUrl}
-              className="text-[15px] font-medium text-elektryk-700 hover:underline"
+              className="text-copy font-medium text-elektryk-700 hover:underline"
             >
               {linkLabel}
             </CmssyLink>

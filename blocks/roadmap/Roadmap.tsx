@@ -102,7 +102,7 @@ export default function Roadmap({ content }: BlockProps<typeof roadmapProps>) {
                       <div className="flex items-start justify-between gap-2">
                         <h3 className="text-sm font-medium">{item.title}</h3>
                         {item.badge && (
-                          <span className="rounded-md border border-border px-1.5 py-0.5 font-mono text-[11px] whitespace-nowrap text-muted-foreground">
+                          <span className="rounded-md border border-border px-1.5 py-0.5 font-mono text-label whitespace-nowrap text-muted-foreground">
                             {item.badge}
                           </span>
                         )}
