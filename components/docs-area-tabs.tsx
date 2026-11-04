@@ -25,9 +25,9 @@ export function DocsAreaTabs({
   return (
     <div
       data-hidden={hidden || undefined}
-      className="sticky top-[var(--site-chrome,4rem)] z-40 border-b border-border bg-background max-md:transition-transform max-md:duration-200 max-md:data-hidden:-translate-y-full"
+      className="sticky top-[var(--site-chrome,4rem)] z-40 border-b border-border bg-background max-md:transition-[transform,visibility] max-md:duration-200 max-md:data-hidden:invisible max-md:data-hidden:-translate-y-full"
     >
-      <div className="container flex h-[var(--docs-area-tabs,3rem)] items-stretch gap-3 sm:gap-5">
+      <div className="container flex h-12 items-stretch gap-3 sm:gap-5">
         <CmssyLink
           href={root.slug}
           className="flex shrink-0 items-center gap-2.5 border-r border-border pr-3 font-heading text-[15px] font-semibold text-foreground sm:pr-5"
@@ -37,7 +37,7 @@ export function DocsAreaTabs({
         </CmssyLink>
         <nav
           aria-label={root.label}
-          className="no-scrollbar -mb-px flex min-w-0 gap-0.5 overflow-x-auto"
+          className="no-scrollbar -mb-px flex min-w-0 gap-0.5 overflow-x-auto max-md:[mask-image:linear-gradient(to_right,black_82%,transparent)]"
         >
           {areas.map((area) => {
             const active = area.slug === activeSlug;
