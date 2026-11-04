@@ -54,6 +54,7 @@ uniform float uTime;
 uniform float uAspect;
 uniform float uDpr;
 uniform float uScale;
+uniform float uMobile;
 uniform vec2 uMouse;
 varying float vAlpha;
 varying vec3 vColor;
@@ -67,14 +68,15 @@ void main() {
   float trail = aLag / 12.0;
   float t = uTime - aLag * 0.22;
   float depth = position.z;
-  float persp = mix(0.5, 1.0, depth);
+  float persp = mix(0.38, 1.0, depth);
   float halfW = 1.35 * uAspect / persp;
   float speed = mix(0.07, 0.22, depth) * (0.7 + 0.6 * fract(position.x * 7.31));
   float x = mod(position.x * halfW * 2.0 + t * speed, halfW * 2.0) - halfW;
   float y0 = (position.y * 2.0 - 1.0) * 1.3 / persp;
   float n1 = snoise(vec3(x * 0.42 + depth * 2.0, y0 * 0.7, uTime * 0.05));
   float n2 = snoise(vec3(x * 1.1, y0 * 1.6 + 11.0, uTime * 0.08 + depth));
-  vec2 p = vec2(x + n2 * 0.06, y0 + n1 * 0.42 + n2 * 0.09) * persp;
+  vec2 p = vec2(x + n2 * 0.06, y0 + n1 * 0.55 + n2 * 0.11) * persp;
+  p += uMouse * (depth - 0.5) * vec2(0.09 * uAspect, 0.06) * (1.0 - uMobile);
 
   vec2 m = vec2(uMouse.x * uAspect, uMouse.y);
   vec2 d = p - m;
@@ -83,8 +85,11 @@ void main() {
 
   vec2 clip = vec2(p.x / uAspect, p.y);
   float edge = smoothstep(0.0, 0.3, 1.25 - abs(clip.x)) * smoothstep(0.0, 0.3, 1.1 - abs(clip.y));
-  float typeZone = smoothstep(0.15, -0.35, clip.x) * smoothstep(-0.15, 0.35, clip.y);
-  float alpha = mix(0.3, 0.95, depth) * pow(1.0 - trail, 1.6) * edge * (1.0 - typeZone * 0.7);
+  float typeDesktop = smoothstep(0.2, -0.3, clip.x) * smoothstep(-0.25, 0.3, clip.y);
+  float typeMobile = smoothstep(-0.2, 0.5, clip.y);
+  float typeZone = mix(typeDesktop, typeMobile, uMobile);
+  float density = mix(0.45, 1.0, smoothstep(-0.7, 0.5, clip.x));
+  float alpha = mix(0.3, 1.0, depth) * pow(1.0 - trail, 1.6) * edge * density * (1.0 - typeZone * 0.75);
 
   float h = fract(position.x * 31.7 + position.y * 17.3);
   vColor = h < 0.62 ? ELEKTRYK : (h < 0.9 ? SKY : PAPER * 0.8);

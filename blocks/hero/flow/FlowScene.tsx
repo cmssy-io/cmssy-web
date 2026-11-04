@@ -14,15 +14,14 @@ import {
 } from "three";
 import { FRAGMENT, VERTEX } from "./shaders";
 
-const COUNT = 1400;
 const LAGS = 12;
 const MAX_DPR = 1.5;
 const PARKED = new Vector2(0, -5);
 
-function seeds(): BufferGeometry {
-  const seed = new Float32Array(COUNT * LAGS * 3);
-  const lag = new Float32Array(COUNT * LAGS);
-  for (let i = 0; i < COUNT; i++) {
+function seeds(count: number): BufferGeometry {
+  const seed = new Float32Array(count * LAGS * 3);
+  const lag = new Float32Array(count * LAGS);
+  for (let i = 0; i < count; i++) {
     const sx = Math.random();
     const sy = Math.random();
     const sz = Math.random() ** 1.6;
@@ -38,7 +37,7 @@ function seeds(): BufferGeometry {
   return geometry;
 }
 
-export function FlowScene() {
+export function FlowScene({ mobile }: { mobile: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -63,6 +62,7 @@ export function FlowScene() {
       uAspect: { value: 1 },
       uDpr: { value: 1 },
       uScale: { value: 1 },
+      uMobile: { value: mobile ? 1 : 0 },
       uMouse: { value: PARKED.clone() },
     };
     const material = new ShaderMaterial({
@@ -74,7 +74,7 @@ export function FlowScene() {
       depthWrite: false,
       blending: AdditiveBlending,
     });
-    const geometry = seeds();
+    const geometry = seeds(mobile ? 700 : 2200);
     const scene = new Scene();
     const points = new Points(geometry, material);
     points.frustumCulled = false;
@@ -149,7 +149,7 @@ export function FlowScene() {
       material.dispose();
       renderer.dispose();
     };
-  }, []);
+  }, [mobile]);
 
   return <canvas ref={canvasRef} className="hero-transport__flow-canvas" aria-hidden />;
 }

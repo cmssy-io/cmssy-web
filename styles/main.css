@@ -817,3 +817,15 @@ html[data-theme="dark"] {
     overflow: hidden;
   }
 }
+
+@media (max-width: 1023px) {
+  .hero-transport {
+    min-height: min(44rem, 88svh);
+    padding-bottom: clamp(3rem, 10vw, 5rem);
+  }
+
+  .hero-transport__typewrap {
+    position: relative;
+    z-index: 10;
+  }
+}

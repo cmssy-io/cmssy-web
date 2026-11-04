@@ -7,23 +7,23 @@ const FlowScene = dynamic(() => import("./FlowScene").then((m) => m.FlowScene), 
   ssr: false,
 });
 
-const DESKTOP_QUERY = "(min-width: 1024px)";
+const MOBILE_QUERY = "(max-width: 1023px)";
 
 export function FlowField() {
-  const [enabled, setEnabled] = useState(false);
+  const [mobile, setMobile] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const mq = window.matchMedia(DESKTOP_QUERY);
-    const sync = () => setEnabled(mq.matches);
+    const mq = window.matchMedia(MOBILE_QUERY);
+    const sync = () => setMobile(mq.matches);
     sync();
     mq.addEventListener("change", sync);
     return () => mq.removeEventListener("change", sync);
   }, []);
 
-  if (!enabled) return null;
+  if (mobile === null) return null;
   return (
     <div className="hero-transport__flow">
-      <FlowScene />
+      <FlowScene key={String(mobile)} mobile={mobile} />
     </div>
   );
 }
