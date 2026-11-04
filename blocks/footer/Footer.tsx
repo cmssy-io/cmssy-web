@@ -50,7 +50,7 @@ export default function Footer({
   ].filter((s) => s.url);
 
   return (
-    <footer className="border-t border-white/8 bg-ink-deep text-[#9aa1ad]">
+    <footer className="border-t border-white/8 bg-ink-deep text-paper-dim">
       <Container className="pt-16 pb-10">
         <div className="mb-12 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-6">
           <div className="col-span-2 sm:col-span-3 lg:col-span-2">
@@ -81,7 +81,7 @@ export default function Footer({
               </p>
             )}
             {metaLine && (
-              <p className="font-mono text-[12px] text-paper/50">{metaLine}</p>
+              <p className="font-mono text-caption text-paper/50">{metaLine}</p>
             )}
             {showSocial && socials.length > 0 && (
               <div className="mt-5 flex gap-4">
@@ -122,7 +122,7 @@ export default function Footer({
           ))}
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/8 pt-6 text-[13px] text-paper/50">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/8 pt-6 text-small text-paper/50">
           {copyrightText && (
             <span>
               © {currentYear} {copyrightText}

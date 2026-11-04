@@ -60,8 +60,8 @@ export default function TwoAudiences({
             }`}
           >
             <span
-              className={`flex items-center gap-2.5 font-mono text-[13px] font-semibold ${
-                card.dark ? "text-[#9aa1ad]" : "text-muted-foreground"
+              className={`flex items-center gap-2.5 font-mono text-small font-semibold ${
+                card.dark ? "text-paper-dim" : "text-muted-foreground"
               }`}
             >
               <span className="inline-block size-2.5 rounded-[3px] bg-elektryk" />
@@ -71,8 +71,8 @@ export default function TwoAudiences({
               {card.title}
             </h3>
             <p
-              className={`mt-2.5 text-[15px] leading-relaxed ${
-                card.dark ? "text-[#9aa1ad]" : "text-muted-foreground"
+              className={`mt-2.5 text-copy leading-relaxed ${
+                card.dark ? "text-paper-dim" : "text-muted-foreground"
               }`}
             >
               {card.description}
@@ -87,7 +87,7 @@ export default function TwoAudiences({
                 <ScrollHint className="p-4">
                   <CodeSnippet
                     code={card.code}
-                    className="text-[12.5px] leading-[1.7]"
+                    className="text-caption leading-[1.7]"
                   />
                 </ScrollHint>
               </FigurePlate>

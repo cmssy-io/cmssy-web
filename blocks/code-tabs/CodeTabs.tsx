@@ -95,14 +95,14 @@ export default function CodeTabs({
         </ScrollHint>
         {result ? (
           <div className="border-t border-white/8 pt-5 @3xl:border-t-0 @3xl:border-l @3xl:pt-0 @3xl:pl-8">
-            <div className="flex items-center gap-2 font-mono text-[11px] tracking-[0.14em] text-paper/35 uppercase">
+            <div className="flex items-center gap-2 font-mono text-label tracking-[0.14em] text-paper/35 uppercase">
               <span className="inline-block size-1.5 rounded-[2px] bg-elektryk" />
               {result.label}
             </div>
             <ScrollHint className="mt-3">
               <CodeSnippet
                 code={result.body}
-                className="text-[12.5px] leading-[1.65] opacity-80"
+                className="text-caption leading-[1.65] opacity-80"
               />
             </ScrollHint>
           </div>
@@ -162,7 +162,7 @@ export default function CodeTabs({
                     document.getElementById(`code-tab-${next}`)?.focus();
                   }}
                   onClick={() => setActive(i)}
-                  className={`shrink-0 rounded-t-md px-4 py-2.5 font-mono text-[13px] transition-colors ${
+                  className={`shrink-0 rounded-t-md px-4 py-2.5 font-mono text-small transition-colors ${
                     i === activeIndex
                       ? "border-b-2 border-elektryk bg-card/6 text-paper"
                       : "border-b-2 border-transparent text-paper/50 hover:text-paper/80"

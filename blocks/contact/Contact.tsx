@@ -79,11 +79,11 @@ export default function Contact({
 
             {hasQuote && (
               <figure className="hidden border-t border-border pt-8 lg:block">
-                <blockquote className="font-heading text-[17px] leading-relaxed text-foreground">
+                <blockquote className="font-heading text-body leading-relaxed text-foreground">
                   &ldquo;{quoteText}&rdquo;
                 </blockquote>
                 {quoteAuthor && (
-                  <figcaption className="mt-3 font-mono text-[12px] text-muted-foreground">
+                  <figcaption className="mt-3 font-mono text-caption text-muted-foreground">
                     - {quoteAuthor}
                   </figcaption>
                 )}

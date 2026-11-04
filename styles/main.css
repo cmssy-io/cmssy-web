@@ -9,49 +9,348 @@
    ignores the switch entirely. */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-/* Brand colours, literal and theme-independent: `ink` is dark and `paper` is
-   light in both themes, because the inverted bands (a dark hero on a light
-   page) are a design decision, not a consequence of the theme. Everything that
-   should follow the theme uses the semantic tokens below (background,
-   foreground, card, muted, border). */
-@theme inline {
-  --color-ink: #10141c;
-  --color-ink-deep: #0b0e15;
-  --color-paper: #fafaf8;
-  --color-wash: #f1f0ec;
-  --color-elektryk-300: #5bc6f7;
-  --color-elektryk-500: #00a8f0;
-  --color-elektryk-700: #0077b6;
-  --color-elektryk: var(--color-elektryk-500);
-  --font-heading: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", Menlo, monospace;
-
-  --text-display: clamp(2rem, 5.2vw, 5.5rem);
-  --text-display--line-height: 1.04;
-  --text-display--letter-spacing: -0.03em;
-  --text-h2: clamp(1.75rem, 3.2vw, 3rem);
-  --text-h2--line-height: 1.1;
-  --text-h2--letter-spacing: -0.02em;
-  --text-h3: clamp(1.25rem, 1.8vw, 1.75rem);
-  --text-h3--line-height: 1.2;
-  --text-h3--letter-spacing: -0.01em;
-  --text-lead: clamp(1.0625rem, 1.2vw, 1.25rem);
-  --text-lead--line-height: 1.6;
-
-  --spacing-section: clamp(4rem, 8vw, 7rem);
-  --spacing-section-tight: clamp(2.5rem, 5vw, 4rem);
-}
+/* ------------------------------------------------------------------
+   Design tokens. Raw values live in :root, Tailwind reads them via
+   @theme inline. Fonts come from app/layout.tsx.
+   ------------------------------------------------------------------ */
 
 :root {
+  /* Palette: brand, literal and theme-independent. `ink` is dark and `paper`
+     is light in both themes, because the inverted bands (a dark hero on a
+     light page) are a design decision, not a consequence of the theme. */
+  --ink: #10141c;
+  --ink-deep: #0b0e15;
+  --ink-raised: #161b26;
+  --paper: #fafaf8;
+  --paper-soft: #d7dae0;
+  --paper-dim: #9aa1ad;
+  --wash: #f1f0ec;
+  --elektryk-300: #5bc6f7;
+  --elektryk-400: #35b4ef;
+  --elektryk-500: #00a8f0;
+  --docs-primary-foreground: #ffffff;
+  --elektryk-700: #0077b6;
+  --mint: #6ee7b7;
+
+  /* Palette: code surfaces */
+  --prose-pre: #18181b;
+  --prose-pre-foreground: #fafafa;
+  --prose-code: #f4f4f5;
+  --snippet-foreground: #e6e8ec;
+
+  /* Palette: night, the dark theme's ground */
+  --night: #0b0f16;
+  --night-card: #111825;
+  --night-raised: #1a2432;
+  --night-muted: #161f2b;
+  --night-border: #222c3a;
+  --night-pre: #0d1117;
+  --night-foreground: #e7edf3;
+  --night-foreground-muted: #8b98a6;
+  --night-lead: #aab7c4;
+  --night-body: #c3ccd6;
+  --night-bullet: #45566a;
+  --night-kbd-shadow: #e7edf336;
+
+  /* Semantic (shadcn), light theme. Everything that must follow the theme
+     uses these; the dark values are set on html[data-theme="dark"] below. */
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* Type scale: desktop */
+  --font-display: 5.5rem;
+  --font-h1: 3.5rem;
+  --font-h2: 3rem;
+  --font-h3: 1.75rem;
+  --font-lead: 1.25rem;
+  --font-numeral: 11rem;
+
+  /* Type scale: mobile */
+  --font-display-mobile: 2rem;
+  --font-h1-mobile: 2rem;
+  --font-h2-mobile: 1.75rem;
+  --font-h3-mobile: 1.25rem;
+  --font-lead-mobile: 1.0625rem;
+  --font-numeral-mobile: 5rem;
+
+  /* Type scale: fixed */
+  --font-body: 16px;
+  --font-copy: 15px;
+  --font-compact: 14px;
+  --font-small: 13px;
+  --font-caption: 12px;
+  --font-label: 11px;
+  --font-micro: 10px;
+
+  /* Fluid sizes */
+  --font-display-clamp: clamp(var(--font-display-mobile), 5.2vw, var(--font-display));
+  --font-h1-clamp: clamp(var(--font-h1-mobile), 4.4vw, var(--font-h1));
+  --font-h2-clamp: clamp(var(--font-h2-mobile), 3.2vw, var(--font-h2));
+  --font-h3-clamp: clamp(var(--font-h3-mobile), 1.8vw, var(--font-h3));
+  --font-lead-clamp: clamp(var(--font-lead-mobile), 1.2vw, var(--font-lead));
+  --font-numeral-clamp: clamp(var(--font-numeral-mobile), 16vw, var(--font-numeral));
+
+  /* Layout */
+  --size-content: 80rem;
+  --size-section: clamp(4rem, 8vw, 7rem);
+  --size-section-tight: clamp(2.5rem, 5vw, 4rem);
   --lattice-dark: radial-gradient(
     rgba(250, 250, 248, 0.07) 1px,
     transparent 1px
   );
 }
 
+/* A workspace stores one logo, and most are drawn for a light page. In dark it
+   keeps its own colours and gets a light chip to sit on, rather than being
+   inverted into something that is no longer the brand. */
+html[data-theme="dark"] {
+  --background: var(--night);
+  --foreground: var(--night-foreground);
+  --card: var(--night-card);
+  --card-foreground: var(--night-foreground);
+  --popover: var(--night-card);
+  --popover-foreground: var(--night-foreground);
+  --primary: var(--elektryk-400);
+  --primary-foreground: var(--night);
+  --secondary: var(--night-raised);
+  --secondary-foreground: var(--night-foreground);
+  --muted: var(--night-muted);
+  --muted-foreground: var(--night-foreground-muted);
+  --accent: var(--night-raised);
+  --accent-foreground: var(--night-foreground);
+  --border: var(--night-border);
+  --input: var(--night-border);
+  --ring: var(--elektryk-400);
+}
+
+/* Docs surface (CMS-1037): Plex body font + elektryk as the single accent. The
+   dark tokens live on the document, so every surface follows the same theme. */
+.docs-shell {
+  font-family: var(--font-sans);
+  --primary: var(--elektryk-700);
+  --primary-foreground: var(--docs-primary-foreground);
+  --ring: var(--elektryk-500);
+}
+
+html[data-theme="dark"] .docs-shell {
+  --primary: var(--elektryk-500);
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-deep: var(--ink-deep);
+  --color-ink-raised: var(--ink-raised);
+  --color-paper: var(--paper);
+  --color-paper-soft: var(--paper-soft);
+  --color-paper-dim: var(--paper-dim);
+  --color-wash: var(--wash);
+  --color-elektryk-300: var(--elektryk-300);
+  --color-elektryk-400: var(--elektryk-400);
+  --color-elektryk-500: var(--elektryk-500);
+  --color-elektryk-700: var(--elektryk-700);
+  --color-elektryk: var(--elektryk-500);
+  --color-mint: var(--mint);
+  --color-prose-pre: var(--prose-pre);
+  --color-prose-pre-foreground: var(--prose-pre-foreground);
+  --color-prose-code: var(--prose-code);
+  --color-snippet-foreground: var(--snippet-foreground);
+  --color-night: var(--night);
+  --color-night-card: var(--night-card);
+  --color-night-raised: var(--night-raised);
+  --color-night-muted: var(--night-muted);
+  --color-night-border: var(--night-border);
+  --color-night-pre: var(--night-pre);
+  --color-night-foreground: var(--night-foreground);
+  --color-night-foreground-muted: var(--night-foreground-muted);
+  --color-night-lead: var(--night-lead);
+  --color-night-body: var(--night-body);
+  --color-night-bullet: var(--night-bullet);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-heading: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --text-display: var(--font-display-clamp);
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.03em;
+  --text-h1: var(--font-h1-clamp);
+  --text-h1--line-height: 1.08;
+  --text-h1--letter-spacing: -0.025em;
+  --text-h2: var(--font-h2-clamp);
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h3: var(--font-h3-clamp);
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: -0.01em;
+  --text-lead: var(--font-lead-clamp);
+  --text-lead--line-height: 1.6;
+  --text-numeral: var(--font-numeral-clamp);
+  --text-numeral--line-height: 1;
+  --text-numeral--letter-spacing: -0.04em;
+  --text-body: var(--font-body);
+  --text-copy: var(--font-copy);
+  --text-compact: var(--font-compact);
+  --text-small: var(--font-small);
+  --text-caption: var(--font-caption);
+  --text-label: var(--font-label);
+  --text-micro: var(--font-micro);
+
+  --spacing-section: var(--size-section);
+  --spacing-section-tight: var(--size-section-tight);
+  --container-content: var(--size-content);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+}
+
+/* ------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------ */
+
+/* Set default border color (Tailwind v4 reset uses currentColor) */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  /* The document, not just the body. A route change replaces the body's
+     contents, and for a frame the browser paints its own canvas - white, and
+     very visible on the dark theme. `color-scheme` tells it the same thing
+     about scrollbars and form controls, which were light on a dark page. */
+  html {
+    @apply bg-background;
+    color-scheme: light;
+  }
+  html[data-theme="dark"] {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Code blocks styling for prose */
+  .prose pre {
+    background-color: var(--prose-pre);
+    color: var(--prose-pre-foreground);
+    font-family: var(--font-mono);
+  }
+  .prose pre code {
+    background-color: transparent;
+    color: var(--prose-pre-foreground);
+    padding: 0;
+    font-size: inherit;
+  }
+  /* Inline code only (not inside pre) */
+  .prose :not(pre) > code {
+    background-color: var(--prose-code);
+    color: var(--prose-pre);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+    font-family: var(--font-mono);
+  }
+  .prose code::before,
+  .prose code::after {
+    content: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Components and utilities
+   ------------------------------------------------------------------ */
+
+@utility container {
+  max-width: var(--size-content);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  @media (min-width: 640px) {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  @media (min-width: 1024px) {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
 @utility dot-grid-dark {
   background-image: var(--lattice-dark);
+  background-size: 24px 24px;
+}
+
+@utility dot-grid-light {
+  background-image: radial-gradient(
+    rgba(16, 20, 28, 0.08) 1px,
+    transparent 1px
+  );
   background-size: 24px 24px;
 }
 
@@ -231,216 +530,38 @@
   }
 }
 
-@utility dot-grid-light {
-  background-image: radial-gradient(
-    rgba(16, 20, 28, 0.08) 1px,
-    transparent 1px
-  );
-  background-size: 24px 24px;
-}
-
-@keyframes atmos-aurora {
-  from {
-    background-position:
-      50% 50%,
-      50% 50%;
-  }
-  to {
-    background-position:
-      350% 50%,
-      350% 50%;
-  }
-}
-
-@keyframes atmos-beam-l {
-  from {
-    transform: rotate(-40deg) translate(-8rem, -3rem);
-    opacity: 0.5;
-  }
-  to {
-    transform: rotate(-23deg) translate(7rem, 3rem);
-    opacity: 1;
-  }
-}
-
-@keyframes atmos-beam-r {
-  from {
-    transform: rotate(36deg) translate(6rem, 2rem);
-    opacity: 1;
-  }
-  to {
-    transform: rotate(19deg) translate(-9rem, -3rem);
-    opacity: 0.45;
-  }
-}
-
-@keyframes hero-blink {
-  0%,
-  49% {
-    opacity: 1;
-  }
-  50%,
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes cta-dock {
-  0%,
-  10% {
-    transform: translate(0, 0);
-    opacity: 1;
-  }
-  30% {
-    transform: translate(-60px, 190px);
-    opacity: 1;
-  }
-  36%,
-  58% {
-    transform: translate(-60px, 190px);
-    opacity: 0;
-  }
-  64% {
-    transform: translate(-60px, 190px);
-    opacity: 1;
-  }
-  84%,
-  100% {
-    transform: translate(0, 0);
-    opacity: 1;
-  }
-}
-
-@keyframes cta-fuse {
-  0%,
-  29% {
-    opacity: 0;
-  }
-  36%,
-  59% {
-    opacity: 1;
-  }
-  65%,
-  100% {
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cta-anim {
-    animation: none !important;
-  }
-
-  /* the beams keep their static mid-point transform, so stopping the clock
-     leaves a composed still rather than a collapsed one */
-  .atmos-aurora::before,
-  .atmos-spot::before,
-  .atmos-spot::after {
-    animation: none !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  [style*="hero-blink"] {
-    animation: none !important;
-  }
-}
-
-@utility container {
-  max-width: 80rem;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  @media (min-width: 640px) {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-  @media (min-width: 1024px) {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-}
-
-/* Set default border color (Tailwind v4 reset uses currentColor) */
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  /* The document, not just the body. A route change replaces the body's
-     contents, and for a frame the browser paints its own canvas - white, and
-     very visible on the dark theme. `color-scheme` tells it the same thing
-     about scrollbars and form controls, which were light on a dark page. */
-  html {
-    @apply bg-background;
-    color-scheme: light;
-  }
-  html[data-theme="dark"] {
-    color-scheme: dark;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-
-  /* Code blocks styling for prose */
-  .prose pre {
-    background-color: #18181b; /* zinc-900 */
-    color: #fafafa; /* zinc-50 */
-    font-family: var(--font-mono);
-  }
-  .prose pre code {
-    background-color: transparent;
-    color: #fafafa; /* zinc-50 - explicit for specificity */
-    padding: 0;
-    font-size: inherit;
-  }
-  /* Inline code only (not inside pre) */
-  .prose :not(pre) > code {
-    background-color: #f4f4f5; /* zinc-100 */
-    color: #18181b; /* zinc-900 */
-    padding: 0.125rem 0.375rem;
-    border-radius: 0.25rem;
-    font-size: 0.875em;
-    font-family: var(--font-mono);
-  }
-  .prose code::before,
-  .prose code::after {
-    content: none;
-  }
-}
-
 /* Dark reading colours for prose - docs and blog alike. */
 html[data-theme="dark"] .prose {
-  --tw-prose-body: #c3ccd6;
-  --tw-prose-headings: #e7edf3;
-  --tw-prose-lead: #aab7c4;
-  --tw-prose-bold: #e7edf3;
-  --tw-prose-links: #35b4ef;
-  --tw-prose-code: #e7edf3;
-  --tw-prose-quotes: #aab7c4;
-  --tw-prose-quote-borders: #222c3a;
-  --tw-prose-bullets: #45566a;
-  --tw-prose-counters: #8b98a6;
-  --tw-prose-hr: #222c3a;
-  --tw-prose-th-borders: #222c3a;
-  --tw-prose-td-borders: #1a2432;
+  --tw-prose-body: var(--night-body);
+  --tw-prose-headings: var(--night-foreground);
+  --tw-prose-lead: var(--night-lead);
+  --tw-prose-bold: var(--night-foreground);
+  --tw-prose-links: var(--elektryk-400);
+  --tw-prose-code: var(--night-foreground);
+  --tw-prose-quotes: var(--night-lead);
+  --tw-prose-quote-borders: var(--night-border);
+  --tw-prose-bullets: var(--night-bullet);
+  --tw-prose-counters: var(--night-foreground-muted);
+  --tw-prose-hr: var(--night-border);
+  --tw-prose-th-borders: var(--night-border);
+  --tw-prose-td-borders: var(--night-raised);
   /* Anything left unset here keeps the plugin's light-theme value, which on
      this ground is near-invisible: the kbd default is #101828 against a
      #0b0f16 page, a ratio of 1.07:1. The shadow variable carries its own
      alpha and draws the keycap's ring and lip, so it is lifted well past the
      light theme's 10% - a white ring that faint reads as nothing. */
-  --tw-prose-kbd: #e7edf3;
-  --tw-prose-kbd-shadows: #e7edf336;
-  --tw-prose-captions: #8b98a6;
+  --tw-prose-kbd: var(--night-foreground);
+  --tw-prose-kbd-shadows: var(--night-kbd-shadow);
+  --tw-prose-captions: var(--night-foreground-muted);
 }
 
 html[data-theme="dark"] .prose :not(pre) > code {
-  background-color: #1a2432;
-  color: #e7edf3;
+  background-color: var(--night-raised);
+  color: var(--night-foreground);
 }
 
 html[data-theme="dark"] .prose pre {
-  background-color: #0d1117;
+  background-color: var(--night-pre);
 }
 
 /* Syntax-highlighted (shiki, dual-theme) code blocks inside prose. Colors are
@@ -466,118 +587,6 @@ html[data-theme="dark"] .prose pre.shiki span {
   color: var(--shiki-dark);
 }
 
-@theme {
-  --animate-accordion-down: accordion-down 0.2s ease-out;
-  --animate-accordion-up: accordion-up 0.2s ease-out;
-}
-
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-}
-
-@keyframes accordion-down {
-  from {
-    height: 0;
-  }
-  to {
-    height: var(--radix-accordion-content-height);
-  }
-}
-
-@keyframes accordion-up {
-  from {
-    height: var(--radix-accordion-content-height);
-  }
-  to {
-    height: 0;
-  }
-}
-
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-/* ---------------------------------------------------------------------------
-   Docs surface (CMS-1037)
-   - Plex body font + elektryk as the single accent. The dark tokens live on
-     the document (see below), so every surface follows the same theme.
---------------------------------------------------------------------------- */
-.docs-shell {
-  font-family: var(--font-sans);
-  --primary: var(--color-elektryk-700);
-  --primary-foreground: #ffffff;
-  --ring: var(--color-elektryk-500);
-}
-
-html[data-theme="dark"] .docs-shell {
-  --primary: var(--color-elektryk-500);
-}
-
 .docs-shell main:has([data-block-type="docs-hero"]) {
   background-image: linear-gradient(
     to bottom,
@@ -585,29 +594,6 @@ html[data-theme="dark"] .docs-shell {
     transparent 24rem
   );
   background-repeat: no-repeat;
-}
-
-/* A workspace stores one logo, and most are drawn for a light page. In dark it
-   keeps its own colours and gets a light chip to sit on, rather than being
-   inverted into something that is no longer the brand. */
-html[data-theme="dark"] {
-  --background: #0b0f16;
-  --foreground: #e7edf3;
-  --card: #111825;
-  --card-foreground: #e7edf3;
-  --popover: #111825;
-  --popover-foreground: #e7edf3;
-  --primary: #35b4ef;
-  --primary-foreground: #0b0f16;
-  --secondary: #1a2432;
-  --secondary-foreground: #e7edf3;
-  --muted: #161f2b;
-  --muted-foreground: #8b98a6;
-  --accent: #1a2432;
-  --accent-foreground: #e7edf3;
-  --border: #222c3a;
-  --input: #222c3a;
-  --ring: #35b4ef;
 }
 
 /* ------------------------------------------------------------------ hero
@@ -662,6 +648,151 @@ html[data-theme="dark"] {
   max-width: 34rem;
 }
 
+.hero-run__step {
+  --lit: 0;
+  background: rgba(250, 250, 248, calc(var(--lit) * 0.06));
+  box-shadow: inset 2px 0 0 rgba(0, 168, 240, var(--lit));
+  animation: hero-run-step 9s linear infinite;
+  animation-delay: calc(var(--i) * 1.8s);
+}
+
+.hero-run__dot {
+  animation: hero-blink 1.4s step-end infinite;
+}
+
+@property --lit {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+/* ------------------------------------------------------------------
+   Keyframes
+   ------------------------------------------------------------------ */
+
+@keyframes atmos-aurora {
+  from {
+    background-position:
+      50% 50%,
+      50% 50%;
+  }
+  to {
+    background-position:
+      350% 50%,
+      350% 50%;
+  }
+}
+
+@keyframes atmos-beam-l {
+  from {
+    transform: rotate(-40deg) translate(-8rem, -3rem);
+    opacity: 0.5;
+  }
+  to {
+    transform: rotate(-23deg) translate(7rem, 3rem);
+    opacity: 1;
+  }
+}
+
+@keyframes atmos-beam-r {
+  from {
+    transform: rotate(36deg) translate(6rem, 2rem);
+    opacity: 1;
+  }
+  to {
+    transform: rotate(19deg) translate(-9rem, -3rem);
+    opacity: 0.45;
+  }
+}
+
+@keyframes hero-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes hero-run-step {
+  0%,
+  100% {
+    --lit: 0;
+  }
+  2%,
+  18% {
+    --lit: 1;
+  }
+  22% {
+    --lit: 0;
+  }
+}
+
+@keyframes cta-dock {
+  0%,
+  10% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  30% {
+    transform: translate(-60px, 190px);
+    opacity: 1;
+  }
+  36%,
+  58% {
+    transform: translate(-60px, 190px);
+    opacity: 0;
+  }
+  64% {
+    transform: translate(-60px, 190px);
+    opacity: 1;
+  }
+  84%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes cta-fuse {
+  0%,
+  29% {
+    opacity: 0;
+  }
+  36%,
+  59% {
+    opacity: 1;
+  }
+  65%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Media queries
+   ------------------------------------------------------------------ */
+
 @media (min-width: 1024px) {
   .hero-flow {
     min-height: min(44rem, calc(100svh - 6.5rem));
@@ -680,41 +811,19 @@ html[data-theme="dark"] {
   }
 }
 
-.hero-run__step {
-  --lit: 0;
-  background: rgba(250, 250, 248, calc(var(--lit) * 0.06));
-  box-shadow: inset 2px 0 0 rgba(0, 168, 240, var(--lit));
-  animation: hero-run-step 9s linear infinite;
-  animation-delay: calc(var(--i) * 1.8s);
-}
-
-.hero-run__dot {
-  animation: hero-blink 1.4s step-end infinite;
-}
-
-@keyframes hero-run-step {
-  0%,
-  100% {
-    --lit: 0;
-  }
-  2%,
-  18% {
-    --lit: 1;
-  }
-  22% {
-    --lit: 0;
-  }
-}
-
-@property --lit {
-  syntax: "<number>";
-  inherits: false;
-  initial-value: 0;
-}
-
 @media (prefers-reduced-motion: reduce) {
+  .cta-anim,
+  [style*="hero-blink"],
   .hero-run__step,
   .hero-run__dot {
-    animation: none;
+    animation: none !important;
+  }
+
+  /* the beams keep their static mid-point transform, so stopping the clock
+     leaves a composed still rather than a collapsed one */
+  .atmos-aurora::before,
+  .atmos-spot::before,
+  .atmos-spot::after {
+    animation: none !important;
   }
 }

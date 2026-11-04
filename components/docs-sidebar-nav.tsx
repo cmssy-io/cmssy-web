@@ -77,7 +77,7 @@ export function DocsSidebarNav({
             key={section.slug}
             className="mt-6 flex flex-col gap-0.5 first:mt-0"
           >
-            <span className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <span className="mb-1 px-2 text-label font-semibold uppercase tracking-wider text-muted-foreground">
               {section.label}
             </span>
             {section.pages.map((page) => (
