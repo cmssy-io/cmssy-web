@@ -18,38 +18,39 @@
   /* Palette: brand, literal and theme-independent. `ink` is dark and `paper`
      is light in both themes, because the inverted bands (a dark hero on a
      light page) are a design decision, not a consequence of the theme. */
-  --color-ink: #10141c;
-  --color-ink-deep: #0b0e15;
-  --color-ink-raised: #161b26;
-  --color-paper: #fafaf8;
-  --color-paper-soft: #d7dae0;
-  --color-paper-dim: #9aa1ad;
-  --color-wash: #f1f0ec;
-  --color-elektryk-300: #5bc6f7;
-  --color-elektryk-400: #35b4ef;
-  --color-elektryk-500: #00a8f0;
-  --color-elektryk-700: #0077b6;
-  --color-mint: #6ee7b7;
+  --ink: #10141c;
+  --ink-deep: #0b0e15;
+  --ink-raised: #161b26;
+  --paper: #fafaf8;
+  --paper-soft: #d7dae0;
+  --paper-dim: #9aa1ad;
+  --wash: #f1f0ec;
+  --elektryk-300: #5bc6f7;
+  --elektryk-400: #35b4ef;
+  --elektryk-500: #00a8f0;
+  --docs-primary-foreground: #ffffff;
+  --elektryk-700: #0077b6;
+  --mint: #6ee7b7;
 
   /* Palette: code surfaces */
-  --color-prose-pre: #18181b;
-  --color-prose-pre-foreground: #fafafa;
-  --color-prose-code: #f4f4f5;
-  --color-snippet-foreground: #e6e8ec;
+  --prose-pre: #18181b;
+  --prose-pre-foreground: #fafafa;
+  --prose-code: #f4f4f5;
+  --snippet-foreground: #e6e8ec;
 
   /* Palette: night, the dark theme's ground */
-  --color-night: #0b0f16;
-  --color-night-card: #111825;
-  --color-night-raised: #1a2432;
-  --color-night-muted: #161f2b;
-  --color-night-border: #222c3a;
-  --color-night-pre: #0d1117;
-  --color-night-foreground: #e7edf3;
-  --color-night-foreground-muted: #8b98a6;
-  --color-night-lead: #aab7c4;
-  --color-night-body: #c3ccd6;
-  --color-night-bullet: #45566a;
-  --color-night-kbd-shadow: #e7edf336;
+  --night: #0b0f16;
+  --night-card: #111825;
+  --night-raised: #1a2432;
+  --night-muted: #161f2b;
+  --night-border: #222c3a;
+  --night-pre: #0d1117;
+  --night-foreground: #e7edf3;
+  --night-foreground-muted: #8b98a6;
+  --night-lead: #aab7c4;
+  --night-body: #c3ccd6;
+  --night-bullet: #45566a;
+  --night-kbd-shadow: #e7edf336;
 
   /* Semantic (shadcn), light theme. Everything that must follow the theme
      uses these; the dark values are set on html[data-theme="dark"] below. */
@@ -133,67 +134,67 @@
    keeps its own colours and gets a light chip to sit on, rather than being
    inverted into something that is no longer the brand. */
 html[data-theme="dark"] {
-  --background: var(--color-night);
-  --foreground: var(--color-night-foreground);
-  --card: var(--color-night-card);
-  --card-foreground: var(--color-night-foreground);
-  --popover: var(--color-night-card);
-  --popover-foreground: var(--color-night-foreground);
-  --primary: var(--color-elektryk-400);
-  --primary-foreground: var(--color-night);
-  --secondary: var(--color-night-raised);
-  --secondary-foreground: var(--color-night-foreground);
-  --muted: var(--color-night-muted);
-  --muted-foreground: var(--color-night-foreground-muted);
-  --accent: var(--color-night-raised);
-  --accent-foreground: var(--color-night-foreground);
-  --border: var(--color-night-border);
-  --input: var(--color-night-border);
-  --ring: var(--color-elektryk-400);
+  --background: var(--night);
+  --foreground: var(--night-foreground);
+  --card: var(--night-card);
+  --card-foreground: var(--night-foreground);
+  --popover: var(--night-card);
+  --popover-foreground: var(--night-foreground);
+  --primary: var(--elektryk-400);
+  --primary-foreground: var(--night);
+  --secondary: var(--night-raised);
+  --secondary-foreground: var(--night-foreground);
+  --muted: var(--night-muted);
+  --muted-foreground: var(--night-foreground-muted);
+  --accent: var(--night-raised);
+  --accent-foreground: var(--night-foreground);
+  --border: var(--night-border);
+  --input: var(--night-border);
+  --ring: var(--elektryk-400);
 }
 
 /* Docs surface (CMS-1037): Plex body font + elektryk as the single accent. The
    dark tokens live on the document, so every surface follows the same theme. */
 .docs-shell {
   font-family: var(--font-sans);
-  --primary: var(--color-elektryk-700);
-  --primary-foreground: #ffffff;
-  --ring: var(--color-elektryk-500);
+  --primary: var(--elektryk-700);
+  --primary-foreground: var(--docs-primary-foreground);
+  --ring: var(--elektryk-500);
 }
 
 html[data-theme="dark"] .docs-shell {
-  --primary: var(--color-elektryk-500);
+  --primary: var(--elektryk-500);
 }
 
 @theme inline {
-  --color-ink: var(--color-ink);
-  --color-ink-deep: var(--color-ink-deep);
-  --color-ink-raised: var(--color-ink-raised);
-  --color-paper: var(--color-paper);
-  --color-paper-soft: var(--color-paper-soft);
-  --color-paper-dim: var(--color-paper-dim);
-  --color-wash: var(--color-wash);
-  --color-elektryk-300: var(--color-elektryk-300);
-  --color-elektryk-400: var(--color-elektryk-400);
-  --color-elektryk-500: var(--color-elektryk-500);
-  --color-elektryk-700: var(--color-elektryk-700);
-  --color-elektryk: var(--color-elektryk-500);
-  --color-mint: var(--color-mint);
-  --color-prose-pre: var(--color-prose-pre);
-  --color-prose-pre-foreground: var(--color-prose-pre-foreground);
-  --color-prose-code: var(--color-prose-code);
-  --color-snippet-foreground: var(--color-snippet-foreground);
-  --color-night: var(--color-night);
-  --color-night-card: var(--color-night-card);
-  --color-night-raised: var(--color-night-raised);
-  --color-night-muted: var(--color-night-muted);
-  --color-night-border: var(--color-night-border);
-  --color-night-pre: var(--color-night-pre);
-  --color-night-foreground: var(--color-night-foreground);
-  --color-night-foreground-muted: var(--color-night-foreground-muted);
-  --color-night-lead: var(--color-night-lead);
-  --color-night-body: var(--color-night-body);
-  --color-night-bullet: var(--color-night-bullet);
+  --color-ink: var(--ink);
+  --color-ink-deep: var(--ink-deep);
+  --color-ink-raised: var(--ink-raised);
+  --color-paper: var(--paper);
+  --color-paper-soft: var(--paper-soft);
+  --color-paper-dim: var(--paper-dim);
+  --color-wash: var(--wash);
+  --color-elektryk-300: var(--elektryk-300);
+  --color-elektryk-400: var(--elektryk-400);
+  --color-elektryk-500: var(--elektryk-500);
+  --color-elektryk-700: var(--elektryk-700);
+  --color-elektryk: var(--elektryk-500);
+  --color-mint: var(--mint);
+  --color-prose-pre: var(--prose-pre);
+  --color-prose-pre-foreground: var(--prose-pre-foreground);
+  --color-prose-code: var(--prose-code);
+  --color-snippet-foreground: var(--snippet-foreground);
+  --color-night: var(--night);
+  --color-night-card: var(--night-card);
+  --color-night-raised: var(--night-raised);
+  --color-night-muted: var(--night-muted);
+  --color-night-border: var(--night-border);
+  --color-night-pre: var(--night-pre);
+  --color-night-foreground: var(--night-foreground);
+  --color-night-foreground-muted: var(--night-foreground-muted);
+  --color-night-lead: var(--night-lead);
+  --color-night-body: var(--night-body);
+  --color-night-bullet: var(--night-bullet);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -295,20 +296,20 @@ html[data-theme="dark"] .docs-shell {
 
   /* Code blocks styling for prose */
   .prose pre {
-    background-color: var(--color-prose-pre);
-    color: var(--color-prose-pre-foreground);
+    background-color: var(--prose-pre);
+    color: var(--prose-pre-foreground);
     font-family: var(--font-mono);
   }
   .prose pre code {
     background-color: transparent;
-    color: var(--color-prose-pre-foreground);
+    color: var(--prose-pre-foreground);
     padding: 0;
     font-size: inherit;
   }
   /* Inline code only (not inside pre) */
   .prose :not(pre) > code {
-    background-color: var(--color-prose-code);
-    color: var(--color-prose-pre);
+    background-color: var(--prose-code);
+    color: var(--prose-pre);
     padding: 0.125rem 0.375rem;
     border-radius: 0.25rem;
     font-size: 0.875em;
@@ -531,36 +532,36 @@ html[data-theme="dark"] .docs-shell {
 
 /* Dark reading colours for prose - docs and blog alike. */
 html[data-theme="dark"] .prose {
-  --tw-prose-body: var(--color-night-body);
-  --tw-prose-headings: var(--color-night-foreground);
-  --tw-prose-lead: var(--color-night-lead);
-  --tw-prose-bold: var(--color-night-foreground);
-  --tw-prose-links: var(--color-elektryk-400);
-  --tw-prose-code: var(--color-night-foreground);
-  --tw-prose-quotes: var(--color-night-lead);
-  --tw-prose-quote-borders: var(--color-night-border);
-  --tw-prose-bullets: var(--color-night-bullet);
-  --tw-prose-counters: var(--color-night-foreground-muted);
-  --tw-prose-hr: var(--color-night-border);
-  --tw-prose-th-borders: var(--color-night-border);
-  --tw-prose-td-borders: var(--color-night-raised);
+  --tw-prose-body: var(--night-body);
+  --tw-prose-headings: var(--night-foreground);
+  --tw-prose-lead: var(--night-lead);
+  --tw-prose-bold: var(--night-foreground);
+  --tw-prose-links: var(--elektryk-400);
+  --tw-prose-code: var(--night-foreground);
+  --tw-prose-quotes: var(--night-lead);
+  --tw-prose-quote-borders: var(--night-border);
+  --tw-prose-bullets: var(--night-bullet);
+  --tw-prose-counters: var(--night-foreground-muted);
+  --tw-prose-hr: var(--night-border);
+  --tw-prose-th-borders: var(--night-border);
+  --tw-prose-td-borders: var(--night-raised);
   /* Anything left unset here keeps the plugin's light-theme value, which on
      this ground is near-invisible: the kbd default is #101828 against a
      #0b0f16 page, a ratio of 1.07:1. The shadow variable carries its own
      alpha and draws the keycap's ring and lip, so it is lifted well past the
      light theme's 10% - a white ring that faint reads as nothing. */
-  --tw-prose-kbd: var(--color-night-foreground);
-  --tw-prose-kbd-shadows: var(--color-night-kbd-shadow);
-  --tw-prose-captions: var(--color-night-foreground-muted);
+  --tw-prose-kbd: var(--night-foreground);
+  --tw-prose-kbd-shadows: var(--night-kbd-shadow);
+  --tw-prose-captions: var(--night-foreground-muted);
 }
 
 html[data-theme="dark"] .prose :not(pre) > code {
-  background-color: var(--color-night-raised);
-  color: var(--color-night-foreground);
+  background-color: var(--night-raised);
+  color: var(--night-foreground);
 }
 
 html[data-theme="dark"] .prose pre {
-  background-color: var(--color-night-pre);
+  background-color: var(--night-pre);
 }
 
 /* Syntax-highlighted (shiki, dual-theme) code blocks inside prose. Colors are
