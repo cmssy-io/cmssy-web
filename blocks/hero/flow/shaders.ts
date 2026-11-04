@@ -88,7 +88,7 @@ void main() {
 
   vec2 clip = vec2(p.x / uAspect, p.y);
   float edge = smoothstep(0.0, 0.3, 1.25 - abs(clip.x)) * smoothstep(0.0, 0.3, 1.1 - abs(clip.y));
-  float typeDesktop = smoothstep(0.2, -0.3, clip.x) * smoothstep(-0.25, 0.3, clip.y);
+  float typeDesktop = (1.0 - smoothstep(-0.3, 0.2, clip.x)) * smoothstep(-0.25, 0.3, clip.y);
   float typeMobile = smoothstep(-0.2, 0.5, clip.y);
   float typeZone = mix(typeDesktop, typeMobile, uMobile);
   float density = mix(0.45, 1.0, smoothstep(-0.7, 0.5, clip.x));
@@ -110,7 +110,7 @@ varying float vAlpha;
 varying vec3 vColor;
 void main() {
   float r = length(gl_PointCoord - 0.5);
-  float a = smoothstep(0.5, 0.12, r);
+  float a = 1.0 - smoothstep(0.12, 0.5, r);
   gl_FragColor = vec4(vColor, a * vAlpha);
 }
 `;

@@ -87,7 +87,17 @@ export function RunCard({ labels }: { labels: RunLabels }) {
           detail={labels.publishTool}
           actor="agent"
         />
-        <Step index={4} title={labels.frontend} detail={labels.code[0] ?? ""} actor="app" />
+        <Step index={4} title={labels.frontend} detail={labels.code[0] ?? ""} actor="app">
+          {labels.code.length > 1 ? (
+            <div className="font-mono text-[12px] text-paper/45">
+              {labels.code.slice(1).map((line, i) => (
+                <div key={i} className="whitespace-pre">
+                  {line}
+                </div>
+              ))}
+            </div>
+          ) : null}
+        </Step>
       </ol>
 
       <div className="mt-2 grid grid-cols-2 gap-2 border-t border-paper/10 px-1 pt-3 pb-1">
