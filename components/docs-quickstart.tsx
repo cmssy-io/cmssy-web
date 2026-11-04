@@ -106,7 +106,7 @@ export function DocsQuickstart({
             )}
             {justCopied ? copiedLabel || copyLabel : copyLabel}
           </button>
-          ) : null}
+        ) : null}
       </div>
       {tab.note ? (
         <div className="px-4 pb-3.5 font-mono text-[11px] text-paper/45 sm:px-[18px]">
