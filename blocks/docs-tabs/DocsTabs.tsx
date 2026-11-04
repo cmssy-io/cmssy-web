@@ -9,11 +9,14 @@ import { hasCode, resolveTabIndex } from "@/lib/docs-tab-sync";
 import { useCopyToClipboard } from "@/lib/use-copy-to-clipboard";
 import { useSyncedTab } from "@/lib/use-synced-tab";
 import type { docsTabsProps, DocsTabsData } from "./block";
+import { withStyle } from "@/lib/block-style";
 
 export default function DocsTabs({
-  content,
+  content: rawContent,
+  style,
   data,
 }: BlockProps<typeof docsTabsProps, DocsTabsData>) {
+  const content = withStyle(rawContent, style);
   const { tabs = [], defaultTab = 0, variant = "underline", syncKey } = content;
 
   const [localTab, setLocalTab] = useState(defaultTab);
