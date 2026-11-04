@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { CmssyLink } from "./cmssy-locale";
 import { pathWithin, type DocsArea, type DocsNavSection } from "@/lib/docs-nav";
 import { fillCount, type DocsUi } from "@/lib/docs-ui";
+import { trapModal } from "@/lib/modal-focus";
 
 // Auto docs sidebar: rendered from the page tree (see lib/docs-nav.ts), not a
 // hand-authored block, and scoped to the area the tab bar has active.
@@ -23,6 +24,8 @@ export function DocsSidebarNav({
 }) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const drawerRef = useRef<HTMLElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
   // Drawer is portaled to <body> so no ancestor stacking context (the CMS
@@ -33,18 +36,18 @@ export function DocsSidebarNav({
   // Close on route change so a tap on a link never leaves the drawer open.
   useEffect(() => setOpen(false), [pathname]);
 
-  // Escape closes; body scroll stays locked while the drawer covers the page.
+  // Escape closes; while open the rest of the page is inert, scroll is locked
+  // and focus moves into the drawer and back to the trigger afterwards.
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
     document.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const release = trapModal(drawerRef.current, closeRef.current);
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
+      release();
     };
   }, [open]);
 
@@ -145,25 +148,29 @@ export function DocsSidebarNav({
               tabIndex={open ? 0 : -1}
               aria-label={ui.navClose}
               onClick={() => setOpen(false)}
-              className={`absolute inset-0 h-full w-full cursor-default bg-black/50 transition-opacity duration-200 ${
+              className={`absolute inset-0 h-full w-full cursor-default bg-black/50 transition-opacity duration-200 motion-reduce:transition-none ${
                 open ? "opacity-100" : "opacity-0"
               }`}
             />
             <nav
+              ref={drawerRef}
               id="docs-mobile-nav"
+              role="dialog"
+              aria-modal="true"
               aria-label={area.label}
-              className={`absolute inset-y-0 left-0 flex w-[min(20rem,85vw)] flex-col overflow-y-auto overscroll-contain border-r border-border bg-background text-sm shadow-xl transition-transform duration-200 ease-out ${
+              className={`absolute inset-y-0 left-0 flex w-[min(20rem,85vw)] flex-col overflow-y-auto overscroll-contain border-r border-border bg-background text-sm shadow-xl transition-transform duration-200 ease-out motion-reduce:transition-none ${
                 open ? "translate-x-0" : "-translate-x-full"
               }`}
             >
-              <div className="flex items-center justify-between border-b border-border px-4 py-3">
+              <div className="flex items-center justify-between border-b border-border px-4 py-2">
                 <CmssyLink
                   href={area.slug}
-                  className="font-heading font-semibold text-foreground"
+                  className="py-2 font-heading font-semibold text-foreground"
                 >
                   {area.label}
                 </CmssyLink>
                 <button
+                  ref={closeRef}
                   type="button"
                   onClick={() => setOpen(false)}
                   aria-label={ui.navClose}
@@ -213,7 +220,7 @@ function NavLink({
       aria-current={active ? "page" : undefined}
       className={`-ml-0.5 border-l-2 py-1.5 pr-2 ${indent} ${
         active
-          ? "rounded-r-md border-elektryk bg-primary/8 font-medium text-primary"
+          ? "rounded-r-md border-elektryk bg-primary/5 font-medium text-primary"
           : "rounded-md border-transparent text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
       }`}
     >

@@ -43,11 +43,11 @@ export function TocSidebar({ items, title }: TocSidebarProps) {
     <aside className="hidden xl:block w-64 shrink-0">
       <div className="sticky top-[calc(var(--site-chrome,4rem)+var(--docs-area-tabs,0px)+1rem)] max-h-[calc(100dvh-var(--site-chrome,4rem)-var(--docs-area-tabs,0px)-2rem)] overflow-y-auto overscroll-contain">
         {title && (
-          <h4 className="mb-3 font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+          <p className="mb-3 font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
             {title}
-          </h4>
+          </p>
         )}
-        <nav className="border-l border-border">
+        <nav aria-label={title} className="border-l border-border">
           {items.map((item) => (
             <a
               key={item.id}

@@ -143,7 +143,7 @@ export default function DocsHero({
                       />
                       <span className="flex items-end justify-between gap-2 font-heading text-[13px] font-semibold leading-tight sm:text-sm">
                         <span className="min-w-0">{link.title}</span>
-                        <ArrowRight className="size-3.5 shrink-0" />
+                        <ArrowRight aria-hidden="true" className="size-3.5 shrink-0" />
                       </span>
                     </CmssyLink>
                   ))}
@@ -154,7 +154,7 @@ export default function DocsHero({
                     className="mt-4 flex items-center justify-end gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {quickLinksMoreLabel}
-                    <ArrowRight className="size-3.5" />
+                    <ArrowRight aria-hidden="true" className="size-3.5" />
                   </CmssyLink>
                 )}
               </div>

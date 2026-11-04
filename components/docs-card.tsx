@@ -104,7 +104,10 @@ export function DocsCard({
         }`}
       >
         <span className="truncate">{footer}</span>
-        <span className={dark ? "text-elektryk-300" : "text-primary"}>
+        <span
+          aria-hidden="true"
+          className={dark ? "text-elektryk-300" : "text-primary"}
+        >
           &rarr;
         </span>
       </span>

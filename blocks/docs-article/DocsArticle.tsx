@@ -61,7 +61,7 @@ export default function DocsArticle({
             prose-p:leading-relaxed
             prose-a:text-primary prose-a:no-underline hover:prose-a:underline
             prose-li:marker:text-primary
-            [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto
+            [&_.docs-table]:overflow-x-auto [&_.docs-table]:rounded-md [&_.docs-table>table]:my-0 [&_.docs-table]:my-6
           "
           dangerouslySetInnerHTML={{ __html: rendered.html }}
         />

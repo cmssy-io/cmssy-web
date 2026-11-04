@@ -47,7 +47,6 @@ export function DocsPageActions({ slug, ui }: { slug: string; ui: DocsUi }) {
         onClick={copyPage}
         className={control}
         aria-label={ui.copyPage}
-        title={ui.copyPage}
       >
         {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
         {copied ? ui.copied : ui.copyPage}
@@ -56,7 +55,6 @@ export function DocsPageActions({ slug, ui }: { slug: string; ui: DocsUi }) {
         href={href}
         className={control}
         aria-label={ui.viewMarkdown}
-        title={ui.viewMarkdown}
       >
         <FileText className="size-3.5" />
         {ui.viewMarkdown}
@@ -65,7 +63,6 @@ export function DocsPageActions({ slug, ui }: { slug: string; ui: DocsUi }) {
         <DropdownMenuTrigger
           className={control}
           aria-label={openInLabel}
-          title={openInLabel}
         >
           {openInLabel}
           <ChevronDown className="size-3.5" />
