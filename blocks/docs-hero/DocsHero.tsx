@@ -148,7 +148,7 @@ export default function DocsHero({
                         <span className="min-w-0">{link.title}</span>
                         <ArrowRight
                           aria-hidden="true"
-                          className="size-3.5 shrink-0 text-muted-foreground transition-[color,translate] duration-[160ms] group-hover:text-primary motion-safe:group-hover:translate-x-0.5"
+                          className="size-3.5 shrink-0 text-muted-foreground transition-[color,translate] duration-[160ms] motion-reduce:transition-none group-hover:text-primary motion-safe:group-hover:translate-x-0.5"
                         />
                       </span>
                     </CmssyLink>
@@ -232,7 +232,7 @@ export default function DocsHero({
                     <h3 className="font-heading font-semibold">{link.title}</h3>
                     <ArrowRight
                       aria-hidden="true"
-                      className="ml-auto size-4 shrink-0 text-muted-foreground transition-[color,translate] duration-[160ms] group-hover:text-primary motion-safe:group-hover:translate-x-0.5"
+                      className="ml-auto size-4 shrink-0 text-muted-foreground transition-[color,translate] duration-[160ms] motion-reduce:transition-none group-hover:text-primary motion-safe:group-hover:translate-x-0.5"
                     />
                   </div>
                   {link.description && (

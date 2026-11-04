@@ -107,7 +107,7 @@ export function DocsCard({
         <span className="truncate">{footer}</span>
         <ArrowRight
           aria-hidden="true"
-          className={`size-3.5 shrink-0 transition-[color,translate] duration-[160ms] motion-safe:group-hover:translate-x-0.5 ${
+          className={`size-3.5 shrink-0 transition-[color,translate] duration-[160ms] motion-reduce:transition-none motion-safe:group-hover:translate-x-0.5 ${
             dark
               ? "text-paper/50 group-hover:text-elektryk-300"
               : "text-muted-foreground group-hover:text-primary"
