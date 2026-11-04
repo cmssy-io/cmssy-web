@@ -30,7 +30,7 @@ export function DocsFrame({
             ui={section.ui}
           />
         ) : null}
-        <div className="mx-auto flex w-full max-w-320 flex-col md:flex-row">
+        <div className="mx-auto flex w-full max-w-320 flex-col md:flex-row xl:border-x xl:border-border">
           {showSidebar ? (
             <aside className="sticky top-[calc(var(--site-chrome,4rem)+var(--docs-area-tabs,0px))] z-30 max-md:transition-[top] max-md:duration-200 motion-reduce:transition-none md:h-[calc(100dvh-var(--site-chrome,4rem)-var(--docs-area-tabs,0px))] md:w-64 md:shrink-0 md:overflow-y-auto md:overscroll-contain md:border-r md:border-border">
               {sidebar}

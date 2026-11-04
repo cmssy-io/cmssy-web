@@ -29,7 +29,7 @@ export function DocsPrevNext({
         {prev ? (
           <CmssyLink
             href={prev.slug}
-            className="group flex flex-col rounded-lg border p-4 transition-colors hover:border-primary hover:bg-primary/5"
+            className="group docs-tile flex flex-col rounded-2xl border p-4"
           >
             <span className="mb-1 flex items-center gap-1 text-xs text-muted-foreground">
               <ChevronLeft className="size-3" />
@@ -45,7 +45,7 @@ export function DocsPrevNext({
         {next && (
           <CmssyLink
             href={next.slug}
-            className="group flex flex-col items-end rounded-lg border p-4 transition-colors hover:border-primary hover:bg-primary/5"
+            className="group docs-tile flex flex-col items-end rounded-2xl border p-4"
           >
             <span className="mb-1 flex items-center gap-1 text-xs text-muted-foreground">
               {ui.next}

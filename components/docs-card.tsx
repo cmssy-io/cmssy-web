@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import { CmssyLink } from "./cmssy-locale";
 import { Container } from "./container";
 import { FigEyebrow } from "./fig-eyebrow";
@@ -11,9 +12,9 @@ const BAND: Record<Band, string> = {
 };
 
 const COLS: Record<string, string> = {
-  "2": "md:grid-cols-2",
-  "3": "md:grid-cols-2 lg:grid-cols-3",
-  "4": "md:grid-cols-2 lg:grid-cols-4",
+  "2": "@lg:grid-cols-2",
+  "3": "@lg:grid-cols-2 @3xl:grid-cols-3",
+  "4": "@lg:grid-cols-2 @4xl:grid-cols-4",
 };
 
 export function cardGridCols(columns: string): string {
@@ -40,7 +41,7 @@ export function DocsCardBand({
 
   return (
     <section className={BAND[band]}>
-      <Container>
+      <Container className="@container">
         {hasHeader && (
           <div className="mb-7 flex flex-col gap-2.5">
             {(fig || eyebrow) && (
@@ -84,10 +85,10 @@ export function DocsCard({
   return (
     <CmssyLink
       href={href}
-      className={`flex min-w-0 flex-col gap-1.5 rounded-2xl border p-[18px] pb-3.5 transition-colors duration-[160ms] ${
+      className={`group docs-tile flex min-w-0 flex-col gap-1.5 rounded-2xl border p-[18px] pb-3.5 ${
         dark
-          ? "border-paper/10 bg-ink-deep text-paper hover:border-paper/40"
-          : "border-border bg-card text-foreground hover:border-foreground"
+          ? "border-paper/10 bg-ink-deep text-paper"
+          : "border-border bg-card text-foreground"
       }`}
     >
       <h3 className="font-heading text-base font-semibold">{title}</h3>
@@ -104,12 +105,14 @@ export function DocsCard({
         }`}
       >
         <span className="truncate">{footer}</span>
-        <span
+        <ArrowRight
           aria-hidden="true"
-          className={dark ? "text-elektryk-300" : "text-primary"}
-        >
-          &rarr;
-        </span>
+          className={`size-3.5 shrink-0 transition-[color,translate] duration-[160ms] motion-safe:group-hover:translate-x-0.5 ${
+            dark
+              ? "text-paper/50 group-hover:text-elektryk-300"
+              : "text-muted-foreground group-hover:text-primary"
+          }`}
+        />
       </span>
     </CmssyLink>
   );
