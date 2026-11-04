@@ -664,8 +664,15 @@ html[data-theme="dark"] .prose pre.shiki span {
   animation: tech-ticker-slide 40s linear infinite;
 }
 
-.tech-ticker:hover .tech-ticker__track {
+.tech-ticker:hover .tech-ticker__track,
+.tech-ticker:focus-visible .tech-ticker__track,
+.tech-ticker:focus-within .tech-ticker__track {
   animation-play-state: paused;
+}
+
+.tech-ticker:focus-visible {
+  outline: 2px solid var(--elektryk);
+  outline-offset: -2px;
 }
 
 @property --lit {

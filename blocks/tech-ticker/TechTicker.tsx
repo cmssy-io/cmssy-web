@@ -40,6 +40,8 @@ export default function TechTicker({
     <section
       className="tech-ticker h-12 overflow-hidden border-t border-paper/10 bg-ink font-mono text-label tracking-[0.14em] text-paper/45 uppercase"
       aria-label={ariaLabel || undefined}
+      role="marquee"
+      tabIndex={0}
     >
       <div className="tech-ticker__track flex h-full w-max items-center">
         <TickerList labels={track} />
