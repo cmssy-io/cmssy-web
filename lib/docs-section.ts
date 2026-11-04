@@ -35,8 +35,11 @@ async function walkTree(
   let frontier = [{ slug: rootSlug, into: roots }];
   for (let depth = 0; depth < MAX_DEPTH && frontier.length; depth += 1) {
     const next: typeof frontier = [];
-    await mapWithLimit(frontier, CONCURRENCY, async ({ slug, into }) => {
-      for (const page of await listChildPages(slug)) {
+    const pages = await mapWithLimit(frontier, CONCURRENCY, ({ slug }) =>
+      listChildPages(slug),
+    );
+    frontier.forEach(({ into }, index) => {
+      for (const page of pages[index] ?? []) {
         if (seen.has(page.id)) continue;
         seen.add(page.id);
         const node: DocsTreeNode = { page, children: [] };

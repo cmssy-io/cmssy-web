@@ -66,6 +66,24 @@ describe("loadDocsSection", () => {
     ).toHaveLength(1);
   });
 
+  it("keeps CMS order when a later request answers first", async () => {
+    listChildPages.mockImplementation(async (slug: string) => {
+      const wait = slug === "/docs/start" ? 30 : 0;
+      await new Promise((resolve) => setTimeout(resolve, wait));
+      return tree[slug] ?? [];
+    });
+    const section = await loadDocsSection(["docs"], "en", "en");
+    expect(section?.areas.map((area) => area.slug)).toEqual(["/docs/start", "/docs/blocks"]);
+    expect(section?.searchItems.map((item) => item.slug)).toEqual([
+      "/docs/start",
+      "/docs/start/install",
+      "/docs/blocks",
+      "/docs/blocks/fields",
+      "/docs/blocks/fields/text",
+      "/docs/blocks/fields/text/value",
+    ]);
+  });
+
   it("has no area and an empty sidebar on the docs root", async () => {
     const section = await loadDocsSection(["docs"], "en", "en");
     expect(section?.area).toBeNull();
