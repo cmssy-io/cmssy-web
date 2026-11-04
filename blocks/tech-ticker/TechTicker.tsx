@@ -1,6 +1,8 @@
 import type { BlockProps } from "@cmssy/react";
 import type { techTickerProps } from "./block";
 
+const MIN_TRACK_ITEMS = 16;
+
 function TickerList({
   labels,
   hidden,
@@ -27,8 +29,12 @@ export default function TechTicker({
   content,
 }: BlockProps<typeof techTickerProps>) {
   const { items = [], ariaLabel = "" } = content;
-  const labels = items.map((item) => item.label).filter(Boolean);
+  const labels = items
+    .map((item) => item.label?.trim() ?? "")
+    .filter((label) => label.length > 0);
   if (labels.length === 0) return null;
+  const copies = Math.ceil(MIN_TRACK_ITEMS / labels.length);
+  const track = Array.from({ length: copies }, () => labels).flat();
 
   return (
     <section
@@ -36,8 +42,8 @@ export default function TechTicker({
       aria-label={ariaLabel || undefined}
     >
       <div className="tech-ticker__track flex h-full w-max items-center">
-        <TickerList labels={labels} />
-        <TickerList labels={labels} hidden />
+        <TickerList labels={track} />
+        <TickerList labels={track} hidden />
       </div>
     </section>
   );
