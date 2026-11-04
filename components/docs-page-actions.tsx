@@ -12,7 +12,6 @@ import { fillUrl, type DocsUi } from "@/lib/docs-ui";
 
 const OPEN_IN = [
   { name: "Claude", host: "claude.ai", href: (q: string) => `https://claude.ai/new?q=${q}` },
-  { name: "ChatGPT", host: "chatgpt.com", href: (q: string) => `https://chatgpt.com/?q=${q}` },
   { name: "Cursor", host: "cursor://", href: (q: string) => `cursor://anysphere.cursor-deeplink/prompt?text=${q}` },
 ];
 
