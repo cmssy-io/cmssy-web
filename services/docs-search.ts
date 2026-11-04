@@ -29,22 +29,32 @@ const SCHEMA_BY_TYPE = new Map<string, BlockPropsSchema>(
 /** Every published page under /docs, depth-first in tree order. */
 export async function docsPages(): Promise<ChildPage[]> {
   const seen = new Set<string>();
-  const walk = async (
-    parentSlug: string,
-    depth: number,
-  ): Promise<ChildPage[]> => {
-    if (depth === MAX_DEPTH) return [];
-    const children = (await listChildPages(parentSlug)).filter((page) => {
-      if (seen.has(page.id)) return false;
-      seen.add(page.id);
-      return true;
-    });
-    const nested = await mapWithLimit(children, CONCURRENCY, (page) =>
-      walk(page.fullSlug, depth + 1),
+  const childrenOf = new Map<string, ChildPage[]>();
+  let frontier = [DOCS_ROOT];
+  for (let depth = 0; depth < MAX_DEPTH && frontier.length > 0; depth++) {
+    const lists = await mapWithLimit(frontier, CONCURRENCY, (slug) =>
+      listChildPages(slug),
     );
-    return children.flatMap((page, index) => [page, ...(nested[index] ?? [])]);
-  };
-  return walk(DOCS_ROOT, 0);
+    const next: string[] = [];
+    frontier.forEach((slug, index) => {
+      const fresh = (lists[index] ?? []).filter((page) => {
+        if (seen.has(page.id)) return false;
+        seen.add(page.id);
+        return true;
+      });
+      childrenOf.set(slug, fresh);
+      next.push(...fresh.map((page) => page.fullSlug));
+    });
+    frontier = next;
+  }
+  const flatten = (slug: string, depth: number): ChildPage[] =>
+    depth === MAX_DEPTH
+      ? []
+      : (childrenOf.get(slug) ?? []).flatMap((page) => [
+          page,
+          ...flatten(page.fullSlug, depth + 1),
+        ]);
+  return flatten(DOCS_ROOT, 0);
 }
 
 export { mapWithLimit };
