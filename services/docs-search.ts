@@ -16,6 +16,7 @@ export type DocsSearchBodyEntry = {
 
 const DOCS_ROOT = "/docs";
 const CONCURRENCY = 6;
+const MAX_DEPTH = 8;
 
 const SCHEMA_BY_TYPE = new Map<string, BlockPropsSchema>(
   blocks.map((block) => [
@@ -24,18 +25,25 @@ const SCHEMA_BY_TYPE = new Map<string, BlockPropsSchema>(
   ]),
 );
 
+/** Every published page under /docs, depth-first in tree order. */
 export async function docsPages(): Promise<ChildPage[]> {
-  const sections = await listChildPages(DOCS_ROOT);
-  const nested = await Promise.all(
-    sections.map((section) => listChildPages(section.fullSlug)),
-  );
-  const all = [...sections, ...nested.flat()];
   const seen = new Set<string>();
-  return all.filter((page) => {
-    if (seen.has(page.id)) return false;
-    seen.add(page.id);
-    return true;
-  });
+  const walk = async (
+    parentSlug: string,
+    depth: number,
+  ): Promise<ChildPage[]> => {
+    if (depth === MAX_DEPTH) return [];
+    const children = (await listChildPages(parentSlug)).filter((page) => {
+      if (seen.has(page.id)) return false;
+      seen.add(page.id);
+      return true;
+    });
+    const nested = await mapWithLimit(children, CONCURRENCY, (page) =>
+      walk(page.fullSlug, depth + 1),
+    );
+    return children.flatMap((page, index) => [page, ...(nested[index] ?? [])]);
+  };
+  return walk(DOCS_ROOT, 0);
 }
 
 export async function mapWithLimit<T, R>(
