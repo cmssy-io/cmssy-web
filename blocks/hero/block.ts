@@ -69,7 +69,7 @@ export const heroProps = {
     defaultValue: "one field, five values",
   }),
   locales: fields.repeater({
-    label: "Run card: Locales (exactly 5)",
+    label: "Run card: Locales",
     itemSchema: {
       code: fields.text({ label: "Locale Code", required: true }),
     },

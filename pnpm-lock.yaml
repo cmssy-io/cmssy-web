@@ -35,9 +35,6 @@ importers:
       '@tailwindcss/typography':
         specifier: ^0.5.19
         version: 0.5.20(tailwindcss@4.3.2)
-      '@types/three':
-        specifier: 0.182.0
-        version: 0.182.0
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -141,6 +138,9 @@ importers:
       '@types/sanitize-html':
         specifier: ^2.16.1
         version: 2.16.1
+      '@types/three':
+        specifier: 0.182.0
+        version: 0.182.0
       eslint:
         specifier: ^9.39.3
         version: 9.39.5(jiti@2.7.0)

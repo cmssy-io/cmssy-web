@@ -71,9 +71,9 @@ export function RunCard({ labels }: { labels: RunLabels }) {
         />
         <Step index={2} title={labels.fan} detail={labels.fanNote} actor="cmssy">
           <div className="mt-2 flex flex-wrap gap-1.5">
-            {labels.locales.map((code) => (
+            {labels.locales.map((code, i) => (
               <span
-                key={code}
+                key={`${i}-${code}`}
                 className="rounded-md border border-paper/10 px-1.5 py-0.5 font-mono text-label text-paper/60"
               >
                 {code}
@@ -87,7 +87,17 @@ export function RunCard({ labels }: { labels: RunLabels }) {
           detail={labels.publishTool}
           actor="agent"
         />
-        <Step index={4} title={labels.frontend} detail={labels.code[0] ?? ""} actor="app" />
+        <Step index={4} title={labels.frontend} detail={labels.code[0] ?? ""} actor="app">
+          {labels.code.length > 1 ? (
+            <div className="font-mono text-caption text-paper/45">
+              {labels.code.slice(1).map((line, i) => (
+                <div key={i} className="whitespace-pre">
+                  {line}
+                </div>
+              ))}
+            </div>
+          ) : null}
+        </Step>
       </ol>
 
       <div className="mt-2 grid grid-cols-2 gap-2 border-t border-paper/10 px-1 pt-3 pb-1">
