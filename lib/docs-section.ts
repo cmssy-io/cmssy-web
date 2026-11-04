@@ -27,24 +27,36 @@ const CONCURRENCY = 4;
 const MAX_DEPTH = 8;
 
 async function walkTree(
-  parentSlug: string,
-  depth: number,
-  seen: Set<string>,
+  rootSlug: string,
+  rootId: string,
 ): Promise<DocsTreeNode[]> {
-  if (depth === MAX_DEPTH) return [];
-  const children = (await listChildPages(parentSlug)).filter((page) => {
-    if (seen.has(page.id)) return false;
-    seen.add(page.id);
-    return true;
-  });
-  return mapWithLimit(children, CONCURRENCY, async (page) => ({
-    page,
-    children: await walkTree(page.fullSlug, depth + 1, seen),
-  }));
+  const seen = new Set([rootId]);
+  const roots: DocsTreeNode[] = [];
+  let frontier = [{ slug: rootSlug, into: roots }];
+  for (let depth = 0; depth < MAX_DEPTH && frontier.length; depth += 1) {
+    const next: typeof frontier = [];
+    await mapWithLimit(frontier, CONCURRENCY, async ({ slug, into }) => {
+      for (const page of await listChildPages(slug)) {
+        if (seen.has(page.id)) continue;
+        seen.add(page.id);
+        const node: DocsTreeNode = { page, children: [] };
+        into.push(node);
+        next.push({ slug: page.fullSlug, into: node.children });
+      }
+    });
+    frontier = next;
+  }
+  return roots;
 }
 
-export function flattenTree(nodes: DocsTreeNode[]): ChildPage[] {
-  return nodes.flatMap(({ page, children }) => [page, ...flattenTree(children)]);
+export function flattenTree(
+  nodes: DocsTreeNode[],
+  depth = 1,
+): { page: ChildPage; depth: number }[] {
+  return nodes.flatMap(({ page, children }) => [
+    { page, depth },
+    ...flattenTree(children, depth + 1),
+  ]);
 }
 
 export async function buildDocsTree(
@@ -53,7 +65,7 @@ export async function buildDocsTree(
   const topLevel = await listChildPages("/");
   const root = topLevel.find((page) => page.fullSlug === rootSlug);
   if (!root) return null;
-  return { root, areas: await walkTree(rootSlug, 0, new Set([root.id])) };
+  return { root, areas: await walkTree(rootSlug, root.id) };
 }
 
 function loadDocsTree(rootSlug: string) {
@@ -104,7 +116,7 @@ export async function loadDocsSection(
     : [];
 
   const searchItems = tree.areas.flatMap(({ page, children }) =>
-    [page, ...flattenTree(children)].map((entry) => ({
+    [page, ...flattenTree(children).map((entry) => entry.page)].map((entry) => ({
       slug: entry.fullSlug,
       label: label(entry),
       section: label(page),

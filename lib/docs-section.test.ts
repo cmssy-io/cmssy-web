@@ -43,12 +43,14 @@ describe("loadDocsSection", () => {
       "/docs/blocks/fields/text/value",
     );
     expect(
-      section?.nav.flatMap((group) => group.pages.map((item) => item.slug)),
+      section?.nav.flatMap((group) =>
+        group.pages.map((item) => [item.slug, item.depth]),
+      ),
     ).toEqual([
-      "/docs/blocks",
-      "/docs/blocks/fields",
-      "/docs/blocks/fields/text",
-      "/docs/blocks/fields/text/value",
+      ["/docs/blocks", 0],
+      ["/docs/blocks/fields", 0],
+      ["/docs/blocks/fields/text", 1],
+      ["/docs/blocks/fields/text/value", 2],
     ]);
   });
 

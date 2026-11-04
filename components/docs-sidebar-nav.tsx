@@ -98,6 +98,7 @@ export function DocsSidebarNav({
                 key={page.slug}
                 href={page.slug}
                 label={page.slug === area.slug && ui.overview ? ui.overview : page.label}
+                depth={page.depth}
                 active={path === page.slug}
                 onNavigate={() => setOpen(false)}
               />
@@ -189,27 +190,32 @@ export function DocsSidebarNav({
   );
 }
 
+const INDENT: Record<number, string> = { 2: "pl-5", 3: "pl-8" };
+
 function NavLink({
   href,
   label,
+  depth = 1,
   active,
   onNavigate,
 }: {
   href: string;
   label: string;
+  depth?: number;
   active: boolean;
   onNavigate: () => void;
 }) {
+  const indent = INDENT[Math.min(depth, 3)] ?? "pl-2";
   return (
     <CmssyLink
       href={href}
       onClick={onNavigate}
       aria-current={active ? "page" : undefined}
-      className={
+      className={`-ml-0.5 border-l-2 py-1.5 pr-2 ${indent} ${
         active
-          ? "-ml-0.5 rounded-r-md border-l-2 border-elektryk bg-primary/8 px-2 py-1.5 font-medium text-primary"
-          : "-ml-0.5 rounded-md border-l-2 border-transparent px-2 py-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-      }
+          ? "rounded-r-md border-elektryk bg-primary/8 font-medium text-primary"
+          : "rounded-md border-transparent text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+      }`}
     >
       {label}
     </CmssyLink>

@@ -88,23 +88,25 @@ export function DocsQuickstart({
             {rest}
           </code>
         </pre>
-        <button
-          type="button"
-          onClick={() => {
-            setCopiedCommand(command);
-            copy(command);
-          }}
-          aria-label={copyLabel}
-          title={copyLabel}
-          className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-elektryk px-3 py-2 font-mono text-xs uppercase tracking-[0.08em] text-ink transition-colors duration-[160ms] hover:bg-elektryk-300"
-        >
-          {justCopied ? (
-            <Check className="size-3.5" />
-          ) : (
-            <Copy className="size-3.5" />
-          )}
-          {justCopied ? copiedLabel || copyLabel : copyLabel}
-        </button>
+        {copyLabel ? (
+          <button
+            type="button"
+            onClick={() => {
+              setCopiedCommand(command);
+              copy(command);
+            }}
+            aria-label={copyLabel}
+            title={copyLabel}
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-elektryk px-3 py-2 font-mono text-xs uppercase tracking-[0.08em] text-ink transition-colors duration-[160ms] hover:bg-elektryk-300"
+          >
+            {justCopied ? (
+              <Check className="size-3.5" />
+            ) : (
+              <Copy className="size-3.5" />
+            )}
+            {justCopied ? copiedLabel || copyLabel : copyLabel}
+          </button>
+          ) : null}
       </div>
       {tab.note ? (
         <div className="px-4 pb-3.5 font-mono text-[11px] text-paper/45 sm:px-[18px]">
