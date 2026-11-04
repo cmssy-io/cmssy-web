@@ -590,7 +590,7 @@ html[data-theme="dark"] .docs-shell :focus-visible,
   outline-color: var(--color-elektryk-300);
 }
 
-.docs-frame:has(main [data-docs-search-trigger]) .docs-tabs-search {
+.docs-frame:has(main [data-docs-search-trigger]) .docs-tabs-search > button {
   display: none;
 }
 
