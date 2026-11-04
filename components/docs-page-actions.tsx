@@ -12,7 +12,7 @@ import { fillUrl, type DocsUi } from "@/lib/docs-ui";
 
 const OPEN_IN = [
   { name: "Claude", host: "claude.ai", href: (q: string) => `https://claude.ai/new?q=${q}` },
-  { name: "Cursor", host: "cursor://", href: (q: string) => `cursor://anysphere.cursor-deeplink/prompt?text=${q}` },
+  { name: "Cursor", host: "cursor.com", href: (q: string) => `https://cursor.com/link/prompt?text=${q}` },
 ];
 
 // The page as Markdown: copied, opened, or handed to an assistant. The words
