@@ -1,4 +1,5 @@
 import { mediaUrl, type MediaLike } from "@cmssy/core";
+import { groupQuickstart } from "@/lib/docs-quickstart";
 import { htmlToMarkdown, markdownHref } from "./html";
 
 type Content = Record<string, unknown>;
@@ -26,6 +27,37 @@ function fenced(code: string, language: string): string {
   const longest = Math.max(2, ...(code.match(/`+/g) ?? []).map((run) => run.length));
   const fence = "`".repeat(longest + 1);
   return `${fence}${language}\n${code}\n${fence}`;
+}
+
+function quickstart(rows: unknown, base: string): string[] {
+  const tabs = groupQuickstart(
+    records(rows).map((row) => ({
+      tab: text(row.tab),
+      runner: text(row.runner),
+      command: text(row.command),
+      note: text(row.note),
+      noteLabel: text(row.noteLabel),
+      noteUrl: text(row.noteUrl),
+    })),
+  );
+  return tabs.map((tab) =>
+    join(
+      heading(tab.label, 3),
+      fenced(
+        tab.runners
+          .map((runner) =>
+            tab.runners.length > 1
+              ? `# ${runner}\n${tab.commands[runner]}`
+              : tab.commands[runner],
+          )
+          .join("\n\n"),
+        "bash",
+      ),
+      tab.noteLabel && tab.noteUrl
+        ? `${tab.note} [${tab.noteLabel}](${markdownHref(tab.noteUrl, base)})`.trim()
+        : tab.note,
+    ),
+  );
 }
 
 function linkList(items: unknown, base: string): string {
@@ -63,7 +95,11 @@ const renderers: Record<string, Renderer> = {
     ),
 
   "docs-hero": (content, base) =>
-    join(text(content.description), linkList(content.quickLinks, base)),
+    join(
+      text(content.description),
+      ...quickstart(content.commands, base),
+      linkList(content.quickLinks, base),
+    ),
 
   "docs-card-grid": (content, base) =>
     join(
@@ -116,7 +152,7 @@ const renderers: Record<string, Renderer> = {
 };
 
 /** Navigation and conversion, not documentation. */
-const skipped = new Set(["docs-sidebar", "cta"]);
+const skipped = new Set(["docs-sidebar", "docs-areas", "cta"]);
 
 /**
  * Prose only. The rate limits come from a loader; the others are unused and

@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
+import { trapModal } from "@/lib/modal-focus";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { useCmssyLocale } from "@/components/cmssy-locale";
@@ -74,16 +75,20 @@ export function DocsSearch({
   items,
   label,
   ui,
+  compact = false,
 }: {
   items: DocsSearchItem[];
   /** The section's own name, for the dialog's accessible name. */
   label: string;
   ui: DocsUi;
+  compact?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const listId = useId();
   const router = useRouter();
   const locale = useCmssyLocale();
   const bodies = useBodyIndex(open, locale?.current);
@@ -134,7 +139,8 @@ export function DocsSearch({
   }, [open]);
 
   useEffect(() => {
-    if (open) inputRef.current?.focus();
+    if (!open) return;
+    return trapModal(dialogRef.current, inputRef.current);
   }, [open]);
 
   useEffect(() => setActive(0), [query]);
@@ -144,11 +150,21 @@ export function DocsSearch({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex w-full items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-left text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+        aria-label={ui.searchPlaceholder ?? label}
+        className={
+          compact
+            ? "flex h-8 items-center gap-2 rounded-md border border-border bg-card px-2.5 text-left text-[13px] text-muted-foreground transition-colors hover:border-elektryk hover:text-foreground"
+            : "flex w-full items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-left text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+        }
       >
         <Search className="h-4 w-4 shrink-0" />
-        <span className="truncate">{ui.searchPlaceholder}</span>
-        <kbd className="ml-auto hidden rounded border border-border px-1.5 font-mono text-[10px] sm:block">
+        <span className={compact ? "hidden truncate sm:inline" : "truncate"}>
+          {ui.searchPlaceholder}
+        </span>
+        <kbd
+          aria-hidden="true"
+          className="ml-auto hidden rounded border border-border px-1.5 font-mono text-[10px] sm:block"
+        >
           /
         </kbd>
       </button>
@@ -162,15 +178,24 @@ export function DocsSearch({
             className="absolute inset-0 h-full w-full cursor-default bg-black/50"
           />
           <div
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-label={label}
+            tabIndex={-1}
             className="relative w-full max-w-xl overflow-hidden rounded-xl border border-border bg-card shadow-2xl"
           >
             <div className="flex items-center gap-2 border-b border-border px-4">
               <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
               <input
                 ref={inputRef}
+                role="combobox"
+                aria-autocomplete="list"
+                aria-expanded={Boolean(query) && matches.length > 0}
+                aria-controls={listId}
+                aria-activedescendant={
+                  query && matches[active] ? `${listId}-${active}` : undefined
+                }
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 onKeyDown={(event) => {
@@ -192,37 +217,52 @@ export function DocsSearch({
             </div>
 
             {query && (
-              <ul className="max-h-[60vh] overflow-y-auto py-2">
+              <ul
+                id={listId}
+                role="listbox"
+                aria-label={label}
+                className="max-h-[60vh] overflow-y-auto py-2"
+              >
                 {matches.length === 0 && ui.searchEmpty && (
-                  <li className="px-4 py-6 text-center text-sm text-muted-foreground">
+                  <li
+                    role="presentation"
+                    className="px-4 py-6 text-center text-sm text-muted-foreground"
+                  >
                     {ui.searchEmpty}
                   </li>
                 )}
-                {matches.map((item, i) => (
-                  <li key={item.slug}>
-                    <button
-                      type="button"
+                {matches.map((item, i) => {
+                  const current = i === active;
+                  const secondary = current
+                    ? "text-foreground/80"
+                    : "text-muted-foreground";
+                  return (
+                    <li
+                      key={item.slug}
+                      id={`${listId}-${i}`}
+                      role="option"
+                      aria-selected={current}
                       onMouseEnter={() => setActive(i)}
                       onClick={() => go(item.slug)}
-                      className={`flex w-full flex-col items-start gap-0.5 px-4 py-2.5 text-left ${
-                        i === active ? "bg-muted" : ""
+                      className={`flex cursor-pointer flex-col items-start gap-0.5 border-l-2 px-4 py-2.5 text-left ${
+                        current ? "border-elektryk bg-muted" : "border-transparent"
                       }`}
                     >
                       <span className="text-sm font-medium text-foreground">
                         {item.label}
                       </span>
-                      <span className="text-xs text-muted-foreground">
+                      <span className={`text-xs ${secondary}`}>
                         {item.section}
                         {item.description ? ` - ${item.description}` : ""}
                       </span>
                       {item.snippet && (
-                        <span className="line-clamp-2 text-xs text-muted-foreground/80">
+                        <span className={`line-clamp-2 text-xs ${secondary}`}>
                           {item.snippet}
                         </span>
                       )}
-                    </button>
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </div>

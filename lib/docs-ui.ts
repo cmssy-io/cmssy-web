@@ -19,6 +19,10 @@ const FIELD_KEYS = {
   uiCopyPage: "copyPage",
   uiCopied: "copied",
   uiViewMarkdown: "viewMarkdown",
+  uiOpenIn: "openIn",
+  uiOpenInPrompt: "openInPrompt",
+  uiOverview: "overview",
+  uiPageCount: "pageCount",
 } as const;
 
 export type DocsUi = Partial<
@@ -61,4 +65,29 @@ export function docsUiFrom(
     if (text) ui[key] = text;
   }
   return ui;
+}
+
+export function fillCount(template: string | undefined, n: number): string {
+  return template ? template.replace(/\{n\}/g, String(n)) : "";
+}
+
+export function fillUrl(template: string | undefined, url: string): string {
+  if (!template) return url;
+  return template.includes("{url}")
+    ? template.replace(/\{url\}/g, url)
+    : `${template} ${url}`;
+}
+
+export function footerForUrl(url: string): string {
+  const trimmed = url.trim();
+  if (!trimmed) return "";
+  if (/^https?:\/\//i.test(trimmed)) {
+    try {
+      const parsed = new URL(trimmed);
+      return `${parsed.host}${parsed.pathname === "/" ? "" : parsed.pathname}`;
+    } catch {
+      return trimmed;
+    }
+  }
+  return trimmed.replace(/^\/+/, "").split(/[?#]/)[0];
 }

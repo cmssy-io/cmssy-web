@@ -579,6 +579,21 @@ html[data-theme="dark"] .docs-shell {
   --primary: var(--color-elektryk-500);
 }
 
+.docs-shell :focus-visible {
+  outline: 2px solid var(--color-elektryk-700);
+  outline-offset: 2px;
+}
+
+html[data-theme="dark"] .docs-shell :focus-visible,
+.docs-shell .bg-ink :focus-visible,
+.docs-shell .bg-ink-deep :focus-visible {
+  outline-color: var(--color-elektryk-300);
+}
+
+.docs-frame:has(main [data-docs-search-trigger]) .docs-tabs-search > button {
+  display: none;
+}
+
 .docs-shell main:has([data-block-type="docs-hero"]) {
   background-image: linear-gradient(
     to bottom,

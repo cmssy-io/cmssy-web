@@ -3,6 +3,8 @@ import { createCmssyEditPage, resolveCmssyLayout } from "@cmssy/next/server";
 import { cmssy } from "@/cmssy/config";
 import { blocks } from "@/cmssy/blocks";
 import { EditableLayout } from "@/cmssy/editable-layout";
+import { DocsFrame } from "@/components/docs-frame";
+import { loadDocsSection } from "@/lib/docs-section";
 import { regionHasBlocks } from "@/lib/layout-regions";
 
 export const dynamic = "force-dynamic";
@@ -35,12 +37,15 @@ export default async function EditPage({ params, searchParams }: PageProps) {
 
   if (!regionHasBlocks(sidebar.groups, "sidebar_left")) return content;
 
+  const section = await loadDocsSection(
+    sidebar.page.path,
+    sidebar.locale,
+    sidebar.defaultLocale,
+  );
+
   return (
-    <div className="mx-auto flex w-full max-w-320 flex-col md:flex-row">
-      <aside className="sticky top-[var(--site-chrome,4rem)] z-30 md:h-[calc(100dvh-var(--site-chrome,4rem))] md:w-64 md:shrink-0 md:overflow-y-auto md:overscroll-contain md:border-r md:border-border">
-        {sidebar.element}
-      </aside>
-      <main className="min-w-0 flex-1">{content}</main>
-    </div>
+    <DocsFrame section={section} sidebar={sidebar.element} showSidebar>
+      {content}
+    </DocsFrame>
   );
 }

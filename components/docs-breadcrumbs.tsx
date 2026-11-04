@@ -7,14 +7,16 @@ import { Container } from "./container";
 // crumbs follow, with nothing to re-enter on the article block.
 export function DocsBreadcrumbs({
   trail,
+  children,
 }: {
   trail: { slug: string; label: string }[];
+  children?: React.ReactNode;
 }) {
   // A section hub is its own root - one crumb pointing at itself says nothing.
   if (trail.length < 2) return null;
 
   return (
-    <Container className="pt-6 lg:pt-12">
+    <Container className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 pt-6 lg:pt-12">
       <nav
         aria-label="Breadcrumb"
         className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground"
@@ -45,6 +47,7 @@ export function DocsBreadcrumbs({
           );
         })}
       </nav>
+      {children}
     </Container>
   );
 }
