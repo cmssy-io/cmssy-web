@@ -6,6 +6,7 @@ import type { CmssyPageData, CmssyPageSummary } from "@cmssy/react";
 import type { CmssyDataCacheOptions } from "@cmssy/next";
 import { cmssy } from "@/cmssy/config";
 import {
+  PublicDocsPageDocument,
   PublicPageByIdDocument,
   PublicPageIdDocument,
   PublicPagesByTypeDocument,
@@ -126,6 +127,31 @@ export async function getPageById(
     const page = data.public.page.getById;
     if (!page) return null;
     return { id: page.id, blocks: page.publishedBlocks };
+  } catch {
+    return null;
+  }
+}
+
+export type DocsPage = CmssyPageData & {
+  displayName: ChildPage["displayName"];
+  seoDescription: ChildPage["seoDescription"];
+};
+
+export async function getDocsPage(pageId: string): Promise<DocsPage | null> {
+  try {
+    const data = await publicRequest(
+      PublicDocsPageDocument,
+      { workspaceSlug: cmssy.workspaceSlug, pageId },
+      "docs page",
+    );
+    const page = data.public.page.getById;
+    if (!page) return null;
+    return {
+      id: page.id,
+      blocks: page.publishedBlocks,
+      displayName: page.displayName as ChildPage["displayName"],
+      seoDescription: page.seoDescription as ChildPage["seoDescription"],
+    };
   } catch {
     return null;
   }
