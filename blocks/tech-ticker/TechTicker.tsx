@@ -5,9 +5,11 @@ const MIN_TRACK_ITEMS = 16;
 
 function TickerList({
   labels,
+  announced,
   hidden,
 }: {
   labels: string[];
+  announced: number;
   hidden?: boolean;
 }) {
   return (
@@ -16,7 +18,11 @@ function TickerList({
       aria-hidden={hidden ? true : undefined}
     >
       {labels.map((label, i) => (
-        <li key={i} className="flex items-center">
+        <li
+          key={i}
+          className="flex items-center"
+          aria-hidden={i >= announced ? true : undefined}
+        >
           <span className="px-6 whitespace-nowrap md:px-9">{label}</span>
           <span className="size-1 shrink-0 rounded-xs bg-elektryk" />
         </li>
@@ -44,8 +50,8 @@ export default function TechTicker({
       tabIndex={0}
     >
       <div className="tech-ticker__track flex h-full w-max items-center">
-        <TickerList labels={track} />
-        <TickerList labels={track} hidden />
+        <TickerList labels={track} announced={labels.length} />
+        <TickerList labels={track} announced={labels.length} hidden />
       </div>
     </section>
   );
