@@ -76,7 +76,24 @@ export default function DocsToolCatalogue({
                   )}
                 </td>
                 <td className="px-4 py-3 align-top text-muted-foreground">
-                  {row.description}
+                  {row.details ? (
+                    <details className="group">
+                      <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                        {row.summary}
+                        <span
+                          aria-hidden="true"
+                          className="ml-1 font-mono text-xs text-primary group-open:hidden"
+                        >
+                          +
+                        </span>
+                      </summary>
+                      <p className="mt-2 text-xs leading-relaxed">
+                        {row.details}
+                      </p>
+                    </details>
+                  ) : (
+                    row.summary
+                  )}
                 </td>
               </tr>
             ))}
