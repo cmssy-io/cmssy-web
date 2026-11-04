@@ -660,6 +660,14 @@ html[data-theme="dark"] .prose pre.shiki span {
   animation: hero-blink 1.4s step-end infinite;
 }
 
+.tech-ticker__track {
+  animation: tech-ticker-slide 40s linear infinite;
+}
+
+.tech-ticker:hover .tech-ticker__track {
+  animation-play-state: paused;
+}
+
 @property --lit {
   syntax: "<number>";
   inherits: false;
@@ -713,6 +721,12 @@ html[data-theme="dark"] .prose pre.shiki span {
   50%,
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes tech-ticker-slide {
+  to {
+    transform: translateX(-50%);
   }
 }
 
@@ -815,7 +829,8 @@ html[data-theme="dark"] .prose pre.shiki span {
   .cta-anim,
   [style*="hero-blink"],
   .hero-run__step,
-  .hero-run__dot {
+  .hero-run__dot,
+  .tech-ticker__track {
     animation: none !important;
   }
 

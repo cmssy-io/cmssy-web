@@ -1,0 +1,44 @@
+import type { BlockProps } from "@cmssy/react";
+import type { techTickerProps } from "./block";
+
+function TickerList({
+  labels,
+  hidden,
+}: {
+  labels: string[];
+  hidden?: boolean;
+}) {
+  return (
+    <ul
+      className="m-0 flex list-none items-center p-0"
+      aria-hidden={hidden ? true : undefined}
+    >
+      {labels.map((label, i) => (
+        <li key={i} className="flex items-center">
+          <span className="px-6 whitespace-nowrap md:px-9">{label}</span>
+          <span className="size-1 shrink-0 rounded-xs bg-elektryk" />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export default function TechTicker({
+  content,
+}: BlockProps<typeof techTickerProps>) {
+  const { items = [], ariaLabel = "" } = content;
+  const labels = items.map((item) => item.label).filter(Boolean);
+  if (labels.length === 0) return null;
+
+  return (
+    <section
+      className="tech-ticker h-12 overflow-hidden border-t border-paper/10 bg-ink font-mono text-label tracking-[0.14em] text-paper/45 uppercase"
+      aria-label={ariaLabel || undefined}
+    >
+      <div className="tech-ticker__track flex h-full w-max items-center">
+        <TickerList labels={labels} />
+        <TickerList labels={labels} hidden />
+      </div>
+    </section>
+  );
+}
