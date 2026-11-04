@@ -15,7 +15,9 @@ export function markdownHref(href: string, base: string): string {
   const cut = href.search(/[?#]/);
   const path = cut === -1 ? href : href.slice(0, cut);
   const suffix = cut === -1 ? "" : href.slice(cut);
-  return `${base}${path}${isDocsPath(path) ? ".md" : ""}${suffix}`;
+  const trimmed = path.replace(/\/+$/, "") || "/";
+  if (!isDocsPath(trimmed)) return `${base}${path}${suffix}`;
+  return `${base}${trimmed}.md${suffix}`;
 }
 
 function rewriteUrls(base: string) {
