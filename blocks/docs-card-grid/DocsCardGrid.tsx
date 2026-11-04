@@ -2,10 +2,13 @@ import type { BlockProps } from "@cmssy/react";
 import { DocsCard, DocsCardBand, cardGridCols } from "@/components/docs-card";
 import { footerForUrl } from "@/lib/docs-ui";
 import type { docsCardGridProps } from "./block";
+import { withStyle } from "@/lib/block-style";
 
 export default function DocsCardGrid({
-  content,
+  content: rawContent,
+  style,
 }: BlockProps<typeof docsCardGridProps>) {
+  const content = withStyle(rawContent, style);
   const {
     fig,
     eyebrow,

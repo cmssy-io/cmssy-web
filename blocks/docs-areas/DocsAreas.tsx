@@ -3,11 +3,14 @@ import { DocsCard, DocsCardBand, cardGridCols } from "@/components/docs-card";
 import type { DocsSection } from "@/lib/docs-section";
 import { fillCount } from "@/lib/docs-ui";
 import type { docsAreasProps } from "./block";
+import { withStyle } from "@/lib/block-style";
 
 export default function DocsAreas({
-  content,
+  content: rawContent,
+  style,
   data,
 }: BlockProps<typeof docsAreasProps, DocsSection | null>) {
+  const content = withStyle(rawContent, style);
   const { fig, eyebrow, heading, description, band = "muted" } = content;
   if (!data || data.areas.length === 0) return null;
 

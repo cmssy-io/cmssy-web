@@ -8,6 +8,7 @@ import { DocsSearchTrigger } from "@/components/docs-search-trigger";
 import { getLucideIcon } from "@/components/get-lucide-icon";
 import { groupQuickstart } from "@/lib/docs-quickstart";
 import type { docsHeroProps } from "./block";
+import { withStyle } from "@/lib/block-style";
 
 function Highlighted({ text, word }: { text: string; word?: string }) {
   const needle = word?.trim();
@@ -24,8 +25,10 @@ function Highlighted({ text, word }: { text: string; word?: string }) {
 }
 
 export default function DocsHero({
-  content,
+  content: rawContent,
+  style,
 }: BlockProps<typeof docsHeroProps>) {
+  const content = withStyle(rawContent, style);
   const {
     badge,
     heading,
