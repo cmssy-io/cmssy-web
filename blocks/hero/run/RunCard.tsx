@@ -71,9 +71,9 @@ export function RunCard({ labels }: { labels: RunLabels }) {
         />
         <Step index={2} title={labels.fan} detail={labels.fanNote} actor="cmssy">
           <div className="mt-2 flex flex-wrap gap-1.5">
-            {labels.locales.map((code) => (
+            {labels.locales.map((code, i) => (
               <span
-                key={code}
+                key={`${i}-${code}`}
                 className="rounded-md border border-paper/10 px-1.5 py-0.5 font-mono text-[11px] text-paper/60"
               >
                 {code}
