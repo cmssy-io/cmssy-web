@@ -36,7 +36,7 @@ export function highlightCode(code: string) {
 
 export function CodeSnippet({
   code,
-  className = "text-[14px] leading-[1.7]",
+  className = "text-compact leading-[1.7]",
   caret = false,
 }: {
   code: string;
@@ -45,7 +45,7 @@ export function CodeSnippet({
 }) {
   return (
     <pre
-      className={`m-0 font-mono whitespace-pre text-[#e6e8ec] ${className}`}
+      className={`m-0 font-mono whitespace-pre text-snippet-foreground ${className}`}
     >
       {highlightCode(code).map((node, i) => (
         <Fragment key={i}>{node}</Fragment>

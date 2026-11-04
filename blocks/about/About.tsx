@@ -118,7 +118,7 @@ export default function About({ content }: BlockProps<typeof aboutProps>) {
                     <h3 className="mt-4 font-heading text-h3 font-semibold">
                       {value.title}
                     </h3>
-                    <p className="mt-2.5 text-[15px] leading-relaxed text-muted-foreground">
+                    <p className="mt-2.5 text-copy leading-relaxed text-muted-foreground">
                       {value.description}
                     </p>
                   </Reveal>
@@ -145,11 +145,11 @@ export default function About({ content }: BlockProps<typeof aboutProps>) {
                   key={index}
                   className="min-w-0 rounded-xl border border-border bg-card p-5"
                 >
-                  <p className="font-heading text-[15px] font-semibold">
+                  <p className="font-heading text-copy font-semibold">
                     {tech.name}
                   </p>
                   {tech.category && (
-                    <p className="mt-1 font-mono text-[12px] text-muted-foreground">
+                    <p className="mt-1 font-mono text-caption text-muted-foreground">
                       {tech.category}
                     </p>
                   )}

@@ -163,7 +163,7 @@ export function DocsSearch({
         </span>
         <kbd
           aria-hidden="true"
-          className="ml-auto hidden rounded border border-border px-1.5 font-mono text-[10px] sm:block"
+          className="ml-auto hidden rounded border border-border px-1.5 font-mono text-micro sm:block"
         >
           /
         </kbd>

@@ -77,7 +77,7 @@ export default function DocsRateLimits({
                         {wordFor(vocabulary, limit.scope)}
                       </td>
                       <td className="px-4 py-3 align-top">
-                        <code className="text-[13px] font-mono font-semibold text-primary">
+                        <code className="text-small font-mono font-semibold text-primary">
                           {limit.value.toLocaleString(context?.locale.current)}
                         </code>{" "}
                         <span className="text-muted-foreground">
@@ -85,7 +85,7 @@ export default function DocsRateLimits({
                           {wordFor(vocabulary, limit.window)}
                         </span>
                         {limit.configurable && adjustableLabel && (
-                          <span className="ml-2 rounded border px-1.5 py-0.5 text-[11px] text-muted-foreground">
+                          <span className="ml-2 rounded border px-1.5 py-0.5 text-label text-muted-foreground">
                             {adjustableLabel}
                           </span>
                         )}
