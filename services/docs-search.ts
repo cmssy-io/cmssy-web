@@ -2,6 +2,7 @@ import { unstable_cache } from "next/cache";
 import type { BlockPropsSchema } from "@cmssy/types";
 import { blocks } from "@/cmssy/blocks";
 import { harvestBlockText, joinPageText } from "@/lib/docs-search-text";
+import { mapWithLimit } from "@/lib/map-with-limit";
 import {
   CONTENT_TAG,
   getPageById,
@@ -16,6 +17,7 @@ export type DocsSearchBodyEntry = {
 
 const DOCS_ROOT = "/docs";
 const CONCURRENCY = 6;
+const MAX_DEPTH = 8;
 
 const SCHEMA_BY_TYPE = new Map<string, BlockPropsSchema>(
   blocks.map((block) => [
@@ -24,41 +26,42 @@ const SCHEMA_BY_TYPE = new Map<string, BlockPropsSchema>(
   ]),
 );
 
-async function docsPages(): Promise<ChildPage[]> {
-  const sections = await listChildPages(DOCS_ROOT);
-  const nested = await Promise.all(
-    sections.map((section) => listChildPages(section.fullSlug)),
-  );
-  const all = [...sections, ...nested.flat()];
+/** Every published page under /docs, depth-first in tree order. */
+export async function docsPages(): Promise<ChildPage[]> {
   const seen = new Set<string>();
-  return all.filter((page) => {
-    if (seen.has(page.id)) return false;
-    seen.add(page.id);
-    return true;
-  });
+  const childrenOf = new Map<string, ChildPage[]>();
+  let frontier = [DOCS_ROOT];
+  for (let depth = 0; depth < MAX_DEPTH && frontier.length > 0; depth++) {
+    const lists = await mapWithLimit(frontier, CONCURRENCY, (slug) =>
+      listChildPages(slug),
+    );
+    const next: string[] = [];
+    frontier.forEach((slug, index) => {
+      const fresh = (lists[index] ?? []).filter((page) => {
+        if (seen.has(page.id)) return false;
+        seen.add(page.id);
+        return true;
+      });
+      childrenOf.set(slug, fresh);
+      next.push(...fresh.map((page) => page.fullSlug));
+    });
+    frontier = next;
+  }
+  const flatten = (slug: string, depth: number): ChildPage[] =>
+    depth === MAX_DEPTH
+      ? []
+      : (childrenOf.get(slug) ?? []).flatMap((page) => [
+          page,
+          ...flatten(page.fullSlug, depth + 1),
+        ]);
+  return flatten(DOCS_ROOT, 0);
 }
 
-export async function mapWithLimit<T, R>(
-  input: T[],
-  limit: number,
-  run: (item: T) => Promise<R>,
-): Promise<R[]> {
-  const results: R[] = new Array(input.length);
-  let cursor = 0;
-  const workers = Array.from(
-    { length: Math.min(limit, input.length) },
-    async () => {
-      while (cursor < input.length) {
-        const index = cursor;
-        cursor += 1;
-        const item = input[index];
-        if (item === undefined) continue;
-        results[index] = await run(item);
-      }
-    },
-  );
-  await Promise.all(workers);
-  return results;
+export { mapWithLimit };
+
+/** A block's prose, for a block the Markdown serializer has no shape for. */
+export function blockPlainText(type: string, content: unknown): string {
+  return harvestBlockText(SCHEMA_BY_TYPE.get(type), content);
 }
 
 function bodyOfPage(

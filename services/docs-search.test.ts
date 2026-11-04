@@ -179,6 +179,35 @@ describe("buildDocsSearchBodies", () => {
     expect(peak).toBeGreaterThan(1);
   });
 
+  it("keeps the whole tree walk under one concurrency limit, however wide each level is", async () => {
+    const wide = (parent: string) =>
+      Array.from({ length: 6 }, (_, i) => page(`${parent}/${i}`, `${parent}/${i}`));
+
+    let inFlight = 0;
+    let peak = 0;
+    listChildPages.mockImplementation(async (parent: string) => {
+      inFlight += 1;
+      peak = Math.max(peak, inFlight);
+      await new Promise((resolve) => setTimeout(resolve, 1));
+      inFlight -= 1;
+      return parent.split("/").length <= 4 ? wide(parent) : [];
+    });
+    getPageById.mockImplementation(async (id: string) => ({
+      id,
+      blocks: [article(id, "")],
+    }));
+
+    const bodies = await buildDocsSearchBodies("en", "en");
+
+    expect(peak).toBeLessThanOrEqual(6);
+    expect(bodies.map((entry) => entry.slug).slice(0, 3)).toEqual([
+      "/docs/0",
+      "/docs/0/0",
+      "/docs/0/0/0",
+    ]);
+    expect(bodies).toHaveLength(6 + 36 + 216);
+  });
+
   it("drops a page whose blocks carry no prose rather than shipping an empty entry", async () => {
     listChildPages.mockImplementation(async (parent: string) =>
       parent === "/docs" ? [page("p1", "/docs/api")] : [],

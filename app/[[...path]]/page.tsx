@@ -9,9 +9,11 @@ import {
   publishedPaths,
 } from "@/services/pages";
 import { buildPageMetadata } from "@/services/seo";
-import { DocsShell } from "@/components/docs-shell";
 import { DocsPrevNext } from "@/components/docs-prev-next";
 import { DocsBreadcrumbs } from "@/components/docs-breadcrumbs";
+import { DocsFrame } from "@/components/docs-frame";
+import { DocsPageActions } from "@/components/docs-page-actions";
+import { isDocsPath } from "@/lib/docs-markdown";
 import { docsBreadcrumbs, docsPrevNext } from "@/lib/docs-nav";
 import { loadDocsSection } from "@/lib/docs-section";
 import { customFieldText } from "@/lib/docs-ui";
@@ -76,23 +78,20 @@ export default async function Page({ params }: PageProps) {
   const around = section ? docsPrevNext(sidebar.page.slug, section.nav) : null;
 
   return (
-    <DocsShell>
-      <div className="mx-auto flex w-full max-w-320 flex-col md:flex-row">
-        <aside className="sticky top-[var(--site-chrome,4rem)] z-30 md:h-[calc(100dvh-var(--site-chrome,4rem))] md:w-64 md:shrink-0 md:overflow-y-auto md:overscroll-contain md:border-r md:border-border">
-          {sidebar.element}
-        </aside>
-        <main className="min-w-0 flex-1">
-          {trail ? <DocsBreadcrumbs trail={trail} /> : null}
-          {content}
-          {section && around ? (
-            <DocsPrevNext
-              prev={around.prev}
-              next={around.next}
-              ui={section.ui}
-            />
+    <DocsFrame section={section} sidebar={sidebar.element}>
+      {trail ? (
+        <DocsBreadcrumbs trail={trail}>
+          {section &&
+          isDocsPath(sidebar.page.slug) &&
+          sidebar.locale === sidebar.defaultLocale ? (
+            <DocsPageActions slug={sidebar.page.slug} ui={section.ui} />
           ) : null}
-        </main>
-      </div>
-    </DocsShell>
+        </DocsBreadcrumbs>
+      ) : null}
+      {content}
+      {section && around ? (
+        <DocsPrevNext prev={around.prev} next={around.next} ui={section.ui} />
+      ) : null}
+    </DocsFrame>
   );
 }

@@ -10,6 +10,8 @@ export type DocsNavPage = {
   label: string;
   /** True for the section's own index page (e.g. /docs/blocks). */
   isIndex: boolean;
+  /** 0 for the index, 1 for a direct child, deeper pages count up. */
+  depth: number;
 };
 
 export type DocsNavSection = {
@@ -17,6 +19,13 @@ export type DocsNavSection = {
   slug: string;
   label: string;
   pages: DocsNavPage[];
+};
+
+export type DocsArea = {
+  slug: string;
+  label: string;
+  description: string;
+  pageCount: number;
 };
 
 /** One published page, as the delivery API returns it under a parent slug. */
@@ -67,7 +76,10 @@ export function labelForPage(
  * ordered by the CMS. A section leads with its own index page.
  */
 export function buildDocsNav(
-  sections: { page: DocsPageNode; children: DocsPageNode[] }[],
+  sections: {
+    page: DocsPageNode;
+    children: { page: DocsPageNode; depth: number }[];
+  }[],
   locale: string,
   defaultLocale: string,
 ): DocsNavSection[] {
@@ -78,14 +90,31 @@ export function buildDocsNav(
     slug: page.fullSlug,
     label: label(page),
     pages: [
-      { slug: page.fullSlug, label: label(page), isIndex: true },
-      ...children.map((child) => ({
+      { slug: page.fullSlug, label: label(page), isIndex: true, depth: 0 },
+      ...children.map(({ page: child, depth }) => ({
         slug: child.fullSlug,
         label: label(child),
         isIndex: false,
+        depth,
       })),
     ],
   }));
+}
+
+export function pathWithin(pathname: string, rootSlug: string): string {
+  const at = pathname.indexOf(rootSlug);
+  return at >= 0 ? pathname.slice(at) : pathname;
+}
+
+export function areaForSlug<T extends { slug: string }>(
+  slug: string,
+  areas: T[],
+): T | null {
+  const path = slug.replace(/\/+$/, "");
+  return (
+    areas.find((area) => path === area.slug || path.startsWith(`${area.slug}/`)) ??
+    null
+  );
 }
 
 /** Flatten the nav to an ordered list of pages (for prev/next). */

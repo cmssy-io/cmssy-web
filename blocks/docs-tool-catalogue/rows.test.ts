@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { catalogueRows } from "./rows";
+import { catalogueRows, splitDescription } from "./rows";
 
 describe("catalogueRows", () => {
   it("orders the tools by name, whatever order they were written in", () => {
@@ -25,7 +25,8 @@ describe("catalogueRows", () => {
       {
         name: "get_workspace_info",
         permission: "",
-        description: "Reads the workspace.",
+        summary: "Reads the workspace.",
+        details: "",
       },
     ]);
   });
@@ -47,12 +48,40 @@ describe("catalogueRows", () => {
         { name: " get_page\n", permission: " pages:view ", description: " x " },
       ]),
     ).toEqual([
-      { name: "get_page", permission: "pages:view", description: "x" },
+      {
+        name: "get_page",
+        permission: "pages:view",
+        summary: "x",
+        details: "",
+      },
     ]);
   });
 
   it("renders nothing when the block has no rows yet", () => {
     expect(catalogueRows(undefined)).toEqual([]);
     expect(catalogueRows([])).toEqual([]);
+  });
+});
+
+describe("splitDescription", () => {
+  it("keeps the first sentence for people and the rest for agents", () => {
+    expect(splitDescription("Add a block. Pass layoutRegion. Done.")).toEqual({
+      summary: "Add a block.",
+      details: "Pass layoutRegion. Done.",
+    });
+  });
+
+  it("ends a sentence at a question or exclamation mark too", () => {
+    expect(splitDescription("Ready? Then go.")).toEqual({
+      summary: "Ready?",
+      details: "Then go.",
+    });
+  });
+
+  it("does not split at an abbreviation or inside a token", () => {
+    expect(splitDescription("Point at a host, e.g. my.site now")).toEqual({
+      summary: "Point at a host, e.g. my.site now",
+      details: "",
+    });
   });
 });

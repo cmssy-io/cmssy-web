@@ -9,6 +9,15 @@ const nextConfig = {
     remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
   staticPageGenerationTimeout: DELIVERY_BUDGET_S + RENDER_HEADROOM_S,
+  // Every docs page has a Markdown twin at the same address plus ".md".
+  async rewrites() {
+    return {
+      beforeFiles: [
+        { source: "/docs.md", destination: "/docs-md" },
+        { source: "/docs/:path(.*)\\.md", destination: "/docs-md/:path" },
+      ],
+    };
+  },
 };
 
 export default nextConfig;

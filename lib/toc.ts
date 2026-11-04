@@ -24,7 +24,7 @@ export function extractTocItems(html: string): TocResult {
     .use(rehypeParse, { fragment: true })
     .use(rehypeSlug)
     .use(() => (tree: Root) => {
-      visit(tree, "element", (node: Element) => {
+      visit(tree, "element", (node: Element, index, parent) => {
         const rank = headingRank(node);
         if (rank === 2 || rank === 3) {
           items.push({
@@ -32,6 +32,16 @@ export function extractTocItems(html: string): TocResult {
             text: toString(node),
             level: rank,
           });
+        }
+        if (node.tagName === "table" && parent && typeof index === "number") {
+          const wrapper: Element = {
+            type: "element",
+            tagName: "div",
+            properties: { className: ["docs-table"], tabIndex: 0 },
+            children: [node],
+          };
+          parent.children[index] = wrapper;
+          return index + 1;
         }
       });
     })

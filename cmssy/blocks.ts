@@ -9,6 +9,7 @@ import { comparisonTableBlock } from "@/blocks/comparison-table/block";
 import { contactBlock } from "@/blocks/contact/block";
 import { cookieConsentBlock } from "@/blocks/cookie-consent/block";
 import { ctaBlock } from "@/blocks/cta/block";
+import { docsAreasBlock } from "@/blocks/docs-areas/block";
 import { docsArticleBlock } from "@/blocks/docs-article/block";
 import { docsCalloutBlock } from "@/blocks/docs-callout/block";
 import { docsCardGridBlock } from "@/blocks/docs-card-grid/block";
@@ -45,6 +46,7 @@ export const blocks = [
   contactBlock,
   cookieConsentBlock,
   ctaBlock,
+  docsAreasBlock,
   docsArticleBlock,
   docsCalloutBlock,
   docsCardGridBlock,

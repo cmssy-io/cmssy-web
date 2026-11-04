@@ -33,8 +33,8 @@
   --mint: #6ee7b7;
 
   /* Palette: code surfaces */
-  --prose-pre: #18181b;
-  --prose-pre-foreground: #fafafa;
+  --prose-pre: var(--ink);
+  --prose-pre-foreground: var(--paper);
   --prose-code: #f4f4f5;
   --snippet-foreground: #e6e8ec;
 
@@ -164,6 +164,21 @@ html[data-theme="dark"] {
 
 html[data-theme="dark"] .docs-shell {
   --primary: var(--elektryk-500);
+}
+
+.docs-shell :focus-visible {
+  outline: 2px solid var(--elektryk-700);
+  outline-offset: 2px;
+}
+
+html[data-theme="dark"] .docs-shell :focus-visible,
+.docs-shell .bg-ink :focus-visible,
+.docs-shell .bg-ink-deep :focus-visible {
+  outline-color: var(--elektryk-300);
+}
+
+.docs-frame:has(main [data-docs-search-trigger]) .docs-tabs-search > button {
+  display: none;
 }
 
 @theme inline {
@@ -298,6 +313,7 @@ html[data-theme="dark"] .docs-shell {
   .prose pre {
     background-color: var(--prose-pre);
     color: var(--prose-pre-foreground);
+    border-radius: 14px;
     font-family: var(--font-mono);
   }
   .prose pre code {
@@ -561,7 +577,7 @@ html[data-theme="dark"] .prose :not(pre) > code {
 }
 
 html[data-theme="dark"] .prose pre {
-  background-color: var(--night-pre);
+  background-color: var(--ink);
 }
 
 /* Syntax-highlighted (shiki, dual-theme) code blocks inside prose. Colors are
