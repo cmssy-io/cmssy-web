@@ -1,0 +1,12 @@
+query PublicDocsPage($workspaceSlug: String!, $pageId: ID!) {
+  public {
+    page {
+      getById(workspaceSlug: $workspaceSlug, pageId: $pageId) {
+        id
+        displayName
+        seoDescription
+        publishedBlocks { id type content style advanced }
+      }
+    }
+  }
+}
