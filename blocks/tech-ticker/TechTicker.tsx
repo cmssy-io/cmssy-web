@@ -12,7 +12,7 @@ function TickerList({
 }) {
   return (
     <ul
-      className="m-0 flex list-none items-center p-0"
+      className="m-0 flex min-w-[100vw] list-none items-center justify-evenly p-0"
       aria-hidden={hidden ? true : undefined}
     >
       {labels.map((label, i) => (
