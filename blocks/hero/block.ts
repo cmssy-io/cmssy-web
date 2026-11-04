@@ -47,57 +47,57 @@ export const heroProps = {
     defaultValue: "@cmssy/next · 90+ MCP tools · No card needed",
   }),
 
-  mcpLabel: fields.text({ label: "Diagram: Inlet Label", defaultValue: "MCP" }),
+  mcpLabel: fields.text({ label: "Run card: Inlet Label", defaultValue: "MCP" }),
   mcpTool: fields.text({
-    label: "Diagram: Inlet Tool",
+    label: "Run card: Inlet Tool",
     defaultValue: "update_block_content",
   }),
   blockLabel: fields.text({
-    label: "Diagram: Block Label",
+    label: "Run card: Block Label",
     defaultValue: "BLOCK · HERO",
   }),
   blockFields: fields.text({
-    label: "Diagram: Block Fields",
+    label: "Run card: Block Fields",
     defaultValue: "heading · text",
   }),
   fanLabel: fields.text({
-    label: "Diagram: Fan Label",
+    label: "Run card: Fan Label",
     defaultValue: "LOCALE FAN",
   }),
   fanNote: fields.text({
-    label: "Diagram: Fan Note",
+    label: "Run card: Fan Note",
     defaultValue: "one field, five values",
   }),
   locales: fields.repeater({
-    label: "Diagram: Locales (exactly 5)",
+    label: "Run card: Locales (exactly 5)",
     itemSchema: {
       code: fields.text({ label: "Locale Code", required: true }),
     },
   }),
   publishLabel: fields.text({
-    label: "Diagram: Publish Label",
+    label: "Run card: Publish Label",
     defaultValue: "PUBLISH",
   }),
   publishTool: fields.text({
-    label: "Diagram: Publish Tool",
+    label: "Run card: Publish Tool",
     defaultValue: "publish_page · hmac",
   }),
   frontendLabel: fields.text({
-    label: "Diagram: Terminus Label",
+    label: "Run card: Terminus Label",
     defaultValue: "YOUR FRONTEND",
   }),
   codeLines: fields.repeater({
-    label: "Diagram: Terminus Code (max 3 lines)",
+    label: "Run card: Terminus Code (max 3 lines)",
     itemSchema: {
       line: fields.text({ label: "Line", required: true }),
     },
   }),
   revalidatedLabel: fields.text({
-    label: "Diagram: Revalidated Counter Label",
+    label: "Run card: Revalidated Counter Label",
     defaultValue: "REVALIDATED",
   }),
   deploysLabel: fields.text({
-    label: "Diagram: Deploys Counter Label",
+    label: "Run card: Deploys Counter Label",
     defaultValue: "DEPLOYS",
   }),
 };
@@ -107,7 +107,7 @@ export const heroBlock = defineBlock({
   category: "Marketing",
   label: "Hero",
   description:
-    "Homepage hero: headline beside an animated transport diagram that follows one content change from MCP through the block and locale fan to publish, while the frontend code stays unchanged.",
+    "Homepage hero: headline beside an agent run card that follows one content change from MCP through the block and locale fan to publish, while the frontend code stays unchanged, over an animated flow field.",
   component: Hero,
   props: heroProps,
 });

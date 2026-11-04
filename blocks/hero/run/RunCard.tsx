@@ -1,0 +1,103 @@
+import type { RunLabels } from "./labels";
+
+type Actor = "agent" | "cmssy" | "app";
+
+const ACTOR_LABEL: Record<Actor, string> = {
+  agent: "Agent",
+  cmssy: "cmssy",
+  app: "Your app",
+};
+
+const ACTOR_TONE: Record<Actor, string> = {
+  agent: "text-elektryk-300",
+  cmssy: "text-paper/45",
+  app: "text-paper/45",
+};
+
+function Step({
+  index,
+  title,
+  detail,
+  actor,
+  children,
+}: {
+  index: number;
+  title: string;
+  detail: string;
+  actor: Actor;
+  children?: React.ReactNode;
+}) {
+  return (
+    <li
+      className="hero-run__step rounded-lg px-3 py-2.5"
+      style={{ "--i": index } as React.CSSProperties}
+    >
+      <div className="flex items-baseline justify-between gap-4">
+        <span className="hero-run__title font-medium text-paper/90">
+          {title}
+        </span>
+        <span
+          className={`shrink-0 font-mono text-[11px] tracking-[0.12em] uppercase ${ACTOR_TONE[actor]}`}
+        >
+          {ACTOR_LABEL[actor]}
+        </span>
+      </div>
+      <div className="mt-0.5 font-mono text-[12px] text-paper/45">{detail}</div>
+      {children}
+    </li>
+  );
+}
+
+export function RunCard({ labels }: { labels: RunLabels }) {
+  return (
+    <div className="hero-run rounded-2xl border border-paper/10 bg-ink-deep/70 p-2 shadow-[0_40px_80px_-40px_rgba(0,0,0,.8)] backdrop-blur-md">
+      <div className="flex items-center justify-between gap-4 px-3 pt-2 pb-3">
+        <span className="font-mono text-[11px] tracking-[0.14em] text-paper/45 uppercase">
+          agent session
+        </span>
+        <span className="flex items-center gap-1.5 font-mono text-[11px] text-paper/45">
+          <span className="hero-run__dot inline-block size-1.5 rounded-full bg-elektryk" />
+          live
+        </span>
+      </div>
+
+      <ol className="space-y-1 text-sm">
+        <Step index={0} title={labels.mcp} detail={labels.mcpTool} actor="agent" />
+        <Step
+          index={1}
+          title={labels.block}
+          detail={labels.blockFields}
+          actor="cmssy"
+        />
+        <Step index={2} title={labels.fan} detail={labels.fanNote} actor="cmssy">
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {labels.locales.map((code) => (
+              <span
+                key={code}
+                className="rounded-md border border-paper/10 px-1.5 py-0.5 font-mono text-[11px] text-paper/60"
+              >
+                {code}
+              </span>
+            ))}
+          </div>
+        </Step>
+        <Step
+          index={3}
+          title={labels.publish}
+          detail={labels.publishTool}
+          actor="agent"
+        />
+        <Step index={4} title={labels.frontend} detail={labels.code[0] ?? ""} actor="app">
+          <div className="mt-2 flex gap-5 font-mono text-[11px] tracking-[0.12em] uppercase">
+            <span className="text-paper/45">
+              {labels.revalidated} <span className="text-elektryk">1</span>
+            </span>
+            <span className="text-paper/45">
+              {labels.deploys} <span className="text-paper/90">0</span>
+            </span>
+          </div>
+        </Step>
+      </ol>
+    </div>
+  );
+}

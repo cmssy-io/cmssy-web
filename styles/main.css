@@ -611,209 +611,110 @@ html[data-theme="dark"] {
 }
 
 /* ------------------------------------------------------------------ hero
-   The transport hero. One full-bleed SVG world sits behind the type: the
-   substrate runs the whole height, the transport occupies the lower two
-   thirds, and the world is anchored to its right edge so the terminus stays
-   put while the trunk is what gets cropped on wide screens. */
+   Copy on the left, the agent run card on the right, the flow field behind
+   both. Stacked below lg: copy, then card. */
 
-.hero-transport {
+.hero-flow {
   position: relative;
   isolation: isolate;
-  min-height: clamp(40rem, calc(100svh - 6.5rem), 52rem);
+  padding-block: clamp(3.5rem, 7vw, 6rem) clamp(4rem, 8vw, 7rem);
 }
 
-.hero-transport::before {
+.hero-flow::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
   background:
     radial-gradient(
-      38rem 22rem at 40% 84%,
-      rgba(0, 168, 240, 0.16),
+      38rem 22rem at 30% 90%,
+      rgba(0, 168, 240, 0.14),
       transparent 68%
     ),
     radial-gradient(
-      30rem 20rem at 90% 42%,
+      30rem 20rem at 85% 30%,
       rgba(91, 198, 247, 0.1),
       transparent 70%
-    ),
-    radial-gradient(
-      34rem 18rem at 6% 80%,
-      rgba(0, 119, 182, 0.15),
-      transparent 72%
     );
 }
 
-.hero-transport__stage {
+.hero-flow__field {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
 }
 
-.hero-transport__flow {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.hero-transport__flow-canvas {
+.hero-flow__canvas {
   display: block;
   width: 100%;
   height: 100%;
 }
 
-.hero-transport__typewrap {
-  position: absolute;
-  inset-inline: 0;
-  top: clamp(2rem, 4.5vh, 3.5rem);
-  z-index: 10;
+.hero-flow__grid {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 4rem);
+  align-items: center;
 }
 
-.hero-transport__type {
-  max-width: 48rem;
-  margin-inline: auto;
-  text-align: center;
+.hero-flow__aside {
+  max-width: 30rem;
 }
 
-/* Stacked, the type has the full column to itself and centring is right. Once
-   the figure moves back behind it the type is one half of a two-part
-   composition, so it returns to the left edge at its own measure - centred, it
-   walks straight into the fan. */
 @media (min-width: 1024px) {
-  .hero-transport__type {
-    margin-inline: 0;
-    text-align: left;
-  }
-
-  .hero-transport__type > h1 {
-    margin-inline: 0;
-    max-width: 13ch;
-    font-size: clamp(2.35rem, 4.75vw, 3.5rem);
-  }
-
-  .hero-transport__type > p {
-    margin-inline: 0;
-    max-width: 36ch;
-    font-size: 0.94rem;
-  }
-
-  .hero-transport__actions {
-    justify-content: flex-start;
-  }
-}
-
-/* The world is 1820 x 792. Let the stage span an ultrawide monitor and the box
-   it has to fit turns into a letterbox, so the fitter buys the width back out
-   of height - at 2560 it was showing 591 of the 792 units and guillotining the
-   top. Capping the stage keeps the figure near its own proportions, and the
-   trunk still reaches the screen edge because the svg does not clip. */
-.tp-host {
-  width: 100%;
-  height: 100%;
-  max-width: 112rem;
-  margin-inline: auto;
-}
-
-.tp-svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  transition: opacity 420ms ease-out;
-}
-
-/* The server cannot know the viewport, so its box is a guess the client then
-   corrects - painting the guess first is the load-time lurch. The world stays
-   dark until the measured box is in, then fades up. */
-.tp-svg[data-ready="0"] {
-  opacity: 0;
-}
-
-/* the stations are the only interactive part of the world */
-.tp-hit {
-  pointer-events: auto;
-  cursor: default;
-  outline: none;
-}
-
-.tp-hit:focus-visible {
-  outline: 2px solid var(--color-elektryk-300);
-  outline-offset: 4px;
-  border-radius: 10px;
-}
-
-.tp-label,
-.tp-sub,
-.tp-locale,
-.tp-code,
-.tp-count {
-  font-family: var(--font-mono);
-}
-
-.tp-label {
-  font-size: 11px;
-  letter-spacing: 0.13em;
-}
-
-.tp-sub {
-  font-size: 10.5px;
-  letter-spacing: 0.07em;
-}
-
-.tp-locale {
-  font-size: 11px;
-  letter-spacing: 0.06em;
-}
-
-.tp-code {
-  font-size: 10px;
-  letter-spacing: 0.01em;
-}
-
-.tp-count {
-  font-size: 10.5px;
-  letter-spacing: 0.1em;
-}
-
-@media (max-width: 1023px) {
-  /* stacked, and the type has to come first: the stage is first in the DOM so
-     the diagram can sit behind it on desktop */
-  .hero-transport {
+  .hero-flow {
+    min-height: min(44rem, calc(100svh - 6.5rem));
     display: flex;
-    flex-direction: column;
-    min-height: min(44rem, 88svh);
-    padding-block: clamp(2.5rem, 7vw, 3.5rem) clamp(3rem, 10vw, 5rem);
+    align-items: center;
   }
 
-  .hero-transport__stage {
-    order: 2;
-    position: static;
-    height: auto;
-    margin-top: clamp(3.5rem, 13vw, 5rem);
-  }
-
-  .hero-transport__typewrap {
-    order: 1;
-    position: relative;
-  }
-
-  /* the box is reserved from the mobile world's own ratio, so nothing shifts
-     when the stacked scene takes over from the server-rendered one */
-  .tp-host {
+  .hero-flow__grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 30rem);
     width: 100%;
-    max-width: 24rem;
-    margin-inline: auto;
-    aspect-ratio: 390 / 692;
-    height: auto;
   }
 
-  /* stacked, the world has real neighbours above it, so the spine that starts
-     off-frame has to actually be cropped rather than painted over the type */
-  .tp-svg {
-    overflow: hidden;
+  .hero-flow__aside {
+    justify-self: end;
+    width: 100%;
+  }
+}
+
+.hero-run__step {
+  --lit: 0;
+  background: rgba(250, 250, 248, calc(var(--lit) * 0.06));
+  box-shadow: inset 2px 0 0 rgba(0, 168, 240, var(--lit));
+  animation: hero-run-step 9s linear infinite;
+  animation-delay: calc(var(--i) * 1.8s);
+}
+
+.hero-run__dot {
+  animation: hero-blink 1.4s step-end infinite;
+}
+
+@keyframes hero-run-step {
+  0%,
+  100% {
+    --lit: 0;
+  }
+  2%,
+  18% {
+    --lit: 1;
+  }
+  22% {
+    --lit: 0;
+  }
+}
+
+@property --lit {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-run__step,
+  .hero-run__dot {
+    animation: none;
   }
 }

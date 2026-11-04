@@ -151,5 +151,5 @@ export function FlowScene({ mobile }: { mobile: boolean }) {
     };
   }, [mobile]);
 
-  return <canvas ref={canvasRef} className="hero-transport__flow-canvas" aria-hidden />;
+  return <canvas ref={canvasRef} className="hero-flow__canvas" aria-hidden />;
 }

@@ -22,7 +22,7 @@ export function FlowField() {
 
   if (mobile === null) return null;
   return (
-    <div className="hero-transport__flow">
+    <div className="hero-flow__field">
       <FlowScene key={String(mobile)} mobile={mobile} />
     </div>
   );

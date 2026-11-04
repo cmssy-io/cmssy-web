@@ -1,6 +1,4 @@
-import type { StationKey } from "./useTransportSequence";
-
-export interface TransportLabels {
+export interface RunLabels {
   mcp: string;
   mcpTool: string;
   block: string;
@@ -14,8 +12,6 @@ export interface TransportLabels {
   code: string[];
   revalidated: string;
   deploys: string;
-  diagramAria: string;
-  stationAria: Record<StationKey, string>;
 }
 
 export interface LabelInput {
@@ -42,7 +38,7 @@ const FALLBACK_CODE = [
   "  createCmssyPage(...);",
 ];
 
-export function buildLabels(input: LabelInput): TransportLabels {
+export function buildLabels(input: LabelInput): RunLabels {
   const locales = (input.locales ?? [])
     .map((l) => l.code?.trim())
     .filter((c): c is string => Boolean(c));
@@ -51,31 +47,19 @@ export function buildLabels(input: LabelInput): TransportLabels {
     .map((l) => l.line ?? "")
     .filter((l) => l.length > 0);
 
-  const resolved = {
+  return {
     mcp: input.mcpLabel || "MCP",
     mcpTool: input.mcpTool || "update_block_content",
     block: input.blockLabel || "BLOCK · HERO",
     blockFields: input.blockFields || "heading · text",
     fan: input.fanLabel || "LOCALE FAN",
     fanNote: input.fanNote || "one field, five values",
-    locales: locales.length === 5 ? locales : FALLBACK_LOCALES,
+    locales: locales.length > 0 ? locales : FALLBACK_LOCALES,
     publish: input.publishLabel || "PUBLISH",
     publishTool: input.publishTool || "publish_page · hmac",
     frontend: input.frontendLabel || "YOUR FRONTEND",
     code: code.length > 0 ? code.slice(0, 3) : FALLBACK_CODE,
     revalidated: input.revalidatedLabel || "REVALIDATED",
     deploys: input.deploysLabel || "DEPLOYS",
-  };
-
-  return {
-    ...resolved,
-    diagramAria: `${resolved.mcp} writes one field on ${resolved.block}; cmssy keys it to ${resolved.locales.length} locales and publishes; ${resolved.frontend} revalidates with 0 deploys.`,
-    stationAria: {
-      mcp: `${resolved.mcp}: ${resolved.mcpTool}`,
-      block: `${resolved.block}: ${resolved.blockFields}`,
-      fan: `${resolved.fan}: ${resolved.locales.join(", ")}`,
-      publish: `${resolved.publish}: ${resolved.publishTool}`,
-      frontend: `${resolved.frontend}: unchanged, 0 deploys`,
-    },
   };
 }
