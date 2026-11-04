@@ -25,6 +25,17 @@ describe("htmlToMarkdown", () => {
     ).toBe("## One\n\n**B** and `c`, see [MCP](https://s.com/docs/api/mcp.md#x).");
   });
 
+  it("makes an image absolute without pointing it at a Markdown twin", () => {
+    expect(
+      htmlToMarkdown(
+        '<p><img src="/docs/diagrams/flow.png" alt="Flow"> <a href="/docs/start">Start</a></p>',
+        "https://s.com",
+      ),
+    ).toBe(
+      "![Flow](https://s.com/docs/diagrams/flow.png) [Start](https://s.com/docs/start.md)",
+    );
+  });
+
   it("escapes Markdown characters in prose", () => {
     expect(htmlToMarkdown("<p>2 *3* is not emphasis</p>")).toContain("\\*3\\*");
   });

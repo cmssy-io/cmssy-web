@@ -9,6 +9,10 @@ export function isDocsPath(path: string): boolean {
   return path === "/docs" || path.startsWith("/docs/");
 }
 
+function absoluteUrl(href: string, base: string): string {
+  return href.startsWith("/") && !href.startsWith("//") ? `${base}${href}` : href;
+}
+
 /** Site-relative becomes absolute; a docs page points at its Markdown twin. */
 export function markdownHref(href: string, base: string): string {
   if (!href.startsWith("/") || href.startsWith("//")) return href;
@@ -25,7 +29,10 @@ function rewriteUrls(base: string) {
     visit(tree, (node) => {
       if (node.type !== "link" && node.type !== "image") return;
       const target = node as unknown as { url: string };
-      target.url = markdownHref(target.url, base);
+      target.url =
+        node.type === "image"
+          ? absoluteUrl(target.url, base)
+          : markdownHref(target.url, base);
     });
   };
 }
