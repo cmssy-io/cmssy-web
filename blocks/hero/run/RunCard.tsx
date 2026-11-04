@@ -87,17 +87,23 @@ export function RunCard({ labels }: { labels: RunLabels }) {
           detail={labels.publishTool}
           actor="agent"
         />
-        <Step index={4} title={labels.frontend} detail={labels.code[0] ?? ""} actor="app">
-          <div className="mt-2 flex gap-5 font-mono text-[11px] tracking-[0.12em] uppercase">
-            <span className="text-paper/45">
-              {labels.revalidated} <span className="text-elektryk">1</span>
-            </span>
-            <span className="text-paper/45">
-              {labels.deploys} <span className="text-paper/90">0</span>
-            </span>
-          </div>
-        </Step>
+        <Step index={4} title={labels.frontend} detail={labels.code[0] ?? ""} actor="app" />
       </ol>
+
+      <div className="mt-2 grid grid-cols-2 gap-2 border-t border-paper/10 px-1 pt-3 pb-1">
+        <div className="rounded-lg bg-paper/[0.04] px-3 py-2.5">
+          <div className="font-mono text-[11px] tracking-[0.12em] text-paper/45 uppercase">
+            {labels.revalidated}
+          </div>
+          <div className="mt-1 font-heading text-h3 font-bold text-elektryk">1</div>
+        </div>
+        <div className="rounded-lg bg-paper/[0.04] px-3 py-2.5">
+          <div className="font-mono text-[11px] tracking-[0.12em] text-paper/45 uppercase">
+            {labels.deploys}
+          </div>
+          <div className="mt-1 font-heading text-h3 font-bold text-paper">0</div>
+        </div>
+      </div>
     </div>
   );
 }

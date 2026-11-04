@@ -14,7 +14,7 @@ import {
 } from "three";
 import { FRAGMENT, VERTEX } from "./shaders";
 
-const LAGS = 12;
+const LAGS = 16;
 const MAX_DPR = 1.5;
 const PARKED = new Vector2(0, -5);
 
@@ -74,7 +74,7 @@ export function FlowScene({ mobile }: { mobile: boolean }) {
       depthWrite: false,
       blending: AdditiveBlending,
     });
-    const geometry = seeds(mobile ? 700 : 2200);
+    const geometry = seeds(mobile ? 500 : 1300);
     const scene = new Scene();
     const points = new Points(geometry, material);
     points.frustumCulled = false;

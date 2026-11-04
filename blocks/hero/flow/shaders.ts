@@ -65,17 +65,20 @@ const vec3 SKY = vec3(0.357, 0.776, 0.969);
 const vec3 PAPER = vec3(0.98, 0.98, 0.972);
 
 void main() {
-  float trail = aLag / 12.0;
-  float t = uTime - aLag * 0.22;
+  float trail = aLag / 16.0;
+  float t = uTime - aLag * 0.3;
   float depth = position.z;
   float persp = mix(0.38, 1.0, depth);
   float halfW = 1.35 * uAspect / persp;
   float speed = mix(0.07, 0.22, depth) * (0.7 + 0.6 * fract(position.x * 7.31));
   float x = mod(position.x * halfW * 2.0 + t * speed, halfW * 2.0) - halfW;
   float y0 = (position.y * 2.0 - 1.0) * 1.3 / persp;
+  float cx = x * persp / uAspect;
+  float conv = (1.0 - uMobile) * smoothstep(-0.7, 0.45, cx);
+  y0 = mix(y0, -0.05 / persp, conv * 0.72);
   float n1 = snoise(vec3(x * 0.42 + depth * 2.0, y0 * 0.7, uTime * 0.05));
   float n2 = snoise(vec3(x * 1.1, y0 * 1.6 + 11.0, uTime * 0.08 + depth));
-  vec2 p = vec2(x + n2 * 0.06, y0 + n1 * 0.55 + n2 * 0.11) * persp;
+  vec2 p = vec2(x + n2 * 0.06, y0 + (n1 * 0.55 + n2 * 0.11) * (1.0 - conv * 0.55)) * persp;
   p += uMouse * (depth - 0.5) * vec2(0.09 * uAspect, 0.06) * (1.0 - uMobile);
 
   vec2 m = vec2(uMouse.x * uAspect, uMouse.y);
@@ -89,13 +92,13 @@ void main() {
   float typeMobile = smoothstep(-0.2, 0.5, clip.y);
   float typeZone = mix(typeDesktop, typeMobile, uMobile);
   float density = mix(0.45, 1.0, smoothstep(-0.7, 0.5, clip.x));
-  float alpha = mix(0.3, 1.0, depth) * pow(1.0 - trail, 1.6) * edge * density * (1.0 - typeZone * 0.75);
+  float alpha = mix(0.42, 1.0, depth) * pow(1.0 - trail, 1.4) * edge * density * (1.0 + conv * 0.35) * (1.0 - typeZone * 0.75);
 
   float h = fract(position.x * 31.7 + position.y * 17.3);
   vColor = h < 0.62 ? ELEKTRYK : (h < 0.9 ? SKY : PAPER * 0.8);
   vAlpha = alpha;
 
-  float size = mix(1.2, 3.0, depth) * (0.8 + 0.6 * fract(position.y * 13.7)) * (1.0 - trail * 0.6) * uScale;
+  float size = mix(1.4, 3.4, depth) * (0.8 + 0.6 * fract(position.y * 13.7)) * (1.0 - trail * 0.6) * uScale;
   gl_PointSize = max(size, 0.6) * uDpr;
   gl_Position = vec4(clip, 0.0, 1.0);
 }
