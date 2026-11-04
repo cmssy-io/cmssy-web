@@ -2,6 +2,7 @@ import type { BlockProps } from "@cmssy/react";
 import { CmssyLink } from "@/components/cmssy-locale";
 import { Container } from "@/components/container";
 import { FigEyebrow } from "@/components/fig-eyebrow";
+import { FlowField } from "./flow/FlowField";
 import { Transport } from "./transport/Transport";
 import { buildLabels } from "./transport/labels";
 import type { heroProps } from "./block";
@@ -26,6 +27,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
 
   return (
     <section className="hero-transport relative overflow-hidden bg-ink">
+      <FlowField />
       <div className="hero-transport__stage">
         <Transport labels={labels} />
       </div>
