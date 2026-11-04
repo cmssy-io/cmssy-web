@@ -37,12 +37,12 @@ function Step({
           {title}
         </span>
         <span
-          className={`shrink-0 font-mono text-[11px] tracking-[0.12em] uppercase ${ACTOR_TONE[actor]}`}
+          className={`shrink-0 font-mono text-label tracking-[0.12em] uppercase ${ACTOR_TONE[actor]}`}
         >
           {ACTOR_LABEL[actor]}
         </span>
       </div>
-      <div className="mt-0.5 font-mono text-[12px] text-paper/45">{detail}</div>
+      <div className="mt-0.5 font-mono text-caption text-paper/45">{detail}</div>
       {children}
     </li>
   );
@@ -52,10 +52,10 @@ export function RunCard({ labels }: { labels: RunLabels }) {
   return (
     <div className="hero-run rounded-2xl border border-paper/10 bg-ink-deep/70 p-2 shadow-[0_40px_80px_-40px_rgba(0,0,0,.8)] backdrop-blur-md">
       <div className="flex items-center justify-between gap-4 px-3 pt-2 pb-3">
-        <span className="font-mono text-[11px] tracking-[0.14em] text-paper/45 uppercase">
+        <span className="font-mono text-label tracking-[0.14em] text-paper/45 uppercase">
           agent session
         </span>
-        <span className="flex items-center gap-1.5 font-mono text-[11px] text-paper/45">
+        <span className="flex items-center gap-1.5 font-mono text-label text-paper/45">
           <span className="hero-run__dot inline-block size-1.5 rounded-full bg-elektryk" />
           live
         </span>
@@ -74,7 +74,7 @@ export function RunCard({ labels }: { labels: RunLabels }) {
             {labels.locales.map((code) => (
               <span
                 key={code}
-                className="rounded-md border border-paper/10 px-1.5 py-0.5 font-mono text-[11px] text-paper/60"
+                className="rounded-md border border-paper/10 px-1.5 py-0.5 font-mono text-label text-paper/60"
               >
                 {code}
               </span>
@@ -92,13 +92,13 @@ export function RunCard({ labels }: { labels: RunLabels }) {
 
       <div className="mt-2 grid grid-cols-2 gap-2 border-t border-paper/10 px-1 pt-3 pb-1">
         <div className="rounded-lg bg-paper/[0.04] px-3 py-2.5">
-          <div className="font-mono text-[11px] tracking-[0.12em] text-paper/45 uppercase">
+          <div className="font-mono text-label tracking-[0.12em] text-paper/45 uppercase">
             {labels.revalidated}
           </div>
           <div className="mt-1 font-heading text-h3 font-bold text-elektryk">1</div>
         </div>
         <div className="rounded-lg bg-paper/[0.04] px-3 py-2.5">
-          <div className="font-mono text-[11px] tracking-[0.12em] text-paper/45 uppercase">
+          <div className="font-mono text-label tracking-[0.12em] text-paper/45 uppercase">
             {labels.deploys}
           </div>
           <div className="mt-1 font-heading text-h3 font-bold text-paper">0</div>

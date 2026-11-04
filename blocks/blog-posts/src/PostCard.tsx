@@ -65,7 +65,7 @@ export function PostCard({
       )}
       <div className="p-5 flex flex-col gap-2 flex-1">
         {category && (
-          <span className="font-mono text-[12px] text-muted-foreground">
+          <span className="font-mono text-caption text-muted-foreground">
             {category}
           </span>
         )}

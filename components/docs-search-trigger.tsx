@@ -16,7 +16,7 @@ export function DocsSearchTrigger({ placeholder }: { placeholder: string }) {
     >
       <Search className="h-4 w-4 shrink-0" />
       <span className="truncate">{placeholder}</span>
-      <kbd className="ml-auto hidden rounded border border-border px-1.5 font-mono text-[10px] sm:block">
+      <kbd className="ml-auto hidden rounded border border-border px-1.5 font-mono text-micro sm:block">
         /
       </kbd>
     </button>

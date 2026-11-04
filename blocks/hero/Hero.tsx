@@ -58,7 +58,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
               {primaryButtonText && primaryButtonUrl ? (
                 <CmssyLink
                   href={primaryButtonUrl}
-                  className="rounded-lg bg-elektryk px-6 py-3 text-[1rem] font-semibold text-ink transition-colors hover:bg-elektryk/85"
+                  className="rounded-lg bg-elektryk px-6 py-3 text-body font-semibold text-ink transition-colors hover:bg-elektryk/85"
                 >
                   {primaryButtonText}
                 </CmssyLink>
@@ -66,7 +66,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
               {secondaryButtonText && secondaryButtonUrl ? (
                 <CmssyLink
                   href={secondaryButtonUrl}
-                  className="rounded-lg border border-paper/20 px-6 py-3 text-[1rem] font-medium text-paper/85 transition-colors hover:border-paper/40"
+                  className="rounded-lg border border-paper/20 px-6 py-3 text-body font-medium text-paper/85 transition-colors hover:border-paper/40"
                 >
                   {secondaryButtonText}
                 </CmssyLink>
@@ -74,7 +74,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
             </div>
 
             {trustNote ? (
-              <div className="mt-5 font-mono text-[12px] text-paper/40">
+              <div className="mt-5 font-mono text-caption text-paper/40">
                 {trustNote}
               </div>
             ) : null}

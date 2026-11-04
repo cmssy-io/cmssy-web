@@ -32,7 +32,7 @@ export function FigurePlate({
       </div>
       {label ? (
         <figcaption
-          className={`mt-3 flex items-center gap-2 font-mono text-[11px] tracking-[0.1em] uppercase ${
+          className={`mt-3 flex items-center gap-2 font-mono text-label tracking-[0.1em] uppercase ${
             dark ? "text-paper/45" : "text-muted-foreground"
           }`}
         >

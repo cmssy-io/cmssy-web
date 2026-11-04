@@ -116,14 +116,14 @@ export default function BlogPostHero({
           </nav>
 
           {category && (
-            <span className="mb-5 flex items-center gap-2 font-mono text-[13px] text-paper/60">
+            <span className="mb-5 flex items-center gap-2 font-mono text-small text-paper/60">
               <span className="inline-block size-2 rounded-[2px] bg-elektryk" />
               {category}
             </span>
           )}
 
           {title && (
-            <h1 className="mb-4 max-w-4xl font-heading text-[clamp(2rem,4.4vw,3.5rem)] leading-[1.08] font-semibold tracking-[-0.025em] text-paper text-balance">
+            <h1 className="mb-4 max-w-4xl font-heading text-h1 font-semibold text-paper text-balance">
               {title}
             </h1>
           )}
@@ -146,7 +146,7 @@ export default function BlogPostHero({
                     className="rounded-full object-cover ring-2 ring-paper/20"
                   />
                 ) : (
-                  <div className="flex size-7 items-center justify-center rounded-full bg-paper/15 text-[11px] font-semibold text-paper">
+                  <div className="flex size-7 items-center justify-center rounded-full bg-paper/15 text-label font-semibold text-paper">
                     {author.charAt(0).toUpperCase()}
                   </div>
                 )}

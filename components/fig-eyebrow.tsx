@@ -16,7 +16,7 @@ export function FigEyebrow({
   if (pill) {
     return (
       <span
-        className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-mono text-[11px] tracking-[0.14em] uppercase ${
+        className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-mono text-label tracking-[0.14em] uppercase ${
           dark
             ? "border-paper/15 text-paper/70"
             : "border-border text-muted-foreground"
@@ -29,7 +29,7 @@ export function FigEyebrow({
   }
   return (
     <span
-      className={`inline-flex items-center gap-2 font-mono text-[12px] tracking-[0.14em] uppercase ${tone}`}
+      className={`inline-flex items-center gap-2 font-mono text-caption tracking-[0.14em] uppercase ${tone}`}
     >
       {text}
     </span>

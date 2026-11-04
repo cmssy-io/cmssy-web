@@ -71,7 +71,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                 }`}
               >
                 {plan.popular && popularBadgeText && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-elektryk px-3 py-1 font-mono text-[10px] font-semibold tracking-[0.12em] text-ink uppercase">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-elektryk px-3 py-1 font-mono text-micro font-semibold tracking-[0.12em] text-ink uppercase">
                     {popularBadgeText}
                   </span>
                 )}
@@ -93,7 +93,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                   )}
                   {price && period && (
                     <span
-                      className={`font-mono text-[12px] ${
+                      className={`font-mono text-caption ${
                         plan.popular ? "text-paper/50" : "text-muted-foreground"
                       }`}
                     >
@@ -134,7 +134,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
           })}
         </div>
         {trialNotice && (
-          <p className="mt-8 text-center font-mono text-[12px] text-muted-foreground">
+          <p className="mt-8 text-center font-mono text-caption text-muted-foreground">
             {trialNotice}
           </p>
         )}

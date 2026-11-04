@@ -67,7 +67,7 @@ export default function PlanComparison({
           <table className="w-full min-w-[36rem] border-collapse text-left">
             <thead>
               <tr className="border-b border-border">
-                <th className="py-3 pr-4 font-mono text-[11px] tracking-[0.12em] text-muted-foreground uppercase" />
+                <th className="py-3 pr-4 font-mono text-label tracking-[0.12em] text-muted-foreground uppercase" />
                 {shown.map((column) => (
                   <th
                     key={column.planId}
@@ -118,7 +118,7 @@ export default function PlanComparison({
         )}
 
         {footnote && (
-          <p className="mx-auto mt-6 max-w-5xl text-center font-mono text-[11px] text-muted-foreground">
+          <p className="mx-auto mt-6 max-w-5xl text-center font-mono text-label text-muted-foreground">
             {footnote}
           </p>
         )}

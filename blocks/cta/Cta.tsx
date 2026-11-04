@@ -80,7 +80,7 @@ export default function Cta({ content }: BlockProps<typeof ctaProps>) {
         </Reveal>
         {badgeText && (
           <Reveal index={1}>
-            <span className="mt-8 inline-block rounded-full border border-paper/15 px-3 py-1 font-mono text-[11px] tracking-[0.14em] text-paper/60 uppercase">
+            <span className="mt-8 inline-block rounded-full border border-paper/15 px-3 py-1 font-mono text-label tracking-[0.14em] text-paper/60 uppercase">
               {badgeText}
             </span>
           </Reveal>
