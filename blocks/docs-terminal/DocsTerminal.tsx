@@ -5,6 +5,7 @@ import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
 import { useCopyToClipboard } from "@/lib/use-copy-to-clipboard";
 import type { docsTerminalProps } from "./block";
+import { withStyle } from "@/lib/block-style";
 
 const CLI_KEYWORDS = [
   "npx",
@@ -48,8 +49,10 @@ function renderCleanCommand(command: string): string {
 }
 
 export default function DocsTerminal({
-  content,
+  content: rawContent,
+  style,
 }: BlockProps<typeof docsTerminalProps>) {
+  const content = withStyle(rawContent, style);
   const { title, commands = [], showCopyAll = true, theme = "macos" } = content;
 
   const { copied, copy } = useCopyToClipboard();

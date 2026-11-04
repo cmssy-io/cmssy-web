@@ -8,6 +8,7 @@ import {
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
 import type { docsCalloutProps } from "./block";
+import { withStyle } from "@/lib/block-style";
 
 const calloutConfig = {
   info: {
@@ -58,8 +59,10 @@ const calloutConfig = {
 };
 
 export default function DocsCallout({
-  content,
+  content: rawContent,
+  style,
 }: BlockProps<typeof docsCalloutProps>) {
+  const content = withStyle(rawContent, style);
   const {
     type = "info",
     style: calloutStyle = "card",

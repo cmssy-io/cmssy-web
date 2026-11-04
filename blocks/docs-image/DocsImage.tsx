@@ -7,10 +7,13 @@ import { mediaUrl } from "@cmssy/core";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
 import type { docsImageProps } from "./block";
+import { withStyle } from "@/lib/block-style";
 
 export default function DocsImage({
-  content,
+  content: rawContent,
+  style,
 }: BlockProps<typeof docsImageProps>) {
+  const content = withStyle(rawContent, style);
   const {
     src,
     alt = "",
