@@ -19,6 +19,10 @@ const FIELD_KEYS = {
   uiCopyPage: "copyPage",
   uiCopied: "copied",
   uiViewMarkdown: "viewMarkdown",
+  uiOpenIn: "openIn",
+  uiOpenInPrompt: "openInPrompt",
+  uiOverview: "overview",
+  uiPageCount: "pageCount",
 } as const;
 
 export type DocsUi = Partial<
@@ -61,4 +65,14 @@ export function docsUiFrom(
     if (text) ui[key] = text;
   }
   return ui;
+}
+
+export function fillCount(template: string | undefined, n: number): string {
+  return template ? template.replace(/\{n\}/g, String(n)) : "";
+}
+
+export function fillUrl(template: string | undefined, url: string): string {
+  return template && template.includes("{url}")
+    ? template.replace(/\{url\}/g, url)
+    : url;
 }

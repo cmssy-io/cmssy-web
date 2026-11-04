@@ -41,20 +41,24 @@ export function TocSidebar({ items, title }: TocSidebarProps) {
 
   return (
     <aside className="hidden xl:block w-64 shrink-0">
-      <div className="sticky top-[calc(var(--site-chrome,4rem)+1rem)] max-h-[calc(100dvh-var(--site-chrome,4rem)-2rem)] overflow-y-auto overscroll-contain">
-        {title && <h4 className="text-sm font-semibold mb-4">{title}</h4>}
-        <nav className="space-y-1">
+      <div className="sticky top-[calc(var(--site-chrome,4rem)+var(--docs-tabs,0px)+1rem)] max-h-[calc(100dvh-var(--site-chrome,4rem)-var(--docs-tabs,0px)-2rem)] overflow-y-auto overscroll-contain">
+        {title && (
+          <h4 className="mb-3 font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+            {title}
+          </h4>
+        )}
+        <nav className="border-l border-border">
           {items.map((item) => (
             <a
               key={item.id}
               href={`#${item.id}`}
               className={`
-                block text-sm py-1 transition-colors
-                ${item.level === 3 ? "pl-4" : ""}
+                -ml-px block border-l py-1 text-[13px] transition-colors
+                ${item.level === 3 ? "pl-7" : "pl-3"}
                 ${
                   activeId === item.id
-                    ? "text-primary font-medium"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "border-elektryk font-medium text-primary"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
                 }
               `}
             >

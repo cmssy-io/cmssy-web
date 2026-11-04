@@ -63,7 +63,13 @@ const renderers: Record<string, Renderer> = {
     ),
 
   "docs-hero": (content, base) =>
-    join(text(content.description), linkList(content.quickLinks, base)),
+    join(
+      text(content.description),
+      ...records(content.commands)
+        .filter((row) => text(row.command))
+        .map((row) => fenced(text(row.command), "bash")),
+      linkList(content.quickLinks, base),
+    ),
 
   "docs-card-grid": (content, base) =>
     join(
@@ -116,7 +122,7 @@ const renderers: Record<string, Renderer> = {
 };
 
 /** Navigation and conversion, not documentation. */
-const skipped = new Set(["docs-sidebar", "cta"]);
+const skipped = new Set(["docs-sidebar", "docs-areas", "cta"]);
 
 /**
  * Prose only. The rate limits come from a loader; the others are unused and

@@ -12,6 +12,7 @@ import { buildPageMetadata } from "@/services/seo";
 import { DocsShell } from "@/components/docs-shell";
 import { DocsPrevNext } from "@/components/docs-prev-next";
 import { DocsBreadcrumbs } from "@/components/docs-breadcrumbs";
+import { DocsTabs } from "@/components/docs-tabs";
 import { Container } from "@/components/container";
 import { DocsPageActions } from "@/components/docs-page-actions";
 import { isDocsPath } from "@/lib/docs-markdown";
@@ -77,13 +78,24 @@ export default async function Page({ params }: PageProps) {
     ? docsBreadcrumbs(sidebar.page.slug, section.nav, section.root)
     : null;
   const around = section ? docsPrevNext(sidebar.page.slug, section.nav) : null;
+  const hasSidebar = Boolean(section?.area);
 
   return (
     <DocsShell>
+      {section ? (
+        <DocsTabs
+          root={section.root}
+          areas={section.areas}
+          searchItems={section.searchItems}
+          ui={section.ui}
+        />
+      ) : null}
       <div className="mx-auto flex w-full max-w-320 flex-col md:flex-row">
-        <aside className="sticky top-[var(--site-chrome,4rem)] z-30 md:h-[calc(100dvh-var(--site-chrome,4rem))] md:w-64 md:shrink-0 md:overflow-y-auto md:overscroll-contain md:border-r md:border-border">
-          {sidebar.element}
-        </aside>
+        {hasSidebar ? (
+          <aside className="sticky top-[calc(var(--site-chrome,4rem)+var(--docs-tabs,0px))] z-30 md:h-[calc(100dvh-var(--site-chrome,4rem)-var(--docs-tabs,0px))] md:w-64 md:shrink-0 md:overflow-y-auto md:overscroll-contain md:border-r md:border-border">
+            {sidebar.element}
+          </aside>
+        ) : null}
         <main className="min-w-0 flex-1">
           {trail ? <DocsBreadcrumbs trail={trail} /> : null}
           {section &&

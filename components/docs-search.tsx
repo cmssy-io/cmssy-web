@@ -74,11 +74,13 @@ export function DocsSearch({
   items,
   label,
   ui,
+  compact = false,
 }: {
   items: DocsSearchItem[];
   /** The section's own name, for the dialog's accessible name. */
   label: string;
   ui: DocsUi;
+  compact?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -144,10 +146,17 @@ export function DocsSearch({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex w-full items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-left text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+        aria-label={ui.searchPlaceholder}
+        className={
+          compact
+            ? "flex h-8 items-center gap-2 rounded-md border border-border bg-card px-2.5 text-left text-[13px] text-muted-foreground transition-colors hover:border-elektryk hover:text-foreground"
+            : "flex w-full items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-left text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+        }
       >
         <Search className="h-4 w-4 shrink-0" />
-        <span className="truncate">{ui.searchPlaceholder}</span>
+        <span className={compact ? "hidden truncate sm:inline" : "truncate"}>
+          {ui.searchPlaceholder}
+        </span>
         <kbd className="ml-auto hidden rounded border border-border px-1.5 font-mono text-[10px] sm:block">
           /
         </kbd>

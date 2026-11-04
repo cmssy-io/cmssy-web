@@ -1,8 +1,20 @@
 "use client";
 
-import { Check, Copy, FileText } from "lucide-react";
+import { Check, ChevronDown, Copy, FileText } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useCopyToClipboard } from "@/lib/use-copy-to-clipboard";
-import type { DocsUi } from "@/lib/docs-ui";
+import { fillUrl, type DocsUi } from "@/lib/docs-ui";
+
+const OPEN_IN = [
+  { name: "Claude", host: "claude.ai", href: (q: string) => `https://claude.ai/new?q=${q}` },
+  { name: "ChatGPT", host: "chatgpt.com", href: (q: string) => `https://chatgpt.com/?q=${q}` },
+  { name: "Cursor", host: "cursor://", href: (q: string) => `cursor://anysphere.cursor-deeplink/prompt?text=${q}` },
+];
 
 // The page as Markdown, for pasting into an AI assistant. The words come from
 // the CMS like the rest of the shell; a language without them gets icons only.
@@ -16,6 +28,13 @@ export function DocsPageActions({ slug, ui }: { slug: string; ui: DocsUi }) {
       if (!response.ok) throw new Error(`${href} answered ${response.status}`);
       return response.text();
     });
+
+  const openIn = (build: (q: string) => string) => {
+    const url = `${window.location.origin}${href}`;
+    const target = build(encodeURIComponent(fillUrl(ui.openInPrompt, url)));
+    if (target.startsWith("http")) window.open(target, "_blank", "noopener");
+    else window.location.assign(target);
+  };
 
   const control =
     "inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary hover:text-foreground";
@@ -41,6 +60,31 @@ export function DocsPageActions({ slug, ui }: { slug: string; ui: DocsUi }) {
         <FileText className="size-3.5" />
         {ui.viewMarkdown}
       </a>
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          className={control}
+          aria-label={ui.openIn}
+          title={ui.openIn}
+        >
+          {ui.openIn}
+          <ChevronDown className="size-3.5" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="min-w-48">
+          {OPEN_IN.map((target) => (
+            <DropdownMenuItem
+              key={target.name}
+              onSelect={() => openIn(target.href)}
+              className="cursor-pointer"
+            >
+              <span className="inline-block size-2 rounded-[2px] bg-muted-foreground" />
+              {target.name}
+              <span className="ml-auto font-mono text-[11px] text-muted-foreground">
+                {target.host}
+              </span>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }

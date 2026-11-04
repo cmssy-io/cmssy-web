@@ -3,9 +3,25 @@ import { CmssyLink } from "@/components/cmssy-locale";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
 import { FigEyebrow } from "@/components/fig-eyebrow";
+import { DocsQuickstart } from "@/components/docs-quickstart";
 import { DocsSearchTrigger } from "@/components/docs-search-trigger";
 import { getLucideIcon } from "@/components/get-lucide-icon";
+import { groupQuickstart } from "@/lib/docs-quickstart";
 import type { docsHeroProps } from "./block";
+
+function Highlighted({ text, word }: { text: string; word?: string }) {
+  const needle = word?.trim();
+  if (!needle) return <>{text}</>;
+  const at = text.indexOf(needle);
+  if (at === -1) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, at)}
+      <span className="text-primary">{needle}</span>
+      {text.slice(at + needle.length)}
+    </>
+  );
+}
 
 export default function DocsHero({
   content,
@@ -13,11 +29,21 @@ export default function DocsHero({
   const {
     badge,
     heading,
+    highlight,
     description,
     variant = "default",
+    layout = "centered",
     quickLinks = [],
     showSearch = false,
     searchPlaceholder,
+    commands = [],
+    copyLabel,
+    copiedLabel,
+    quickLinksEyebrow,
+    quickLinksHeading,
+    quickLinksDescription,
+    quickLinksMoreLabel,
+    quickLinksMoreUrl,
   } = content;
 
   const bgClasses = {
@@ -26,18 +52,120 @@ export default function DocsHero({
     minimal: "bg-background",
   };
 
+  const dots = variant !== "minimal" && (
+    <div
+      className="absolute inset-0 opacity-[0.03]"
+      style={{
+        backgroundImage:
+          "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
+        backgroundSize: "24px 24px",
+      }}
+    />
+  );
+
+  if (layout === "split") {
+    const tabs = groupQuickstart(commands);
+    const hasCard = quickLinks.length > 0;
+
+    return (
+      <section className={`relative overflow-hidden ${bgClasses[variant]}`}>
+        {dots}
+        <Container className="relative py-section-tight">
+          <div
+            className={`grid items-start gap-10 ${
+              hasCard ? "lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-14" : ""
+            }`}
+          >
+            <div className="min-w-0">
+              {badge && <FigEyebrow fig="" label={badge} />}
+              {heading && (
+                <h1 className="mt-3.5 font-heading text-h2 font-semibold text-balance text-foreground">
+                  <Highlighted text={heading} word={highlight} />
+                </h1>
+              )}
+              {description && (
+                <p className="mt-4 max-w-[56ch] text-lead text-muted-foreground">
+                  {description}
+                </p>
+              )}
+              {showSearch && searchPlaceholder && (
+                <div className="mt-6 [&>button]:mx-0 [&>button]:mt-0">
+                  <DocsSearchTrigger placeholder={searchPlaceholder} />
+                </div>
+              )}
+              {tabs.length > 0 && (
+                <div className="mt-6">
+                  <DocsQuickstart
+                    tabs={tabs}
+                    copyLabel={copyLabel}
+                    copiedLabel={copiedLabel}
+                  />
+                </div>
+              )}
+            </div>
+
+            {hasCard && (
+              <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
+                {quickLinksEyebrow && (
+                  <FigEyebrow fig="" label={quickLinksEyebrow} />
+                )}
+                {quickLinksHeading && (
+                  <h2 className="mt-2 font-heading text-xl font-semibold">
+                    {quickLinksHeading}
+                  </h2>
+                )}
+                {quickLinksDescription && (
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {quickLinksDescription}
+                  </p>
+                )}
+                <div
+                  className={`mt-4 grid gap-2.5 ${
+                    quickLinks.length >= 4
+                      ? "grid-cols-2 sm:grid-cols-4"
+                      : quickLinks.length === 3
+                        ? "grid-cols-3"
+                        : "grid-cols-2"
+                  }`}
+                >
+                  {quickLinks.map((link, index) => (
+                    <CmssyLink
+                      key={index}
+                      href={link.url}
+                      className="flex min-h-[92px] flex-col justify-between gap-5 rounded-[10px] border border-border bg-background p-3 transition-colors duration-[160ms] hover:border-foreground"
+                    >
+                      <span
+                        className={`inline-block size-2.5 rounded-[3px] ${
+                          index === 0 ? "bg-elektryk" : "bg-foreground"
+                        }`}
+                      />
+                      <span className="flex items-end justify-between gap-2 font-heading text-[13px] font-semibold leading-tight sm:text-sm">
+                        <span className="min-w-0">{link.title}</span>
+                        <ArrowRight className="size-3.5 shrink-0" />
+                      </span>
+                    </CmssyLink>
+                  ))}
+                </div>
+                {quickLinksMoreLabel && quickLinksMoreUrl && (
+                  <CmssyLink
+                    href={quickLinksMoreUrl}
+                    className="mt-4 flex items-center justify-end gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {quickLinksMoreLabel}
+                    <ArrowRight className="size-3.5" />
+                  </CmssyLink>
+                )}
+              </div>
+            )}
+          </div>
+        </Container>
+      </section>
+    );
+  }
+
   return (
     <section className={`relative overflow-hidden ${bgClasses[variant]}`}>
-      {variant !== "minimal" && (
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
-            backgroundSize: "24px 24px",
-          }}
-        />
-      )}
+      {dots}
 
       <Container className="relative py-16 lg:py-24">
         <div
@@ -53,7 +181,7 @@ export default function DocsHero({
 
           {heading && (
             <h1 className="mb-5 font-heading text-h2 font-semibold text-foreground text-balance">
-              {heading}
+              <Highlighted text={heading} word={highlight} />
             </h1>
           )}
 
@@ -101,7 +229,6 @@ export default function DocsHero({
                     </p>
                   )}
                   <div className="mt-auto flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors group-hover:text-foreground">
-                    <span>Get started</span>
                     <ArrowRight className="size-3.5" />
                   </div>
                 </CmssyLink>

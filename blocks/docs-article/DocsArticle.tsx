@@ -54,7 +54,7 @@ export default function DocsArticle({
         {/* Content */}
         <div
           className="prose max-w-none
-            prose-headings:scroll-mt-[calc(var(--site-chrome,4rem)+1rem)]
+            prose-headings:scroll-mt-[calc(var(--site-chrome,4rem)+var(--docs-tabs,0px)+1rem)]
             prose-headings:font-heading
             prose-h2:text-2xl prose-h2:font-semibold prose-h2:mt-12 prose-h2:mb-4
             prose-h3:text-xl prose-h3:font-medium prose-h3:mt-8 prose-h3:mb-3

@@ -570,6 +570,7 @@ html[data-theme="dark"] .prose pre.shiki span {
 --------------------------------------------------------------------------- */
 .docs-shell {
   font-family: var(--font-sans);
+  --docs-tabs: 3rem;
   --primary: var(--color-elektryk-700);
   --primary-foreground: #ffffff;
   --ring: var(--color-elektryk-500);

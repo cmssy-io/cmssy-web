@@ -1,15 +1,20 @@
 import type { DocsSearchItem } from "@/components/docs-search";
 import {
+  areaForSlug,
   buildDocsNav,
   labelForPage,
   pickLocalizedValue,
+  type DocsArea,
   type DocsNavSection,
+  type DocsPageNode,
 } from "@/lib/docs-nav";
 import { docsUiFrom, type DocsUi } from "@/lib/docs-ui";
 import { listChildPages } from "@/services/pages";
 
 export type DocsSection = {
   root: { slug: string; label: string };
+  areas: DocsArea[];
+  area: DocsArea | null;
   nav: DocsNavSection[];
   searchItems: DocsSearchItem[];
   ui: DocsUi;
@@ -20,28 +25,61 @@ export async function loadDocsSection(
   locale: string,
   defaultLocale: string,
 ): Promise<DocsSection | null> {
-  const sectionRoot = segments[0] ? `/${segments[0]}` : null;
-  if (!sectionRoot) return null;
+  const rootSlug = segments[0] ? `/${segments[0]}` : null;
+  if (!rootSlug) return null;
 
-  const [topLevel, sectionPages] = await Promise.all([
+  const [topLevel, areaPages] = await Promise.all([
     listChildPages("/"),
-    listChildPages(sectionRoot),
+    listChildPages(rootSlug),
   ]);
-  const rootPage = topLevel.find((page) => page.fullSlug === sectionRoot);
+  const rootPage = topLevel.find((page) => page.fullSlug === rootSlug);
   if (!rootPage) return null;
 
-  const withChildren = await Promise.all(
-    sectionPages.map(async (page) => ({
+  const label = (page: DocsPageNode) =>
+    labelForPage(page, locale, defaultLocale);
+
+  const areasWithPages = await Promise.all(
+    areaPages.map(async (page) => ({
       page,
       children: await listChildPages(page.fullSlug),
     })),
   );
 
-  const searchItems = withChildren.flatMap(({ page, children }) =>
+  const areas: DocsArea[] = areasWithPages.map(({ page, children }) => ({
+    slug: page.fullSlug,
+    label: label(page),
+    description: pickLocalizedValue(page.seoDescription, locale, defaultLocale),
+    pageCount: children.length,
+  }));
+
+  const currentSlug = `/${segments.join("/")}`;
+  const area = areaForSlug(currentSlug, areas);
+  const active = area
+    ? areasWithPages.find(({ page }) => page.fullSlug === area.slug)
+    : undefined;
+
+  const nested = active
+    ? await Promise.all(
+        active.children.map(async (page) => ({
+          page,
+          children: await listChildPages(page.fullSlug),
+        })),
+      )
+    : [];
+
+  const nav = active
+    ? buildDocsNav(
+        [{ page: active.page, children: [] }, ...nested],
+        locale,
+        defaultLocale,
+      )
+    : [];
+
+  const searchItems = areasWithPages.flatMap(({ page, children }) =>
     [page, ...children].map((entry) => ({
       slug: entry.fullSlug,
-      label: labelForPage(entry, locale, defaultLocale),
-      section: labelForPage(page, locale, defaultLocale),
+      label: label(entry),
+      section: label(page),
       description: pickLocalizedValue(
         entry.seoDescription,
         locale,
@@ -51,11 +89,10 @@ export async function loadDocsSection(
   );
 
   return {
-    root: {
-      slug: rootPage.fullSlug,
-      label: labelForPage(rootPage, locale, defaultLocale),
-    },
-    nav: buildDocsNav(withChildren, locale, defaultLocale),
+    root: { slug: rootPage.fullSlug, label: label(rootPage) },
+    areas,
+    area,
+    nav,
     searchItems,
     ui: docsUiFrom(rootPage.customFields, locale, defaultLocale),
   };
