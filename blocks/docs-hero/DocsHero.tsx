@@ -229,7 +229,7 @@ export default function DocsHero({
                     <div className="rounded-lg bg-muted p-2 text-foreground">
                       <Icon className="size-5" />
                     </div>
-                    <h3 className="font-heading font-semibold">{link.title}</h3>
+                    <h3 className="min-w-0 break-words font-heading font-semibold">{link.title}</h3>
                     <ArrowRight
                       aria-hidden="true"
                       className="ml-auto size-4 shrink-0 text-muted-foreground transition-[color,translate] duration-[160ms] motion-reduce:transition-none group-hover:text-primary motion-safe:group-hover:translate-x-0.5"
