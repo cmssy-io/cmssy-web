@@ -16,8 +16,8 @@ const OPEN_IN = [
 ];
 
 // The page as Markdown: copied, opened, or handed to an assistant. The words
-// come from the CMS like the rest of the shell; a language without them gets
-// icons only.
+// come from the CMS like the rest of the shell; a language without them leaves
+// that control out rather than showing an unnamed icon.
 export function DocsPageActions({ slug, ui }: { slug: string; ui: DocsUi }) {
   const { copied, copyLoaded } = useCopyToClipboard();
   const href = `${slug}.md`;
@@ -42,23 +42,23 @@ export function DocsPageActions({ slug, ui }: { slug: string; ui: DocsUi }) {
 
   return (
     <div className="flex justify-end gap-2">
-      <button
-        type="button"
-        onClick={copyPage}
-        className={control}
-        aria-label={ui.copyPage}
-      >
-        {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
-        {copied ? ui.copied : ui.copyPage}
-      </button>
-      <a
-        href={href}
-        className={control}
-        aria-label={ui.viewMarkdown}
-      >
-        <FileText className="size-3.5" />
-        {ui.viewMarkdown}
-      </a>
+      {ui.copyPage ? (
+        <button
+          type="button"
+          onClick={copyPage}
+          className={control}
+          aria-label={ui.copyPage}
+        >
+          {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
+          {copied ? (ui.copied ?? ui.copyPage) : ui.copyPage}
+        </button>
+      ) : null}
+      {ui.viewMarkdown ? (
+        <a href={href} className={control}>
+          <FileText className="size-3.5" />
+          {ui.viewMarkdown}
+        </a>
+      ) : null}
       <DropdownMenu>
         <DropdownMenuTrigger
           className={control}
