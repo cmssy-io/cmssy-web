@@ -14,7 +14,7 @@ export async function submitContact(
 
   const data: Record<string, string> = {};
   for (const [key, value] of formData.entries()) {
-    if (key === "website") continue;
+    if (key === "website" || key.startsWith("$ACTION_")) continue;
     if (typeof value === "string" && value) data[key] = value;
   }
 

@@ -3,6 +3,7 @@
 import type { PlatformContext } from "@cmssy/types";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
+import { FigEyebrow } from "@/components/fig-eyebrow";
 import type { blogPostsProps, BlogPostsData } from "../block";
 import { FileText, Search } from "lucide-react";
 import { PlaceholderCard, PostCard } from "./PostCard";
@@ -61,20 +62,22 @@ export default function BlogPosts({
     !isPreview && hasMore && !debouncedSearch && !activeCategory;
 
   return (
-    <section className="py-24">
+    <section className="bg-background py-section">
       <Container>
         {hasHeader && (
           <div className="text-center max-w-2xl mx-auto mb-12">
             {badge && (
-              <span className="inline-block text-xs font-semibold uppercase tracking-wider text-sky-600 bg-sky-100 px-3 py-1 rounded-full mb-4">
-                {badge}
-              </span>
+              <div className="mb-4">
+                <FigEyebrow fig="" label={badge} />
+              </div>
             )}
             {heading && (
-              <h2 className="text-3xl sm:text-4xl font-bold mb-3">{heading}</h2>
+              <h2 className="mb-4 font-heading text-h2 font-semibold text-balance">
+                {heading}
+              </h2>
             )}
             {description && (
-              <p className="text-lg text-muted-foreground">{description}</p>
+              <p className="text-lead text-muted-foreground">{description}</p>
             )}
           </div>
         )}
@@ -90,7 +93,7 @@ export default function BlogPosts({
                   onChange={(e) => !isPreview && setSearch(e.target.value)}
                   placeholder={searchPlaceholder}
                   readOnly={isPreview}
-                  className={`w-full pl-10 pr-4 py-2.5 border rounded-lg bg-background text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 ${isPreview ? "opacity-60 cursor-not-allowed" : ""}`}
+                  className={`w-full rounded-lg border border-border bg-background py-2.5 pr-4 pl-10 text-sm focus:border-elektryk focus:ring-2 focus:ring-elektryk/20 focus:outline-none ${isPreview ? "cursor-not-allowed opacity-60" : ""}`}
                 />
               </div>
             )}
@@ -98,10 +101,10 @@ export default function BlogPosts({
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => setActiveCategory(null)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
                     !activeCategory
-                      ? "bg-sky-600 text-white"
-                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                      ? "border-foreground bg-foreground text-background"
+                      : "border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground"
                   }`}
                 >
                   All
@@ -112,10 +115,10 @@ export default function BlogPosts({
                     onClick={() =>
                       setActiveCategory(activeCategory === cat ? null : cat)
                     }
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
                       activeCategory === cat
-                        ? "bg-sky-600 text-white"
-                        : "bg-muted text-muted-foreground hover:bg-muted/80"
+                        ? "border-foreground bg-foreground text-background"
+                        : "border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground"
                     }`}
                   >
                     {cat}

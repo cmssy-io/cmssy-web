@@ -23,9 +23,9 @@
   --color-elektryk-500: #00a8f0;
   --color-elektryk-700: #0077b6;
   --color-elektryk: var(--color-elektryk-500);
-  --font-heading: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  --font-heading: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", Menlo, monospace;
 
   --text-display: clamp(2rem, 5.2vw, 5.5rem);
   --text-display--line-height: 1.04;

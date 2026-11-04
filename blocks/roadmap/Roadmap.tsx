@@ -9,35 +9,26 @@ import {
 import { CmssyLink } from "@/components/cmssy-locale";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
+import { FigEyebrow } from "@/components/fig-eyebrow";
+import { Reveal } from "@/components/motion/reveal";
 import type { roadmapProps } from "./block";
 
-/* The tints are the palette's lightest step, so on the dark theme they turn into
-   near-white pills carrying near-white text. Dark gets the same hue as a wash
-   over the page instead, which keeps the four columns telling each other apart. */
 const statusConfig = {
   completed: {
     icon: CircleCheck,
-    color: "text-emerald-600 dark:text-emerald-400",
-    bgColor: "bg-emerald-50 dark:bg-emerald-500/10",
-    borderColor: "border-emerald-200 dark:border-emerald-500/25",
+    color: "text-foreground",
   },
   in_progress: {
     icon: Clock,
-    color: "text-sky-600 dark:text-sky-400",
-    bgColor: "bg-sky-50 dark:bg-sky-500/10",
-    borderColor: "border-sky-200 dark:border-sky-500/25",
+    color: "text-elektryk",
   },
   planned: {
     icon: Lightbulb,
-    color: "text-amber-600 dark:text-amber-400",
-    bgColor: "bg-amber-50 dark:bg-amber-500/10",
-    borderColor: "border-amber-200 dark:border-amber-500/25",
+    color: "text-muted-foreground",
   },
   considering: {
     icon: CircleHelp,
-    color: "text-slate-600 dark:text-slate-300",
-    bgColor: "bg-slate-50 dark:bg-slate-400/10",
-    borderColor: "border-slate-200 dark:border-slate-400/25",
+    color: "text-muted-foreground",
   },
 };
 
@@ -56,34 +47,34 @@ export default function Roadmap({ content }: BlockProps<typeof roadmapProps>) {
   } = content;
 
   return (
-    <section className="py-24">
+    <section className="bg-background py-section text-foreground">
       <Container>
-        {/* Header */}
-        <div className="text-center mb-16">
+        <div className="flex flex-col items-start gap-4">
           {badge && (
-            <span className="inline-block px-4 py-1.5 rounded-full bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300 text-sm font-medium mb-4">
-              {badge}
-            </span>
+            <Reveal>
+              <FigEyebrow fig="" label={badge} />
+            </Reveal>
           )}
           {(heading || headingHighlight) && (
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              {heading}{" "}
-              {headingHighlight && (
-                <span className="bg-linear-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
-                  {headingHighlight}
-                </span>
-              )}
-            </h2>
+            <Reveal index={1}>
+              <h1 className="max-w-[20ch] font-heading text-display font-semibold text-balance">
+                {heading}{" "}
+                {headingHighlight && (
+                  <span className="text-elektryk">{headingHighlight}</span>
+                )}
+              </h1>
+            </Reveal>
           )}
           {description && (
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {description}
-            </p>
+            <Reveal index={2}>
+              <p className="max-w-[62ch] text-lead text-muted-foreground">
+                {description}
+              </p>
+            </Reveal>
           )}
         </div>
 
-        {/* Kanban Board */}
-        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 mb-16">
+        <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {columns.map((column, colIndex) => {
             const config =
               statusConfig[column.status as keyof typeof statusConfig] ||
@@ -91,35 +82,33 @@ export default function Roadmap({ content }: BlockProps<typeof roadmapProps>) {
             const Icon = config.icon;
 
             return (
-              <div key={colIndex} className="space-y-4">
-                {/* Column Header */}
-                <div
-                  className={`flex items-center gap-2 px-4 py-3 rounded-lg ${config.bgColor} ${config.borderColor} border`}
-                >
-                  <Icon className={`size-5 ${config.color}`} />
-                  <h3 className="font-semibold">{column.title}</h3>
-                  <span className="ml-auto text-sm text-muted-foreground">
+              <div key={colIndex} className="min-w-0 space-y-3">
+                <div className="flex items-center gap-2 border-b border-border pb-3">
+                  <Icon className={`size-4 ${config.color}`} />
+                  <h2 className="font-heading text-base font-semibold">
+                    {column.title}
+                  </h2>
+                  <span className="ml-auto font-mono text-xs text-muted-foreground">
                     {(column.items || []).length}
                   </span>
                 </div>
 
-                {/* Items */}
                 <div className="space-y-3">
                   {(column.items || []).map((item, itemIndex) => (
                     <div
                       key={itemIndex}
-                      className="bg-card/50 backdrop-blur-sm rounded-xl border shadow-sm p-4 hover:shadow-md transition-shadow"
+                      className="rounded-2xl border border-border bg-card p-4"
                     >
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <h4 className="font-medium text-sm">{item.title}</h4>
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="text-sm font-medium">{item.title}</h3>
                         {item.badge && (
-                          <span className="px-2 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300 rounded-full whitespace-nowrap">
+                          <span className="rounded-md border border-border px-1.5 py-0.5 font-mono text-[11px] whitespace-nowrap text-muted-foreground">
                             {item.badge}
                           </span>
                         )}
                       </div>
                       {item.description && (
-                        <p className="text-xs text-muted-foreground">
+                        <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
                           {item.description}
                         </p>
                       )}
@@ -131,27 +120,28 @@ export default function Roadmap({ content }: BlockProps<typeof roadmapProps>) {
           })}
         </div>
 
-        {/* Feedback CTA */}
         {showCta && (
-          <div className="max-w-2xl mx-auto">
-            <div className="bg-linear-to-br from-sky-500 to-blue-600 rounded-2xl shadow-xl shadow-sky-500/25 p-8 text-center text-white">
-              <MessageSquare className="size-10 mx-auto mb-4 opacity-90" />
-              {ctaTitle && (
-                <h3 className="text-2xl font-bold mb-3">{ctaTitle}</h3>
-              )}
-              {ctaDescription && (
-                <p className="text-sky-100 mb-6">{ctaDescription}</p>
-              )}
-              {ctaButtonText && ctaButtonUrl && (
-                <CmssyLink
-                  href={ctaButtonUrl}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-paper text-sky-700 font-medium rounded-lg hover:bg-wash transition-colors"
-                >
-                  {ctaButtonText}
-                  <ArrowRight className="size-4" />
-                </CmssyLink>
-              )}
-            </div>
+          <div className="mx-auto mt-16 max-w-2xl rounded-2xl bg-ink p-8 text-center text-paper sm:p-10">
+            <MessageSquare className="mx-auto size-6 text-elektryk" />
+            {ctaTitle && (
+              <h2 className="mt-4 font-heading text-h3 font-semibold text-balance">
+                {ctaTitle}
+              </h2>
+            )}
+            {ctaDescription && (
+              <p className="mx-auto mt-3 max-w-[52ch] text-paper/60">
+                {ctaDescription}
+              </p>
+            )}
+            {ctaButtonText && ctaButtonUrl && (
+              <CmssyLink
+                href={ctaButtonUrl}
+                className="mt-7 inline-flex items-center gap-2 rounded-lg bg-elektryk px-6 py-3 font-semibold text-ink transition-colors hover:bg-elektryk/85"
+              >
+                {ctaButtonText}
+                <ArrowRight className="size-4" />
+              </CmssyLink>
+            )}
           </div>
         )}
       </Container>

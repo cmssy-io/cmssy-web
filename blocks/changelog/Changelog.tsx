@@ -2,22 +2,21 @@ import { Bug, Rss, Sparkles, Zap } from "lucide-react";
 import { CmssyLink } from "@/components/cmssy-locale";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
+import { FigEyebrow } from "@/components/fig-eyebrow";
+import { Reveal } from "@/components/motion/reveal";
 import type { changelogProps } from "./block";
 
 const typeConfig = {
   feature: {
     icon: Sparkles,
-    color: "bg-emerald-100 text-emerald-700",
     label: "New Feature",
   },
   improvement: {
     icon: Zap,
-    color: "bg-blue-100 text-blue-700",
     label: "Improvement",
   },
   bugfix: {
     icon: Bug,
-    color: "bg-amber-100 text-amber-700",
     label: "Bug Fix",
   },
 };
@@ -38,38 +37,38 @@ export default function Changelog({
   } = content;
 
   return (
-    <section className="py-24">
+    <section className="bg-background py-section text-foreground">
       <Container>
-        {/* Header */}
-        <div className="text-center mb-16">
-          {badge && (
-            <span className="inline-block px-4 py-1.5 rounded-full bg-sky-100 text-sky-700 text-sm font-medium mb-4">
-              {badge}
-            </span>
-          )}
-          {(heading || headingHighlight) && (
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              {heading}{" "}
-              {headingHighlight && (
-                <span className="bg-linear-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
-                  {headingHighlight}
-                </span>
-              )}
-            </h2>
-          )}
-          {description && (
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {description}
-            </p>
-          )}
-        </div>
+        <div className="mx-auto max-w-3xl">
+          <div className="flex flex-col items-start gap-4">
+            {badge && (
+              <Reveal>
+                <FigEyebrow fig="" label={badge} />
+              </Reveal>
+            )}
+            {(heading || headingHighlight) && (
+              <Reveal index={1}>
+                <h1 className="max-w-[20ch] font-heading text-display font-semibold text-balance">
+                  {heading}{" "}
+                  {headingHighlight && (
+                    <span className="text-elektryk">{headingHighlight}</span>
+                  )}
+                </h1>
+              </Reveal>
+            )}
+            {description && (
+              <Reveal index={2}>
+                <p className="max-w-[62ch] text-lead text-muted-foreground">
+                  {description}
+                </p>
+              </Reveal>
+            )}
+          </div>
 
-        {/* Subscribe CTA */}
-        {showSubscribe && (
-          <div className="max-w-2xl mx-auto mb-16">
-            <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-xl shadow-sky-500/5 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          {showSubscribe && (
+            <div className="mt-12 flex flex-col items-start justify-between gap-4 rounded-2xl border border-border bg-card p-6 sm:flex-row sm:items-center">
               <div className="flex items-center gap-3">
-                <Rss className="w-5 h-5 text-sky-600" />
+                <Rss className="size-5 text-elektryk" />
                 {subscribeText && (
                   <span className="text-sm">{subscribeText}</span>
                 )}
@@ -77,18 +76,15 @@ export default function Changelog({
               {subscribeButtonText && subscribeButtonUrl && (
                 <CmssyLink
                   href={subscribeButtonUrl}
-                  className="px-4 py-2 text-sm font-medium border rounded-lg hover:bg-accent transition-colors"
+                  className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
                 >
                   {subscribeButtonText}
                 </CmssyLink>
               )}
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Timeline */}
-        <div className="max-w-3xl mx-auto">
-          <div className="space-y-8">
+          <ol className="mt-16">
             {entries.map((entry, index) => {
               const config =
                 typeConfig[entry.type as keyof typeof typeConfig] ||
@@ -96,53 +92,45 @@ export default function Changelog({
               const Icon = config.icon;
 
               return (
-                <div
+                <li
                   key={index}
-                  className="relative pl-8 pb-8 border-l-2 border-sky-200 last:border-transparent last:pb-0"
+                  className="relative border-l border-border pb-10 pl-8 last:border-transparent last:pb-0"
                 >
-                  {/* Timeline dot */}
-                  <div className="absolute -left-2.25 top-0 w-4 h-4 rounded-full bg-linear-to-br from-sky-500 to-blue-600 border-4 border-background" />
+                  <span className="absolute top-1.5 -left-[5px] size-2.5 rounded-[3px] bg-elektryk" />
 
-                  {/* Content */}
-                  <div className="bg-card/50 backdrop-blur-sm rounded-2xl border shadow-lg shadow-sky-500/5 p-6">
-                    {/* Header */}
-                    <div className="flex flex-wrap items-center gap-3 mb-4">
-                      <span className="px-3 py-1 rounded-full bg-sky-100 text-sky-700 text-sm font-mono font-semibold">
-                        v{entry.version}
-                      </span>
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${config.color}`}
-                      >
-                        <Icon className="w-3 h-3 inline-block mr-1" />
-                        {config.label}
-                      </span>
-                      <span className="text-sm text-muted-foreground ml-auto">
-                        {entry.date}
-                      </span>
-                    </div>
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                    <span className="font-mono text-sm font-semibold">
+                      v{entry.version}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 rounded-md border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground">
+                      <Icon className="size-3" />
+                      {config.label}
+                    </span>
+                    <span className="ml-auto font-mono text-xs text-muted-foreground">
+                      {entry.date}
+                    </span>
+                  </div>
 
-                    {/* Title */}
-                    <h3 className="text-lg font-semibold mb-3">
+                  <div className="mt-4 rounded-2xl border border-border bg-card p-6">
+                    <h2 className="font-heading text-lg font-semibold">
                       {entry.title}
-                    </h3>
-
-                    {/* Changes */}
-                    <ul className="space-y-2">
+                    </h2>
+                    <ul className="mt-3 space-y-2">
                       {(entry.changes || []).map((change, i) => (
                         <li
                           key={i}
-                          className="flex items-start gap-2 text-sm text-muted-foreground"
+                          className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground"
                         >
-                          <span className="text-sky-500 mt-1">•</span>
+                          <span className="mt-2 inline-block size-1.5 shrink-0 rounded-[2px] bg-border" />
                           {change.text}
                         </li>
                       ))}
                     </ul>
                   </div>
-                </div>
+                </li>
               );
             })}
-          </div>
+          </ol>
         </div>
       </Container>
     </section>
