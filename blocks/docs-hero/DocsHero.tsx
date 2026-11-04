@@ -137,7 +137,7 @@ export default function DocsHero({
                     <CmssyLink
                       key={index}
                       href={link.url}
-                      className="flex min-h-[92px] flex-col justify-between gap-5 rounded-[10px] border border-border bg-background p-3 transition-colors duration-[160ms] hover:border-foreground"
+                      className="group docs-tile flex min-h-[92px] flex-col justify-between gap-5 rounded-xl border border-border bg-background p-3"
                     >
                       <span
                         className={`inline-block size-2.5 rounded-[3px] ${
@@ -146,7 +146,10 @@ export default function DocsHero({
                       />
                       <span className="flex items-end justify-between gap-2 font-heading text-[13px] font-semibold leading-tight sm:text-sm">
                         <span className="min-w-0">{link.title}</span>
-                        <ArrowRight aria-hidden="true" className="size-3.5 shrink-0" />
+                        <ArrowRight
+                          aria-hidden="true"
+                          className="size-3.5 shrink-0 text-muted-foreground transition-[color,translate] duration-[160ms] motion-reduce:transition-none group-hover:text-primary motion-safe:group-hover:translate-x-0.5"
+                        />
                       </span>
                     </CmssyLink>
                   ))}
@@ -172,7 +175,7 @@ export default function DocsHero({
     <section className={`relative overflow-hidden ${bgClasses[variant]}`}>
       {dots}
 
-      <Container className="relative py-16 lg:py-24">
+      <Container className="relative py-section-tight">
         <div
           className={`max-w-3xl mx-auto text-center ${
             quickLinks.length > 0 ? "mb-12 lg:mb-16" : ""
@@ -220,22 +223,23 @@ export default function DocsHero({
                 <CmssyLink
                   key={index}
                   href={link.url}
-                  className="group flex flex-col rounded-2xl border border-border bg-card p-5 transition-colors hover:border-foreground/25"
+                  className="group docs-tile flex flex-col rounded-2xl border border-border bg-card p-5"
                 >
                   <div className="flex items-center gap-3 mb-2">
                     <div className="rounded-lg bg-muted p-2 text-foreground">
                       <Icon className="size-5" />
                     </div>
-                    <h3 className="font-heading font-semibold">{link.title}</h3>
+                    <h3 className="min-w-0 break-words font-heading font-semibold">{link.title}</h3>
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="ml-auto size-4 shrink-0 text-muted-foreground transition-[color,translate] duration-[160ms] motion-reduce:transition-none group-hover:text-primary motion-safe:group-hover:translate-x-0.5"
+                    />
                   </div>
                   {link.description && (
                     <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
                       {link.description}
                     </p>
                   )}
-                  <div className="mt-auto flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors group-hover:text-foreground">
-                    <ArrowRight className="size-3.5" />
-                  </div>
                 </CmssyLink>
               );
             })}

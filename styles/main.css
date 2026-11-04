@@ -160,10 +160,22 @@ html[data-theme="dark"] {
   --primary: var(--elektryk-700);
   --primary-foreground: var(--docs-primary-foreground);
   --ring: var(--elektryk-500);
+  --tile-glow: var(--elektryk-500);
+  --tile-glow-a: 40%;
 }
 
 html[data-theme="dark"] .docs-shell {
   --primary: var(--elektryk-500);
+}
+
+html[data-theme="dark"] .docs-shell,
+.docs-shell .bg-ink {
+  --tile-glow: var(--elektryk-300);
+  --tile-glow-a: 55%;
+}
+
+.docs-shell main > :has(+ [data-block-type="docs-hero"] > .bg-muted) {
+  background-color: var(--muted);
 }
 
 .docs-shell :focus-visible {
@@ -331,10 +343,11 @@ html[data-theme="dark"] .docs-shell :focus-visible,
     font-size: 0.875em;
     font-family: var(--font-mono);
   }
-  .prose code::before,
-  .prose code::after {
-    content: none;
-  }
+}
+
+.prose code::before,
+.prose code::after {
+  content: none;
 }
 
 /* ------------------------------------------------------------------
@@ -521,6 +534,22 @@ html[data-theme="dark"] .docs-shell :focus-visible,
   background-size: 24px 24px;
 }
 
+@utility docs-tile {
+  transition-property: border-color, box-shadow;
+  transition-duration: 160ms;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      border-color: color-mix(in oklab, var(--tile-glow) 70%, transparent);
+      box-shadow:
+        0 0 0 1px color-mix(in oklab, var(--tile-glow) 25%, transparent),
+        0 12px 32px -14px color-mix(in oklab, var(--tile-glow) var(--tile-glow-a), transparent);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    transition-duration: 0s;
+  }
+}
+
 @utility no-scrollbar {
   scrollbar-width: none;
 
@@ -601,15 +630,6 @@ html[data-theme="dark"] .prose pre.shiki {
 html[data-theme="dark"] .prose pre.shiki,
 html[data-theme="dark"] .prose pre.shiki span {
   color: var(--shiki-dark);
-}
-
-.docs-shell main:has([data-block-type="docs-hero"]) {
-  background-image: linear-gradient(
-    to bottom,
-    color-mix(in oklab, var(--primary) 5%, transparent),
-    transparent 24rem
-  );
-  background-repeat: no-repeat;
 }
 
 /* ------------------------------------------------------------------ hero
