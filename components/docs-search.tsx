@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { trapModal } from "@/lib/modal-focus";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
@@ -169,105 +170,107 @@ export function DocsSearch({
         </kbd>
       </button>
 
-      {open && (
-        <div className="fixed inset-0 z-[100] flex items-start justify-center p-4 pt-[12vh]">
-          <button
-            type="button"
-            aria-label={ui.searchClose}
-            onClick={() => setOpen(false)}
-            className="absolute inset-0 h-full w-full cursor-default bg-black/50"
-          />
-          <div
-            ref={dialogRef}
-            role="dialog"
-            aria-modal="true"
-            aria-label={label}
-            tabIndex={-1}
-            className="relative w-full max-w-xl overflow-hidden rounded-xl border border-border bg-card shadow-2xl"
-          >
-            <div className="flex items-center gap-2 border-b border-border px-4">
-              <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
-              <input
-                ref={inputRef}
-                role="combobox"
-                aria-autocomplete="list"
-                aria-expanded={Boolean(query) && matches.length > 0}
-                aria-controls={listId}
-                aria-activedescendant={
-                  query && matches[active] ? `${listId}-${active}` : undefined
-                }
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === "ArrowDown") {
-                    event.preventDefault();
-                    setActive((i) => Math.min(i + 1, matches.length - 1));
+      {open &&
+        createPortal(
+          <div className="docs-shell fixed inset-0 z-[100] flex items-start justify-center p-4 pt-[12vh]">
+            <button
+              type="button"
+              aria-label={ui.searchClose}
+              onClick={() => setOpen(false)}
+              className="absolute inset-0 h-full w-full cursor-default bg-black/50"
+            />
+            <div
+              ref={dialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label={label}
+              tabIndex={-1}
+              className="relative w-full max-w-xl overflow-hidden rounded-xl border border-border bg-card shadow-2xl"
+            >
+              <div className="flex items-center gap-2 border-b border-border px-4">
+                <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <input
+                  ref={inputRef}
+                  role="combobox"
+                  aria-autocomplete="list"
+                  aria-expanded={Boolean(query) && matches.length > 0}
+                  aria-controls={listId}
+                  aria-activedescendant={
+                    query && matches[active] ? `${listId}-${active}` : undefined
                   }
-                  if (event.key === "ArrowUp") {
-                    event.preventDefault();
-                    setActive((i) => Math.max(i - 1, 0));
-                  }
-                  if (event.key === "Enter" && matches[active]) {
-                    go(matches[active].slug);
-                  }
-                }}
-                placeholder={ui.searchPlaceholder}
-                className="w-full bg-transparent py-3.5 text-sm outline-none placeholder:text-muted-foreground"
-              />
-            </div>
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "ArrowDown") {
+                      event.preventDefault();
+                      setActive((i) => Math.min(i + 1, matches.length - 1));
+                    }
+                    if (event.key === "ArrowUp") {
+                      event.preventDefault();
+                      setActive((i) => Math.max(i - 1, 0));
+                    }
+                    if (event.key === "Enter" && matches[active]) {
+                      go(matches[active].slug);
+                    }
+                  }}
+                  placeholder={ui.searchPlaceholder}
+                  className="w-full bg-transparent py-3.5 text-sm outline-none placeholder:text-muted-foreground"
+                />
+              </div>
 
-            {query && (
-              <ul
-                id={listId}
-                role="listbox"
-                aria-label={label}
-                className="max-h-[60vh] overflow-y-auto py-2"
-              >
-                {matches.length === 0 && ui.searchEmpty && (
-                  <li
-                    role="presentation"
-                    className="px-4 py-6 text-center text-sm text-muted-foreground"
-                  >
-                    {ui.searchEmpty}
-                  </li>
-                )}
-                {matches.map((item, i) => {
-                  const current = i === active;
-                  const secondary = current
-                    ? "text-foreground/80"
-                    : "text-muted-foreground";
-                  return (
+              {query && (
+                <ul
+                  id={listId}
+                  role="listbox"
+                  aria-label={label}
+                  className="max-h-[60vh] overflow-y-auto py-2"
+                >
+                  {matches.length === 0 && ui.searchEmpty && (
                     <li
-                      key={item.slug}
-                      id={`${listId}-${i}`}
-                      role="option"
-                      aria-selected={current}
-                      onMouseEnter={() => setActive(i)}
-                      onClick={() => go(item.slug)}
-                      className={`flex cursor-pointer flex-col items-start gap-0.5 border-l-2 px-4 py-2.5 text-left ${
-                        current ? "border-elektryk bg-muted" : "border-transparent"
-                      }`}
+                      role="presentation"
+                      className="px-4 py-6 text-center text-sm text-muted-foreground"
                     >
-                      <span className="text-sm font-medium text-foreground">
-                        {item.label}
-                      </span>
-                      <span className={`text-xs ${secondary}`}>
-                        {item.section}
-                        {item.description ? ` - ${item.description}` : ""}
-                      </span>
-                      {item.snippet && (
-                        <span className={`line-clamp-2 text-xs ${secondary}`}>
-                          {item.snippet}
-                        </span>
-                      )}
+                      {ui.searchEmpty}
                     </li>
-                  );
-                })}
-              </ul>
-            )}
-          </div>
-        </div>
-      )}
+                  )}
+                  {matches.map((item, i) => {
+                    const current = i === active;
+                    const secondary = current
+                      ? "text-foreground/80"
+                      : "text-muted-foreground";
+                    return (
+                      <li
+                        key={item.slug}
+                        id={`${listId}-${i}`}
+                        role="option"
+                        aria-selected={current}
+                        onMouseEnter={() => setActive(i)}
+                        onClick={() => go(item.slug)}
+                        className={`flex cursor-pointer flex-col items-start gap-0.5 border-l-2 px-4 py-2.5 text-left ${
+                          current ? "border-elektryk bg-muted" : "border-transparent"
+                        }`}
+                      >
+                        <span className="text-sm font-medium text-foreground">
+                          {item.label}
+                        </span>
+                        <span className={`text-xs ${secondary}`}>
+                          {item.section}
+                          {item.description ? ` - ${item.description}` : ""}
+                        </span>
+                        {item.snippet && (
+                          <span className={`line-clamp-2 text-xs ${secondary}`}>
+                            {item.snippet}
+                          </span>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+          </div>,
+          document.body,
+        )}
     </>
   );
 }

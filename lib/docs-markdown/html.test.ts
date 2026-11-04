@@ -50,6 +50,10 @@ describe("markdownHref", () => {
     expect(markdownHref("/docs/blocks", "https://s.com")).toBe(
       "https://s.com/docs/blocks.md",
     );
+    expect(markdownHref("/docs/", "https://s.com")).toBe("https://s.com/docs.md");
+    expect(markdownHref("/docs/blocks/#x", "https://s.com")).toBe(
+      "https://s.com/docs/blocks.md#x",
+    );
     expect(markdownHref("/pricing", "https://s.com")).toBe("https://s.com/pricing");
     expect(markdownHref("https://x.dev/a", "https://s.com")).toBe("https://x.dev/a");
     expect(markdownHref("#here", "https://s.com")).toBe("#here");
