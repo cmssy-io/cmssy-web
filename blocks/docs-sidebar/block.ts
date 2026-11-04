@@ -1,5 +1,5 @@
 import { defineBlock } from "@cmssy/react";
-import type { DocsSection } from "@/lib/docs-section";
+import { loadDocsSectionFor } from "@/lib/docs-section-loader";
 import DocsSidebar from "./DocsSidebar";
 
 export const docsSidebarBlock = defineBlock({
@@ -7,17 +7,9 @@ export const docsSidebarBlock = defineBlock({
   category: "Docs",
   label: "Docs Sidebar",
   description:
-    "Section navigation built from the page tree the block is placed on; add it to a section root's layout and every page below inherits it.",
+    "Navigation for the active docs area, built from the page tree; add it to the docs root's layout and every page below inherits it.",
   layoutRegions: ["sidebar_left"],
-  loader: async ({ context }): Promise<DocsSection | null> => {
-    if (!context?.page) return null;
-    const { loadDocsSection } = await import("@/lib/docs-section");
-    return loadDocsSection(
-      context.page.path,
-      context.locale.current,
-      context.locale.default,
-    );
-  },
+  loader: ({ context }) => loadDocsSectionFor(context),
   component: DocsSidebar,
   props: {},
 });

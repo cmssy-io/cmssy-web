@@ -2,7 +2,7 @@ import { CmssyLink } from "./cmssy-locale";
 import { Container } from "./container";
 import { FigEyebrow } from "./fig-eyebrow";
 
-type Band = "paper" | "muted" | "ink";
+export type Band = "paper" | "muted" | "ink";
 
 const BAND: Record<Band, string> = {
   paper: "bg-background text-foreground py-6",
@@ -10,14 +10,14 @@ const BAND: Record<Band, string> = {
   ink: "dot-grid-dark bg-ink text-paper py-section-tight",
 };
 
+const COLS: Record<string, string> = {
+  "2": "md:grid-cols-2",
+  "3": "md:grid-cols-2 lg:grid-cols-3",
+  "4": "md:grid-cols-2 lg:grid-cols-4",
+};
+
 export function cardGridCols(columns: string): string {
-  return (
-    {
-      "2": "md:grid-cols-2",
-      "3": "md:grid-cols-2 lg:grid-cols-3",
-      "4": "md:grid-cols-2 lg:grid-cols-4",
-    }[columns] ?? "md:grid-cols-2 lg:grid-cols-3"
-  );
+  return COLS[columns] ?? COLS["3"];
 }
 
 export function DocsCardBand({
@@ -28,19 +28,18 @@ export function DocsCardBand({
   description,
   children,
 }: {
-  band?: string;
+  band?: Band;
   fig?: string;
   eyebrow?: string;
   heading?: string;
   description?: string;
   children: React.ReactNode;
 }) {
-  const tone = (band in BAND ? band : "paper") as Band;
-  const dark = tone === "ink";
+  const dark = band === "ink";
   const hasHeader = Boolean(fig || eyebrow || heading || description);
 
   return (
-    <section className={BAND[tone]}>
+    <section className={BAND[band]}>
       <Container>
         {hasHeader && (
           <div className="mb-7 flex flex-col gap-2.5">

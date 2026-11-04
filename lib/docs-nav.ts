@@ -3,11 +3,7 @@
 // Order comes from the page tree (`sortBy: order_asc` - what an editor sees
 // when dragging pages around), labels come from each page's `displayName` in
 // the active language. Nothing about the docs structure lives in this repo:
-// add, rename, reorder or translate a page in cmssy and the shell follows.
-//
-// Two levels of the tree carry shell structure. The first level under the docs
-// root is the tab bar - one area per page - and the active area's subtree is
-// the sidebar.
+// add, rename, reorder or translate a page in cmssy and the sidebar follows.
 
 export type DocsNavPage = {
   slug: string;
@@ -97,6 +93,11 @@ export function buildDocsNav(
       })),
     ],
   }));
+}
+
+export function pathWithin(pathname: string, rootSlug: string): string {
+  const at = pathname.indexOf(rootSlug);
+  return at >= 0 ? pathname.slice(at) : pathname;
 }
 
 export function areaForSlug<T extends { slug: string }>(

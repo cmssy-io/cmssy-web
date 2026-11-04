@@ -1,5 +1,5 @@
 import type { BlockProps } from "@cmssy/react";
-import { DocsCard, DocsCardBand } from "@/components/docs-card";
+import { DocsCard, DocsCardBand, cardGridCols } from "@/components/docs-card";
 import type { DocsSection } from "@/lib/docs-section";
 import { fillCount } from "@/lib/docs-ui";
 import type { docsAreasProps } from "./block";
@@ -19,7 +19,7 @@ export default function DocsAreas({
       heading={heading}
       description={description}
     >
-      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+      <div className={`grid gap-3 ${cardGridCols("3")}`}>
         {data.areas.map((area) => (
           <DocsCard
             key={area.slug}

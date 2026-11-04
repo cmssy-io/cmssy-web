@@ -1,10 +1,10 @@
 import { defineBlock, fields } from "@cmssy/react";
-import type { DocsSection } from "@/lib/docs-section";
+import { loadDocsSectionFor } from "@/lib/docs-section-loader";
 import DocsAreas from "./DocsAreas";
 
 export const docsAreasProps = {
   fig: fields.text({
-    label: "FIG number",
+    label: "FIG Number",
     placeholder: "e.g., 2.0",
     localized: false,
   }),
@@ -25,15 +25,7 @@ export const docsAreasBlock = defineBlock({
   label: "Docs Areas",
   description:
     "Every documentation area as a card, read from the page tree under the docs root; for the docs landing page.",
-  loader: async ({ context }): Promise<DocsSection | null> => {
-    if (!context?.page) return null;
-    const { loadDocsSection } = await import("@/lib/docs-section");
-    return loadDocsSection(
-      context.page.path,
-      context.locale.current,
-      context.locale.default,
-    );
-  },
+  loader: ({ context }) => loadDocsSectionFor(context),
   component: DocsAreas,
   props: docsAreasProps,
 });

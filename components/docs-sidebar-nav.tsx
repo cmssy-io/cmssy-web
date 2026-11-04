@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { CmssyLink } from "./cmssy-locale";
-import type { DocsArea, DocsNavSection } from "@/lib/docs-nav";
+import { pathWithin, type DocsArea, type DocsNavSection } from "@/lib/docs-nav";
 import { fillCount, type DocsUi } from "@/lib/docs-ui";
 
 // Auto docs sidebar: rendered from the page tree (see lib/docs-nav.ts), not a
@@ -28,10 +28,7 @@ export function DocsSidebarNav({
   // Drawer is portaled to <body> so no ancestor stacking context (the CMS
   // header block sits at z-50) can paint over it.
   useEffect(() => setMounted(true), []);
-  // Locale-agnostic active matching: strip anything before the area root,
-  // whatever that root happens to be.
-  const idx = pathname.indexOf(area.slug);
-  const path = idx >= 0 ? pathname.slice(idx) : pathname;
+  const path = pathWithin(pathname, area.slug);
 
   // Close on route change so a tap on a link never leaves the drawer open.
   useEffect(() => setOpen(false), [pathname]);

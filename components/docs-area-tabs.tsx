@@ -3,10 +3,10 @@
 import { usePathname } from "next/navigation";
 import { CmssyLink } from "./cmssy-locale";
 import { DocsSearch, type DocsSearchItem } from "./docs-search";
-import type { DocsArea } from "@/lib/docs-nav";
+import { areaForSlug, pathWithin, type DocsArea } from "@/lib/docs-nav";
 import type { DocsUi } from "@/lib/docs-ui";
 
-export function DocsTabs({
+export function DocsAreaTabs({
   root,
   areas,
   searchItems,
@@ -18,14 +18,11 @@ export function DocsTabs({
   ui: DocsUi;
 }) {
   const pathname = usePathname();
-  const idx = pathname.indexOf(root.slug);
-  const path = idx >= 0 ? pathname.slice(idx) : pathname;
-  const isActive = (slug: string) =>
-    path === slug || path.startsWith(`${slug}/`);
+  const activeSlug = areaForSlug(pathWithin(pathname, root.slug), areas)?.slug;
 
   return (
     <div className="sticky top-[var(--site-chrome,4rem)] z-40 border-b border-border bg-background">
-      <div className="container flex h-[var(--docs-tabs,3rem)] items-stretch gap-3 sm:gap-5">
+      <div className="container flex h-[var(--docs-area-tabs,3rem)] items-stretch gap-3 sm:gap-5">
         <CmssyLink
           href={root.slug}
           className="flex shrink-0 items-center gap-2.5 border-r border-border pr-3 font-heading text-[15px] font-semibold text-foreground sm:pr-5"
@@ -38,7 +35,7 @@ export function DocsTabs({
           className="no-scrollbar -mb-px flex min-w-0 gap-0.5 overflow-x-auto"
         >
           {areas.map((area) => {
-            const active = isActive(area.slug);
+            const active = area.slug === activeSlug;
             return (
               <CmssyLink
                 key={area.slug}

@@ -12,7 +12,7 @@ export const docsHeroProps = {
     required: true,
   }),
   highlight: fields.text({
-    label: "Highlighted word",
+    label: "Highlighted Word",
     helperText: "A word from the heading to set in the accent colour.",
   }),
   description: fields.textarea({ label: "Description" }),
@@ -28,7 +28,7 @@ export const docsHeroProps = {
     options: ["centered", "split"],
     tab: "style",
     helperText:
-      "Split: heading and commands on the left, quick links as a card on the right.",
+      "Split: heading and quick start commands on the left, quick links as a framework card on the right. The quick start and quick links card fields below only render in the split layout.",
   }),
   showSearch: fields.boolean({
     label: "Show Search Bar",
@@ -39,7 +39,7 @@ export const docsHeroProps = {
     defaultValue: "Search documentation...",
   }),
   commands: fields.repeater({
-    label: "Quick start commands",
+    label: "Quick Start Commands",
     helperText:
       "Rows with the same tab are one tab; rows with the same tab and different runners become a runner switch (npx, pnpm, bunx).",
     itemSchema: {
@@ -47,15 +47,15 @@ export const docsHeroProps = {
       runner: fields.text({ label: "Runner", placeholder: "e.g., npx", localized: false }),
       command: fields.text({ label: "Command", required: true, localized: false }),
       note: fields.textarea({ label: "Note" }),
-      noteLabel: fields.text({ label: "Note link label" }),
-      noteUrl: fields.link({ label: "Note link URL", localized: false }),
+      noteLabel: fields.text({ label: "Note Link Label" }),
+      noteUrl: fields.link({ label: "Note Link URL", localized: false }),
     },
   }),
-  copyLabel: fields.text({ label: "Copy button label", placeholder: "e.g., Copy" }),
-  copiedLabel: fields.text({ label: "Copied label", placeholder: "e.g., Copied" }),
-  quickLinksEyebrow: fields.text({ label: "Quick links eyebrow", placeholder: "e.g., Quickstarts" }),
-  quickLinksHeading: fields.text({ label: "Quick links heading" }),
-  quickLinksDescription: fields.textarea({ label: "Quick links description" }),
+  copyLabel: fields.text({ label: "Copy Button Label", placeholder: "e.g., Copy" }),
+  copiedLabel: fields.text({ label: "Copied Label", placeholder: "e.g., Copied" }),
+  quickLinksEyebrow: fields.text({ label: "Quick Links Eyebrow", placeholder: "e.g., Quickstarts" }),
+  quickLinksHeading: fields.text({ label: "Quick Links Heading" }),
+  quickLinksDescription: fields.textarea({ label: "Quick Links Description" }),
   quickLinks: fields.repeater({
     label: "Quick Links",
     itemSchema: {
@@ -68,8 +68,8 @@ export const docsHeroProps = {
       url: fields.link({ label: "URL", required: true }),
     },
   }),
-  quickLinksMoreLabel: fields.text({ label: "Quick links footer link label" }),
-  quickLinksMoreUrl: fields.link({ label: "Quick links footer link URL", localized: false }),
+  quickLinksMoreLabel: fields.text({ label: "Quick Links Footer Link Label" }),
+  quickLinksMoreUrl: fields.link({ label: "Quick Links Footer Link URL", localized: false }),
 };
 
 export const docsHeroBlock = defineBlock({

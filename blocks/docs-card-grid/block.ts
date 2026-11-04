@@ -3,7 +3,7 @@ import DocsCardGrid from "./DocsCardGrid";
 
 export const docsCardGridProps = {
   fig: fields.text({
-    label: "FIG number",
+    label: "FIG Number",
     placeholder: "e.g., 1.0",
     localized: false,
   }),
@@ -28,7 +28,7 @@ export const docsCardGridProps = {
       icon: fields.text({
         label: "Icon Name",
         placeholder: "e.g., Rocket, Code, Book",
-        helperText: "Not shown in the current card design.",
+        helperText: "Kept for existing content; the current card design does not show icons.",
       }),
       title: fields.text({ label: "Title", required: true }),
       description: fields.textarea({ label: "Description" }),

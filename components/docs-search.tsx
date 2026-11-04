@@ -146,7 +146,7 @@ export function DocsSearch({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label={ui.searchPlaceholder}
+        aria-label={ui.searchPlaceholder ?? label}
         className={
           compact
             ? "flex h-8 items-center gap-2 rounded-md border border-border bg-card px-2.5 text-left text-[13px] text-muted-foreground transition-colors hover:border-elektryk hover:text-foreground"

@@ -79,7 +79,9 @@ export default function DocsHero({
             <div className="min-w-0">
               {badge && <FigEyebrow fig="" label={badge} />}
               {heading && (
-                <h1 className="mt-3.5 font-heading text-h2 font-semibold text-balance text-foreground">
+                <h1
+                  className={`font-heading text-h2 font-semibold text-balance text-foreground ${badge ? "mt-3.5" : ""}`}
+                >
                   <Highlighted text={heading} word={highlight} />
                 </h1>
               )}
@@ -89,7 +91,7 @@ export default function DocsHero({
                 </p>
               )}
               {showSearch && searchPlaceholder && (
-                <div className="mt-6 [&>button]:mx-0 [&>button]:mt-0">
+                <div className="mt-6">
                   <DocsSearchTrigger placeholder={searchPlaceholder} />
                 </div>
               )}
@@ -192,7 +194,7 @@ export default function DocsHero({
           )}
 
           {showSearch && searchPlaceholder && (
-            <div className="mt-8">
+            <div className="mt-8 flex justify-center">
               <DocsSearchTrigger placeholder={searchPlaceholder} />
             </div>
           )}

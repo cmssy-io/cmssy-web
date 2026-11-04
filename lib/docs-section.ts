@@ -39,17 +39,26 @@ export async function loadDocsSection(
     labelForPage(page, locale, defaultLocale);
 
   const areasWithPages = await Promise.all(
-    areaPages.map(async (page) => ({
-      page,
-      children: await listChildPages(page.fullSlug),
-    })),
+    areaPages.map(async (page) => {
+      const children = await listChildPages(page.fullSlug);
+      const nested = await Promise.all(
+        children.map(async (child) => ({
+          page: child,
+          children: await listChildPages(child.fullSlug),
+        })),
+      );
+      return { page, nested };
+    }),
   );
 
-  const areas: DocsArea[] = areasWithPages.map(({ page, children }) => ({
+  const flatten = (nested: { page: DocsPageNode; children: DocsPageNode[] }[]) =>
+    nested.flatMap(({ page, children }) => [page, ...children]);
+
+  const areas: DocsArea[] = areasWithPages.map(({ page, nested }) => ({
     slug: page.fullSlug,
     label: label(page),
     description: pickLocalizedValue(page.seoDescription, locale, defaultLocale),
-    pageCount: children.length,
+    pageCount: flatten(nested).length,
   }));
 
   const currentSlug = `/${segments.join("/")}`;
@@ -58,25 +67,16 @@ export async function loadDocsSection(
     ? areasWithPages.find(({ page }) => page.fullSlug === area.slug)
     : undefined;
 
-  const nested = active
-    ? await Promise.all(
-        active.children.map(async (page) => ({
-          page,
-          children: await listChildPages(page.fullSlug),
-        })),
-      )
-    : [];
-
   const nav = active
     ? buildDocsNav(
-        [{ page: active.page, children: [] }, ...nested],
+        [{ page: active.page, children: [] }, ...active.nested],
         locale,
         defaultLocale,
       )
     : [];
 
-  const searchItems = areasWithPages.flatMap(({ page, children }) =>
-    [page, ...children].map((entry) => ({
+  const searchItems = areasWithPages.flatMap(({ page, nested }) =>
+    [page, ...flatten(nested)].map((entry) => ({
       slug: entry.fullSlug,
       label: label(entry),
       section: label(page),

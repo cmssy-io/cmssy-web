@@ -9,10 +9,9 @@ import {
   publishedPaths,
 } from "@/services/pages";
 import { buildPageMetadata } from "@/services/seo";
-import { DocsShell } from "@/components/docs-shell";
 import { DocsPrevNext } from "@/components/docs-prev-next";
 import { DocsBreadcrumbs } from "@/components/docs-breadcrumbs";
-import { DocsTabs } from "@/components/docs-tabs";
+import { DocsFrame } from "@/components/docs-frame";
 import { Container } from "@/components/container";
 import { DocsPageActions } from "@/components/docs-page-actions";
 import { isDocsPath } from "@/lib/docs-markdown";
@@ -78,43 +77,21 @@ export default async function Page({ params }: PageProps) {
     ? docsBreadcrumbs(sidebar.page.slug, section.nav, section.root)
     : null;
   const around = section ? docsPrevNext(sidebar.page.slug, section.nav) : null;
-  const hasSidebar = Boolean(section?.area);
 
   return (
-    <DocsShell>
-      {section ? (
-        <DocsTabs
-          root={section.root}
-          areas={section.areas}
-          searchItems={section.searchItems}
-          ui={section.ui}
-        />
+    <DocsFrame section={section} sidebar={sidebar.element}>
+      {trail ? <DocsBreadcrumbs trail={trail} /> : null}
+      {section &&
+      isDocsPath(sidebar.page.slug) &&
+      sidebar.locale === sidebar.defaultLocale ? (
+        <Container className="pt-4">
+          <DocsPageActions slug={sidebar.page.slug} ui={section.ui} />
+        </Container>
       ) : null}
-      <div className="mx-auto flex w-full max-w-320 flex-col md:flex-row">
-        {hasSidebar ? (
-          <aside className="sticky top-[calc(var(--site-chrome,4rem)+var(--docs-tabs,0px))] z-30 md:h-[calc(100dvh-var(--site-chrome,4rem)-var(--docs-tabs,0px))] md:w-64 md:shrink-0 md:overflow-y-auto md:overscroll-contain md:border-r md:border-border">
-            {sidebar.element}
-          </aside>
-        ) : null}
-        <main className="min-w-0 flex-1">
-          {trail ? <DocsBreadcrumbs trail={trail} /> : null}
-          {section &&
-          isDocsPath(sidebar.page.slug) &&
-          sidebar.locale === sidebar.defaultLocale ? (
-            <Container className="pt-4">
-              <DocsPageActions slug={sidebar.page.slug} ui={section.ui} />
-            </Container>
-          ) : null}
-          {content}
-          {section && around ? (
-            <DocsPrevNext
-              prev={around.prev}
-              next={around.next}
-              ui={section.ui}
-            />
-          ) : null}
-        </main>
-      </div>
-    </DocsShell>
+      {content}
+      {section && around ? (
+        <DocsPrevNext prev={around.prev} next={around.next} ui={section.ui} />
+      ) : null}
+    </DocsFrame>
   );
 }

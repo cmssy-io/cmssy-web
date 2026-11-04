@@ -1,4 +1,5 @@
 import { mediaUrl, type MediaLike } from "@cmssy/core";
+import { groupQuickstart } from "@/lib/docs-quickstart";
 import { htmlToMarkdown, markdownHref } from "./html";
 
 type Content = Record<string, unknown>;
@@ -26,6 +27,33 @@ function fenced(code: string, language: string): string {
   const longest = Math.max(2, ...(code.match(/`+/g) ?? []).map((run) => run.length));
   const fence = "`".repeat(longest + 1);
   return `${fence}${language}\n${code}\n${fence}`;
+}
+
+function quickstart(rows: unknown): string[] {
+  const tabs = groupQuickstart(
+    records(rows).map((row) => ({
+      tab: text(row.tab),
+      runner: text(row.runner),
+      command: text(row.command),
+      note: text(row.note),
+    })),
+  );
+  return tabs.map((tab) =>
+    join(
+      heading(tab.label, 3),
+      fenced(
+        tab.runners
+          .map((runner) =>
+            tab.runners.length > 1
+              ? `# ${runner}\n${tab.commands[runner]}`
+              : tab.commands[runner],
+          )
+          .join("\n\n"),
+        "bash",
+      ),
+      tab.note,
+    ),
+  );
 }
 
 function linkList(items: unknown, base: string): string {
@@ -65,9 +93,7 @@ const renderers: Record<string, Renderer> = {
   "docs-hero": (content, base) =>
     join(
       text(content.description),
-      ...records(content.commands)
-        .filter((row) => text(row.command))
-        .map((row) => fenced(text(row.command), "bash")),
+      ...quickstart(content.commands),
       linkList(content.quickLinks, base),
     ),
 

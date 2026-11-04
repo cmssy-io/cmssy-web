@@ -16,8 +16,9 @@ const OPEN_IN = [
   { name: "Cursor", host: "cursor://", href: (q: string) => `cursor://anysphere.cursor-deeplink/prompt?text=${q}` },
 ];
 
-// The page as Markdown, for pasting into an AI assistant. The words come from
-// the CMS like the rest of the shell; a language without them gets icons only.
+// The page as Markdown: copied, opened, or handed to an assistant. The words
+// come from the CMS like the rest of the shell; a language without them gets
+// icons only.
 export function DocsPageActions({ slug, ui }: { slug: string; ui: DocsUi }) {
   const { copied, copyLoaded } = useCopyToClipboard();
   const href = `${slug}.md`;
@@ -32,9 +33,10 @@ export function DocsPageActions({ slug, ui }: { slug: string; ui: DocsUi }) {
   const openIn = (build: (q: string) => string) => {
     const url = `${window.location.origin}${href}`;
     const target = build(encodeURIComponent(fillUrl(ui.openInPrompt, url)));
-    if (target.startsWith("http")) window.open(target, "_blank", "noopener");
-    else window.location.assign(target);
+    window.open(target, "_blank", "noopener");
   };
+
+  const openInLabel = ui.openIn ?? OPEN_IN.map((target) => target.name).join(" / ");
 
   const control =
     "inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary hover:text-foreground";
@@ -63,13 +65,13 @@ export function DocsPageActions({ slug, ui }: { slug: string; ui: DocsUi }) {
       <DropdownMenu>
         <DropdownMenuTrigger
           className={control}
-          aria-label={ui.openIn}
-          title={ui.openIn}
+          aria-label={openInLabel}
+          title={openInLabel}
         >
           {ui.openIn}
           <ChevronDown className="size-3.5" />
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="min-w-48">
+        <DropdownMenuContent align="end" className="docs-shell min-w-48">
           {OPEN_IN.map((target) => (
             <DropdownMenuItem
               key={target.name}

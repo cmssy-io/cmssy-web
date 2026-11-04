@@ -1,20 +1,7 @@
 import type { BlockProps } from "@cmssy/react";
 import { DocsCard, DocsCardBand, cardGridCols } from "@/components/docs-card";
+import { footerForUrl } from "@/lib/docs-ui";
 import type { docsCardGridProps } from "./block";
-
-export function cardFooter(url: string): string {
-  const trimmed = url.trim();
-  if (!trimmed) return "";
-  if (/^https?:\/\//i.test(trimmed)) {
-    try {
-      const parsed = new URL(trimmed);
-      return `${parsed.host}${parsed.pathname === "/" ? "" : parsed.pathname}`;
-    } catch {
-      return trimmed;
-    }
-  }
-  return trimmed.replace(/^\/+/, "").split(/[?#]/)[0];
-}
 
 export default function DocsCardGrid({
   content,
@@ -44,7 +31,7 @@ export default function DocsCardGrid({
             href={card.url}
             title={card.title}
             description={card.description}
-            footer={cardFooter(card.url)}
+            footer={footerForUrl(card.url)}
             dark={band === "ink"}
           />
         ))}

@@ -1,7 +1,7 @@
 "use client";
 
-import { useId, useState } from "react";
-import { Check } from "lucide-react";
+import { useState } from "react";
+import { Check, Copy } from "lucide-react";
 import { CmssyLink } from "./cmssy-locale";
 import { useCopyToClipboard } from "@/lib/use-copy-to-clipboard";
 import { pickRunner, type QuickstartTab } from "@/lib/docs-quickstart";
@@ -17,8 +17,8 @@ export function DocsQuickstart({
 }) {
   const [tabIndex, setTabIndex] = useState(0);
   const [runner, setRunner] = useState(tabs[0]?.runners[0] ?? "");
+  const [copiedCommand, setCopiedCommand] = useState("");
   const { copied, copy } = useCopyToClipboard();
-  const baseId = useId();
 
   const tab = tabs[Math.min(tabIndex, tabs.length - 1)];
   if (!tab) return null;
@@ -28,23 +28,21 @@ export function DocsQuickstart({
   const firstSpace = command.indexOf(" ");
   const bin = firstSpace === -1 ? command : command.slice(0, firstSpace);
   const rest = firstSpace === -1 ? "" : command.slice(firstSpace);
+  const justCopied = copied && copiedCommand === command;
   const bar = "font-mono text-[11px] uppercase tracking-[0.12em]";
 
   return (
     <div className="overflow-hidden rounded-[14px] border border-paper/8 bg-ink text-paper shadow-[0_30px_60px_-30px_rgba(16,20,28,0.6)]">
       <div className="flex h-[42px] items-stretch gap-1 border-b border-paper/8 bg-ink-deep pl-1.5 pr-2">
         {tabs.length > 1 ? (
-          <div role="tablist" className="flex items-stretch">
+          <div className="flex items-stretch">
             {tabs.map((entry, index) => {
               const active = entry === tab;
               return (
                 <button
-                  key={entry.label || index}
+                  key={index}
                   type="button"
-                  role="tab"
-                  id={`${baseId}-tab-${index}`}
-                  aria-selected={active}
-                  aria-controls={`${baseId}-panel`}
+                  aria-pressed={active}
                   onClick={() => setTabIndex(index)}
                   className={`${bar} -mb-px border-b-2 px-2 transition-colors duration-[160ms] ${
                     active
@@ -82,11 +80,7 @@ export function DocsQuickstart({
           </div>
         ) : null}
       </div>
-      <div
-        id={`${baseId}-panel`}
-        role="tabpanel"
-        className="flex items-center gap-3.5 p-4 sm:px-[18px]"
-      >
+      <div className="flex items-center gap-3.5 p-4 sm:px-[18px]">
         <pre className="min-w-0 flex-1 overflow-x-auto font-mono text-sm leading-relaxed">
           <code>
             <span className="text-paper/45">$ </span>
@@ -96,13 +90,20 @@ export function DocsQuickstart({
         </pre>
         <button
           type="button"
-          onClick={() => copy(command)}
+          onClick={() => {
+            setCopiedCommand(command);
+            copy(command);
+          }}
           aria-label={copyLabel}
           title={copyLabel}
           className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-elektryk px-3 py-2 font-mono text-xs uppercase tracking-[0.08em] text-ink transition-colors duration-[160ms] hover:bg-elektryk-300"
         >
-          {copied ? <Check className="size-3.5" /> : null}
-          {copied ? copiedLabel || copyLabel : copyLabel}
+          {justCopied ? (
+            <Check className="size-3.5" />
+          ) : (
+            <Copy className="size-3.5" />
+          )}
+          {justCopied ? copiedLabel || copyLabel : copyLabel}
         </button>
       </div>
       {tab.note ? (

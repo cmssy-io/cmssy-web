@@ -74,6 +74,20 @@ describe("pageToMarkdown", () => {
     expect(out).toContain("from new-one");
   });
 
+  it("drops the areas block and groups hero commands by tab and runner", () => {
+    expect(page("docs-areas", { heading: "Areas" })).not.toContain("Areas");
+    const out = page("docs-hero", {
+      heading: "Docs",
+      commands: [
+        { tab: "For you", runner: "npx", command: "npx x init" },
+        { tab: "For you", runner: "pnpm", command: "pnpm dlx x init" },
+        { tab: "For agents", command: "claude mcp add x" },
+      ],
+    });
+    expect(out).toContain("### For you\n\n```bash\n# npx\nnpx x init\n\n# pnpm\npnpm dlx x init\n```");
+    expect(out).toContain("### For agents\n\n```bash\nclaude mcp add x\n```");
+  });
+
   it("renders nothing for a terminal without commands", () => {
     expect(page("docs-terminal", { commands: [] })).not.toContain("```");
   });
