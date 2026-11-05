@@ -21,6 +21,12 @@ export function hasCode(html: string): boolean {
   return /<pre[\s>]/i.test(html);
 }
 
+export function wrapTables(html: string): string {
+  return html
+    .replace(/<table(?=[\s>])/gi, '<div class="docs-table" tabindex="0"><table')
+    .replace(/<\/table>/gi, "</table></div>");
+}
+
 export function createTabChoiceStore(storage: () => TabChoiceStorage) {
   const listeners = new Set<() => void>();
   const unsaved = new Map<string, string>();
