@@ -166,6 +166,7 @@ export default function DocsTabs({
               prose-code:text-xs
               prose-a:text-primary prose-a:no-underline hover:prose-a:underline
               prose-ul:my-2 prose-li:my-0
+              [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto
             "
             dangerouslySetInnerHTML={{ __html: activeContent }}
           />
