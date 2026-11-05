@@ -342,6 +342,11 @@ html[data-theme="dark"] .docs-shell :focus-visible,
     border-radius: 0.25rem;
     font-size: 0.875em;
     font-family: var(--font-mono);
+    overflow-wrap: anywhere;
+  }
+  .prose .docs-table :not(pre) > code {
+    overflow-wrap: normal;
+    white-space: nowrap;
   }
 }
 
