@@ -51,6 +51,12 @@ export const contactProps = {
       defaultValue: "The Cmssy Team",
     }),
     formId: fields.form({ label: "Form", tab: "advanced" }),
+    headingLevel: fields.select({
+      label: "Heading Level",
+      defaultValue: "h1",
+      options: ["h1", "h2"],
+      tab: "advanced",
+    }),
     submitLoadingText: fields.text({
       label: "Submit Loading Text",
       defaultValue: "Sending...",
