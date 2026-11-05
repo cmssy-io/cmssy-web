@@ -4,6 +4,7 @@ import {
   hasCode,
   resolveTabIndex,
   tabSyncStorageKey,
+  wrapTables,
 } from "./docs-tab-sync";
 
 const frameworks = ["Next.js", "Astro", "React Router"];
@@ -36,6 +37,19 @@ describe("tabSyncStorageKey", () => {
   it("namespaces each group separately", () => {
     expect(tabSyncStorageKey("framework")).not.toBe(
       tabSyncStorageKey("package-manager"),
+    );
+  });
+});
+
+describe("wrapTables", () => {
+  it("wraps each table in a focusable scroll container", () => {
+    expect(wrapTables("<p>a</p><table><tr><td>x</td></tr></table>")).toBe(
+      '<p>a</p><div class="docs-table" tabindex="0"><table><tr><td>x</td></tr></table></div>',
+    );
+  });
+  it("keeps table attributes and leaves other tags alone", () => {
+    expect(wrapTables('<table class="t"></table><tbody>')).toBe(
+      '<div class="docs-table" tabindex="0"><table class="t"></table></div><tbody>',
     );
   });
 });

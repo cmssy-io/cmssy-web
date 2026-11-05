@@ -5,7 +5,7 @@ import { Check, Copy } from "lucide-react";
 import type { BlockProps } from "@cmssy/react";
 import { Container } from "@/components/container";
 import { getLucideIcon } from "@/components/get-lucide-icon";
-import { hasCode, resolveTabIndex } from "@/lib/docs-tab-sync";
+import { hasCode, resolveTabIndex, wrapTables } from "@/lib/docs-tab-sync";
 import { useCopyToClipboard } from "@/lib/use-copy-to-clipboard";
 import { useSyncedTab } from "@/lib/use-synced-tab";
 import type { docsTabsProps, DocsTabsData } from "./block";
@@ -42,8 +42,9 @@ export default function DocsTabs({
     );
   }
 
-  const activeContent =
-    data?.tabsHtml?.[activeTab] ?? tabs[activeTab]?.content ?? "";
+  const activeContent = wrapTables(
+    data?.tabsHtml?.[activeTab] ?? tabs[activeTab]?.content ?? "",
+  );
 
   const selectTab = (index: number) => {
     setLocalTab(index);
@@ -166,7 +167,7 @@ export default function DocsTabs({
               prose-code:text-xs
               prose-a:text-primary prose-a:no-underline hover:prose-a:underline
               prose-ul:my-2 prose-li:my-0
-              [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto
+              [&_.docs-table]:overflow-x-auto [&_.docs-table>table]:my-0 [&_.docs-table]:my-4
             "
             dangerouslySetInnerHTML={{ __html: activeContent }}
           />

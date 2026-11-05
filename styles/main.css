@@ -344,8 +344,7 @@ html[data-theme="dark"] .docs-shell :focus-visible,
     font-family: var(--font-mono);
     overflow-wrap: anywhere;
   }
-  .prose .docs-table :not(pre) > code,
-  [role="tabpanel"] > .prose table :not(pre) > code {
+  .prose .docs-table :not(pre) > code {
     overflow-wrap: normal;
     white-space: nowrap;
   }
