@@ -23,7 +23,11 @@ export default function Contact({
     submitLoadingText,
     successHeading,
   } = content;
-  const { formId } = advanced as { formId?: string };
+  const { formId, headingLevel } = advanced as {
+    formId?: string;
+    headingLevel?: string;
+  };
+  const Heading = headingLevel === "h2" ? "h2" : "h1";
 
   const formDef = formId ? (context?.forms?.[formId] ?? null) : null;
 
@@ -40,12 +44,12 @@ export default function Contact({
           )}
           {(heading || headingHighlight) && (
             <Reveal index={1}>
-              <h1 className="max-w-[20ch] font-heading text-display font-semibold text-balance">
+              <Heading className="max-w-[20ch] font-heading text-display font-semibold text-balance">
                 {heading}{" "}
                 {headingHighlight && (
                   <span className="text-elektryk">{headingHighlight}</span>
                 )}
-              </h1>
+              </Heading>
             </Reveal>
           )}
           {description && (
