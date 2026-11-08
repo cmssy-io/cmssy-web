@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { reloadOnChunkLoadError } from "@/lib/chunk-reload";
 
 // Replaces the root layout when an error is thrown above it, so it must
 // render its own <html>/<body> and cannot rely on Tailwind/global CSS.
@@ -13,6 +14,7 @@ export default function GlobalError({
 }) {
   useEffect(() => {
     console.error(error);
+    reloadOnChunkLoadError(error);
   }, [error]);
 
   return (
