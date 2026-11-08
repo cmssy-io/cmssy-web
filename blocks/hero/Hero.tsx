@@ -33,15 +33,20 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
         <div className="hero-flow__grid">
           <div className="hero-flow__copy">
             <FigEyebrow fig={fig} label={eyebrow} dark pill />
-            <h1 className="mt-7 max-w-[12ch] font-heading text-display font-bold text-paper">
-              {headlineLead}
-              {headlineAccent ? (
+            <h1 className="mt-7 font-heading text-display font-bold text-balance text-paper lg:text-[clamp(2.625rem,4.2vw,4.5rem)]">
+              <span className="block">{headlineLead}</span>
+              {headlineAccent || headlineTail ? (
                 <>
                   {" "}
-                  <span className="text-elektryk">{headlineAccent}</span>
+                  <span className="block">
+                    {headlineAccent ? (
+                      <span className="text-elektryk">{headlineAccent}</span>
+                    ) : null}
+                    {headlineAccent && headlineTail ? " " : null}
+                    {headlineTail}
+                  </span>
                 </>
               ) : null}
-              {headlineTail ? ` ${headlineTail}` : null}
             </h1>
 
             {sub.length > 0 ? (
