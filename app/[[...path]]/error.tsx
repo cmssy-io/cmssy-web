@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { reloadOnChunkLoadError } from "@/lib/chunk-reload";
 
 export default function Error({
   error,
@@ -11,6 +12,7 @@ export default function Error({
 }) {
   useEffect(() => {
     console.error(error);
+    reloadOnChunkLoadError(error);
   }, [error]);
 
   return (
