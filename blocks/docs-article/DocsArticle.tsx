@@ -58,7 +58,8 @@ export default function DocsArticle({
             prose-headings:font-heading
             prose-h2:text-2xl prose-h2:font-semibold prose-h2:mt-12 prose-h2:mb-4
             prose-h3:text-xl prose-h3:font-medium prose-h3:mt-8 prose-h3:mb-3
-            prose-p:leading-relaxed
+            prose-p:leading-relaxed prose-p:max-w-[34rem]
+            prose-ul:max-w-[34rem] prose-ol:max-w-[34rem] prose-blockquote:max-w-[34rem]
             prose-a:text-primary prose-a:no-underline hover:prose-a:underline
             prose-li:marker:text-primary
             [&_.docs-table]:overflow-x-auto [&_.docs-table]:rounded-md [&_.docs-table>table]:my-0 [&_.docs-table]:my-6
