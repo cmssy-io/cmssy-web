@@ -118,7 +118,7 @@ export default function PlanComparison({
         )}
 
         {footnote && (
-          <p className="mx-auto mt-6 max-w-5xl text-center font-mono text-label text-muted-foreground">
+          <p className="mx-auto mt-6 max-w-prose text-center font-mono text-label text-muted-foreground">
             {footnote}
           </p>
         )}
