@@ -103,7 +103,7 @@ export default function PlanComparison({
         </div>
 
         {delivery && rateLimitLabel && (
-          <p className="mx-auto mt-6 max-w-5xl text-center text-sm text-muted-foreground">
+          <p className="mx-auto mt-6 max-w-prose text-center text-sm text-muted-foreground">
             <span className="font-semibold text-foreground">
               {rateLimitLabel}:
             </span>{" "}

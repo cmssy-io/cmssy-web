@@ -30,7 +30,9 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
             {heading}
           </h2>
           {description && (
-            <p className="mt-4 text-lg text-muted-foreground">{description}</p>
+            <p className="mx-auto mt-4 max-w-prose text-lg text-muted-foreground">
+              {description}
+            </p>
           )}
           {annualDiscountLabel && (
             <div className="mt-8 inline-flex rounded-full border border-border bg-card p-1">
@@ -71,7 +73,7 @@ export default function Pricing({ content }: BlockProps<typeof pricingProps>) {
                 }`}
               >
                 {plan.popular && popularBadgeText && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-elektryk px-3 py-1 font-mono text-micro font-semibold tracking-[0.12em] text-ink uppercase">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-elektryk px-3 py-1 font-mono text-label font-semibold tracking-[0.12em] text-ink uppercase">
                     {popularBadgeText}
                   </span>
                 )}

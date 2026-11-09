@@ -79,7 +79,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
             </div>
 
             {trustNote ? (
-              <div className="mt-5 font-mono text-caption text-paper/40">
+              <div className="mt-5 font-mono text-caption text-paper/50">
                 {trustNote}
               </div>
             ) : null}
