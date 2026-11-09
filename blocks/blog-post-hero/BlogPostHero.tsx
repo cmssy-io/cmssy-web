@@ -109,7 +109,7 @@ export default function BlogPostHero({
               </>
             )}
             {title && (
-              <span className="max-w-50 truncate text-paper/40 sm:max-w-none">
+              <span className="max-w-50 truncate text-paper/50 sm:max-w-none">
                 {title}
               </span>
             )}
