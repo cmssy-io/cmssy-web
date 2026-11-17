@@ -1,0 +1,15 @@
+# The page's cover image, for og:image. Not added to the vendored PublicPageMeta:
+# operations.graphql comes from the SDK and CI fails on any local edit to it.
+query PublicPageCover($workspaceSlug: String!, $slug: String!) {
+  public {
+    page {
+      get(workspaceSlug: $workspaceSlug, slug: $slug) {
+        id
+        customFields {
+          fieldKey
+          value
+        }
+      }
+    }
+  }
+}

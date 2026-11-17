@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { cmssy } from "@/cmssy/config";
-import { PublicPageMetaDocument } from "@/graphql/generated/graphql";
+import {
+  PublicPageCoverDocument,
+  PublicPageMetaDocument,
+} from "@/graphql/generated/graphql";
 import {
   localizedPath,
   pickLocalized,
@@ -8,6 +11,7 @@ import {
 } from "@/lib/locale-path";
 import { publicRequest } from "@/services/gateway";
 import { siteUrl } from "@/lib/site-url";
+import { coverUrl } from "@/lib/cover-url";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 
 export async function buildPageMetadata(path?: string[]): Promise<Metadata> {
@@ -21,11 +25,18 @@ export async function buildPageMetadata(path?: string[]): Promise<Metadata> {
   });
   const slug = "/" + (strippedPath ?? []).join("/");
 
-  const data = await publicRequest(
-    PublicPageMetaDocument,
-    { workspaceSlug: cmssy.workspaceSlug, slug },
-    "page meta",
-  ).catch(() => null);
+  const [data, coverData] = await Promise.all([
+    publicRequest(
+      PublicPageMetaDocument,
+      { workspaceSlug: cmssy.workspaceSlug, slug },
+      "page meta",
+    ).catch(() => null),
+    publicRequest(
+      PublicPageCoverDocument,
+      { workspaceSlug: cmssy.workspaceSlug, slug },
+      "page cover",
+    ).catch(() => null),
+  ]);
   const meta = data?.public.page.get ?? null;
 
   const siteName =
@@ -42,7 +53,11 @@ export async function buildPageMetadata(path?: string[]): Promise<Metadata> {
     meta?.seoKeywords && meta.seoKeywords.length > 0
       ? meta.seoKeywords
       : undefined;
-  const image = config?.branding?.ogImageUrl ?? undefined;
+  // A post shares with its own cover; every other page with the site default.
+  const image =
+    coverUrl(coverData?.public.page.get?.customFields) ??
+    config?.branding?.ogImageUrl ??
+    undefined;
 
   const canonical = `${siteUrl()}${localizedPath(slug, locale, defaultLocale)}`;
   const languages =
