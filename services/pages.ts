@@ -3,7 +3,7 @@ import { unstable_cache } from "next/cache";
 import { print } from "graphql";
 import { createCmssyClient } from "@cmssy/react";
 import type { CmssyPageData, CmssyPageSummary } from "@cmssy/react";
-import type { CmssyDataCacheOptions } from "@cmssy/next";
+import { nextRetryMode, type CmssyDataCacheOptions } from "@cmssy/next";
 import { cmssy } from "@/cmssy/config";
 import {
   PublicDocsPageDocument,
@@ -96,7 +96,11 @@ async function fetchChildPages(
     public?: {
       page?: { byType?: { items?: ChildPage[] } | null } | null;
     } | null;
-  }>(PAGES_BY_TYPE_QUERY, { parentSlug, limit, sortBy: "order_asc" });
+  }>(
+    PAGES_BY_TYPE_QUERY,
+    { parentSlug, limit, sortBy: "order_asc" },
+    { retry: nextRetryMode() },
+  );
   return data?.public?.page?.byType?.items ?? [];
 }
 

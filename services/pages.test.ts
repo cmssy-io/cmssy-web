@@ -82,6 +82,15 @@ describe("listChildPages during next build (CMS-2268)", () => {
     expect(queryScoped).toHaveBeenCalledTimes(1);
   });
 
+  it("lets a build wait out a throttled read instead of failing on the first 429", async () => {
+    vi.stubEnv("NEXT_PHASE", NEXT_BUILD_PHASE);
+    queryScoped.mockResolvedValue({ public: { page: { byType: { items: [] } } } });
+
+    await listChildPages("/docs");
+
+    expect(queryScoped.mock.calls[0]?.[2]).toEqual({ retry: "build" });
+  });
+
   it("asks again once the earlier read has settled", async () => {
     queryScoped.mockResolvedValue({ public: { page: { byType: { items: [] } } } });
 
