@@ -43,8 +43,9 @@ export const CONTENT_CACHE: CmssyDataCacheOptions = { revalidate: 3600 };
  *
  * Cached twice on purpose. `cache` dedupes within one render - the nav is
  * asked for the same section by the page and its metadata - and
- * `unstable_cache` keeps it across renders, because the delivery API allows
- * 100 requests a minute per IP and a serverless region shares one. A cold
+ * `unstable_cache` keeps it across renders, because the delivery API budgets
+ * 600 slots a minute per IP (a query costs ceil(cost / 500) slots) and a
+ * serverless region or a build shares one IP. A cold
  * docs page used to fan out a dozen queries; a burst of them is what turned
  * into 429s and 500-ed the page (CMS-1052).
  *
