@@ -20,26 +20,25 @@ export type SiteConfig = NonNullable<
  * clears (CMS-1052). A failed fetch is not cached: one bad request must not
  * pin the process to an unknown locale set.
  */
-export const fetchSiteConfig = cache(
-  (): Promise<SiteConfig | null> =>
-    unstable_cache(fetchSiteConfigUncached, ["cmssy-site-config"], {
+export const fetchSiteConfig = cache(async (): Promise<SiteConfig | null> => {
+  try {
+    return await unstable_cache(fetchSiteConfigUncached, ["cmssy-site-config"], {
       tags: [CONTENT_TAG],
       revalidate: 3600,
-    })(),
-);
-
-async function fetchSiteConfigUncached(): Promise<SiteConfig | null> {
-  try {
-    const data = await publicRequest(
-      PublicSiteConfigDocument,
-      { workspaceSlug: cmssy.workspaceSlug },
-      "site config",
-    );
-    return data.public.siteConfig ?? null;
+    })();
   } catch (error) {
     console.error("[cmssy-web] site config could not be fetched", error);
     return null;
   }
+});
+
+async function fetchSiteConfigUncached(): Promise<SiteConfig | null> {
+  const data = await publicRequest(
+    PublicSiteConfigDocument,
+    { workspaceSlug: cmssy.workspaceSlug },
+    "site config",
+  );
+  return data.public.siteConfig ?? null;
 }
 
 /**

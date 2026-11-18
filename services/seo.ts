@@ -1,3 +1,5 @@
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
 import type { Metadata } from "next";
 import { cmssy } from "@/cmssy/config";
 import {
@@ -12,7 +14,47 @@ import {
 import { publicRequest } from "@/services/gateway";
 import { siteUrl } from "@/lib/site-url";
 import { coverUrl } from "@/lib/cover-url";
+import { CONTENT_TAG } from "@/services/pages";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
+
+/**
+ * Both reads are cached across renders under the content tag, like the rest of
+ * the delivery reads: uncached, they are two requests per page at build, and
+ * the limit is per IP. A failure is thrown inside the cache so it is not stored
+ * for the hour; it degrades to "no meta" outside it.
+ */
+function cachedPageRead<T>(
+  key: string,
+  read: (slug: string) => Promise<T>,
+): (slug: string) => Promise<T | null> {
+  return cache(async (slug: string) => {
+    try {
+      return await unstable_cache(() => read(slug), [key, slug], {
+        tags: [CONTENT_TAG],
+        revalidate: 3600,
+      })();
+    } catch (error) {
+      console.error(`[cmssy-web] ${key} of ${slug} could not be fetched`, error);
+      return null;
+    }
+  });
+}
+
+const fetchPageMeta = cachedPageRead("cmssy-page-meta", (slug) =>
+  publicRequest(
+    PublicPageMetaDocument,
+    { workspaceSlug: cmssy.workspaceSlug, slug },
+    "page meta",
+  ),
+);
+
+const fetchPageCover = cachedPageRead("cmssy-page-cover", (slug) =>
+  publicRequest(
+    PublicPageCoverDocument,
+    { workspaceSlug: cmssy.workspaceSlug, slug },
+    "page cover",
+  ),
+);
 
 export async function buildPageMetadata(path?: string[]): Promise<Metadata> {
   const [config, { defaultLocale, locales }] = await Promise.all([
@@ -26,16 +68,8 @@ export async function buildPageMetadata(path?: string[]): Promise<Metadata> {
   const slug = "/" + (strippedPath ?? []).join("/");
 
   const [data, coverData] = await Promise.all([
-    publicRequest(
-      PublicPageMetaDocument,
-      { workspaceSlug: cmssy.workspaceSlug, slug },
-      "page meta",
-    ).catch(() => null),
-    publicRequest(
-      PublicPageCoverDocument,
-      { workspaceSlug: cmssy.workspaceSlug, slug },
-      "page cover",
-    ).catch(() => null),
+    fetchPageMeta(slug),
+    fetchPageCover(slug),
   ]);
   const meta = data?.public.page.get ?? null;
 
