@@ -8,7 +8,11 @@ vi.mock("next/cache", () => ({
 
 vi.mock("@/services/pages", () => ({
   CONTENT_TAG: "cmssy-content",
-  listChildPages: (...args: unknown[]) => listChildPages(...args),
+  readChildPages: (...args: unknown[]) => listChildPages(...args),
+}));
+
+vi.mock("@/services/gateway", () => ({
+  degradeOutsideBuild: <T>(_error: unknown, fallback: T) => fallback,
 }));
 
 const { loadDocsSection } = await import("./docs-section");
@@ -32,6 +36,15 @@ beforeEach(() => {
 });
 
 describe("loadDocsSection", () => {
+  it("degrades to no section instead of building and caching a partial tree when a read fails", async () => {
+    listChildPages.mockImplementation(async (slug: string) => {
+      if (slug === "/docs/blocks") throw new Error("cmssy: request failed (429)");
+      return tree[slug] ?? [];
+    });
+
+    await expect(loadDocsSection(["docs", "start"], "en", "en")).resolves.toBeNull();
+  });
+
   it("builds one tab per area and walks every level for counts, search and the sidebar", async () => {
     const section = await loadDocsSection(["docs", "blocks", "fields"], "en", "en");
     expect(section?.areas.map((area) => [area.slug, area.pageCount])).toEqual([

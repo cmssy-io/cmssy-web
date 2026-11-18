@@ -7,7 +7,7 @@ import {
 } from "@/graphql/generated/graphql";
 import type { SiteLocales } from "@/lib/locale-path";
 import { CONTENT_TAG } from "@/services/pages";
-import { publicRequest } from "@/services/gateway";
+import { degradeOutsideBuild, publicRequest } from "@/services/gateway";
 
 export type SiteConfig = NonNullable<
   PublicSiteConfigQuery["public"]["siteConfig"]
@@ -27,8 +27,7 @@ export const fetchSiteConfig = cache(async (): Promise<SiteConfig | null> => {
       revalidate: 3600,
     })();
   } catch (error) {
-    console.error("[cmssy-web] site config could not be fetched", error);
-    return null;
+    return degradeOutsideBuild<SiteConfig | null>(error, null, "site config");
   }
 });
 
