@@ -54,12 +54,22 @@ export const CONTENT_CACHE: CmssyDataCacheOptions = { revalidate: 3600 };
  * list is never stored for the hour, and it is logged: a silently empty nav
  * looks like a content problem and sends whoever debugs it to the CMS instead
  * of the delivery API. During `next build` it fails the build instead, so an
- * empty nav is never prerendered (CMS-2268).
+ * empty nav is never prerendered (CMS-2268). `readChildPages` is the same read
+ * without the fallback, for callers that cache what they build from it.
  */
+export const readChildPages = cache(
+  (parentSlug: string, limit = 100): Promise<ChildPage[]> =>
+    unstable_cache(
+      () => childPagesInFlight(parentSlug, limit),
+      ["cmssy-child-pages", parentSlug, String(limit)],
+      { tags: [CONTENT_TAG], revalidate: 3600 },
+    )(),
+);
+
 export const listChildPages = cache(
   async (parentSlug: string, limit = 100): Promise<ChildPage[]> => {
     try {
-      return await childPagesInFlight(parentSlug, limit);
+      return await readChildPages(parentSlug, limit);
     } catch (error) {
       return degradeOutsideBuild<ChildPage[]>(
         error,
@@ -79,11 +89,9 @@ function childPagesInFlight(
   const key = `${parentSlug}\u0000${limit}`;
   const pending = inFlightChildPages.get(key);
   if (pending) return pending;
-  const started = unstable_cache(
-    () => fetchChildPages(parentSlug, limit),
-    ["cmssy-child-pages", parentSlug, String(limit)],
-    { tags: [CONTENT_TAG], revalidate: 3600 },
-  )().finally(() => inFlightChildPages.delete(key));
+  const started = fetchChildPages(parentSlug, limit).finally(() =>
+    inFlightChildPages.delete(key),
+  );
   inFlightChildPages.set(key, started);
   return started;
 }
@@ -120,7 +128,7 @@ export async function listPublicPages(): Promise<CmssyPageSummary[]> {
 /**
  * The paths to prerender.
  *
- * Deliberately not `listPublicPages`: that one degrades to an empty list, which
+ * Deliberately not `listPublicPages`: at runtime that one degrades to an empty list, which
  * a sitemap survives and this does not. Zero params means the catch-all is
  * served on demand and cached by nothing - with a green build, a blank
  * Revalidate column, and no other warning. That is how every route on this site

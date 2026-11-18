@@ -12,7 +12,7 @@ import {
 import {
   CONTENT_TAG,
   getDocsPage,
-  listChildPages,
+  readChildPages,
   type ChildPage,
 } from "@/services/pages";
 import { resolveSiteLocales } from "@/services/site";
@@ -49,7 +49,7 @@ async function render(page: ChildPage): Promise<string | null> {
 
 async function findPage(slug: string): Promise<ChildPage | null> {
   const parent = slug.slice(0, slug.lastIndexOf("/")) || "/";
-  const siblings = await listChildPages(parent);
+  const siblings = await readChildPages(parent);
   return siblings.find((page) => page.fullSlug === slug) ?? null;
 }
 

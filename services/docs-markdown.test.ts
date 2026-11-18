@@ -9,7 +9,7 @@ vi.mock("next/cache", () => ({
 
 vi.mock("@/services/pages", () => ({
   CONTENT_TAG: "cmssy-content",
-  listChildPages: (...args: unknown[]) => listChildPages(...args),
+  readChildPages: (...args: unknown[]) => listChildPages(...args),
   getDocsPage: (...args: unknown[]) => getDocsPage(...args),
   getPageById: vi.fn(),
 }));

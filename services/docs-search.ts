@@ -6,7 +6,7 @@ import { mapWithLimit } from "@/lib/map-with-limit";
 import {
   CONTENT_TAG,
   getPageById,
-  listChildPages,
+  readChildPages,
   type ChildPage,
 } from "@/services/pages";
 
@@ -33,7 +33,7 @@ export async function docsPages(): Promise<ChildPage[]> {
   let frontier = [DOCS_ROOT];
   for (let depth = 0; depth < MAX_DEPTH && frontier.length > 0; depth++) {
     const lists = await mapWithLimit(frontier, CONCURRENCY, (slug) =>
-      listChildPages(slug),
+      readChildPages(slug),
     );
     const next: string[] = [];
     frontier.forEach((slug, index) => {

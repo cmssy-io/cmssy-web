@@ -6,7 +6,7 @@ const getPageById = vi.fn();
 
 vi.mock("@/services/pages", () => ({
   CONTENT_TAG: "cmssy-content",
-  listChildPages: (...args: unknown[]) => listChildPages(...args),
+  readChildPages: (...args: unknown[]) => listChildPages(...args),
   getPageById: (...args: unknown[]) => getPageById(...args),
 }));
 

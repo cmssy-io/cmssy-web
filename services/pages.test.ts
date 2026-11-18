@@ -26,7 +26,7 @@ vi.mock("@cmssy/core", async (importActual) => ({
   graphqlRequest: (...args: unknown[]) => graphqlRequest(...args),
 }));
 
-const { listChildPages, getPageId } = await import("./pages");
+const { listChildPages, getPageId, getPageById, listPublicPages } = await import("./pages");
 
 const throttled = new Error("cmssy: request failed (429)");
 
@@ -91,6 +91,36 @@ describe("listChildPages during next build (CMS-2268)", () => {
     expect(queryScoped.mock.calls[0]?.[2]).toEqual({ retry: "build" });
   });
 
+  it("reads a visitor's nav in the interactive mode, never the build one", async () => {
+    queryScoped.mockResolvedValue({ public: { page: { byType: { items: [] } } } });
+
+    await listChildPages("/docs");
+
+    expect(queryScoped.mock.calls[0]?.[2]).toEqual({ retry: "interactive" });
+  });
+
+  it("forgets a failed read, so the next one asks again", async () => {
+    queryScoped
+      .mockRejectedValueOnce(throttled)
+      .mockResolvedValueOnce({
+        public: { page: { byType: { items: [{ id: "a", fullSlug: "/docs/a" }] } } },
+      });
+
+    await expect(listChildPages("/docs")).resolves.toEqual([]);
+    await expect(listChildPages("/docs")).resolves.toEqual([
+      { id: "a", fullSlug: "/docs/a" },
+    ]);
+    expect(queryScoped).toHaveBeenCalledTimes(2);
+  });
+
+  it("does not share a request between two limits of one section", async () => {
+    queryScoped.mockResolvedValue({ public: { page: { byType: { items: [] } } } });
+
+    await Promise.all([listChildPages("/docs", 10), listChildPages("/docs", 20)]);
+
+    expect(queryScoped).toHaveBeenCalledTimes(2);
+  });
+
   it("asks again once the earlier read has settled", async () => {
     queryScoped.mockResolvedValue({ public: { page: { byType: { items: [] } } } });
 
@@ -121,5 +151,26 @@ describe("page reads during next build (CMS-2268)", () => {
     graphqlRequest.mockRejectedValue(throttled);
 
     await expect(getPageId("/pricing")).resolves.toBeNull();
+  });
+});
+
+describe("the other page reads during next build (CMS-2268)", () => {
+  it.each([
+    ["getPageById", () => getPageById("p1")],
+    ["listPublicPages", () => listPublicPages()],
+  ])("%s fails the build on a throttled read", async (_name, read) => {
+    vi.stubEnv("NEXT_PHASE", NEXT_BUILD_PHASE);
+    graphqlRequest.mockRejectedValue(throttled);
+
+    await expect(read()).rejects.toBe(throttled);
+  });
+
+  it.each([
+    ["getPageById", () => getPageById("p1"), null],
+    ["listPublicPages", () => listPublicPages(), []],
+  ])("%s degrades at runtime", async (_name, read, fallback) => {
+    graphqlRequest.mockRejectedValue(throttled);
+
+    await expect(read()).resolves.toEqual(fallback);
   });
 });

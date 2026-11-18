@@ -10,7 +10,8 @@ import {
 } from "@/lib/docs-nav";
 import { docsUiFrom, type DocsUi } from "@/lib/docs-ui";
 import { mapWithLimit } from "@/lib/map-with-limit";
-import { CONTENT_TAG, listChildPages, type ChildPage } from "@/services/pages";
+import { degradeOutsideBuild } from "@/services/gateway";
+import { CONTENT_TAG, readChildPages, type ChildPage } from "@/services/pages";
 
 export type DocsSection = {
   root: { slug: string; label: string };
@@ -36,7 +37,7 @@ async function walkTree(
   for (let depth = 0; depth < MAX_DEPTH && frontier.length; depth += 1) {
     const next: typeof frontier = [];
     const pages = await mapWithLimit(frontier, CONCURRENCY, ({ slug }) =>
-      listChildPages(slug),
+      readChildPages(slug),
     );
     frontier.forEach(({ into }, index) => {
       for (const page of pages[index] ?? []) {
@@ -65,7 +66,7 @@ export function flattenTree(
 export async function buildDocsTree(
   rootSlug: string,
 ): Promise<{ root: ChildPage; areas: DocsTreeNode[] } | null> {
-  const topLevel = await listChildPages("/");
+  const topLevel = await readChildPages("/");
   const root = topLevel.find((page) => page.fullSlug === rootSlug);
   if (!root) return null;
   return { root, areas: await walkTree(rootSlug, root.id) };
@@ -86,7 +87,9 @@ export async function loadDocsSection(
   const rootSlug = segments[0] ? `/${segments[0]}` : null;
   if (!rootSlug) return null;
 
-  const tree = await loadDocsTree(rootSlug);
+  const tree = await loadDocsTree(rootSlug).catch((error: unknown) =>
+    degradeOutsideBuild(error, null, `docs tree of ${rootSlug}`),
+  );
   if (!tree) return null;
 
   const label = (page: ChildPage) => labelForPage(page, locale, defaultLocale);

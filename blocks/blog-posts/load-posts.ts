@@ -1,8 +1,10 @@
 import { print } from "graphql";
 import { createCmssyClient } from "@cmssy/react";
+import { nextRetryMode } from "@cmssy/next";
 import type { PageItem } from "@cmssy/types";
 import { cmssy } from "@/cmssy/config";
 import { PublicPagesByTypeDocument } from "@/graphql/generated/graphql";
+import { degradeOutsideBuild } from "@/services/gateway";
 import type { PostsSortVars } from "./src/utils";
 
 const client = createCmssyClient(cmssy);
@@ -32,7 +34,7 @@ export async function loadPosts(
           byType?: { items?: PageItem[]; hasMore?: boolean } | null;
         } | null;
       } | null;
-    }>(PUBLIC_PAGES_QUERY, vars);
+    }>(PUBLIC_PAGES_QUERY, vars, { retry: nextRetryMode() });
     const r = data?.public?.page?.byType;
     if (!r) {
       console.error(
@@ -42,7 +44,6 @@ export async function loadPosts(
     }
     return { items: r.items ?? [], hasMore: !!r.hasMore };
   } catch (err) {
-    console.error("[cmssy-web] loadPosts failed", err);
-    return null;
+    return degradeOutsideBuild(err, null, "blog posts");
   }
 }
