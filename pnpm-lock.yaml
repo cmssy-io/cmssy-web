@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       '@cmssy/core':
-        specifier: 19.33.0
-        version: 19.33.0
+        specifier: 19.34.1
+        version: 19.34.1
       '@cmssy/next':
-        specifier: 19.33.0
-        version: 19.33.0(@cmssy/react@19.33.0(react@19.2.7))(next@16.2.10(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        specifier: 19.34.1
+        version: 19.34.1(@cmssy/react@19.34.1(react@19.2.7))(next@16.2.10(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@cmssy/react':
-        specifier: 19.33.0
-        version: 19.33.0(react@19.2.7)
+        specifier: 19.34.1
+        version: 19.34.1(react@19.2.7)
       '@graphql-typed-document-node/core':
         specifier: ^3.2.0
         version: 3.2.0(graphql@17.0.2)
@@ -112,14 +112,14 @@ importers:
         version: 5.1.0
     devDependencies:
       '@cmssy/cli':
-        specifier: 19.33.0
-        version: 19.33.0
+        specifier: 19.34.1
+        version: 19.34.1
       '@cmssy/eslint-plugin':
-        specifier: 19.33.0
-        version: 19.33.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
+        specifier: 19.34.1
+        version: 19.34.1(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
       '@cmssy/types':
-        specifier: 0.76.0
-        version: 0.76.0
+        specifier: 0.77.0
+        version: 0.77.0
       '@eslint/js':
         specifier: ^9.39.3
         version: 9.39.5
@@ -269,38 +269,38 @@ packages:
     resolution: {integrity: sha512-4zBIxpPzowiZpusoFkyGVwakdRJUyuH5PxQ/PrqghfdFWWasvnCdPfQXHrenDai+gyLARulZjZowCOj6fjT4pA==}
     engines: {node: '>=6.9.0'}
 
-  '@cmssy/cli@19.33.0':
-    resolution: {integrity: sha512-j/W7h267IpcHKO292LEaRxyU2wmZ096sTNvG7QHMJRFK05ZCfJTHTIYpm6g1ZgcdutNORYf+LxjFenMT9/DTUQ==}
+  '@cmssy/cli@19.34.1':
+    resolution: {integrity: sha512-57AIXYxHRZxSnbU8aV8GCvT2qQJ0LQil+HBAE5ruisYEUeZOQBhU4igdLoT0oYnqKSVQjT8jAUQfiJFDnCDCGw==}
     engines: {node: '>=20'}
     hasBin: true
 
-  '@cmssy/core@19.33.0':
-    resolution: {integrity: sha512-IKZgM2cXJx8EUi6v9KFc/mX+c2FDR/22/A6ScwkVsG5bueUa8hJuye6c4NhTXRMk73M9dXcnZ+uBuu++Sn79kw==}
+  '@cmssy/core@19.34.1':
+    resolution: {integrity: sha512-FXLtmwEj2VcgiZvnK7ZIVgS58eI4iAcNY9sJfpmJyBBblsNZ4u3k/kuteXWou7VD7IyMxhEgj5Pa47S2XdWIfg==}
     engines: {node: '>=20'}
 
-  '@cmssy/eslint-plugin@19.33.0':
-    resolution: {integrity: sha512-c7x7jjq9ZBA9PJNW/Z3y2EYTW95o0L9Z6C09l9kpAyc1GabOA8yRUNiAoyMMxkUhZbm9y4au+T0z7mK47+Yjdw==}
+  '@cmssy/eslint-plugin@19.34.1':
+    resolution: {integrity: sha512-zucVsXecFWONMgq72c0IlEc+NEkWXDMnf9zbgcSMeaDGDkLxuyJJI4KjM6KXfftsrAS3WyELRn9tmbcQkyWoaQ==}
     engines: {node: '>=20'}
     peerDependencies:
       eslint: '>=8'
 
-  '@cmssy/next@19.33.0':
-    resolution: {integrity: sha512-Y/xa8ilm8FqJsXUAbGQ3QiQaLLWQsShPJzBi81kK+hj+0UndOGiP8V6raP4s3IaaRwIU4e6BtqYhEmkowZoJQg==}
+  '@cmssy/next@19.34.1':
+    resolution: {integrity: sha512-SSNVwtdAuqaHCx7ndGGAXVM4QK8KwdwwgNXZ6O8z5558c21MaNgmVvlZ6hEU/PE66HIxTxTzP0py9iR0hgNk2g==}
     engines: {node: '>=20'}
     peerDependencies:
-      '@cmssy/react': ^19.33.0
+      '@cmssy/react': ^19.34.1
       next: '>=15'
       react: ^18.2.0 || ^19.0.0
       react-dom: ^18.2.0 || ^19.0.0
 
-  '@cmssy/react@19.33.0':
-    resolution: {integrity: sha512-xmPs+jbCz2v8sQFuf3n5aHW/qHhtBl4QD4A/f72kqsIvKnvKu27glZupUoB6rlnnq4U3bnZQTkzuYZU78mjmyg==}
+  '@cmssy/react@19.34.1':
+    resolution: {integrity: sha512-t3sQimjc8L4chQwOancHGVqmnmLyS+ibcMgIUkDAflwhn6rC+FR5f4nKy8dx3OyAUSrJexcLgC+pqU41l+8mJQ==}
     engines: {node: '>=20'}
     peerDependencies:
       react: ^18.2.0 || ^19.0.0
 
-  '@cmssy/types@0.76.0':
-    resolution: {integrity: sha512-5TH4+HTbrfx1pQVpm/F7cGXK2D0CbjxCa6aqAoC/0o5g93PXioIYfqi4rGGTNLWN/SOrLR2ok6CM37ZQrU/URw==}
+  '@cmssy/types@0.77.0':
+    resolution: {integrity: sha512-CDn/kd9pPszLeyhZjXtRfEN4a4xUnhMSnwn1X2l7UKWovoev8HcG21kWdQKmIbuIsG7iR6mEKVjiuhOryhBkvA==}
 
   '@dimforge/rapier3d-compat@0.12.0':
     resolution: {integrity: sha512-uekIGetywIgopfD97oDL5PfeezkFpNhwlzlaEYNOA0N6ghdsOvh/HYjSMek5Q2O1PYvRSDFcqFVJl4r4ZBwOow==}
@@ -4034,17 +4034,17 @@ snapshots:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
 
-  '@cmssy/cli@19.33.0':
+  '@cmssy/cli@19.34.1':
     dependencies:
-      '@cmssy/core': 19.33.0
+      '@cmssy/core': 19.34.1
       esbuild: 0.27.7
 
-  '@cmssy/core@19.33.0':
+  '@cmssy/core@19.34.1':
     dependencies:
-      '@cmssy/types': 0.76.0
+      '@cmssy/types': 0.77.0
       jose: 6.2.4
 
-  '@cmssy/eslint-plugin@19.33.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)':
+  '@cmssy/eslint-plugin@19.34.1(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/parser': 8.64.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
       eslint: 9.39.5(jiti@2.7.0)
@@ -4052,23 +4052,23 @@ snapshots:
       - supports-color
       - typescript
 
-  '@cmssy/next@19.33.0(@cmssy/react@19.33.0(react@19.2.7))(next@16.2.10(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+  '@cmssy/next@19.34.1(@cmssy/react@19.34.1(react@19.2.7))(next@16.2.10(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
-      '@cmssy/core': 19.33.0
-      '@cmssy/react': 19.33.0(react@19.2.7)
-      '@cmssy/types': 0.76.0
+      '@cmssy/core': 19.34.1
+      '@cmssy/react': 19.34.1(react@19.2.7)
+      '@cmssy/types': 0.77.0
       next: 16.2.10(@babel/core@7.29.7)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
       server-only: 0.0.1
 
-  '@cmssy/react@19.33.0(react@19.2.7)':
+  '@cmssy/react@19.34.1(react@19.2.7)':
     dependencies:
-      '@cmssy/core': 19.33.0
-      '@cmssy/types': 0.76.0
+      '@cmssy/core': 19.34.1
+      '@cmssy/types': 0.77.0
       react: 19.2.7
 
-  '@cmssy/types@0.76.0': {}
+  '@cmssy/types@0.77.0': {}
 
   '@dimforge/rapier3d-compat@0.12.0': {}
 
