@@ -57,4 +57,5 @@ export interface CmssyRecordList<Slug extends CmssyModelSlug> {
   items: Array<CmssyRecordOf<CmssyModels[Slug]>>;
   total: number;
   hasMore: boolean;
+  nextCursor: string | null;
 }
