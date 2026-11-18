@@ -11,7 +11,7 @@ import {
   pickLocalized,
   splitLocaleFromPath,
 } from "@/lib/locale-path";
-import { publicRequest } from "@/services/gateway";
+import { degradeOutsideBuild, publicRequest } from "@/services/gateway";
 import { siteUrl } from "@/lib/site-url";
 import { coverUrl } from "@/lib/cover-url";
 import { CONTENT_TAG } from "@/services/pages";
@@ -21,7 +21,7 @@ import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
  * Both reads are cached across renders under the content tag, like the rest of
  * the delivery reads: uncached, they are two requests per page at build, and
  * the limit is per IP. A failure is thrown inside the cache so it is not stored
- * for the hour; it degrades to "no meta" outside it.
+ * for the hour; it degrades to "no meta" outside it, and fails `next build`.
  */
 function cachedPageRead<T>(
   key: string,
@@ -34,8 +34,7 @@ function cachedPageRead<T>(
         revalidate: 3600,
       })();
     } catch (error) {
-      console.error(`[cmssy-web] ${key} of ${slug} could not be fetched`, error);
-      return null;
+      return degradeOutsideBuild<T | null>(error, null, `${key} of ${slug}`);
     }
   });
 }

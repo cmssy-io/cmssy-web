@@ -12,7 +12,7 @@ import {
   PublicPagesByTypeDocument,
   PublicPagesDocument,
 } from "@/graphql/generated/graphql";
-import { publicRequest } from "@/services/gateway";
+import { degradeOutsideBuild, publicRequest } from "@/services/gateway";
 import type { PageCustomField } from "@/lib/docs-ui";
 
 /** A published child page, in the order the CMS tree puts it. */
@@ -49,28 +49,44 @@ export const CONTENT_CACHE: CmssyDataCacheOptions = { revalidate: 3600 };
  * docs page used to fan out a dozen queries; a burst of them is what turned
  * into 429s and 500-ed the page (CMS-1052).
  *
- * A failure degrades to an empty list - a section without a sidebar still
- * reads - but it is thrown inside `unstable_cache`, so the empty list is never
- * stored for the hour, and it is logged: a silently empty nav looks like a content problem
- * and sends whoever debugs it to the CMS instead of the delivery API.
+ * At runtime a failure degrades to an empty list - a section without a
+ * sidebar still reads - but it is thrown inside `unstable_cache`, so the empty
+ * list is never stored for the hour, and it is logged: a silently empty nav
+ * looks like a content problem and sends whoever debugs it to the CMS instead
+ * of the delivery API. During `next build` it fails the build instead, so an
+ * empty nav is never prerendered (CMS-2268).
  */
 export const listChildPages = cache(
   async (parentSlug: string, limit = 100): Promise<ChildPage[]> => {
     try {
-      return await unstable_cache(
-        () => fetchChildPages(parentSlug, limit),
-        ["cmssy-child-pages", parentSlug, String(limit)],
-        { tags: [CONTENT_TAG], revalidate: 3600 },
-      )();
+      return await childPagesInFlight(parentSlug, limit);
     } catch (error) {
-      console.error(
-        `[cmssy-web] child pages of ${parentSlug} could not be fetched`,
+      return degradeOutsideBuild<ChildPage[]>(
         error,
+        [],
+        `child pages of ${parentSlug}`,
       );
-      return [];
     }
   },
 );
+
+const inFlightChildPages = new Map<string, Promise<ChildPage[]>>();
+
+function childPagesInFlight(
+  parentSlug: string,
+  limit: number,
+): Promise<ChildPage[]> {
+  const key = `${parentSlug}\u0000${limit}`;
+  const pending = inFlightChildPages.get(key);
+  if (pending) return pending;
+  const started = unstable_cache(
+    () => fetchChildPages(parentSlug, limit),
+    ["cmssy-child-pages", parentSlug, String(limit)],
+    { tags: [CONTENT_TAG], revalidate: 3600 },
+  )().finally(() => inFlightChildPages.delete(key));
+  inFlightChildPages.set(key, started);
+  return started;
+}
 
 async function fetchChildPages(
   parentSlug: string,
@@ -92,8 +108,8 @@ export async function listPublicPages(): Promise<CmssyPageSummary[]> {
       "public pages",
     );
     return data.public.page.list;
-  } catch {
-    return [];
+  } catch (error) {
+    return degradeOutsideBuild<CmssyPageSummary[]>(error, [], "public pages");
   }
 }
 
@@ -130,8 +146,8 @@ export async function getPageById(
     const page = data.public.page.getById;
     if (!page) return null;
     return { id: page.id, blocks: page.publishedBlocks };
-  } catch {
-    return null;
+  } catch (error) {
+    return degradeOutsideBuild(error, null, `page ${pageId}`);
   }
 }
 
@@ -155,8 +171,8 @@ export async function getDocsPage(pageId: string): Promise<DocsPage | null> {
       displayName: page.displayName as ChildPage["displayName"],
       seoDescription: page.seoDescription as ChildPage["seoDescription"],
     };
-  } catch {
-    return null;
+  } catch (error) {
+    return degradeOutsideBuild(error, null, `docs page ${pageId}`);
   }
 }
 
@@ -175,7 +191,7 @@ export async function getPageId(
       "page id",
     );
     return data.public.page.get ?? null;
-  } catch {
-    return null;
+  } catch (error) {
+    return degradeOutsideBuild(error, null, `page id of ${slug}`);
   }
 }
