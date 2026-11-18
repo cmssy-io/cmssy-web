@@ -100,13 +100,14 @@ query PublicPageLayouts($workspaceSlug: String!, $pageSlug: String!, $previewSec
 }
 
 # Records of one model - the typed half of `cmssy types`.
-query PublicModelRecords($workspaceId: String!, $modelSlug: String!, $filter: JSON, $sort: String, $locale: String, $limit: Int, $offset: Int, $populate: [String!], $previewSecret: String) {
+query PublicModelRecords($workspaceId: String!, $modelSlug: String!, $filter: JSON, $sort: String, $locale: String, $limit: Int, $offset: Int, $after: String, $populate: [String!], $previewSecret: String) {
   public {
     model {
-      records(workspaceId: $workspaceId, modelSlug: $modelSlug, filter: $filter, sort: $sort, locale: $locale, limit: $limit, offset: $offset, populate: $populate, previewSecret: $previewSecret) {
+      records(workspaceId: $workspaceId, modelSlug: $modelSlug, filter: $filter, sort: $sort, locale: $locale, limit: $limit, offset: $offset, after: $after, populate: $populate, previewSecret: $previewSecret) {
         items { id modelId data status createdAt updatedAt }
         total
         hasMore
+        nextCursor
       }
     }
   }
