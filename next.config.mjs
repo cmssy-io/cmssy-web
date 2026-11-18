@@ -9,6 +9,9 @@ const nextConfig = {
     remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
   staticPageGenerationTimeout: DELIVERY_BUDGET_S + RENDER_HEADROOM_S,
+  experimental: {
+    staticGenerationMaxConcurrency: 2,
+  },
   // Every docs page has a Markdown twin at the same address plus ".md".
   async rewrites() {
     return {

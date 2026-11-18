@@ -49,36 +49,38 @@ export const CONTENT_CACHE: CmssyDataCacheOptions = { revalidate: 3600 };
  * into 429s and 500-ed the page (CMS-1052).
  *
  * A failure degrades to an empty list - a section without a sidebar still
- * reads - but it is logged: a silently empty nav looks like a content problem
+ * reads - but it is thrown inside `unstable_cache`, so the empty list is never
+ * stored for the hour, and it is logged: a silently empty nav looks like a content problem
  * and sends whoever debugs it to the CMS instead of the delivery API.
  */
 export const listChildPages = cache(
-  (parentSlug: string, limit = 100): Promise<ChildPage[]> =>
-    unstable_cache(
-      () => fetchChildPages(parentSlug, limit),
-      ["cmssy-child-pages", parentSlug, String(limit)],
-      { tags: [CONTENT_TAG], revalidate: 3600 },
-    )(),
+  async (parentSlug: string, limit = 100): Promise<ChildPage[]> => {
+    try {
+      return await unstable_cache(
+        () => fetchChildPages(parentSlug, limit),
+        ["cmssy-child-pages", parentSlug, String(limit)],
+        { tags: [CONTENT_TAG], revalidate: 3600 },
+      )();
+    } catch (error) {
+      console.error(
+        `[cmssy-web] child pages of ${parentSlug} could not be fetched`,
+        error,
+      );
+      return [];
+    }
+  },
 );
 
 async function fetchChildPages(
   parentSlug: string,
   limit: number,
 ): Promise<ChildPage[]> {
-  try {
-    const data = await createCmssyClient(cmssy).queryScoped<{
-      public?: {
-        page?: { byType?: { items?: ChildPage[] } | null } | null;
-      } | null;
-    }>(PAGES_BY_TYPE_QUERY, { parentSlug, limit, sortBy: "order_asc" });
-    return data?.public?.page?.byType?.items ?? [];
-  } catch (error) {
-    console.error(
-      `[cmssy-web] child pages of ${parentSlug} could not be fetched`,
-      error,
-    );
-    return [];
-  }
+  const data = await createCmssyClient(cmssy).queryScoped<{
+    public?: {
+      page?: { byType?: { items?: ChildPage[] } | null } | null;
+    } | null;
+  }>(PAGES_BY_TYPE_QUERY, { parentSlug, limit, sortBy: "order_asc" });
+  return data?.public?.page?.byType?.items ?? [];
 }
 
 export async function listPublicPages(): Promise<CmssyPageSummary[]> {
