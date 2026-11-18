@@ -71,7 +71,7 @@ export default function AiDifferentiator({
 
           <Reveal>
             <FigurePlate dark fig={plateNumber(fig, 0)}>
-              <div className="flex items-center gap-2.5 border-b border-paper/10 px-4 py-3 font-mono text-caption text-paper/40">
+              <div className="flex items-center gap-2.5 border-b border-paper/10 px-4 py-3 font-mono text-caption text-paper/50">
                 <CmssyMark className="h-3.5 w-auto text-paper" />
                 claude · cmssy mcp
               </div>

@@ -191,6 +191,7 @@ export function DocsSearch({
                 <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
                 <input
                   ref={inputRef}
+                  data-docs-search-input
                   role="combobox"
                   aria-autocomplete="list"
                   aria-expanded={Boolean(query) && matches.length > 0}

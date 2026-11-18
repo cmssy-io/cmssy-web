@@ -44,7 +44,7 @@ export default function TechTicker({
 
   return (
     <section
-      className="tech-ticker h-12 overflow-hidden border-t border-paper/10 bg-ink font-mono text-label tracking-[0.14em] text-paper/45 uppercase"
+      className="tech-ticker h-12 overflow-hidden border-t border-paper/10 bg-ink font-mono text-label tracking-[0.14em] text-paper/50 uppercase"
       aria-label={ariaLabel || undefined}
       role="marquee"
       tabIndex={0}
