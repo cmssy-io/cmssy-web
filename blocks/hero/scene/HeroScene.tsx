@@ -208,24 +208,22 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
     setCursor("off");
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      const first = steps[0];
-      if (first.target === "headline") setHeadline(first.text);
-      if (first.target === "button") setButton(first.text);
-      if (first.target === "accent") setAccent(first.text);
-      if (first.target === "layout") setSwapped(true);
-      applyResult(first);
-      setMessages([
-        { id: 1, kind: "user", text: first.prompt },
-        ...first.tools.map((t, i) => ({
-          id: 2 + i,
-          kind: "tool" as const,
-          text: t,
-          done: true,
-        })),
-        ...(first.reply
-          ? [{ id: 99, kind: "reply" as const, text: first.reply }]
-          : []),
-      ]);
+      let finalSwapped = false;
+      let id = 0;
+      const thread: Message[] = [];
+      for (const step of steps) {
+        if (step.target === "headline") setHeadline(step.text);
+        if (step.target === "button") setButton(step.text);
+        if (step.target === "accent") setAccent(step.text);
+        if (step.target === "layout") finalSwapped = !finalSwapped;
+        applyResult(step);
+        thread.push({ id: ++id, kind: "user", text: step.prompt });
+        for (const t of step.tools)
+          thread.push({ id: ++id, kind: "tool", text: t, done: true });
+        if (step.reply) thread.push({ id: ++id, kind: "reply", text: step.reply });
+      }
+      setSwapped(finalSwapped);
+      setMessages(thread);
       return;
     }
 

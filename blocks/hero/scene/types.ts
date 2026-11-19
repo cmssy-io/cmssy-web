@@ -138,7 +138,8 @@ export const FALLBACK_STEPS = [
   },
 ];
 
-const COLOR = /^(#[0-9a-f]{3,8}|(rgb|rgba|hsl|hsla|oklch|oklab)\([^)]*\))$/i;
+const COLOR =
+  /^(#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})|(rgb|rgba|hsl|hsla|oklch|oklab)\([^)]*\))$/i;
 
 const DEFAULT_MODEL_FIELDS = "name:Text · price:Number · color:Select";
 const DEFAULT_VARIANTS = "Blue:#00a8f0 · Silver:#e8ebf0 · Graphite:#3a4252";
