@@ -1902,3 +1902,9 @@ html[data-theme="dark"] .prose pre.shiki span {
     animation: none !important;
   }
 }
+
+/* The consent banner is server-rendered for everyone; a stored choice marks
+   <html> before the first paint (consentModeInitScript), so it never shows. */
+html[data-consent-chosen] .cookie-consent--auto {
+  display: none;
+}

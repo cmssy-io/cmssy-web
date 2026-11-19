@@ -5,6 +5,12 @@ type ConsentValue = "granted" | "denied";
 export const CONSENT_COOKIE = "cmssy_consent";
 export const CONSENT_MAX_AGE = 60 * 60 * 24 * 180;
 export const OPEN_CONSENT_HASH = "#cookie-settings";
+/**
+ * Set on `<html>` before the first paint when a choice is already stored. The
+ * banner is server-rendered for everyone (so it paints with the page instead
+ * of after hydration) and CSS hides it under this attribute.
+ */
+export const CONSENT_CHOSEN_ATTR = "data-consent-chosen";
 
 export const CONSENT_DEFAULTS: Record<string, ConsentValue> = {
   ad_storage: "denied",
@@ -77,5 +83,5 @@ export function analyticsCookieExpiries(
 
 export function consentModeInitScript(): string {
   const defaults = JSON.stringify(CONSENT_DEFAULTS);
-  return `(function(){var w=window;w.dataLayer=w.dataLayer||[];w.gtag=w.gtag||function(){w.dataLayer.push(arguments);};var g=/(?:^|;\\s*)${CONSENT_COOKIE}=granted(?:;|$)/.test(document.cookie);w.gtag('consent','default',${defaults});w.gtag('consent','update',{analytics_storage:g?'granted':'denied'});})();`;
+  return `(function(){var w=window;w.dataLayer=w.dataLayer||[];w.gtag=w.gtag||function(){w.dataLayer.push(arguments);};var m=/(?:^|;\\s*)${CONSENT_COOKIE}=(granted|denied)(?:;|$)/.exec(document.cookie);var g=!!m&&m[1]==='granted';var h=document.documentElement;if(m&&h)h.setAttribute('${CONSENT_CHOSEN_ATTR}','');w.gtag('consent','default',${defaults});w.gtag('consent','update',{analytics_storage:g?'granted':'denied'});})();`;
 }

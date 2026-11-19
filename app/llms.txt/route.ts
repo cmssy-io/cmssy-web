@@ -102,6 +102,12 @@ export async function GET() {
   ].join("\n");
 
   return new Response(body, {
-    headers: { "content-type": "text/plain; charset=utf-8" },
+    // Built from a fan-out of CMS reads; served from the CDN so a crawler
+    // never waits on a cold function (Lighthouse gives up after a few seconds).
+    headers: {
+      "content-type": "text/plain; charset=utf-8",
+      "cache-control":
+        "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400",
+    },
   });
 }
