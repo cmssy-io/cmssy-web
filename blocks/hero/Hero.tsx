@@ -17,7 +17,6 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
     secondaryButtonText = "",
     secondaryButtonUrl = "",
     trustNote = "",
-    showScene = true,
   } = content;
 
   return (
@@ -68,7 +67,9 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
           ) : null}
         </div>
 
-        {showScene ? <HeroScene labels={buildSceneLabels(content)} /> : null}
+        {content.showScene !== false ? (
+          <HeroScene labels={buildSceneLabels(content)} />
+        ) : null}
       </Container>
     </section>
   );
