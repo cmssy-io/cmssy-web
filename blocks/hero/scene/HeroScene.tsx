@@ -230,20 +230,21 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
     let cancelled = false;
     let nextId = 0;
 
+    const isPaused = () => !visibleRef.current || document.hidden;
+
     const sleep = (ms: number) =>
       new Promise<void>((resolve, reject) => {
-        const tick = () => {
+        const settle = () => {
           if (cancelled) return reject(new Error("cancelled"));
-          if (!visibleRef.current || document.hidden) {
-            setTimeout(tick, 250);
-            return;
-          }
-          setTimeout(
-            () => (cancelled ? reject(new Error("cancelled")) : resolve()),
-            ms,
-          );
+          if (isPaused()) return setTimeout(settle, 250);
+          resolve();
         };
-        tick();
+        const start = () => {
+          if (cancelled) return reject(new Error("cancelled"));
+          if (isPaused()) return setTimeout(start, 250);
+          setTimeout(settle, ms);
+        };
+        start();
       });
 
     const push = (m: Message) => setMessages((prev) => [...prev, m]);

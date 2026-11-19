@@ -138,7 +138,7 @@ export const heroProps = {
       }),
       text: fields.text({
         label:
-          "New Value (text; hex color for accent; variant name; new field name for model; unused for layout)",
+          "New Value (text; #hex color for accent; variant name; new field name for model; unused for layout)",
       }),
       detail: fields.text({
         label: "Detail (variant: SKU line in panel; model: value shown on site)",
