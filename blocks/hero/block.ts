@@ -62,6 +62,22 @@ export const heroProps = {
     label: "Scene: Demo Site Starting Button",
     defaultValue: "Shop now",
   }),
+  productName: fields.text({
+    label: "Scene: Product Name",
+    defaultValue: "Orbit 2",
+  }),
+  productPrice: fields.text({
+    label: "Scene: Product Price",
+    defaultValue: "$349",
+  }),
+  modelName: fields.text({
+    label: "Scene: Content Model Name",
+    defaultValue: "Product",
+  }),
+  modelFields: fields.text({
+    label: "Scene: Model Fields (name:Type · separated)",
+    defaultValue: "name:Text · price:Number · color:Select",
+  }),
   agentName: fields.text({
     label: "Scene: Agent Name",
     defaultValue: "Claude",
@@ -89,9 +105,16 @@ export const heroProps = {
         options: SCENE_TARGETS,
       }),
       text: fields.text({
-        label: "New Value (text, or hex color for accent; ignored for layout)",
+        label:
+          "New Value (text; hex color for accent; new field name for model; unused for layout and api)",
       }),
-      tool: fields.text({ label: "Tool Chip", defaultValue: "update_block_content" }),
+      detail: fields.text({
+        label: "Model: Value Shown On Site",
+      }),
+      tool: fields.text({
+        label: "Tool Chips (join several with +)",
+        defaultValue: "update_block_content",
+      }),
       reply: fields.text({ label: "Agent Reply" }),
     },
   }),
@@ -102,7 +125,7 @@ export const heroBlock = defineBlock({
   category: "Marketing",
   label: "Hero",
   description:
-    "Homepage hero: short headline above a looping scene where an AI agent in a phone chat clicks a demo site's text and rewrites it over MCP, over an animated flow field.",
+    "Homepage hero: short headline above a looping scene where an AI agent in a phone chat edits a demo store over MCP (copy, style, layout, content model) and shows the same content as API JSON, over an animated flow field.",
   component: Hero,
   props: heroProps,
 });

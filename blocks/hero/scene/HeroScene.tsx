@@ -1,11 +1,17 @@
 "use client";
 
-import { Check, ChevronLeft, ArrowUp } from "lucide-react";
+import { ArrowUp, Check, ChevronLeft, Zap } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import type { SceneLabels, SceneTarget } from "./types";
 
-type Spot = "headline" | "button" | "visual";
+type Spot =
+  | "headline"
+  | "button"
+  | "visual"
+  | "spec"
+  | "apiTab"
+  | "previewTab";
 type CursorSpot = "off" | "rest" | Spot;
 
 type Message =
@@ -21,16 +27,31 @@ interface Box {
   h: number;
 }
 
+interface NewField {
+  name: string;
+  value: string;
+}
+
 const TYPE_MS = 38;
 const DELETE_MS = 16;
 const SWAP_MS = 700;
 const FADE_MS = 800;
 
-const SPOT_OF: Record<SceneTarget, Spot> = {
+const SPOTS: Spot[] = [
+  "headline",
+  "button",
+  "visual",
+  "spec",
+  "apiTab",
+  "previewTab",
+];
+
+const CLICK_SPOT: Partial<Record<SceneTarget, Spot>> = {
   headline: "headline",
   button: "button",
   accent: "button",
   layout: "visual",
+  api: "apiTab",
 };
 
 function boxIn(el: HTMLElement, root: HTMLElement): Box {
@@ -52,6 +73,10 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
   const [button, setButton] = useState(labels.siteButton);
   const [accent, setAccent] = useState<string | null>(null);
   const [swapped, setSwapped] = useState(false);
+  const [modelOpen, setModelOpen] = useState(false);
+  const [draftField, setDraftField] = useState("");
+  const [field, setField] = useState<NewField | null>(null);
+  const [apiView, setApiView] = useState(false);
   const [composer, setComposer] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [cursor, setCursor] = useState<CursorSpot>("off");
@@ -59,16 +84,20 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
   const [selected, setSelected] = useState<Spot | null>(null);
   const [editing, setEditing] = useState(false);
   const [fading, setFading] = useState(false);
-  const [boxes, setBoxes] = useState<Record<Spot | "site", Box> | null>(null);
+  const [boxes, setBoxes] = useState<Partial<Record<Spot, Box>>>({});
+  const [siteSize, setSiteSize] = useState({ w: 0, h: 0 });
 
   const rootRef = useRef<HTMLDivElement>(null);
   const siteRef = useRef<HTMLDivElement>(null);
-  const headlineRef = useRef<HTMLSpanElement>(null);
-  const buttonRef = useRef<HTMLSpanElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
   const visualRef = useRef<HTMLDivElement>(null);
   const threadRef = useRef<HTMLDivElement>(null);
+  const spotRefs = useRef<Partial<Record<Spot, HTMLElement | null>>>({});
   const visibleRef = useRef(true);
+
+  const spotRef = (spot: Spot) => (el: HTMLElement | null) => {
+    spotRefs.current[spot] = el;
+  };
 
   useEffect(() => {
     const thread = threadRef.current;
@@ -78,25 +107,25 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
 
   useLayoutEffect(() => {
     const site = siteRef.current;
-    const h = headlineRef.current;
-    const b = buttonRef.current;
-    const v = visualRef.current;
-    if (!site || !h || !b || !v) return;
-    const measure = () =>
-      setBoxes({
-        site: { x: 0, y: 0, w: site.offsetWidth, h: site.offsetHeight },
-        headline: boxIn(h, site),
-        button: boxIn(b, site),
-        visual: boxIn(v, site),
-      });
+    if (!site) return;
+    const measure = () => {
+      const next: Partial<Record<Spot, Box>> = {};
+      for (const spot of SPOTS) {
+        const el = spotRefs.current[spot];
+        if (el) next[spot] = boxIn(el, site);
+      }
+      setBoxes(next);
+      setSiteSize({ w: site.offsetWidth, h: site.offsetHeight });
+    };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(site);
-    ro.observe(h);
-    ro.observe(b);
-    ro.observe(v);
+    for (const spot of SPOTS) {
+      const el = spotRefs.current[spot];
+      if (el) ro.observe(el);
+    }
     return () => ro.disconnect();
-  }, [swapped]);
+  }, [swapped, field]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -129,33 +158,46 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
       });
     };
 
+    const resetScene = () => {
+      setHeadline(labels.siteHeadline);
+      setButton(labels.siteButton);
+      setAccent(null);
+      setSwapped(false);
+      setModelOpen(false);
+      setDraftField("");
+      setField(null);
+      setApiView(false);
+      setMessages([]);
+      setComposer("");
+      setSelected(null);
+      setEditing(false);
+    };
+
+    resetScene();
+    setCursor("off");
+
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       const first = steps[0];
       if (first.target === "headline") setHeadline(first.text);
       if (first.target === "button") setButton(first.text);
       if (first.target === "accent") setAccent(first.text);
       if (first.target === "layout") setSwapped(true);
+      if (first.target === "model")
+        setField({ name: first.text, value: first.detail });
       setMessages([
         { id: 1, kind: "user", text: first.prompt },
-        { id: 2, kind: "tool", text: first.tool, done: true },
+        ...first.tools.map((t, i) => ({
+          id: 2 + i,
+          kind: "tool" as const,
+          text: t,
+          done: true,
+        })),
         ...(first.reply
-          ? [{ id: 3, kind: "reply" as const, text: first.reply }]
+          ? [{ id: 99, kind: "reply" as const, text: first.reply }]
           : []),
       ]);
-      setSelected(SPOT_OF[first.target]);
-      setCursor(SPOT_OF[first.target]);
       return;
     }
-
-    setHeadline(labels.siteHeadline);
-    setButton(labels.siteButton);
-    setAccent(null);
-    setSwapped(false);
-    setMessages([]);
-    setComposer("");
-    setSelected(null);
-    setEditing(false);
-    setCursor("off");
 
     let cancelled = false;
     let nextId = 0;
@@ -176,8 +218,22 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
         tick();
       });
 
-    const push = (m: Message) =>
-      setMessages((prev) => [...prev, m]);
+    const push = (m: Message) => setMessages((prev) => [...prev, m]);
+
+    const click = async (spot: Spot) => {
+      setCursor(spot);
+      await sleep(950);
+      setPressed(true);
+      await sleep(140);
+      setPressed(false);
+    };
+
+    const typeInto = async (write: (v: string) => void, to: string) => {
+      for (let i = 1; i <= to.length; i++) {
+        write(to.slice(0, i));
+        await sleep(TYPE_MS);
+      }
+    };
 
     const rewrite = async (
       write: (v: string) => void,
@@ -190,10 +246,7 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
         await sleep(DELETE_MS);
       }
       await sleep(180);
-      for (let i = 1; i <= to.length; i++) {
-        write(to.slice(0, i));
-        await sleep(TYPE_MS);
-      }
+      await typeInto(write, to);
       setEditing(false);
     };
 
@@ -204,35 +257,44 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
 
       for (;;) {
         for (const step of steps) {
-          const spot = SPOT_OF[step.target];
-
-          for (let i = 1; i <= step.prompt.length; i++) {
-            setComposer(step.prompt.slice(0, i));
-            await sleep(TYPE_MS);
-          }
+          await typeInto(setComposer, step.prompt);
           await sleep(350);
           setComposer("");
           push({ id: ++nextId, kind: "user", text: step.prompt });
 
           await sleep(400);
-          const toolId = ++nextId;
+          let toolId = ++nextId;
           push({ id: toolId, kind: "thinking" });
           await sleep(1100);
 
-          setCursor(spot);
-          await sleep(950);
-          setPressed(true);
-          await sleep(140);
-          setPressed(false);
-          setSelected(spot);
+          const tools = step.tools.length > 0 ? step.tools : [""];
+          const markDone = (id: number) =>
+            setMessages((prev) =>
+              prev.map((m) =>
+                m.id === id && m.kind === "tool" ? { ...m, done: true } : m,
+              ),
+            );
+          const startTool = (id: number, label: string) =>
+            setMessages((prev) =>
+              prev.map((m) =>
+                m.id === id
+                  ? { id, kind: "tool", text: label, done: false }
+                  : m,
+              ),
+            );
+          const nextTool = async (label: string) => {
+            markDone(toolId);
+            await sleep(250);
+            toolId = ++nextId;
+            push({ id: toolId, kind: "tool", text: label, done: false });
+          };
 
-          setMessages((prev) =>
-            prev.map((m) =>
-              m.id === toolId
-                ? { id: toolId, kind: "tool", text: step.tool, done: false }
-                : m,
-            ),
-          );
+          const spot = CLICK_SPOT[step.target];
+          if (spot) {
+            await click(spot);
+            setSelected(spot);
+          }
+          startTool(toolId, tools[0]);
           await sleep(450);
 
           if (step.target === "headline") {
@@ -244,21 +306,40 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
           } else if (step.target === "accent") {
             setAccent(step.text);
             await sleep(900);
-          } else {
+          } else if (step.target === "layout") {
             setSelected(null);
             isSwapped = !isSwapped;
             swapLayout(isSwapped);
             await sleep(SWAP_MS + 50);
             setSelected("visual");
             await sleep(300);
+          } else if (step.target === "model") {
+            setModelOpen(true);
+            await sleep(600);
+            await typeInto(setDraftField, step.text);
+            await sleep(500);
+            for (const label of tools.slice(1)) await nextTool(label);
+            await sleep(500);
+            setField({ name: step.text, value: step.detail });
+            await sleep(120);
+            setCursor("spec");
+            await sleep(700);
+            setSelected("spec");
+            await sleep(900);
+          } else if (step.target === "api") {
+            setSelected(null);
+            setApiView(true);
+            await sleep(3200);
+            await click("previewTab");
+            setApiView(false);
+            await sleep(400);
           }
 
+          if (step.target !== "model")
+            for (const label of tools.slice(1)) await nextTool(label);
+
           await sleep(300);
-          setMessages((prev) =>
-            prev.map((m) =>
-              m.id === toolId && m.kind === "tool" ? { ...m, done: true } : m,
-            ),
-          );
+          markDone(toolId);
           await sleep(250);
           if (step.reply)
             push({ id: ++nextId, kind: "reply", text: step.reply });
@@ -266,17 +347,19 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
           await sleep(500);
           setSelected(null);
           setCursor("rest");
-          await sleep(2000);
+          if (step.target === "model") {
+            await sleep(900);
+            setModelOpen(false);
+            await sleep(1100);
+          } else {
+            await sleep(2000);
+          }
         }
 
         setFading(true);
         setCursor("off");
         await sleep(FADE_MS + 150);
-        setHeadline(labels.siteHeadline);
-        setButton(labels.siteButton);
-        setAccent(null);
-        setSwapped(false);
-        setMessages([]);
+        resetScene();
         text = { headline: labels.siteHeadline, button: labels.siteButton };
         isSwapped = false;
         await sleep(300);
@@ -292,19 +375,26 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
   }, [steps, labels.siteHeadline, labels.siteButton]);
 
   const cursorPos = (() => {
-    if (!boxes) return { x: 0, y: 0 };
-    if (cursor === "off")
-      return { x: boxes.site.w * 0.92, y: boxes.site.h * 1.05 };
-    if (cursor === "rest")
-      return { x: boxes.site.w * 0.62, y: boxes.site.h * 0.86 };
+    if (cursor === "off") return { x: siteSize.w * 0.92, y: siteSize.h * 1.05 };
+    if (cursor === "rest") return { x: siteSize.w * 0.62, y: siteSize.h * 0.86 };
     const b = boxes[cursor];
+    if (!b) return { x: siteSize.w * 0.62, y: siteSize.h * 0.86 };
     return {
       x: b.x + Math.min(b.w * 0.6, b.w - 12),
       y: b.y + b.h * 0.62,
     };
   })();
 
-  const selBox = selected && boxes ? boxes[selected] : null;
+  const selBox = selected ? boxes[selected] : null;
+
+  const json = [
+    { key: "name", value: JSON.stringify(labels.productName) },
+    { key: "price", value: JSON.stringify(labels.productPrice) },
+    ...(accent ? [{ key: "color", value: JSON.stringify(accent) }] : []),
+    ...(field
+      ? [{ key: field.name, value: JSON.stringify(field.value), fresh: true }]
+      : []),
+  ];
 
   return (
     <div ref={rootRef} className="hero-scene" aria-hidden="true">
@@ -313,19 +403,33 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
           ref={siteRef}
           className="hero-scene__site"
           style={
-            accent ? ({ "--scene-accent": accent } as React.CSSProperties) : undefined
+            accent
+              ? ({ "--scene-accent": accent } as React.CSSProperties)
+              : undefined
           }
         >
           <div className="hero-scene__chrome">
             <span />
             <span />
             <span />
+            <div className="hero-scene__tabs">
+              <span
+                ref={spotRef("previewTab")}
+                data-active={apiView ? undefined : ""}
+              >
+                Preview
+              </span>
+              <span ref={spotRef("apiTab")} data-active={apiView ? "" : undefined}>
+                API
+              </span>
+            </div>
             <div className="hero-scene__url">{labels.siteDomain}</div>
           </div>
 
           <div
             className="hero-scene__page"
             data-fading={fading ? "" : undefined}
+            data-hidden={apiView ? "" : undefined}
           >
             <div className="hero-scene__nav">
               <span className="hero-scene__brand">{labels.siteBrand}</span>
@@ -342,7 +446,7 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
             >
               <div ref={copyRef} className="hero-scene__copy">
                 <div className="hero-scene__headline">
-                  <span ref={headlineRef}>
+                  <span ref={spotRef("headline")}>
                     {headline || " "}
                     {editing && selected === "headline" ? (
                       <i className="hero-scene__caret" />
@@ -353,12 +457,20 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
                   <span />
                   <span />
                 </div>
-                <span ref={buttonRef} className="hero-scene__btn">
-                  {button || " "}
-                  {editing && selected === "button" ? (
-                    <i className="hero-scene__caret" />
+                <div className="hero-scene__actions">
+                  <span ref={spotRef("button")} className="hero-scene__btn">
+                    {button || " "}
+                    {editing && selected === "button" ? (
+                      <i className="hero-scene__caret" />
+                    ) : null}
+                  </span>
+                  {field ? (
+                    <span ref={spotRef("spec")} className="hero-scene__spec">
+                      <Zap size={12} strokeWidth={2.5} />
+                      {field.value}
+                    </span>
                   ) : null}
-                </span>
+                </div>
               </div>
               <div ref={visualRef} className="hero-scene__visual">
                 <span className="hero-scene__halo">
@@ -390,8 +502,8 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
                 </svg>
                 <div className="hero-scene__meta">
                   <span>
-                    <b>{labels.siteBrand} 2</b>
-                    <small>$349</small>
+                    <b>{labels.productName}</b>
+                    <small>{labels.productPrice}</small>
                   </span>
                   <span className="hero-scene__swatches">
                     <i />
@@ -401,6 +513,67 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div
+            className="hero-scene__api"
+            data-open={apiView ? "" : undefined}
+          >
+            <div className="hero-scene__api-head">
+              <span>POST</span> /graphql
+              <span className="hero-scene__api-status">200 OK</span>
+            </div>
+            <pre>
+              <span className="hero-scene__j-p">{"{"}</span>
+              {"\n"}
+              {"  "}
+              <span className="hero-scene__j-k">&quot;{labels.modelName.toLowerCase()}&quot;</span>
+              <span className="hero-scene__j-p">: {"{"}</span>
+              {json.map((row, i) => (
+                <span
+                  key={row.key}
+                  className="hero-scene__j-row"
+                  data-fresh={"fresh" in row ? "" : undefined}
+                >
+                  {"\n    "}
+                  <span className="hero-scene__j-k">&quot;{row.key}&quot;</span>
+                  <span className="hero-scene__j-p">: </span>
+                  <span className="hero-scene__j-v">{row.value}</span>
+                  {i < json.length - 1 ? (
+                    <span className="hero-scene__j-p">,</span>
+                  ) : null}
+                </span>
+              ))}
+              {"\n  "}
+              <span className="hero-scene__j-p">{"}"}</span>
+              {"\n"}
+              <span className="hero-scene__j-p">{"}"}</span>
+            </pre>
+          </div>
+
+          <div
+            className="hero-scene__model"
+            data-open={modelOpen ? "" : undefined}
+          >
+            <div className="hero-scene__model-head">
+              <span>Model</span>
+              <b>{labels.modelName}</b>
+            </div>
+            {labels.modelFields.map((f) => (
+              <div key={f.name} className="hero-scene__model-row">
+                <span>{f.name}</span>
+                <small>{f.type}</small>
+              </div>
+            ))}
+            {draftField ? (
+              <div className="hero-scene__model-row" data-new="">
+                <span>
+                  + {draftField}
+                  {field ? null : <i className="hero-scene__caret" />}
+                </span>
+                <small>Text</small>
+              </div>
+            ) : null}
           </div>
 
           {selBox ? (
