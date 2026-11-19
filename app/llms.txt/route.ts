@@ -5,8 +5,11 @@ import { listChildPages, type ChildPage } from "@/services/pages";
 import { siteUrl } from "@/lib/site-url";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 
-// Reads the live page tree, so it must not be frozen at build time.
-export const dynamic = "force-dynamic";
+// Prerendered and kept in the global ISR cache, refreshed hourly and on every
+// publish (the revalidate webhook clears CONTENT_TAG, which its CMS reads carry).
+// Not force-dynamic: the CDN cache is per region, so a crawler from a cold
+// region waited ~2.5 s on the CMS fan-out and Lighthouse timed out on it.
+export const revalidate = 3600;
 
 const INTRO = `> cmssy is a headless CMS with native commerce that an AI agent can run. You
 > model structured content and products, and edit them visually or through any
@@ -102,12 +105,6 @@ export async function GET() {
   ].join("\n");
 
   return new Response(body, {
-    // Built from a fan-out of CMS reads; served from the CDN so a crawler
-    // never waits on a cold function (Lighthouse gives up after a few seconds).
-    headers: {
-      "content-type": "text/plain; charset=utf-8",
-      "cache-control":
-        "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400",
-    },
+    headers: { "content-type": "text/plain; charset=utf-8" },
   });
 }
