@@ -97,55 +97,7 @@ export interface SceneInput {
   }[];
 }
 
-export const FALLBACK_STEPS = [
-  {
-    prompt: "Make the hero headline bolder",
-    target: "headline",
-    text: "Silence, on demand.",
-    detail: "",
-    color: "",
-    query: "",
-    tool: "update_block_content",
-    reply: "Rewrote the hero headline.",
-  },
-  {
-    prompt: "Add a Sand color to Orbit 2",
-    target: "variant",
-    text: "Sand",
-    detail: "ORB2-SND · 40 in stock",
-    color: "#d6b98c",
-    query: 'product(slug: "orbit-2") { variants { name } }',
-    tool: "update_model · color + set_product_variants · Orbit 2",
-    reply: "Sand is live on the product page.",
-  },
-  {
-    prompt: "Put the product photo on the left",
-    target: "layout",
-    text: "",
-    detail: "",
-    color: "",
-    query: "",
-    tool: "update_block_content · layout",
-    reply: "Swapped the hero columns.",
-  },
-  {
-    prompt: "Add battery life to every product",
-    target: "model",
-    text: "batteryLife",
-    detail: "",
-    color: "",
-    query: "",
-    modelValue: "40h battery",
-    modelQuery: 'product(slug: "orbit-2") { batteryLife }',
-    tool: "update_model · Product + bulk_update_records · 12",
-    reply: "Added batteryLife to Product and filled all 12 records.",
-  },
-];
-
 const COLOR = /^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
-
-const DEFAULT_MODEL_FIELDS = "name:Text · price:Number · color:Select";
-const DEFAULT_VARIANTS = "Blue:#00a8f0 · Silver:#e8ebf0 · Graphite:#3a4252";
 
 function splitDots(value: string): string[] {
   return value
@@ -203,37 +155,44 @@ function isPlayable(step: SceneStep): boolean {
 export function buildSceneLabels(input: SceneInput): SceneLabels {
   const steps = (input.steps ?? []).map(toStep).filter(isPlayable);
 
-  const modelFields = pairs(input.modelFields || DEFAULT_MODEL_FIELDS).map(
+  const modelFields = pairs(input.modelFields ?? "").map(
     ([name, type]) => ({ name, type: type || "Text" }),
   );
 
-  const variants = pairs(input.productVariants || DEFAULT_VARIANTS)
+  const variants = pairs(input.productVariants ?? "")
     .filter(([, color]) => COLOR.test(color))
     .map(([name, color]) => ({ name, color }));
 
   return {
-    siteBrand: input.siteBrand || "Orbit",
-    siteDomain: input.siteDomain || "orbit.audio",
-    siteNav: splitDots(input.siteNav || "Shop · Orbit 2 · Support"),
-    siteHeadline: input.siteHeadline || "Sound, unplugged.",
-    siteButton: input.siteButton || "Shop now",
-    productName: input.productName || "Orbit 2",
-    productPrice: input.productPrice || "$349",
+    siteBrand: input.siteBrand ?? "",
+    siteDomain: input.siteDomain ?? "",
+    siteNav: splitDots(input.siteNav ?? ""),
+    siteHeadline: input.siteHeadline ?? "",
+    siteButton: input.siteButton ?? "",
+    productName: input.productName ?? "",
+    productPrice: input.productPrice ?? "",
     variants,
-    modelName: input.modelName || "Product",
+    modelName: input.modelName ?? "",
     modelFields,
-    adminLabel: input.adminLabel || "cmssy",
-    adminNav: splitDots(input.adminNav || "Pages · Products · Models · Media"),
-    recordCount: input.recordCount || "12 records",
-    addFieldLabel: input.addFieldLabel || "Add field",
-    addVariantLabel: input.addVariantLabel || "Add variant",
-    savedLabel: input.savedLabel || "Saved",
-    queryStatus: input.queryStatus || "200 · 38 ms",
-    agentName: input.agentName || "Claude",
-    chatTitle: input.chatTitle || "Orbit store",
-    thinkingLabel: input.thinkingLabel || "Thinking",
-    composerPlaceholder: input.composerPlaceholder || "Reply to Claude",
-    steps:
-      steps.length > 0 ? steps : FALLBACK_STEPS.map(toStep).filter(isPlayable),
+    adminLabel: input.adminLabel ?? "",
+    adminNav: splitDots(input.adminNav ?? ""),
+    recordCount: input.recordCount ?? "",
+    addFieldLabel: input.addFieldLabel ?? "",
+    addVariantLabel: input.addVariantLabel ?? "",
+    savedLabel: input.savedLabel ?? "",
+    queryStatus: input.queryStatus ?? "",
+    agentName: input.agentName ?? "",
+    chatTitle: input.chatTitle ?? "",
+    thinkingLabel: input.thinkingLabel ?? "",
+    composerPlaceholder: input.composerPlaceholder ?? "",
+    steps,
   };
+}
+
+export function playableScene(
+  input: SceneInput & { showScene?: boolean | null },
+): SceneLabels | null {
+  if (input.showScene === false) return null;
+  const labels = buildSceneLabels(input);
+  return labels.steps.length > 0 ? labels : null;
 }

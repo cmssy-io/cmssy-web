@@ -3,7 +3,7 @@ import { CmssyLink } from "@/components/cmssy-locale";
 import { Container } from "@/components/container";
 import { FlowField } from "./flow/FlowField";
 import { HeroScene } from "./scene/HeroScene";
-import { buildSceneLabels } from "./scene/types";
+import { playableScene } from "./scene/types";
 import type { heroProps } from "./block";
 
 export default function Hero({ content }: BlockProps<typeof heroProps>) {
@@ -18,6 +18,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
     secondaryButtonUrl = "",
     trustNote = "",
   } = content;
+  const scene = playableScene(content);
 
   return (
     <section className="hero-flow relative overflow-hidden bg-ink">
@@ -67,9 +68,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
           ) : null}
         </div>
 
-        {content.showScene !== false ? (
-          <HeroScene labels={buildSceneLabels(content)} />
-        ) : null}
+        {scene ? <HeroScene labels={scene} /> : null}
       </Container>
     </section>
   );
