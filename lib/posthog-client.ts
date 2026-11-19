@@ -19,22 +19,29 @@ let loaded: PostHog | null = null;
  */
 export function loadPostHog(): Promise<PostHog | null> {
   if (!token || !host) return Promise.resolve(null);
-  loading ??= import("posthog-js").then(({ default: posthog }) => {
-    posthog.init(token, {
-      api_host: host,
-      defaults: "2026-05-30",
-      person_profiles: "always",
-      disable_session_recording: true,
-      disable_surveys: true,
-      advanced_disable_flags: true,
-      opt_out_capturing_by_default: true,
-      opt_out_persistence_by_default: true,
-      before_send: (event) =>
-        parseConsent(document.cookie) === "granted" ? event : null,
-    });
-    loaded = posthog;
-    return posthog;
-  });
+  loading ??= import("posthog-js").then(
+    ({ default: posthog }) =>
+      new Promise<PostHog>((resolve) => {
+        posthog.init(token, {
+          api_host: host,
+          defaults: "2026-05-30",
+          person_profiles: "always",
+          disable_session_recording: true,
+          disable_surveys: true,
+          advanced_disable_flags: true,
+          opt_out_capturing_by_default: true,
+          opt_out_persistence_by_default: true,
+          before_send: (event) =>
+            parseConsent(document.cookie) === "granted" ? event : null,
+          // Exposed only once the SDK reports itself loaded: opt-in and
+          // get_distinct_id() need that state, not just init() having returned.
+          loaded: () => {
+            loaded = posthog;
+            resolve(posthog);
+          },
+        });
+      }),
+  );
   return loading;
 }
 
