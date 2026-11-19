@@ -1,5 +1,5 @@
 import "@/styles/main.css";
-import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { resolveSiteLocales } from "@/services/site";
 import { MotionProvider } from "@/components/motion/provider";
 import { ThemeProvider } from "@/components/theme";
@@ -22,22 +22,34 @@ import { consentModeInitScript } from "@/lib/consent";
  * remount as much as they like.
  */
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+/*
+ * Self-hosted (app/fonts), not next/font/google: the Google variant downloads
+ * the fonts at build time, and a failed download fails the whole production
+ * build (it did, on a transient network error). The files are the official
+ * google/fonts sources subset to Google's own latin + latin-ext ranges (Polish
+ * needs latin-ext), variable axes pinned to wght 400-700 and wdth 100. Licence:
+ * SIL OFL 1.1, app/fonts/OFL-*.txt.
+ */
+const spaceGrotesk = localFont({
+  src: "./fonts/SpaceGrotesk-Variable.woff2",
+  weight: "400 700",
   variable: "--font-space-grotesk",
+  display: "swap",
 });
 
-const plexSans = IBM_Plex_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+const plexSans = localFont({
+  src: "./fonts/IBMPlexSans-Variable.woff2",
+  weight: "400 700",
   variable: "--font-plex-sans",
   display: "swap",
 });
 
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+const plexMono = localFont({
+  src: [
+    { path: "./fonts/IBMPlexMono-Regular.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/IBMPlexMono-Medium.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/IBMPlexMono-SemiBold.woff2", weight: "600", style: "normal" },
+  ],
   variable: "--font-plex-mono",
   display: "swap",
 });
