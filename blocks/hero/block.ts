@@ -74,6 +74,10 @@ export const heroProps = {
     label: "Scene: Thinking Label",
     defaultValue: "Thinking",
   }),
+  composerPlaceholder: fields.text({
+    label: "Scene: Chat Input Placeholder",
+    defaultValue: "Reply to Claude",
+  }),
   steps: fields.repeater({
     label: "Scene: Edits (played in a loop)",
     defaultValue: FALLBACK_STEPS,

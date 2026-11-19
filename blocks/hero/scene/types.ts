@@ -24,6 +24,7 @@ export interface SceneLabels {
   agentName: string;
   chatTitle: string;
   thinkingLabel: string;
+  composerPlaceholder: string;
   steps: SceneStep[];
 }
 
@@ -36,6 +37,7 @@ export interface SceneInput {
   agentName?: string;
   chatTitle?: string;
   thinkingLabel?: string;
+  composerPlaceholder?: string;
   steps?: {
     prompt?: string;
     target?: string;
@@ -76,6 +78,8 @@ export const FALLBACK_STEPS: SceneStep[] = [
   },
 ];
 
+const COLOR = /^(#[0-9a-f]{3,8}|(rgb|rgba|hsl|hsla|oklch|oklab)\([^)]*\))$/i;
+
 export function buildSceneLabels(input: SceneInput): SceneLabels {
   const steps = (input.steps ?? [])
     .map((s) => ({
@@ -87,7 +91,12 @@ export function buildSceneLabels(input: SceneInput): SceneLabels {
       tool: s.tool?.trim() ?? "",
       reply: s.reply?.trim() ?? "",
     }))
-    .filter((s) => s.prompt && (s.text || s.target === "layout"));
+    .filter((s) => {
+      if (!s.prompt) return false;
+      if (s.target === "layout") return true;
+      if (s.target === "accent") return COLOR.test(s.text);
+      return Boolean(s.text);
+    });
 
   const nav = (input.siteNav || "Shop · Orbit 2 · Support")
     .split("·")
@@ -103,6 +112,7 @@ export function buildSceneLabels(input: SceneInput): SceneLabels {
     agentName: input.agentName || "Claude",
     chatTitle: input.chatTitle || "Orbit store",
     thinkingLabel: input.thinkingLabel || "Thinking",
+    composerPlaceholder: input.composerPlaceholder || "Reply to Claude",
     steps: steps.length > 0 ? steps : FALLBACK_STEPS,
   };
 }

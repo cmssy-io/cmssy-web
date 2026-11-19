@@ -23,8 +23,8 @@ interface Box {
 
 const TYPE_MS = 38;
 const DELETE_MS = 16;
-const MAX_MESSAGES = 6;
 const SWAP_MS = 700;
+const FADE_MS = 800;
 
 const SPOT_OF: Record<SceneTarget, Spot> = {
   headline: "headline",
@@ -67,7 +67,14 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
   const buttonRef = useRef<HTMLSpanElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
   const visualRef = useRef<HTMLDivElement>(null);
+  const threadRef = useRef<HTMLDivElement>(null);
   const visibleRef = useRef(true);
+
+  useEffect(() => {
+    const thread = threadRef.current;
+    if (!thread) return;
+    thread.scrollTo({ top: thread.scrollHeight, behavior: "smooth" });
+  }, [messages]);
 
   useLayoutEffect(() => {
     const site = siteRef.current;
@@ -89,7 +96,7 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
     ro.observe(b);
     ro.observe(v);
     return () => ro.disconnect();
-  }, [headline, button, swapped]);
+  }, [swapped]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -140,6 +147,16 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
       return;
     }
 
+    setHeadline(labels.siteHeadline);
+    setButton(labels.siteButton);
+    setAccent(null);
+    setSwapped(false);
+    setMessages([]);
+    setComposer("");
+    setSelected(null);
+    setEditing(false);
+    setCursor("off");
+
     let cancelled = false;
     let nextId = 0;
 
@@ -160,7 +177,7 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
       });
 
     const push = (m: Message) =>
-      setMessages((prev) => [...prev, m].slice(-MAX_MESSAGES));
+      setMessages((prev) => [...prev, m]);
 
     const rewrite = async (
       write: (v: string) => void,
@@ -254,7 +271,7 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
 
         setFading(true);
         setCursor("off");
-        await sleep(450);
+        await sleep(FADE_MS + 150);
         setHeadline(labels.siteHeadline);
         setButton(labels.siteButton);
         setAccent(null);
@@ -262,8 +279,9 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
         setMessages([]);
         text = { headline: labels.siteHeadline, button: labels.siteButton };
         isSwapped = false;
+        await sleep(300);
         setFading(false);
-        await sleep(1000);
+        await sleep(FADE_MS + 400);
       }
     };
 
@@ -312,8 +330,8 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
             <div className="hero-scene__nav">
               <span className="hero-scene__brand">{labels.siteBrand}</span>
               <span className="hero-scene__links">
-                {labels.siteNav.map((n) => (
-                  <span key={n}>{n}</span>
+                {labels.siteNav.map((n, i) => (
+                  <span key={`${i}-${n}`}>{n}</span>
                 ))}
               </span>
             </div>
@@ -438,7 +456,11 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
             <span className="hero-scene__avatar" />
           </div>
 
-          <div className="hero-scene__thread">
+          <div
+            ref={threadRef}
+            className="hero-scene__thread"
+            data-fading={fading ? "" : undefined}
+          >
             {messages.map((m) => {
               if (m.kind === "user")
                 return (
@@ -484,7 +506,7 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
                 </>
               ) : (
                 <span className="hero-scene__placeholder">
-                  Reply to {labels.agentName}
+                  {labels.composerPlaceholder}
                 </span>
               )}
             </span>

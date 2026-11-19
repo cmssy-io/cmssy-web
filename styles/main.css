@@ -752,11 +752,17 @@ html[data-theme="dark"] .prose pre.shiki span {
 
 .hero-scene__page {
   padding: 1.6em 2.6em;
-  transition: opacity 0.4s ease;
+  transition:
+    opacity 0.8s ease,
+    filter 0.8s ease,
+    translate 0.8s ease;
 }
 
-.hero-scene__page[data-fading] {
+.hero-scene__page[data-fading],
+.hero-scene__thread[data-fading] {
   opacity: 0;
+  filter: blur(6px);
+  translate: 0 0.6em;
 }
 
 .hero-scene__nav {
@@ -1158,18 +1164,33 @@ html[data-theme="dark"] .prose pre.shiki span {
 
 .hero-scene__thread {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   gap: 0.6em;
-  padding: 0.8em 0.2em;
-  overflow: hidden;
+  padding: 1.6em 0.2em 0.8em;
+  overflow-y: auto;
+  scrollbar-width: none;
+  mask-image: linear-gradient(to bottom, transparent, #000 2.2em);
+  transition:
+    opacity 0.8s ease,
+    filter 0.8s ease,
+    translate 0.8s ease;
   font-size: 0.8em;
   line-height: 1.4;
 }
 
+.hero-scene__thread::-webkit-scrollbar {
+  display: none;
+}
+
 .hero-scene__thread > * {
+  flex-shrink: 0;
   animation: hero-scene-in 0.3s ease-out;
+}
+
+.hero-scene__thread > :first-child {
+  margin-top: auto;
 }
 
 .hero-scene__bubble {
