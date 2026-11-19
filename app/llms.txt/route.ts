@@ -30,7 +30,11 @@ const INTRO = `> cmssy is a headless CMS with native commerce that an AI agent c
 function line(page: ChildPage, locale: string, base: string): string {
   const path = localizedPath(page.fullSlug, locale, locale);
   // Agents read the Markdown twin of a docs page; everything else is HTML.
-  return `- ${labelForPage(page, locale, locale)}: ${base}${path}${isDocsPath(path) ? ".md" : ""}`;
+  // llmstxt.org list entries are Markdown links, `- [name](url)`; a bare
+  // `name: url` is not a link to an agent (Lighthouse's llms-txt audit fails it
+  // with "File does not appear to contain any links").
+  const label = labelForPage(page, locale, locale).replace(/[[\]\\]/g, "\\$&");
+  return `- [${label}](${base}${path}${isDocsPath(path) ? ".md" : ""})`;
 }
 
 /**
@@ -90,7 +94,7 @@ export async function GET() {
     "",
     INTRO,
     "",
-    `The full documentation as one file: ${base}/llms-full.txt`,
+    `The full documentation as one file: [llms-full.txt](${base}/llms-full.txt)`,
     "",
     ...trees.flatMap(({ page, children }) => [
       `## ${labelForPage(page, locale, locale)}`,
