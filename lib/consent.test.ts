@@ -1,16 +1,24 @@
 import { describe, expect, it } from "vitest";
 import {
+  CONSENT_CHOSEN_ATTR,
   analyticsCookieExpiries,
   consentModeInitScript,
   parseConsent,
   serializeConsent,
 } from "./consent";
 
-function runInitScript(cookie: string, existing?: unknown[]) {
+function runInitScript(
+  cookie: string,
+  existing?: unknown[],
+  attrs: Record<string, string> = {},
+) {
   const window: { dataLayer?: unknown[]; gtag?: unknown } = {};
   if (existing) window.dataLayer = existing;
   new Function("window", "document", consentModeInitScript())(window, {
     cookie,
+    documentElement: {
+      setAttribute: (name: string, value: string) => (attrs[name] = value),
+    },
   });
   return (window.dataLayer ?? []).map((entry) => ({
     kind: Object.prototype.toString.call(entry),
@@ -112,5 +120,18 @@ describe("consentModeInitScript", () => {
       pushed.map((entry) => entry.kind),
       "gtag.js ignores commands pushed as plain arrays, so the consent calls must be arguments objects appended after what was already queued.",
     ).toEqual(["[object String]", "[object Arguments]", "[object Arguments]"]);
+  });
+
+  it("marks <html> only when a choice is stored, so CSS can hide the server-rendered banner", () => {
+    for (const [cookie, marked] of [
+      ["cmssy_consent=granted", true],
+      ["theme=dark; cmssy_consent=denied", true],
+      ["", false],
+      ["cmssy_consent=grantedx", false],
+    ] as const) {
+      const attrs: Record<string, string> = {};
+      runInitScript(cookie, undefined, attrs);
+      expect(CONSENT_CHOSEN_ATTR in attrs, `cookie: "${cookie}"`).toBe(marked);
+    }
   });
 });

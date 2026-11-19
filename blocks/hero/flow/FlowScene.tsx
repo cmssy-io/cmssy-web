@@ -17,6 +17,24 @@ import { FRAGMENT, VERTEX } from "./shaders";
 const LAGS = 16;
 const MAX_DPR = 1.5;
 const PARKED = new Vector2(0, -5);
+/** 30 fps: the drift reads the same, at half the GPU (and CPU) per second. */
+const FRAME_MS = 1000 / 30;
+/** Time the still frame is drawn at, when the scene does not animate. */
+const STILL_TIME = 9;
+
+/**
+ * A rasteriser on the CPU (SwiftShader, llvmpipe, WARP): every frame of 20k
+ * additive points lands on the main thread. Lighthouse runs this way, so do
+ * machines with GPU acceleration off - they get the still frame.
+ */
+function isSoftwareRenderer(renderer: WebGLRenderer): boolean {
+  const gl = renderer.getContext();
+  const info = gl.getExtension("WEBGL_debug_renderer_info");
+  const name = String(
+    gl.getParameter(info ? info.UNMASKED_RENDERER_WEBGL : gl.RENDERER) ?? "",
+  );
+  return /swiftshader|llvmpipe|softpipe|software|basic render/i.test(name);
+}
 
 function seeds(count: number): BufferGeometry {
   const seed = new Float32Array(count * LAGS * 3);
@@ -47,8 +65,6 @@ export function FlowScene({ mobile }: { mobile: boolean }) {
     const section = canvas.closest("section");
     if (!host || !section) return;
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
     let renderer: WebGLRenderer;
     try {
       renderer = new WebGLRenderer({
@@ -62,8 +78,12 @@ export function FlowScene({ mobile }: { mobile: boolean }) {
     }
     renderer.setClearColor(0x000000, 0);
 
+    const reduced =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      isSoftwareRenderer(renderer);
+
     const uniforms = {
-      uTime: { value: reduced ? 9 : 0 },
+      uTime: { value: reduced ? STILL_TIME : 0 },
       uAspect: { value: 1 },
       uDpr: { value: 1 },
       uScale: { value: 1 },
@@ -121,10 +141,15 @@ export function FlowScene({ mobile }: { mobile: boolean }) {
     const tick = (now: number) => {
       frame = 0;
       if (!inView || document.hidden) return;
-      const dt = last ? Math.min((now - last) / 1000, 0.05) : 0;
+      if (last && now - last < FRAME_MS - 1) {
+        frame = requestAnimationFrame(tick);
+        return;
+      }
+      const dt = last ? Math.min((now - last) / 1000, 0.1) : 0;
       last = now;
       uniforms.uTime.value += dt;
-      uniforms.uMouse.value.lerp(target, 0.08);
+      // The lerp was tuned per 60 fps frame; keep its speed at 30.
+      uniforms.uMouse.value.lerp(target, 1 - (1 - 0.08) ** (dt * 60));
       draw();
       frame = requestAnimationFrame(tick);
     };

@@ -30,7 +30,13 @@ export default function CookieConsent({
     return () => document.removeEventListener("click", onClick, true);
   }, []);
 
-  const open = inEditor || reopened || consent === "unset";
+  // "pending" is the server render and hydration: the banner is in the HTML
+  // for everyone, so it paints with the page rather than after the JS loads
+  // (it was the mobile LCP element, 2.4 s late). A visitor who already chose
+  // never sees it - the head script marks <html> and CSS hides the auto copy.
+  const auto = !inEditor && !reopened;
+  const open =
+    inEditor || reopened || consent === "unset" || consent === "pending";
   if (!open || !body || !acceptLabel || !rejectLabel) return null;
 
   function choose(choice: ConsentChoice) {
@@ -44,6 +50,7 @@ export default function CookieConsent({
       role="region"
       aria-label={title || acceptLabel}
       className={cn(
+        auto && "cookie-consent--auto",
         "z-[90] rounded-lg border border-white/10 bg-ink-deep p-5 text-paper shadow-lg",
         inEditor
           ? "relative mx-auto my-6 max-w-md"
