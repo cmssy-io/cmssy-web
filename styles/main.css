@@ -1599,7 +1599,7 @@ html[data-theme="dark"] .prose pre.shiki span {
     top: 0;
     z-index: 4;
     width: 100%;
-    height: 21em;
+    height: 23em;
   }
 
   .hero-scene__page {
@@ -1642,7 +1642,23 @@ html[data-theme="dark"] .prose pre.shiki span {
   }
 
   .hero-scene__admin-main {
-    padding: 1.2em 1.4em;
+    padding: 1em 1.4em;
+  }
+
+  .hero-scene__admin-head {
+    margin-bottom: 0.7em;
+  }
+
+  .hero-scene__admin-head b {
+    font-size: 1.3em;
+  }
+
+  .hero-scene__fields {
+    gap: 0.3em;
+  }
+
+  .hero-scene__field {
+    padding-block: 0.45em;
   }
 
   .hero-scene__toast {

@@ -90,6 +90,8 @@ export interface SceneInput {
     detail?: string;
     color?: string;
     query?: string;
+    modelValue?: string;
+    modelQuery?: string;
     tool?: string;
     reply?: string;
   }[];
@@ -130,9 +132,11 @@ export const FALLBACK_STEPS = [
     prompt: "Add battery life to every product",
     target: "model",
     text: "batteryLife",
-    detail: "40h battery",
+    detail: "",
     color: "",
-    query: 'product(slug: "orbit-2") { batteryLife }',
+    query: "",
+    modelValue: "40h battery",
+    modelQuery: 'product(slug: "orbit-2") { batteryLife }',
     tool: "update_model · Product + bulk_update_records · 12",
     reply: "Added batteryLife to Product and filled all 12 records.",
   },
@@ -167,9 +171,11 @@ function toStep(input: NonNullable<SceneInput["steps"]>[number]): SceneStep {
     prompt: input.prompt?.trim() ?? "",
     target,
     text: input.text?.trim() ?? "",
-    detail: input.detail?.trim() ?? "",
+    detail:
+      (target === "model" ? input.modelValue : input.detail)?.trim() ?? "",
     color: input.color?.trim() ?? "",
-    query: input.query?.trim() ?? "",
+    query:
+      (target === "model" ? input.modelQuery : input.query)?.trim() ?? "",
     tools: (input.tool ?? "")
       .split(/\s+\+\s+/)
       .map((t) => t.trim())
