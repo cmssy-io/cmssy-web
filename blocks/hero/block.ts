@@ -45,10 +45,12 @@ export const heroProps = {
   siteBrand: fields.text({
     label: "Scene: Demo Site Brand",
     defaultValue: "Orbit",
+    localized: false,
   }),
   siteDomain: fields.text({
     label: "Scene: Demo Site Domain",
     defaultValue: "orbit.audio",
+    localized: false,
   }),
   siteNav: fields.text({
     label: "Scene: Demo Site Nav (· separated)",
@@ -65,6 +67,7 @@ export const heroProps = {
   productName: fields.text({
     label: "Scene: Product Name",
     defaultValue: "Orbit 2",
+    localized: false,
   }),
   productPrice: fields.text({
     label: "Scene: Product Price",
@@ -77,14 +80,17 @@ export const heroProps = {
   modelName: fields.text({
     label: "Scene: Content Model Name",
     defaultValue: "Product",
+    localized: false,
   }),
   modelFields: fields.text({
     label: "Scene: Model Fields (name:Type · separated)",
     defaultValue: "name:Text · price:Number · color:Select",
+    localized: false,
   }),
   adminLabel: fields.text({
     label: "Scene: Admin Tab Label",
     defaultValue: "cmssy",
+    localized: false,
   }),
   adminNav: fields.text({
     label: "Scene: Admin Sidebar (· separated)",
@@ -109,10 +115,12 @@ export const heroProps = {
   queryStatus: fields.text({
     label: "Scene: API Response Status",
     defaultValue: "200 · 38 ms",
+    localized: false,
   }),
   agentName: fields.text({
     label: "Scene: Agent Name",
     defaultValue: "Claude",
+    localized: false,
   }),
   chatTitle: fields.text({
     label: "Scene: Chat Title",
@@ -135,21 +143,40 @@ export const heroProps = {
         label: "Edited Element",
         defaultValue: "headline",
         options: SCENE_TARGETS,
+        localized: false,
       }),
       text: fields.text({
         label:
-          "New Value (text; #hex color for accent; variant name; new field name for model; unused for layout)",
+          "New Value (text; #hex color for accent; variant name; new field name for model)",
+        showWhen: { field: "target", notEquals: "layout" },
       }),
       detail: fields.text({
-        label: "Detail (variant: SKU line in panel; model: value shown on site)",
+        label: "Variant: SKU Line in Panel",
+        showWhen: { field: "target", equals: "variant" },
       }),
-      color: fields.text({ label: "Variant Color (hex)" }),
+      color: fields.text({
+        label: "Variant: Color (hex)",
+        localized: false,
+        showWhen: { field: "target", equals: "variant" },
+      }),
       query: fields.text({
-        label: "API Query Shown After Save (variant and model)",
+        label: "Variant: API Query Shown After Save",
+        localized: false,
+        showWhen: { field: "target", equals: "variant" },
+      }),
+      modelValue: fields.text({
+        label: "Model: Value Shown on Site",
+        showWhen: { field: "target", equals: "model" },
+      }),
+      modelQuery: fields.text({
+        label: "Model: API Query Shown After Save",
+        localized: false,
+        showWhen: { field: "target", equals: "model" },
       }),
       tool: fields.text({
         label: "Tool Chips (join several with +)",
         defaultValue: "update_block_content",
+        localized: false,
       }),
       reply: fields.text({ label: "Agent Reply" }),
     },
