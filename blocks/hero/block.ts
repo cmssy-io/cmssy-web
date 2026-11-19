@@ -70,6 +70,10 @@ export const heroProps = {
     label: "Scene: Product Price",
     defaultValue: "$349",
   }),
+  productVariants: fields.text({
+    label: "Scene: Product Variants (Name:#hex · separated)",
+    defaultValue: "Blue:#00a8f0 · Silver:#e8ebf0 · Graphite:#3a4252",
+  }),
   modelName: fields.text({
     label: "Scene: Content Model Name",
     defaultValue: "Product",
@@ -77,6 +81,34 @@ export const heroProps = {
   modelFields: fields.text({
     label: "Scene: Model Fields (name:Type · separated)",
     defaultValue: "name:Text · price:Number · color:Select",
+  }),
+  adminLabel: fields.text({
+    label: "Scene: Admin Tab Label",
+    defaultValue: "cmssy",
+  }),
+  adminNav: fields.text({
+    label: "Scene: Admin Sidebar (· separated)",
+    defaultValue: "Pages · Products · Models · Media",
+  }),
+  recordCount: fields.text({
+    label: "Scene: Model Record Count",
+    defaultValue: "12 records",
+  }),
+  addFieldLabel: fields.text({
+    label: "Scene: Add Field Button",
+    defaultValue: "Add field",
+  }),
+  addVariantLabel: fields.text({
+    label: "Scene: Add Variant Button",
+    defaultValue: "Add variant",
+  }),
+  savedLabel: fields.text({
+    label: "Scene: Saved Toast",
+    defaultValue: "Saved",
+  }),
+  queryStatus: fields.text({
+    label: "Scene: API Response Status",
+    defaultValue: "200 · 38 ms",
   }),
   agentName: fields.text({
     label: "Scene: Agent Name",
@@ -106,10 +138,14 @@ export const heroProps = {
       }),
       text: fields.text({
         label:
-          "New Value (text; hex color for accent; new field name for model; unused for layout and api)",
+          "New Value (text; hex color for accent; variant name; new field name for model; unused for layout)",
       }),
       detail: fields.text({
-        label: "Model: Value Shown On Site",
+        label: "Detail (variant: SKU line in panel; model: value shown on site)",
+      }),
+      color: fields.text({ label: "Variant Color (hex)" }),
+      query: fields.text({
+        label: "API Query Shown After Save (variant and model)",
       }),
       tool: fields.text({
         label: "Tool Chips (join several with +)",
@@ -125,7 +161,7 @@ export const heroBlock = defineBlock({
   category: "Marketing",
   label: "Hero",
   description:
-    "Homepage hero: short headline above a looping scene where an AI agent in a phone chat edits a demo store over MCP (copy, style, layout, content model) and shows the same content as API JSON, over an animated flow field.",
+    "Homepage hero: short headline above a looping scene where an AI agent in a phone chat edits a demo store over MCP (copy, style, layout) and changes product data in the cmssy panel (a new variant, a new model field), then shows the API returning the update, over an animated flow field.",
   component: Hero,
   props: heroProps,
 });

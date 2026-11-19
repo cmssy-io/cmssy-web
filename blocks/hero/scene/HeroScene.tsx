@@ -3,16 +3,18 @@
 import { ArrowUp, Check, ChevronLeft, Zap } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
-import type { SceneLabels, SceneTarget } from "./types";
+import type { SceneLabels, SceneStep, SceneTarget, Variant } from "./types";
 
 type Spot =
   | "headline"
   | "button"
   | "visual"
   | "spec"
-  | "apiTab"
-  | "previewTab";
+  | "adminTab"
+  | "previewTab"
+  | "addRow";
 type CursorSpot = "off" | "rest" | Spot;
+type PanelMode = "variant" | "model";
 
 type Message =
   | { id: number; kind: "user"; text: string }
@@ -32,6 +34,13 @@ interface NewField {
   value: string;
 }
 
+interface QueryView {
+  request: string;
+  mode: PanelMode;
+  key: string;
+  value: string;
+}
+
 const TYPE_MS = 38;
 const DELETE_MS = 16;
 const SWAP_MS = 700;
@@ -42,8 +51,9 @@ const SPOTS: Spot[] = [
   "button",
   "visual",
   "spec",
-  "apiTab",
+  "adminTab",
   "previewTab",
+  "addRow",
 ];
 
 const CLICK_SPOT: Partial<Record<SceneTarget, Spot>> = {
@@ -51,7 +61,8 @@ const CLICK_SPOT: Partial<Record<SceneTarget, Spot>> = {
   button: "button",
   accent: "button",
   layout: "visual",
-  api: "apiTab",
+  variant: "adminTab",
+  model: "adminTab",
 };
 
 function boxIn(el: HTMLElement, root: HTMLElement): Box {
@@ -73,10 +84,15 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
   const [button, setButton] = useState(labels.siteButton);
   const [accent, setAccent] = useState<string | null>(null);
   const [swapped, setSwapped] = useState(false);
-  const [modelOpen, setModelOpen] = useState(false);
-  const [draftField, setDraftField] = useState("");
+  const [panel, setPanel] = useState<PanelMode>("variant");
+  const [adminView, setAdminView] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [draft, setDraft] = useState("");
+  const [draftDetail, setDraftDetail] = useState("");
+  const [draftColor, setDraftColor] = useState("");
   const [field, setField] = useState<NewField | null>(null);
-  const [apiView, setApiView] = useState(false);
+  const [extraVariant, setExtraVariant] = useState<Variant | null>(null);
+  const [query, setQuery] = useState<QueryView | null>(null);
   const [composer, setComposer] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [cursor, setCursor] = useState<CursorSpot>("off");
@@ -125,7 +141,7 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
       if (el) ro.observe(el);
     }
     return () => ro.disconnect();
-  }, [swapped, field]);
+  }, [swapped, field, draft, panel]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -158,19 +174,34 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
       });
     };
 
+    const clearPanel = () => {
+      setSaved(false);
+      setDraft("");
+      setDraftDetail("");
+      setDraftColor("");
+    };
+
     const resetScene = () => {
       setHeadline(labels.siteHeadline);
       setButton(labels.siteButton);
       setAccent(null);
       setSwapped(false);
-      setModelOpen(false);
-      setDraftField("");
+      setAdminView(false);
+      clearPanel();
       setField(null);
-      setApiView(false);
+      setExtraVariant(null);
+      setQuery(null);
       setMessages([]);
       setComposer("");
       setSelected(null);
       setEditing(false);
+    };
+
+    const applyResult = (step: SceneStep) => {
+      if (step.target === "variant")
+        setExtraVariant({ name: step.text, color: step.color });
+      if (step.target === "model")
+        setField({ name: step.text, value: step.detail });
     };
 
     resetScene();
@@ -182,8 +213,7 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
       if (first.target === "button") setButton(first.text);
       if (first.target === "accent") setAccent(first.text);
       if (first.target === "layout") setSwapped(true);
-      if (first.target === "model")
-        setField({ name: first.text, value: first.detail });
+      applyResult(first);
       setMessages([
         { id: 1, kind: "user", text: first.prompt },
         ...first.tools.map((t, i) => ({
@@ -274,14 +304,6 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
                 m.id === id && m.kind === "tool" ? { ...m, done: true } : m,
               ),
             );
-          const startTool = (id: number, label: string) =>
-            setMessages((prev) =>
-              prev.map((m) =>
-                m.id === id
-                  ? { id, kind: "tool", text: label, done: false }
-                  : m,
-              ),
-            );
           const nextTool = async (label: string) => {
             markDone(toolId);
             await sleep(250);
@@ -289,12 +311,26 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
             push({ id: toolId, kind: "tool", text: label, done: false });
           };
 
+          const isPanel = step.target === "variant" || step.target === "model";
+          if (isPanel) {
+            flushSync(() => {
+              clearPanel();
+              setPanel(step.target as PanelMode);
+            });
+          }
+
           const spot = CLICK_SPOT[step.target];
           if (spot) {
             await click(spot);
-            setSelected(spot);
+            if (!isPanel) setSelected(spot);
           }
-          startTool(toolId, tools[0]);
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === toolId
+                ? { id: toolId, kind: "tool", text: tools[0], done: false }
+                : m,
+            ),
+          );
           await sleep(450);
 
           if (step.target === "headline") {
@@ -313,29 +349,44 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
             await sleep(SWAP_MS + 50);
             setSelected("visual");
             await sleep(300);
-          } else if (step.target === "model") {
-            setModelOpen(true);
-            await sleep(600);
-            await typeInto(setDraftField, step.text);
+          } else {
+            setAdminView(true);
+            await sleep(900);
+            await click("addRow");
+            if (step.target === "variant") setDraftColor(step.color);
+            await typeInto(setDraft, step.text);
+            if (step.target === "variant") {
+              await sleep(250);
+              setDraftDetail(step.detail);
+            }
             await sleep(500);
             for (const label of tools.slice(1)) await nextTool(label);
             await sleep(500);
-            setField({ name: step.text, value: step.detail });
-            await sleep(120);
-            setCursor("spec");
-            await sleep(700);
-            setSelected("spec");
-            await sleep(900);
-          } else if (step.target === "api") {
-            setSelected(null);
-            setApiView(true);
-            await sleep(3200);
+            setSaved(true);
+            await sleep(1300);
             await click("previewTab");
-            setApiView(false);
-            await sleep(400);
+            setAdminView(false);
+            await sleep(450);
+            if (step.query) {
+              setQuery({
+                request: step.query,
+                mode: step.target as PanelMode,
+                key: step.text,
+                value: step.detail,
+              });
+              await sleep(900);
+            }
+            applyResult(step);
+            await sleep(150);
+            const target: Spot = step.target === "model" ? "spec" : "visual";
+            setCursor(target);
+            await sleep(700);
+            setSelected(target);
+            await sleep(1500);
+            setQuery(null);
           }
 
-          if (step.target !== "model")
+          if (!isPanel)
             for (const label of tools.slice(1)) await nextTool(label);
 
           await sleep(300);
@@ -347,13 +398,7 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
           await sleep(500);
           setSelected(null);
           setCursor("rest");
-          if (step.target === "model") {
-            await sleep(900);
-            setModelOpen(false);
-            await sleep(1100);
-          } else {
-            await sleep(2000);
-          }
+          await sleep(2000);
         }
 
         setFading(true);
@@ -375,10 +420,11 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
   }, [steps, labels.siteHeadline, labels.siteButton]);
 
   const cursorPos = (() => {
+    const rest = { x: siteSize.w * 0.62, y: siteSize.h * 0.86 };
     if (cursor === "off") return { x: siteSize.w * 0.92, y: siteSize.h * 1.05 };
-    if (cursor === "rest") return { x: siteSize.w * 0.62, y: siteSize.h * 0.86 };
+    if (cursor === "rest") return rest;
     const b = boxes[cursor];
-    if (!b) return { x: siteSize.w * 0.62, y: siteSize.h * 0.86 };
+    if (!b) return rest;
     return {
       x: b.x + Math.min(b.w * 0.6, b.w - 12),
       y: b.y + b.h * 0.62,
@@ -387,27 +433,39 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
 
   const selBox = selected ? boxes[selected] : null;
 
-  const json = [
-    { key: "name", value: JSON.stringify(labels.productName) },
-    { key: "price", value: JSON.stringify(labels.productPrice) },
-    ...(accent ? [{ key: "color", value: JSON.stringify(accent) }] : []),
-    ...(field
-      ? [{ key: field.name, value: JSON.stringify(field.value), fresh: true }]
-      : []),
-  ];
+  const variants = extraVariant
+    ? [...labels.variants, extraVariant]
+    : labels.variants;
+  const productColor = extraVariant?.color ?? variants[0]?.color;
+
+  const siteStyle = {
+    ...(accent ? { "--scene-accent": accent } : {}),
+    ...(productColor ? { "--product-color": productColor } : {}),
+  } as React.CSSProperties;
+
+  const isVariantPanel = panel === "variant";
+  const panelRows = isVariantPanel
+    ? labels.variants.map((v) => ({
+        key: v.name,
+        name: v.name,
+        color: v.color,
+        side: labels.productPrice,
+      }))
+    : labels.modelFields.map((f) => ({
+        key: f.name,
+        name: f.name,
+        color: "",
+        side: f.type,
+      }));
+
+  const queryVariants = query
+    ? [...labels.variants.map((v) => v.name), query.key]
+    : [];
 
   return (
     <div ref={rootRef} className="hero-scene" aria-hidden="true">
       <div className="hero-scene__stage">
-        <div
-          ref={siteRef}
-          className="hero-scene__site"
-          style={
-            accent
-              ? ({ "--scene-accent": accent } as React.CSSProperties)
-              : undefined
-          }
-        >
+        <div ref={siteRef} className="hero-scene__site" style={siteStyle}>
           <div className="hero-scene__chrome">
             <span />
             <span />
@@ -415,12 +473,15 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
             <div className="hero-scene__tabs">
               <span
                 ref={spotRef("previewTab")}
-                data-active={apiView ? undefined : ""}
+                data-active={adminView ? undefined : ""}
               >
                 Preview
               </span>
-              <span ref={spotRef("apiTab")} data-active={apiView ? "" : undefined}>
-                API
+              <span
+                ref={spotRef("adminTab")}
+                data-active={adminView ? "" : undefined}
+              >
+                {labels.adminLabel}
               </span>
             </div>
             <div className="hero-scene__url">{labels.siteDomain}</div>
@@ -429,7 +490,7 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
           <div
             className="hero-scene__page"
             data-fading={fading ? "" : undefined}
-            data-hidden={apiView ? "" : undefined}
+            data-hidden={adminView ? "" : undefined}
           >
             <div className="hero-scene__nav">
               <span className="hero-scene__brand">{labels.siteBrand}</span>
@@ -472,7 +533,13 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
                   ) : null}
                 </div>
               </div>
-              <div ref={visualRef} className="hero-scene__visual">
+              <div
+                ref={(el) => {
+                  visualRef.current = el;
+                  spotRefs.current.visual = el;
+                }}
+                className="hero-scene__visual"
+              >
                 <span className="hero-scene__halo">
                   <span className="hero-scene__ripple" />
                   <span className="hero-scene__ripple" />
@@ -506,9 +573,13 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
                     <small>{labels.productPrice}</small>
                   </span>
                   <span className="hero-scene__swatches">
-                    <i />
-                    <i />
-                    <i />
+                    {variants.map((v) => (
+                      <i
+                        key={v.name}
+                        style={{ background: v.color }}
+                        data-active={v.color === productColor ? "" : undefined}
+                      />
+                    ))}
                   </span>
                 </div>
               </div>
@@ -516,64 +587,119 @@ export function HeroScene({ labels }: { labels: SceneLabels }) {
           </div>
 
           <div
-            className="hero-scene__api"
-            data-open={apiView ? "" : undefined}
+            className="hero-scene__admin"
+            data-open={adminView ? "" : undefined}
           >
-            <div className="hero-scene__api-head">
-              <span>POST</span> /graphql
-              <span className="hero-scene__api-status">200 OK</span>
-            </div>
-            <pre>
-              <span className="hero-scene__j-p">{"{"}</span>
-              {"\n"}
-              {"  "}
-              <span className="hero-scene__j-k">&quot;{labels.modelName.toLowerCase()}&quot;</span>
-              <span className="hero-scene__j-p">: {"{"}</span>
-              {json.map((row, i) => (
+            <aside className="hero-scene__admin-nav">
+              <span className="hero-scene__admin-logo" />
+              {labels.adminNav.map((item, i) => (
                 <span
-                  key={row.key}
-                  className="hero-scene__j-row"
-                  data-fresh={"fresh" in row ? "" : undefined}
+                  key={`${i}-${item}`}
+                  data-active={
+                    i === (isVariantPanel ? 1 : 2) ? "" : undefined
+                  }
                 >
-                  {"\n    "}
-                  <span className="hero-scene__j-k">&quot;{row.key}&quot;</span>
-                  <span className="hero-scene__j-p">: </span>
-                  <span className="hero-scene__j-v">{row.value}</span>
-                  {i < json.length - 1 ? (
-                    <span className="hero-scene__j-p">,</span>
-                  ) : null}
+                  {item}
                 </span>
               ))}
-              {"\n  "}
-              <span className="hero-scene__j-p">{"}"}</span>
-              {"\n"}
-              <span className="hero-scene__j-p">{"}"}</span>
-            </pre>
+            </aside>
+            <div className="hero-scene__admin-main">
+              <div className="hero-scene__admin-head">
+                <span>
+                  <small>
+                    {isVariantPanel
+                      ? `${labels.adminNav[1] ?? ""} / Variants`
+                      : labels.adminNav[2] ?? ""}
+                  </small>
+                  <b>{isVariantPanel ? labels.productName : labels.modelName}</b>
+                </span>
+                <span className="hero-scene__admin-count">
+                  {isVariantPanel
+                    ? `${labels.variants.length + (saved ? 1 : 0)} variants`
+                    : labels.recordCount}
+                </span>
+              </div>
+              <div className="hero-scene__fields">
+                {panelRows.map((row) => (
+                  <div key={row.key} className="hero-scene__field">
+                    <span>
+                      {row.color ? (
+                        <i style={{ background: row.color }} />
+                      ) : null}
+                      {row.name}
+                    </span>
+                    <small>{row.side}</small>
+                  </div>
+                ))}
+                {draft ? (
+                  <div className="hero-scene__field" data-new="">
+                    <span>
+                      {draftColor ? (
+                        <i style={{ background: draftColor }} />
+                      ) : null}
+                      {draft}
+                      {saved ? null : <i className="hero-scene__caret" />}
+                    </span>
+                    <small>
+                      {isVariantPanel ? draftDetail || " " : "Text"}
+                    </small>
+                  </div>
+                ) : null}
+                <span ref={spotRef("addRow")} className="hero-scene__add">
+                  +{" "}
+                  {isVariantPanel ? labels.addVariantLabel : labels.addFieldLabel}
+                </span>
+              </div>
+              <div
+                className="hero-scene__toast"
+                data-open={saved ? "" : undefined}
+              >
+                <Check size={12} strokeWidth={2.5} />
+                {labels.savedLabel}
+              </div>
+            </div>
           </div>
 
           <div
-            className="hero-scene__model"
-            data-open={modelOpen ? "" : undefined}
+            className="hero-scene__query"
+            data-open={query ? "" : undefined}
           >
-            <div className="hero-scene__model-head">
-              <span>Model</span>
-              <b>{labels.modelName}</b>
+            <div className="hero-scene__query-req">
+              <span>query</span>
+              {query?.request ?? " "}
+              <b>{labels.queryStatus}</b>
             </div>
-            {labels.modelFields.map((f) => (
-              <div key={f.name} className="hero-scene__model-row">
-                <span>{f.name}</span>
-                <small>{f.type}</small>
-              </div>
-            ))}
-            {draftField ? (
-              <div className="hero-scene__model-row" data-new="">
-                <span>
-                  + {draftField}
-                  {field ? null : <i className="hero-scene__caret" />}
-                </span>
-                <small>Text</small>
-              </div>
-            ) : null}
+            <div className="hero-scene__query-res">
+              <span className="hero-scene__j-p">{"{ "}</span>
+              {query?.mode === "variant" ? (
+                <>
+                  <span className="hero-scene__j-k">&quot;variants&quot;</span>
+                  <span className="hero-scene__j-p">: [</span>
+                  {queryVariants.map((name, i) => (
+                    <span
+                      key={`${i}-${name}`}
+                      className="hero-scene__j-v"
+                      data-fresh={i === queryVariants.length - 1 ? "" : undefined}
+                    >
+                      {JSON.stringify(name)}
+                      {i < queryVariants.length - 1 ? (
+                        <span className="hero-scene__j-p">, </span>
+                      ) : null}
+                    </span>
+                  ))}
+                  <span className="hero-scene__j-p">]</span>
+                </>
+              ) : query ? (
+                <>
+                  <span className="hero-scene__j-k">&quot;{query.key}&quot;</span>
+                  <span className="hero-scene__j-p">: </span>
+                  <span className="hero-scene__j-v" data-fresh="">
+                    {JSON.stringify(query.value)}
+                  </span>
+                </>
+              ) : null}
+              <span className="hero-scene__j-p">{" }"}</span>
+            </div>
           </div>
 
           {selBox ? (
