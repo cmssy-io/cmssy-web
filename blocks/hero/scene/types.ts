@@ -113,7 +113,7 @@ export const FALLBACK_STEPS = [
     detail: "ORB2-SND · 40 in stock",
     color: "#d6b98c",
     query: 'product(slug: "orbit-2") { variants { name } }',
-    tool: "set_product_variants · Orbit 2",
+    tool: "update_model · color + set_product_variants · Orbit 2",
     reply: "Sand is live on the product page.",
   },
   {
