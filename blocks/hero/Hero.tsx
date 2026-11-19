@@ -17,9 +17,8 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
     secondaryButtonText = "",
     secondaryButtonUrl = "",
     trustNote = "",
+    showScene = true,
   } = content;
-
-  const labels = buildSceneLabels(content);
 
   return (
     <section className="hero-flow relative overflow-hidden bg-ink">
@@ -69,7 +68,7 @@ export default function Hero({ content }: BlockProps<typeof heroProps>) {
           ) : null}
         </div>
 
-        <HeroScene labels={labels} />
+        {showScene ? <HeroScene labels={buildSceneLabels(content)} /> : null}
       </Container>
     </section>
   );
