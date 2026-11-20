@@ -2,22 +2,22 @@ import { defineBlock, fields } from "@cmssy/react";
 import Changelog from "./Changelog";
 
 export const changelogProps = {
-    "badge": fields.text({ label: "Badge Text", defaultValue: "Changelog" }),
-    "heading": fields.text({ label: "Heading", defaultValue: "What's" }),
-    "headingHighlight": fields.text({ label: "Heading Highlight", defaultValue: "New" }),
-    "description": fields.textarea({ label: "Description", defaultValue: "Stay up to date with the latest features, improvements, and fixes." }),
+    "badge": fields.text({ label: "Badge Text" }),
+    "heading": fields.text({ label: "Heading" }),
+    "headingHighlight": fields.text({ label: "Heading Highlight" }),
+    "description": fields.textarea({ label: "Description" }),
     "entries": fields.repeater({ label: "Changelog Entries", itemSchema: {
       "version": fields.text({ label: "Version", required: true }),
       "date": fields.text({ label: "Date", required: true }),
       "title": fields.text({ label: "Title", required: true }),
-      "type": fields.select({ label: "Type", defaultValue: "feature", options: ["feature","improvement","bugfix"] }),
+      "type": fields.select({ label: "Type", options: ["feature","improvement","bugfix"] }),
       "changes": fields.repeater({ label: "Changes", itemSchema: {
         "text": fields.text({ label: "Change Description", required: true })
       } })
     } }),
-    "showSubscribe": fields.boolean({ label: "Show Subscribe CTA", defaultValue: true }),
-    "subscribeText": fields.text({ label: "Subscribe Text", defaultValue: "Subscribe to get notified about new releases" }),
-    "subscribeButtonText": fields.text({ label: "Subscribe Button Text", defaultValue: "Subscribe" }),
+    "showSubscribe": fields.boolean({ label: "Show Subscribe CTA" }),
+    "subscribeText": fields.text({ label: "Subscribe Text" }),
+    "subscribeButtonText": fields.text({ label: "Subscribe Button Text" }),
     "subscribeButtonUrl": fields.link({ label: "Subscribe Button URL" })
 };
 

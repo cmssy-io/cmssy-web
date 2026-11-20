@@ -7,26 +7,22 @@ export const docsImageProps = {
   caption: fields.text({ label: "Caption" }),
   width: fields.select({
     label: "Width",
-    defaultValue: "large",
-    options: ["small", "medium", "large", "full"],
+options: ["small", "medium", "large", "full"],
     tab: "style",
   }),
   border: fields.boolean({
     label: "Show Border",
-    defaultValue: true,
-    tab: "style",
+tab: "style",
   }),
   rounded: fields.boolean({
     label: "Rounded Corners",
-    defaultValue: true,
-    tab: "style",
+tab: "style",
   }),
   shadow: fields.boolean({
     label: "Shadow",
-    defaultValue: true,
-    tab: "style",
+tab: "style",
   }),
-  zoomable: fields.boolean({ label: "Click to Zoom", defaultValue: true }),
+  zoomable: fields.boolean({ label: "Click to Zoom" }),
 };
 
 export const docsImageBlock = defineBlock({

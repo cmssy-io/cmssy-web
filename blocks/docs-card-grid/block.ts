@@ -12,14 +12,12 @@ export const docsCardGridProps = {
   description: fields.textarea({ label: "Section Description" }),
   columns: fields.select({
     label: "Columns",
-    defaultValue: "3",
-    options: ["2", "3", "4"],
+options: ["2", "3", "4"],
     tab: "style",
   }),
   band: fields.select({
     label: "Band",
-    defaultValue: "paper",
-    options: ["paper", "muted", "ink"],
+options: ["paper", "muted", "ink"],
     tab: "style",
   }),
   cards: fields.repeater({

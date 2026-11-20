@@ -2,8 +2,8 @@ import { defineBlock, fields } from "@cmssy/react";
 import ComparisonTable from "./ComparisonTable";
 
 export const comparisonTableProps = {
-  fig: fields.text({ label: "Fig Number", defaultValue: "FIG 5.0" }),
-  eyebrow: fields.text({ label: "Eyebrow", defaultValue: "HOW WE COMPARE" }),
+  fig: fields.text({ label: "Fig Number" }),
+  eyebrow: fields.text({ label: "Eyebrow" }),
   heading: fields.text({
     label: "Heading",
     defaultValue: "An honest look",
@@ -11,7 +11,6 @@ export const comparisonTableProps = {
   }),
   description: fields.textarea({
     label: "Description",
-    defaultValue: "Four things that actually differ. No trash-talk.",
   }),
   competitors: fields.repeater({
     label: "Competitor Columns",
@@ -39,8 +38,6 @@ export const comparisonTableProps = {
   linkUrl: fields.link({ label: "Link URL" }),
   footnote: fields.text({
     label: "Footnote",
-    defaultValue:
-      "Comparison reflects standard plans as of 2026. Competitor capabilities vary by tier.",
   }),
 };
 

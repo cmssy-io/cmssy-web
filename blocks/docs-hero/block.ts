@@ -18,25 +18,21 @@ export const docsHeroProps = {
   description: fields.textarea({ label: "Description" }),
   variant: fields.select({
     label: "Variant",
-    defaultValue: "default",
-    options: ["default", "gradient", "minimal"],
+options: ["default", "gradient", "minimal"],
     tab: "style",
   }),
   layout: fields.select({
     label: "Layout",
-    defaultValue: "centered",
-    options: ["centered", "split"],
+options: ["centered", "split"],
     tab: "style",
     helperText:
       "Split: heading and quick start commands on the left, quick links as a framework card on the right. The quick start and quick links card fields below only render in the split layout.",
   }),
   showSearch: fields.boolean({
     label: "Show Search Bar",
-    defaultValue: true,
   }),
   searchPlaceholder: fields.text({
     label: "Search Placeholder",
-    defaultValue: "Search documentation...",
   }),
   commands: fields.repeater({
     label: "Quick Start Commands",

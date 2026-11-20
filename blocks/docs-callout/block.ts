@@ -10,8 +10,7 @@ export const docsCalloutProps = {
   }),
   style: fields.select({
     label: "Style",
-    defaultValue: "card",
-    options: ["card", "accent-border"],
+options: ["card", "accent-border"],
     tab: "style",
   }),
   title: fields.text({ label: "Title", placeholder: "Optional title" }),
