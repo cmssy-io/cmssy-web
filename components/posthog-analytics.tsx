@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { loadPostHog, loadedPostHog } from "@/lib/posthog-client";
 import { useConsent } from "@/components/consent";
 import {
@@ -9,14 +9,16 @@ import {
   type LandingUtm,
 } from "@/lib/app-handoff";
 
+// Module scope, not a ref: the layout that renders this component sits under
+// the catch-all [[...path]] segment and can remount on a page change (a ref
+// kept in production lost the UTM after one click), while the module lives for
+// the whole client-side session. The first mount, on the landing page, wins.
+let landing: LandingUtm | null = null;
+
 export function PostHogAnalytics({ appUrl }: { appUrl: string }) {
   const consent = useConsent();
-  // This component lives in the root layout, so it mounts once, on the page
-  // the visitor landed on, and survives client-side navigation.
-  const landing = useRef<LandingUtm>({});
-
   useEffect(() => {
-    landing.current = readLandingUtm(location.href);
+    landing ??= readLandingUtm(location.href);
   }, []);
 
   useEffect(() => {
@@ -55,7 +57,7 @@ export function PostHogAnalytics({ appUrl }: { appUrl: string }) {
         location.href,
         appUrl,
         distinctId,
-        landing.current,
+        landing ?? {},
       );
       if (next) anchor.href = next;
     }
