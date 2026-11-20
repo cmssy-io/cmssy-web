@@ -78,6 +78,20 @@ export default async function RootLayout({
         <script
           dangerouslySetInnerHTML={{ __html: consentModeInitScript() }}
         />
+        {/*
+         * Vercel Web Analytics, the plain-script form (no @vercel/analytics
+         * package). Cookieless, so it counts every visitor, not only those who
+         * accept the consent banner like PostHog does. Lives in this root
+         * layout because it never remounts. The script serves only on Vercel
+         * with Web Analytics enabled for the project; elsewhere it 404s.
+         */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};",
+          }}
+        />
+        <script defer src="/_vercel/insights/script.js" />
       </head>
       <body>
         <ThemeProvider>
