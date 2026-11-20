@@ -10,10 +10,11 @@ const { blogPostsBlock } = await import("./block");
 const runLoader = (
   parentPage: unknown,
   overrides: Record<string, unknown> = {},
+  context: Record<string, unknown> = {},
 ) =>
   blogPostsBlock.loader?.({
     content: { parentPage, postsPerPage: "9", ...overrides },
-    context: {},
+    context,
   } as never);
 
 describe("blog-posts loader", () => {
@@ -46,6 +47,21 @@ describe("blog-posts loader", () => {
       parentSlug: "/blog",
       limit: 9,
       offset: 0,
+    });
+  });
+
+  it("asks for media alt text in the language the page renders in", async () => {
+    await runLoader(
+      "/blog",
+      {},
+      { locale: { current: "pl", default: "en", enabled: ["en", "pl"] } },
+    );
+
+    expect(loadPosts).toHaveBeenCalledWith({
+      parentSlug: "/blog",
+      limit: 9,
+      offset: 0,
+      language: "pl",
     });
   });
 
