@@ -65,7 +65,7 @@ export function useBlogPosts(
             limit: opts.limit ?? limit,
             offset: opts.offset ?? 0,
             pageType,
-            language,
+            locale: language,
             customFieldSort: sortFieldKey
               ? { fieldKey: sortFieldKey, direction: "desc" }
               : undefined,

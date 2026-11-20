@@ -14,7 +14,7 @@ export type LoadPostsVars = PostsSortVars & {
   parentSlug: string;
   limit: number;
   offset?: number;
-  language?: string;
+  locale?: string;
 };
 
 export type PostsResult = {

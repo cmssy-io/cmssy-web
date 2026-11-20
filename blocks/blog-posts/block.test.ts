@@ -61,7 +61,7 @@ describe("blog-posts loader", () => {
       parentSlug: "/blog",
       limit: 9,
       offset: 0,
-      language: "pl",
+      locale: "pl",
     });
   });
 

@@ -67,7 +67,7 @@ export const blogPostsBlock = defineBlock({
       parentSlug,
       limit,
       offset: 0,
-      language: context?.locale?.current,
+      locale: context?.locale?.current,
       ...postsSortVars(content),
     });
   },
