@@ -165,7 +165,7 @@ export default function DocsTabs({
               prose-p:my-2 prose-p:leading-relaxed
               prose-pre:bg-zinc-950 prose-pre:border prose-pre:border-zinc-800 prose-pre:rounded-lg
               prose-code:text-xs
-              prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+              prose-a:text-primary prose-a:no-underline prose-a:hover:underline
               prose-ul:my-2 prose-li:my-0
               [&_.docs-table]:overflow-x-auto [&_.docs-table>table]:my-0 [&_.docs-table]:my-4
             "
