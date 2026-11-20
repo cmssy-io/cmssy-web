@@ -78,23 +78,11 @@ export default function BlogPostHero({
           }}
         />
       ) : null}
-      <div className="relative min-h-[60vh] sm:min-h-[65vh] lg:min-h-[70vh] flex flex-col justify-end">
-        {coverImageUrl ? (
-          <>
-            <Image
-              src={coverImageUrl}
-              alt={title}
-              fill
-              sizes="100vw"
-              className="object-cover"
-              priority
-            />
-            <div className="absolute inset-0 bg-linear-to-t from-ink/90 via-ink/50 to-ink/20" />
-          </>
-        ) : (
-          <div className="dot-grid-dark absolute inset-0 bg-ink" />
-        )}
-
+      {/* The title sits on flat ink and the cover is not shown here: covers
+          carry their own headline and illustration, so a title laid over them
+          is unreadable. The cover stays the post's listing card and social
+          image (and the JSON-LD image above). */}
+      <div className="dot-grid-dark relative bg-ink">
         <Container className="relative z-10 pb-10 sm:pb-14 pt-32">
           <nav className="mb-5 flex items-center gap-2 text-sm text-paper/60">
             {breadcrumbLabel && breadcrumbUrl && (
@@ -168,6 +156,7 @@ export default function BlogPostHero({
               </span>
             )}
           </div>
+
         </Container>
       </div>
     </section>
