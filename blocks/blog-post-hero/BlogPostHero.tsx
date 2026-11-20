@@ -78,9 +78,10 @@ export default function BlogPostHero({
           }}
         />
       ) : null}
-      {/* The title sits on flat ink, never on the cover: covers carry their
-          own headline and illustration, so text laid over them is unreadable.
-          The cover is shown below as its own figure. */}
+      {/* The title sits on flat ink and the cover is not shown here: covers
+          carry their own headline and illustration, so a title laid over them
+          is unreadable. The cover stays the post's listing card and social
+          image (and the JSON-LD image above). */}
       <div className="dot-grid-dark relative bg-ink">
         <Container className="relative z-10 pb-10 sm:pb-14 pt-32">
           <nav className="mb-5 flex items-center gap-2 text-sm text-paper/60">
@@ -156,18 +157,6 @@ export default function BlogPostHero({
             )}
           </div>
 
-          {coverImageUrl ? (
-            <figure className="relative mt-10 aspect-[1200/630] w-full max-w-5xl overflow-hidden rounded-2xl border border-white/10 sm:mt-12">
-              <Image
-                src={coverImageUrl}
-                alt={title}
-                fill
-                sizes="(min-width: 1024px) 1024px, 100vw"
-                className="object-cover"
-                priority
-              />
-            </figure>
-          ) : null}
         </Container>
       </div>
     </section>
