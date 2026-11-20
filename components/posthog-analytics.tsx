@@ -1,12 +1,23 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { loadPostHog, loadedPostHog } from "@/lib/posthog-client";
 import { useConsent } from "@/components/consent";
-import { handoffHref } from "@/lib/app-handoff";
+import {
+  handoffHref,
+  readLandingUtm,
+  type LandingUtm,
+} from "@/lib/app-handoff";
 
 export function PostHogAnalytics({ appUrl }: { appUrl: string }) {
   const consent = useConsent();
+  // This component lives in the root layout, so it mounts once, on the page
+  // the visitor landed on, and survives client-side navigation.
+  const landing = useRef<LandingUtm>({});
+
+  useEffect(() => {
+    landing.current = readLandingUtm(location.href);
+  }, []);
 
   useEffect(() => {
     if (consent === "pending") return;
@@ -44,6 +55,7 @@ export function PostHogAnalytics({ appUrl }: { appUrl: string }) {
         location.href,
         appUrl,
         distinctId,
+        landing.current,
       );
       if (next) anchor.href = next;
     }
