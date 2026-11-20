@@ -141,6 +141,7 @@ export default function BlogPosts({
                   key={item.id}
                   item={item}
                   language={language}
+                  defaultLanguage={context?.locale?.default}
                   layout={layout}
                 />
               ))}

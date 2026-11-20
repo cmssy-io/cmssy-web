@@ -72,3 +72,22 @@ function asMediaLike(value: unknown): MediaLike {
 export function customMedia(item: PageItem, key: string): string | null {
   return nonEmptyString(mediaUrl(asMediaLike(customField(item, key))));
 }
+
+/**
+ * The cover's alt text, when it is in the language the card renders. A custom
+ * field is not language-keyed, so the delivery read resolves a media
+ * reference's alt in the workspace default language; on any other locale that
+ * text would be in the wrong language, so the caller gets null and falls back.
+ */
+export function customMediaAlt(
+  item: PageItem,
+  key: string,
+  language: string | undefined,
+  defaultLanguage: string | undefined,
+): string | null {
+  if (language && defaultLanguage && language !== defaultLanguage) return null;
+  const value = customField(item, key);
+  if (!value || typeof value !== "object") return null;
+  const { alt } = value as { alt?: unknown };
+  return nonEmptyString(typeof alt === "string" ? alt.trim() : null);
+}
