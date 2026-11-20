@@ -12,14 +12,12 @@ export const headerProps = {
     }),
     logoText: fields.text({
       label: "Logo Text",
-      defaultValue: "Brand",
-      placeholder: "Shown next to logo or as fallback",
+placeholder: "Shown next to logo or as fallback",
       localized: false,
     }),
     logoSize: fields.select({
       label: "Logo Size",
-      defaultValue: "md",
-      options: ["sm", "md", "lg"],
+options: ["sm", "md", "lg"],
       tab: "style",
     }),
     navigation: fields.repeater({
@@ -29,13 +27,11 @@ export const headerProps = {
         url: fields.link({ label: "URL", localized: false }),
         openInNewTab: fields.boolean({
           label: "Open in new tab",
-          defaultValue: false,
-          localized: false,
+localized: false,
         }),
         columns: fields.select({
           label: "Dropdown Columns",
-          defaultValue: "none",
-          options: ["none", "1", "2", "3"],
+options: ["none", "1", "2", "3"],
           localized: false,
         }),
         children: fields.repeater({
@@ -51,8 +47,7 @@ export const headerProps = {
             }),
             openInNewTab: fields.boolean({
               label: "Open in new tab",
-              defaultValue: false,
-              localized: false,
+localized: false,
             }),
           },
         }),
@@ -60,28 +55,23 @@ export const headerProps = {
     }),
     showCta: fields.boolean({
       label: "Show CTA Button",
-      defaultValue: true,
-      localized: false,
+localized: false,
     }),
     ctaLabel: fields.text({
       label: "CTA Label",
-      defaultValue: "Get Started",
     }),
     ctaUrl: fields.link({ label: "CTA URL", localized: false }),
     ctaStyle: fields.select({
       label: "CTA Style",
-      defaultValue: "primary",
-      options: ["primary", "secondary", "outline"],
+options: ["primary", "secondary", "outline"],
       localized: false,
     }),
     showSecondaryCta: fields.boolean({
       label: "Show Secondary CTA",
-      defaultValue: false,
-      localized: false,
+localized: false,
     }),
     secondaryCtaLabel: fields.text({
       label: "Secondary CTA Label",
-      defaultValue: "Login",
     }),
     secondaryCtaUrl: fields.link({
       label: "Secondary CTA URL",
@@ -89,33 +79,27 @@ export const headerProps = {
     }),
     secondaryCtaStyle: fields.select({
       label: "Secondary CTA Style",
-      defaultValue: "ghost",
-      options: ["ghost", "outline", "link"],
+options: ["ghost", "outline", "link"],
       localized: false,
     }),
     sticky: fields.boolean({
       label: "Sticky Header",
-      defaultValue: true,
-      localized: false,
+localized: false,
     }),
     transparent: fields.boolean({
       label: "Transparent Background",
-      defaultValue: false,
-      tab: "style",
+tab: "style",
     }),
     logoutButtonText: fields.text({
       label: "Logout Button Text",
-      defaultValue: "Log out",
     }),
     showLanguageSwitcher: fields.boolean({
       label: "Show Language Switcher",
-      defaultValue: true,
-      localized: false,
+localized: false,
     }),
     showAnnouncement: fields.boolean({
       label: "Show Announcement Bar",
-      defaultValue: false,
-      localized: false,
+localized: false,
     }),
     announcementText: fields.text({
       label: "Announcement Text",
@@ -127,8 +111,7 @@ export const headerProps = {
     }),
     announcementBg: fields.color({
       label: "Announcement Background",
-      defaultValue: "#00A8F0",
-      tab: "style",
+tab: "style",
     }),
     announcementTextColor: fields.color({
       label: "Announcement Text Color",
@@ -136,13 +119,11 @@ export const headerProps = {
          page and it was the least readable thing on it. Ink reads 6.99:1 on
          the same blue, which is what every other elektryk surface already
          uses for its text. */
-      defaultValue: "#10141C",
-      tab: "style",
+tab: "style",
     }),
     announcementDismissible: fields.boolean({
       label: "Dismissible",
-      defaultValue: true,
-      localized: false,
+localized: false,
     }),
 };
 

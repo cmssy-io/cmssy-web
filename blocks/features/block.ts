@@ -2,8 +2,8 @@ import { defineBlock, fields } from "@cmssy/react";
 import Features from "./Features";
 
 export const featuresProps = {
-  fig: fields.text({ label: "Fig Number", defaultValue: "FIG 4.0" }),
-  eyebrow: fields.text({ label: "Eyebrow", defaultValue: "BUILT IN, NOT BOLTED ON" }),
+  fig: fields.text({ label: "Fig Number" }),
+  eyebrow: fields.text({ label: "Eyebrow" }),
   heading: fields.text({
     label: "Heading",
     defaultValue: "Heading",
@@ -11,12 +11,10 @@ export const featuresProps = {
   }),
   headingHighlight: fields.text({
     label: "Heading Highlight",
-    defaultValue: "Highlight",
   }),
   description: fields.textarea({
     label: "Description",
-    defaultValue: "Description",
-    placeholder: "Enter description",
+placeholder: "Enter description",
   }),
   features: fields.repeater({
     label: "Features",

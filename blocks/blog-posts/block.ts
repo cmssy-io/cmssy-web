@@ -9,44 +9,37 @@ export interface BlogPostsData {
 }
 
 export const blogPostsProps = {
-  badge: fields.text({ label: "Badge", defaultValue: "Latest Posts" }),
+  badge: fields.text({ label: "Badge" }),
   heading: fields.text({
     label: "Heading",
-    defaultValue: "From the Blog",
   }),
   description: fields.textarea({ label: "Description" }),
   parentPage: fields.pageSelector({ label: "Parent Page", multiple: false }),
   postsPerPage: fields.select({
     label: "Posts per page",
-    defaultValue: "9",
-    options: ["3", "6", "9", "12"],
+options: ["3", "6", "9", "12"],
   }),
   sortPageType: fields.text({ label: "Sort: post page type" }),
   sortField: fields.text({ label: "Sort: date field, newest first" }),
-  showSearch: fields.boolean({ label: "Show Search", defaultValue: true }),
+  showSearch: fields.boolean({ label: "Show Search" }),
   layout: fields.select({
     label: "Layout",
-    defaultValue: "grid",
-    options: ["grid", "list"],
+options: ["grid", "list"],
     tab: "style",
   }),
   columns: fields.select({
     label: "Columns",
-    defaultValue: "3",
-    options: ["2", "3"],
+options: ["2", "3"],
     tab: "style",
   }),
   searchPlaceholder: fields.text({
     label: "Search Placeholder",
-    defaultValue: "Search posts...",
   }),
   loadingText: fields.text({
     label: "Loading Text",
-    defaultValue: "Loading...",
   }),
   noResultsText: fields.text({
     label: "No Results Text",
-    defaultValue: "No posts found",
   }),
 };
 

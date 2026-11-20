@@ -2,10 +2,9 @@ import { defineBlock, fields } from "@cmssy/react";
 import TwoAudiences from "./TwoAudiences";
 
 export const twoAudiencesProps = {
-  fig: fields.text({ label: "Fig Number", defaultValue: "FIG 3.0" }),
+  fig: fields.text({ label: "Fig Number" }),
   eyebrow: fields.text({
     label: "Eyebrow",
-    defaultValue: "ONE PLATFORM, TWO AUDIENCES",
   }),
   heading: fields.text({
     label: "Heading",
@@ -15,7 +14,6 @@ export const twoAudiencesProps = {
   }),
   description: fields.textarea({
     label: "Description",
-    defaultValue: "Nobody steps on anybody. One content model, two ways to work.",
   }),
   cards: fields.repeater({
     label: "Cards",
@@ -29,13 +27,11 @@ export const twoAudiencesProps = {
       }),
       codeLabel: fields.text({
         label: "Code Panel Label",
-        defaultValue: "page.tsx",
       }),
       wireframeCaption: fields.text({
         label: "Wireframe Caption",
-        defaultValue: "editor · /home",
       }),
-      dark: fields.boolean({ label: "Dark Card", defaultValue: false }),
+      dark: fields.boolean({ label: "Dark Card" }),
     },
   }),
 };

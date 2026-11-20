@@ -9,20 +9,18 @@ export const docsTerminalProps = {
   commands: fields.repeater({
     label: "Commands",
     itemSchema: {
-      prompt: fields.text({ label: "Prompt", defaultValue: "$" }),
+      prompt: fields.text({ label: "Prompt" }),
       command: fields.text({ label: "Command", required: true }),
       output: fields.textarea({ label: "Output" }),
     },
   }),
   theme: fields.select({
     label: "Theme",
-    defaultValue: "macos",
-    options: ["dark", "macos", "minimal", "clean"],
+options: ["dark", "macos", "minimal", "clean"],
     tab: "style",
   }),
   showCopyAll: fields.boolean({
     label: "Show Copy All Button",
-    defaultValue: true,
   }),
 };
 

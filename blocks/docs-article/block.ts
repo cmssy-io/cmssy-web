@@ -14,7 +14,6 @@ export const docsArticleProps = {
   content: fields.richText({ label: "Content", required: true }),
   showToc: fields.boolean({
     label: "Show Table of Contents",
-    defaultValue: true,
   }),
   // No default: the heading above the TOC is copy, and copy is written in the
   // CMS, in the languages the workspace has - not in English here.

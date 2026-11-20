@@ -3,11 +3,9 @@ import DocsRateLimits from "./DocsRateLimits";
 import type { PublishedLimits } from "@/lib/limits";
 
 export const docsRateLimitsProps = {
-  title: fields.text({ label: "Title", defaultValue: "Protection limits" }),
+  title: fields.text({ label: "Title" }),
   description: fields.textarea({
     label: "Description",
-    defaultValue:
-      "Every number below is read from the limiter that enforces it, family by family.",
   }),
   resourceHeader: fields.text({
     label: "Resource column header",
@@ -49,12 +47,9 @@ export const docsRateLimitsProps = {
   }),
   adjustableLabel: fields.text({
     label: "Badge on a limit an operator can move",
-    defaultValue: "adjustable",
   }),
   caveat: fields.textarea({
     label: "Caveat under every family",
-    defaultValue:
-      "Each number is the budget for one window; a call past it is refused with 429 and a Retry-After header.",
   }),
 };
 

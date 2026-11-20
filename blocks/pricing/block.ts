@@ -2,8 +2,8 @@ import { defineBlock, fields } from "@cmssy/react";
 import Pricing from "./Pricing";
 
 export const pricingProps = {
-  fig: fields.text({ label: "Fig Number", defaultValue: "FIG 6.0" }),
-  eyebrow: fields.text({ label: "Eyebrow", defaultValue: "PRICING" }),
+  fig: fields.text({ label: "Fig Number" }),
+  eyebrow: fields.text({ label: "Eyebrow" }),
   heading: fields.text({
     label: "Heading",
     defaultValue: "Simple pricing, start free",
@@ -11,21 +11,15 @@ export const pricingProps = {
   }),
   description: fields.textarea({
     label: "Description",
-    defaultValue:
-      "One free project, forever. Upgrade for more workspaces, uncapped orders and higher limits.",
   }),
   trialNotice: fields.text({
     label: "Trial Notice",
-    defaultValue:
-      "Pro comes with a 14-day free trial - no card needed. When it ends, your organisation goes back to Hobby and its limits unless you subscribe.",
   }),
   popularBadgeText: fields.text({
     label: "Popular Badge Text",
-    defaultValue: "MOST POPULAR",
   }),
   annualDiscountLabel: fields.text({
     label: "Annual Toggle Label",
-    defaultValue: "Annual · 2 months free",
   }),
   plans: fields.repeater({
     label: "Plans",
@@ -37,7 +31,6 @@ export const pricingProps = {
       }),
       description: fields.textarea({
         label: "Plan Description",
-        defaultValue: "Description of the plan.",
       }),
       price: fields.text({
         label: "Price",
@@ -50,13 +43,12 @@ export const pricingProps = {
       }),
       period: fields.text({
         label: "Billing Period",
-        defaultValue: "billed annually",
       }),
       periodMonthly: fields.text({
         label: "Billing Period (monthly)",
         placeholder: "/month",
       }),
-      popular: fields.boolean({ label: "Is Popular?", defaultValue: false }),
+      popular: fields.boolean({ label: "Is Popular?" }),
       features: fields.repeater({
         label: "Features",
         itemSchema: {

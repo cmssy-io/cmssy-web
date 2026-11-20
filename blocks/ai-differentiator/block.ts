@@ -2,10 +2,9 @@ import { defineBlock, fields } from "@cmssy/react";
 import AiDifferentiator from "./AiDifferentiator";
 
 export const aiDifferentiatorProps = {
-  fig: fields.text({ label: "Fig Number", defaultValue: "FIG 2.0" }),
+  fig: fields.text({ label: "Fig Number" }),
   eyebrow: fields.text({
     label: "Eyebrow",
-    defaultValue: "THE DIFFERENTIATOR",
   }),
   heading: fields.text({
     label: "Heading",
@@ -14,8 +13,6 @@ export const aiDifferentiatorProps = {
   }),
   description: fields.textarea({
     label: "Description",
-    defaultValue:
-      "Connect Claude through cmssy's MCP server and it works inside your workspace - creating pages, writing copy, and translating. It edits structured content directly, so nothing lands in your repo unreviewed.",
   }),
   bullets: fields.repeater({
     label: "Bullets",
@@ -26,17 +23,13 @@ export const aiDifferentiatorProps = {
   }),
   linkLabel: fields.text({
     label: "Link Label",
-    defaultValue: "Read the MCP docs →",
   }),
   linkUrl: fields.text({ label: "Link URL" }),
   chatUser: fields.text({
     label: "Chat: User Message",
-    defaultValue: "Add a pricing section in German to the home page.",
   }),
   chatReply: fields.text({
     label: "Chat: Assistant Reply",
-    defaultValue:
-      "Done. I created a pricing block, added German copy, and published.",
   }),
   chatTools: fields.repeater({
     label: "Chat: Tool Calls",
@@ -46,7 +39,6 @@ export const aiDifferentiatorProps = {
   }),
   chatBadge: fields.text({
     label: "Chat: Badge",
-    defaultValue: "No redeploy · content-only change",
   }),
 };
 

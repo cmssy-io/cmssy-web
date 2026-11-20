@@ -15,7 +15,7 @@ export const docsTabsProps = {
       content: fields.richText({ label: "Tab Content", required: true }),
     },
   }),
-  defaultTab: fields.number({ label: "Default Tab Index", defaultValue: 0 }),
+  defaultTab: fields.number({ label: "Default Tab Index" }),
   syncKey: fields.text({
     label: "Sync Group",
     placeholder: "e.g., framework",
@@ -25,8 +25,7 @@ export const docsTabsProps = {
   }),
   variant: fields.select({
     label: "Tab Style",
-    defaultValue: "underline",
-    options: ["underline", "pills", "bordered"],
+options: ["underline", "pills", "bordered"],
     tab: "style",
   }),
 };

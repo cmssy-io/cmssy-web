@@ -21,11 +21,9 @@ export const blogPostHeroProps = {
   date: fields.date({ label: "Publish Date" }),
   readingTime: fields.number({
     label: "Reading Time (minutes)",
-    defaultValue: 5,
   }),
   breadcrumbLabel: fields.text({
     label: "Breadcrumb Label",
-    defaultValue: "Blog",
   }),
   breadcrumbUrl: fields.link({
     label: "Breadcrumb URL",

@@ -36,8 +36,7 @@ export const heroProps = {
 
   showScene: fields.boolean({
     label: "Show Animated Scene",
-    defaultValue: true,
-    localized: false,
+localized: false,
   }),
 
   siteBrand: fields.text({
@@ -139,8 +138,7 @@ export const heroProps = {
       prompt: fields.text({ label: "Prompt", required: true }),
       target: fields.select({
         label: "Edited Element",
-        defaultValue: "headline",
-        options: SCENE_TARGETS,
+options: SCENE_TARGETS,
         localized: false,
       }),
       text: fields.text({
