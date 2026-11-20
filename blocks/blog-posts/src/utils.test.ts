@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import type { PageItem } from "@cmssy/types";
-import { customMedia, pageSelectorSlug, postsSortVars } from "./utils";
+import {
+  customMedia,
+  customMediaAlt,
+  pageSelectorSlug,
+  postsSortVars,
+} from "./utils";
 
 describe("pageSelectorSlug", () => {
   it("reads the slug a single page selector now hands over as a bare object", () => {
@@ -114,5 +119,35 @@ describe("postsSortVars", () => {
   it("keeps the delivery default when either setting is missing", () => {
     expect(postsSortVars({ sortField: "publish_date" })).toEqual({});
     expect(postsSortVars({ sortPageType: "post", sortField: "  " })).toEqual({});
+  });
+});
+
+describe("customMediaAlt", () => {
+  const cover = {
+    id: "m1",
+    url: "https://assets.cmssy.io/cover.webp",
+    type: "image",
+    alt: "Cmssy editor with the pricing section",
+  };
+  const read = (value: unknown, language?: string, fallback?: string) =>
+    customMediaAlt(itemWith(value), "cover_image", language, fallback);
+
+  it("reads the alt the delivery read resolved, on the default language", () => {
+    expect(read(cover, "en", "en")).toBe("Cmssy editor with the pricing section");
+  });
+
+  it("reads it when the language is not known", () => {
+    expect(read(cover)).toBe("Cmssy editor with the pricing section");
+  });
+
+  it("gives nothing on another language, since that alt is in the default one", () => {
+    expect(read(cover, "pl", "en")).toBeNull();
+  });
+
+  it("gives nothing for a missing, blank or url-only cover", () => {
+    expect(read({ ...cover, alt: "  " }, "en", "en")).toBeNull();
+    expect(read({ ...cover, alt: undefined }, "en", "en")).toBeNull();
+    expect(read("https://assets.cmssy.io/c.webp", "en", "en")).toBeNull();
+    expect(read(null, "en", "en")).toBeNull();
   });
 });

@@ -2,7 +2,12 @@ import Image from "next/image";
 import type { PageItem } from "@cmssy/types";
 import { CmssyLink } from "@/components/cmssy-locale";
 import { formatDate } from "@/lib/utils";
-import { customMedia, customText, getLocalizedField } from "./utils";
+import {
+  customMedia,
+  customMediaAlt,
+  customText,
+  getLocalizedField,
+} from "./utils";
 
 export function PlaceholderCard() {
   return (
@@ -20,15 +25,19 @@ export function PlaceholderCard() {
 export function PostCard({
   item,
   language,
+  defaultLanguage,
   layout,
 }: {
   item: PageItem;
   language: string | undefined;
+  defaultLanguage?: string;
   layout: string;
 }) {
   const title = getLocalizedField(item.displayName, language);
   const excerpt = getLocalizedField(item.seoDescription, language);
   const coverImage = customMedia(item, "cover_image");
+  const coverAlt =
+    customMediaAlt(item, "cover_image", language, defaultLanguage) ?? title;
   const rawAuthor = customText(item, "author");
   const author =
     rawAuthor && !/^[0-9a-f]{24}$/.test(rawAuthor) ? rawAuthor : null;
@@ -48,7 +57,7 @@ export function PostCard({
         >
           <Image
             src={coverImage}
-            alt={title}
+            alt={coverAlt}
             fill
             sizes={
               isList
