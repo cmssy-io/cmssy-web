@@ -65,6 +65,7 @@ export function useBlogPosts(
             limit: opts.limit ?? limit,
             offset: opts.offset ?? 0,
             pageType,
+            locale: language,
             customFieldSort: sortFieldKey
               ? { fieldKey: sortFieldKey, direction: "desc" }
               : undefined,
@@ -81,7 +82,7 @@ export function useBlogPosts(
       }
       return byType;
     },
-    [workspaceId, parentSlug, limit, pageType, sortFieldKey],
+    [workspaceId, parentSlug, limit, pageType, sortFieldKey, language],
   );
 
   useEffect(() => {

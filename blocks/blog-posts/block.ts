@@ -50,7 +50,7 @@ export const blogPostsBlock = defineBlock({
   description:
     "Grid or list of blog post previews; for a blog index or a 'latest posts' section.",
   component: Component,
-  loader: async ({ content }): Promise<BlogPostsData | null> => {
+  loader: async ({ content, context }): Promise<BlogPostsData | null> => {
     const parentSlug = pageSelectorSlug(content.parentPage);
     if (!parentSlug) return null;
 
@@ -60,6 +60,7 @@ export const blogPostsBlock = defineBlock({
       parentSlug,
       limit,
       offset: 0,
+      locale: context?.locale?.current,
       ...postsSortVars(content),
     });
   },

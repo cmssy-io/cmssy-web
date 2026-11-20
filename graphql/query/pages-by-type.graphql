@@ -7,6 +7,7 @@ query PublicPagesByType(
   $sortBy: PageSortBy
   $pageType: String
   $customFieldSort: PageCustomFieldSortInput
+  $locale: String
 ) {
   public {
     page {
@@ -19,6 +20,7 @@ query PublicPagesByType(
         sortBy: $sortBy
         pageType: $pageType
         customFieldSort: $customFieldSort
+        locale: $locale
       ) {
         items {
           id

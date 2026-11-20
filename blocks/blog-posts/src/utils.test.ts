@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import type { PageItem } from "@cmssy/types";
+import { mediaAlt } from "@cmssy/react";
 import {
   customMedia,
-  customMediaAlt,
+  customMediaValue,
   pageSelectorSlug,
   postsSortVars,
 } from "./utils";
@@ -122,32 +123,33 @@ describe("postsSortVars", () => {
   });
 });
 
-describe("customMediaAlt", () => {
+describe("customMediaValue", () => {
   const cover = {
     id: "m1",
     url: "https://assets.cmssy.io/cover.webp",
+    visibility: "public",
     type: "image",
-    alt: "Cmssy editor with the pricing section",
+    alt: "Edytor Cmssy z sekcją cennika",
   };
-  const read = (value: unknown, language?: string, fallback?: string) =>
-    customMediaAlt(itemWith(value), "cover_image", language, fallback);
 
-  it("reads the alt the delivery read resolved, on the default language", () => {
-    expect(read(cover, "en", "en")).toBe("Cmssy editor with the pricing section");
+  it("hands the resolved reference over, so its alt can be read", () => {
+    expect(mediaAlt(customMediaValue(itemWith(cover), "cover_image"))).toBe(
+      "Edytor Cmssy z sekcją cennika",
+    );
   });
 
-  it("reads it when the language is not known", () => {
-    expect(read(cover)).toBe("Cmssy editor with the pricing section");
+  it("keeps a bare url string, which carries no alt", () => {
+    const value = customMediaValue(
+      itemWith("https://assets.cmssy.io/c.webp"),
+      "cover_image",
+    );
+    expect(value).toBe("https://assets.cmssy.io/c.webp");
+    expect(mediaAlt(value)).toBeUndefined();
   });
 
-  it("gives nothing on another language, since that alt is in the default one", () => {
-    expect(read(cover, "pl", "en")).toBeNull();
-  });
-
-  it("gives nothing for a missing, blank or url-only cover", () => {
-    expect(read({ ...cover, alt: "  " }, "en", "en")).toBeNull();
-    expect(read({ ...cover, alt: undefined }, "en", "en")).toBeNull();
-    expect(read("https://assets.cmssy.io/c.webp", "en", "en")).toBeNull();
-    expect(read(null, "en", "en")).toBeNull();
+  it("gives nothing for a missing cover or a value that is not a reference", () => {
+    expect(customMediaValue(itemWith(null), "cover_image")).toBeNull();
+    expect(customMediaValue(itemWith([cover]), "cover_image")).toBeNull();
+    expect(customMediaValue(itemWith(7), "cover_image")).toBeNull();
   });
 });
