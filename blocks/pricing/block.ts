@@ -17,7 +17,7 @@ export const pricingProps = {
   trialNotice: fields.text({
     label: "Trial Notice",
     defaultValue:
-      "Every paid plan starts with a 7-day free trial. You add a card up front and nothing is charged until it ends.",
+      "Pro comes with a 14-day free trial - no card needed. When it ends, your organisation goes back to Hobby and its limits unless you subscribe.",
   }),
   popularBadgeText: fields.text({
     label: "Popular Badge Text",
