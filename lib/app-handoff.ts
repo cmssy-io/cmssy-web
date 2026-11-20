@@ -8,6 +8,27 @@ export const UTM_PARAMS = [
   "utm_term",
 ] as const;
 
+export type LandingUtm = Partial<Record<(typeof UTM_PARAMS)[number], string>>;
+
+/**
+ * The UTM a visitor landed with. Kept in memory by the caller, never in
+ * storage, so it needs no consent and lasts only for client-side navigation.
+ */
+export function readLandingUtm(pageUrl: string): LandingUtm {
+  const utm: LandingUtm = {};
+  let page: URL;
+  try {
+    page = new URL(pageUrl);
+  } catch {
+    return utm;
+  }
+  for (const key of UTM_PARAMS) {
+    const value = page.searchParams.get(key);
+    if (value) utm[key] = value;
+  }
+  return utm;
+}
+
 function bareHost(hostname: string): string {
   return hostname.replace(/^www\./, "");
 }
@@ -17,6 +38,7 @@ export function handoffHref(
   pageUrl: string,
   appUrl: string,
   distinctId: string | null,
+  landing: LandingUtm = {},
 ): string | null {
   let target: URL;
   let page: URL;
@@ -33,8 +55,10 @@ export function handoffHref(
   }
   if (bareHost(target.hostname) !== bareHost(app.hostname)) return null;
 
+  // The current page's UTM wins; the landing UTM covers a visitor who
+  // browsed a few pages before signing up.
   for (const key of UTM_PARAMS) {
-    const value = page.searchParams.get(key);
+    const value = page.searchParams.get(key) || landing[key];
     if (value && !target.searchParams.has(key)) {
       target.searchParams.set(key, value);
     }

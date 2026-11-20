@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { handoffHref } from "./app-handoff";
+import { handoffHref, readLandingUtm } from "./app-handoff";
 
 const APP = "https://cmssy.io";
 
@@ -114,5 +114,51 @@ describe("handoffHref", () => {
         "a",
       ),
     ).toBeNull();
+  });
+
+  it("carries the landing UTM after the visitor browsed to another page", () => {
+    expect(
+      handoffHref(
+        "https://cmssy.io/signup",
+        "https://www.cmssy.com/pricing",
+        APP,
+        null,
+        { utm_source: "meta", utm_campaign: "reel" },
+      ),
+    ).toBe("https://cmssy.io/signup?utm_source=meta&utm_campaign=reel");
+  });
+
+  it("prefers the current page's UTM over the landing UTM", () => {
+    expect(
+      handoffHref(
+        "https://cmssy.io/signup",
+        "https://www.cmssy.com/?utm_source=google",
+        APP,
+        null,
+        { utm_source: "meta", utm_medium: "paid" },
+      ),
+    ).toBe("https://cmssy.io/signup?utm_source=google&utm_medium=paid");
+  });
+
+  it("does not add the landing UTM to links outside the app", () => {
+    expect(
+      handoffHref("/pricing", "https://www.cmssy.com/", APP, null, {
+        utm_source: "meta",
+      }),
+    ).toBeNull();
+  });
+});
+
+describe("readLandingUtm", () => {
+  it("keeps only the UTM parameters of the landing URL", () => {
+    expect(
+      readLandingUtm(
+        "https://www.cmssy.com/?utm_source=meta&utm_term=cms&fbclid=x&utm_medium=",
+      ),
+    ).toEqual({ utm_source: "meta", utm_term: "cms" });
+  });
+
+  it("returns nothing for a URL it cannot parse", () => {
+    expect(readLandingUtm("not a url")).toEqual({});
   });
 });
