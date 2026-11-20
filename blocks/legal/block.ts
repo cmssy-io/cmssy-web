@@ -2,29 +2,22 @@ import { defineBlock, fields } from "@cmssy/react";
 import Legal from "./Legal";
 
 export const legalProps = {
-  badge: fields.text({ label: "Badge Text", defaultValue: "Privacy" }),
-  heading: fields.text({ label: "Heading", defaultValue: "Privacy" }),
+  badge: fields.text({ label: "Badge Text" }),
+  heading: fields.text({ label: "Heading" }),
   headingHighlight: fields.text({
     label: "Heading Highlight",
-    defaultValue: "Policy",
   }),
   description: fields.textarea({
     label: "Description",
-    defaultValue:
-      "Learn how we collect, use, and protect your personal information.",
   }),
   showSummary: fields.boolean({
     label: "Show Summary Box",
-    defaultValue: true,
   }),
   summaryTitle: fields.text({
     label: "Summary Title",
-    defaultValue: "TL;DR",
   }),
   summaryContent: fields.textarea({
     label: "Summary Content",
-    defaultValue:
-      "We respect your privacy and only collect data necessary to provide our services. We never sell your data.",
   }),
   sections: fields.repeater({
     label: "Accordion Sections",
@@ -35,11 +28,9 @@ export const legalProps = {
   }),
   showFooterLinks: fields.boolean({
     label: "Show Footer Links",
-    defaultValue: true,
   }),
   footerText: fields.text({
     label: "Footer Text",
-    defaultValue: "This policy is part of our",
   }),
   footerLinks: fields.repeater({
     label: "Footer Links",
@@ -50,7 +41,6 @@ export const legalProps = {
   }),
   lastUpdated: fields.text({
     label: "Last Updated Date",
-    defaultValue: "January 2025",
   }),
 };
 

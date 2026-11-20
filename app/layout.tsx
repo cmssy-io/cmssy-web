@@ -5,6 +5,7 @@ import { MotionProvider } from "@/components/motion/provider";
 import { ThemeProvider } from "@/components/theme";
 import { themeInitScript } from "@/lib/theme-script";
 import { consentModeInitScript } from "@/lib/consent";
+import { Analytics } from "@vercel/analytics/next";
 
 /**
  * The real root layout: the document, the fonts, the theme, the motion
@@ -83,6 +84,12 @@ export default async function RootLayout({
         <ThemeProvider>
           <MotionProvider>{children}</MotionProvider>
         </ThemeProvider>
+        {/*
+         * Vercel Web Analytics: cookieless, so it counts every visitor, not only
+         * those who accept the consent banner like PostHog does. Here in the
+         * root layout because it never remounts.
+         */}
+        <Analytics />
       </body>
     </html>
   );

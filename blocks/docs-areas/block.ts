@@ -13,8 +13,7 @@ export const docsAreasProps = {
   description: fields.textarea({ label: "Description" }),
   band: fields.select({
     label: "Band",
-    defaultValue: "muted",
-    options: ["paper", "muted", "ink"],
+options: ["paper", "muted", "ink"],
     tab: "style",
   }),
 };

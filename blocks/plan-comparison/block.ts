@@ -4,8 +4,8 @@ import type { Plan } from "@/lib/plans";
 import type { DeliveryLimits } from "@/lib/limits";
 
 export const planComparisonProps = {
-  fig: fields.text({ label: "Fig Number", defaultValue: "FIG 6.1" }),
-  eyebrow: fields.text({ label: "Eyebrow", defaultValue: "EVERY LIMIT" }),
+  fig: fields.text({ label: "Fig Number" }),
+  eyebrow: fields.text({ label: "Eyebrow" }),
   heading: fields.text({
     label: "Heading",
     defaultValue: "What each plan contains",
@@ -13,8 +13,6 @@ export const planComparisonProps = {
   }),
   description: fields.textarea({
     label: "Description",
-    defaultValue:
-      "Every number here is read from the same table the product enforces.",
   }),
   unlimitedLabel: fields.text({
     label: "Word for an uncapped limit",
@@ -36,8 +34,7 @@ export const planComparisonProps = {
     itemSchema: {
       planId: fields.select({
         label: "Plan",
-        defaultValue: "free",
-        options: ["free", "pro", "enterprise"],
+options: ["free", "pro", "enterprise"],
       }),
       name: fields.text({ label: "Plan Name", required: true }),
     },
@@ -48,8 +45,7 @@ export const planComparisonProps = {
       label: fields.text({ label: "Row Label", required: true }),
       metric: fields.select({
         label: "Metric",
-        defaultValue: "workspaces",
-        options: [
+options: [
           "workspaces",
           "members",
           "pages",

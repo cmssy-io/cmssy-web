@@ -168,24 +168,20 @@ export type DocsPage = CmssyPageData & {
   seoDescription: ChildPage["seoDescription"];
 };
 
-export async function getDocsPage(pageId: string): Promise<DocsPage | null> {
-  try {
-    const data = await publicRequest(
-      PublicDocsPageDocument,
-      { workspaceSlug: cmssy.workspaceSlug, pageId },
-      "docs page",
-    );
-    const page = data.public.page.getById;
-    if (!page) return null;
-    return {
-      id: page.id,
-      blocks: page.publishedBlocks,
-      displayName: page.displayName as ChildPage["displayName"],
-      seoDescription: page.seoDescription as ChildPage["seoDescription"],
-    };
-  } catch (error) {
-    return degradeOutsideBuild(error, null, `docs page ${pageId}`);
-  }
+export async function readDocsPage(pageId: string): Promise<DocsPage | null> {
+  const data = await publicRequest(
+    PublicDocsPageDocument,
+    { workspaceSlug: cmssy.workspaceSlug, pageId },
+    "docs page",
+  );
+  const page = data.public.page.getById;
+  if (!page) return null;
+  return {
+    id: page.id,
+    blocks: page.publishedBlocks,
+    displayName: page.displayName as ChildPage["displayName"],
+    seoDescription: page.seoDescription as ChildPage["seoDescription"],
+  };
 }
 
 export async function getPageId(

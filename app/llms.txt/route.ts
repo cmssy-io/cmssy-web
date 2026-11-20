@@ -1,7 +1,7 @@
 import { isDocsPath } from "@/lib/docs-markdown";
 import { labelForPage } from "@/lib/docs-nav";
 import { localizedPath } from "@/lib/locale-path";
-import { listChildPages, type ChildPage } from "@/services/pages";
+import { readChildPages, type ChildPage } from "@/services/pages";
 import { siteUrl } from "@/lib/site-url";
 import { fetchSiteConfig, resolveSiteLocales } from "@/services/site";
 
@@ -48,7 +48,7 @@ async function descendants(
   depth = 2,
 ): Promise<ChildPage[]> {
   if (depth === 0) return [];
-  const children = (await listChildPages(page.fullSlug)).filter(
+  const children = (await readChildPages(page.fullSlug)).filter(
     (child) => child.id !== exclude,
   );
   const nested = await Promise.all(
@@ -64,7 +64,7 @@ export async function GET() {
   const [config, locales, topLevel] = await Promise.all([
     fetchSiteConfig(),
     resolveSiteLocales(),
-    listChildPages("/"),
+    readChildPages("/"),
   ]);
   const locale = locales.defaultLocale;
   const base = siteUrl();

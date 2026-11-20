@@ -2,11 +2,9 @@ import { defineBlock, fields } from "@cmssy/react";
 import DocsToolCatalogue from "./DocsToolCatalogue";
 
 export const docsToolCatalogueProps = {
-  title: fields.text({ label: "Title", defaultValue: "Every MCP tool" }),
+  title: fields.text({ label: "Title" }),
   description: fields.textarea({
     label: "Description",
-    defaultValue:
-      "Generated from the MCP server itself, so a tool cannot be listed here before it is callable.",
   }),
   toolHeader: fields.text({
     label: "Tool column header",
@@ -25,7 +23,6 @@ export const docsToolCatalogueProps = {
   }),
   noPermissionLabel: fields.text({
     label: "Word for a tool that needs no permission",
-    defaultValue: "none",
   }),
   tools: fields.repeater({
     label: "Tools (generated - do not edit by hand)",

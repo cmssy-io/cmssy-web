@@ -4,25 +4,20 @@ import NotFound from "./NotFound";
 export const notFoundProps = {
     heading: fields.text({
       label: "Heading",
-      defaultValue: "404",
-      placeholder: "e.g., 404, Oops!, Lost?",
+placeholder: "e.g., 404, Oops!, Lost?",
     }),
-    title: fields.text({ label: "Title", defaultValue: "Page not found" }),
+    title: fields.text({ label: "Title" }),
     description: fields.textarea({
       label: "Description",
-      defaultValue:
-        "The page you're looking for doesn't exist or has been moved. Let's get you back on track.",
     }),
     primaryButtonText: fields.text({
       label: "Primary Button Text",
-      defaultValue: "Back to Home",
     }),
     primaryButtonUrl: fields.link({
       label: "Primary Button URL",
     }),
     secondaryButtonText: fields.text({
       label: "Secondary Button Text",
-      defaultValue: "Contact Support",
     }),
     secondaryButtonUrl: fields.link({
       label: "Secondary Button URL",

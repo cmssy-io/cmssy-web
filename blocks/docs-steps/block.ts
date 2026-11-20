@@ -8,8 +8,8 @@ export const docsStepsProps = {
     "title": fields.text({ label: "Step Title", required: true }),
     "content": fields.richText({ label: "Step Content" })
   } }),
-  "showNumbers": fields.boolean({ label: "Show Step Numbers", defaultValue: true }),
-  "connectorStyle": fields.select({ label: "Connector Style", defaultValue: "line", options: ["line","dashed","dots"] })
+  "showNumbers": fields.boolean({ label: "Show Step Numbers" }),
+  "connectorStyle": fields.select({ label: "Connector Style", options: ["line","dashed","dots"] })
 };
 
 export const docsStepsBlock = defineBlock({
