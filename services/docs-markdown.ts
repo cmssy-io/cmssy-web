@@ -11,7 +11,7 @@ import {
 } from "@/services/docs-search";
 import {
   CONTENT_TAG,
-  getDocsPage,
+  readDocsPage,
   readChildPages,
   type ChildPage,
 } from "@/services/pages";
@@ -20,7 +20,7 @@ import { resolveSiteLocales } from "@/services/site";
 const CONCURRENCY = 6;
 
 async function render(page: ChildPage): Promise<string | null> {
-  const loaded = await getDocsPage(page.id);
+  const loaded = await readDocsPage(page.id);
   if (!loaded) return null;
   const { defaultLocale } = await resolveSiteLocales();
   const base = siteUrl();

@@ -1,6 +1,24 @@
 import { docsSlugFromParams } from "@/lib/docs-markdown";
 import { siteUrl } from "@/lib/site-url";
 import { loadDocsMarkdown } from "@/services/docs-markdown";
+import { docsPages } from "@/services/docs-search";
+
+export const dynamic = "force-static";
+export const revalidate = 3600;
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  const pages = await docsPages();
+  return [
+    { path: [] },
+    ...pages.map((page) => ({
+      path: page.fullSlug
+        .replace(/^\/docs\/?/, "")
+        .split("/")
+        .filter(Boolean),
+    })),
+  ];
+}
 
 // /docs/<path>.md lands here through the rewrite in next.config.mjs. The HTML
 // page stays the one search engines index, so this twin never competes with it.
@@ -18,8 +36,6 @@ export async function GET(
       "content-type": "text/markdown; charset=utf-8",
       "x-robots-tag": "noindex",
       link: `<${siteUrl()}${slug}>; rel="canonical"`,
-      "cache-control":
-        "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400",
     },
   });
 }

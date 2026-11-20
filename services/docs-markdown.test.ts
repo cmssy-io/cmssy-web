@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const listChildPages = vi.fn();
-const getDocsPage = vi.fn();
+const readDocsPage = vi.fn();
 
 vi.mock("next/cache", () => ({
   unstable_cache: (fn: () => unknown) => fn,
@@ -10,7 +10,7 @@ vi.mock("next/cache", () => ({
 vi.mock("@/services/pages", () => ({
   CONTENT_TAG: "cmssy-content",
   readChildPages: (...args: unknown[]) => listChildPages(...args),
-  getDocsPage: (...args: unknown[]) => getDocsPage(...args),
+  readDocsPage: (...args: unknown[]) => readDocsPage(...args),
   getPageById: vi.fn(),
 }));
 
@@ -26,7 +26,7 @@ const { loadDocsMarkdown } = await import("./docs-markdown");
 
 beforeEach(() => {
   listChildPages.mockReset();
-  getDocsPage.mockReset();
+  readDocsPage.mockReset();
 });
 
 describe("loadDocsMarkdown", () => {
@@ -39,7 +39,7 @@ describe("loadDocsMarkdown", () => {
         seoDescription: { en: "Old description." },
       },
     ]);
-    getDocsPage.mockResolvedValue({
+    readDocsPage.mockResolvedValue({
       id: "p1",
       blocks: [],
       displayName: { en: "CLI" },
@@ -49,7 +49,7 @@ describe("loadDocsMarkdown", () => {
     const markdown = await loadDocsMarkdown("/docs/api/cli");
 
     expect(listChildPages).toHaveBeenCalledWith("/docs/api");
-    expect(getDocsPage).toHaveBeenCalledWith("p1");
+    expect(readDocsPage).toHaveBeenCalledWith("p1");
     expect(markdown).toContain('title: "CLI"');
     expect(markdown).toContain('description: "New description."');
     expect(markdown).not.toContain("Old");
@@ -57,8 +57,15 @@ describe("loadDocsMarkdown", () => {
 
   it("answers null when the page cannot be loaded", async () => {
     listChildPages.mockResolvedValue([{ id: "p1", fullSlug: "/docs/api/cli" }]);
-    getDocsPage.mockResolvedValue(null);
+    readDocsPage.mockResolvedValue(null);
 
     expect(await loadDocsMarkdown("/docs/api/cli")).toBeNull();
+  });
+
+  it("fails instead of answering null when the CMS read fails", async () => {
+    listChildPages.mockResolvedValue([{ id: "p1", fullSlug: "/docs/api/cli" }]);
+    readDocsPage.mockRejectedValue(new Error("502"));
+
+    await expect(loadDocsMarkdown("/docs/api/cli")).rejects.toThrow("502");
   });
 });
