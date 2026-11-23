@@ -1,7 +1,15 @@
 import { CmssyWebhookError, verifyCmssyWebhook } from "@cmssy/core";
 import { revalidatePath, revalidateTag } from "next/cache";
-import { NextResponse, type NextRequest } from "next/server";
+import { after, NextResponse, type NextRequest } from "next/server";
+import {
+  indexNowKey,
+  submitToIndexNow,
+  urlsForSubject,
+  type ContentSubject,
+} from "@/lib/indexnow";
+import { siteUrl } from "@/lib/site-url";
 import { CONTENT_TAG } from "@/services/pages";
+import { resolveSiteLocales } from "@/services/site";
 
 // On-demand ISR webhook. cmssy calls this on any content.changed.
 // Auth: the HMAC signature cmssy already sends in `x-cmssy-signature`,
@@ -27,8 +35,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ revalidated: false }, { status: 500 });
   }
 
+  let subject: ContentSubject | undefined;
   try {
-    await verifyCmssyWebhook({
+    const event = await verifyCmssyWebhook({
       body: await request.text(),
       signatureHeader: request.headers.get("x-cmssy-signature"),
       secret,
@@ -36,6 +45,10 @@ export async function POST(request: NextRequest) {
       // up after 5s, so no honest delivery is ever more than seconds old.
       toleranceSeconds: 60,
     });
+    // Read loosely: the payload shape is documented, but a ping must never be
+    // the reason a valid delivery fails.
+    subject = (event as unknown as { data?: { subject?: ContentSubject } })
+      .data?.subject;
   } catch (err) {
     if (err instanceof CmssyWebhookError) {
       console.warn("revalidate: rejected webhook", {
@@ -55,6 +68,19 @@ export async function POST(request: NextRequest) {
   // publish webhook.
   revalidateTag(CONTENT_TAG, { expire: 0 });
   revalidatePath("/", "layout");
+
+  // Tell IndexNow which URLs moved, after the response: cmssy gives up on a
+  // delivery after 15 s and retries a slow one, and a ping is never worth a
+  // retry storm. Production only - a preview deploy must not announce its
+  // URLs, and there the key is unset anyway.
+  const key = indexNowKey();
+  const base = siteUrl();
+  if (key && base && process.env.VERCEL_ENV === "production") {
+    after(async () => {
+      const urls = urlsForSubject(subject, await resolveSiteLocales(), base);
+      await submitToIndexNow(urls, key, base);
+    });
+  }
 
   return NextResponse.json({ revalidated: true, now: Date.now() });
 }
