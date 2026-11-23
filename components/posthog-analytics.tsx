@@ -59,7 +59,14 @@ export function PostHogAnalytics({ appUrl }: { appUrl: string }) {
         distinctId,
         landing ?? {},
       );
-      if (next) anchor.href = next;
+      if (!next) return;
+      anchor.href = next;
+      // Every app handoff is a sign-up intent; GA4 imports it into Google Ads
+      // as a conversion. gtag only reaches Google once analytics consent loads GA.
+      window.gtag?.("event", "start_signup", {
+        link_url: next.split("?")[0],
+        transport_type: "beacon",
+      });
     }
     document.addEventListener("click", onNavigate, true);
     document.addEventListener("auxclick", onNavigate, true);
